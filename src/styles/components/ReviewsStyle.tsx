@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme: any) => ({
     display: `flex`,
     justifyContent: `center`,
     margin: `2rem 0`,
-    backgroundColor: '#f9f9f9'
+    backgroundColor: '#f9f9f9',
   },
 
   itemDiv: {
@@ -22,6 +22,14 @@ export const useStyles = makeStyles((theme: any) => ({
 
   carousal: {
     width: `78%`,
+    height: '400px',
+    '@media(max-width:1030px)': {
+      width: '95%',
+      padding: '0 20px',
+    },
+    '@media(max-width:770px)': {
+      height: '450px',
+    },
   },
   cardDiv: {
     width: `100%`,
@@ -39,5 +47,5 @@ export const useStyles = makeStyles((theme: any) => ({
     paddingBottom: `50px`,
     boxShadow: '0px 0px 5px #c1c1c1',
     margin: 20,
-  }
+  },
 }));

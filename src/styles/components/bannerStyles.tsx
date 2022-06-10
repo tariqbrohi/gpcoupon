@@ -8,6 +8,10 @@ export const useStyles = makeStyles((theme: any) => ({
     alignItems: `center`,
     justifyContent: `space-evenly`,
     marginTop: `1rem`,
+    '@media(max-width:770px)': {
+      padding: '0 20px',
+      display: 'none',
+    },
   },
   image: {},
   info: {

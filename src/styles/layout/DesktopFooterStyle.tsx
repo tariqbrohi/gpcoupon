@@ -8,6 +8,9 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `center`,
     flexDirection: `column`,
     paddingBottom: `2rem`,
+    '@media(max-width:770px)': {
+      display: 'none',
+    },
   },
   linksection: {
     width: `80%`,

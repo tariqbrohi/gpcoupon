@@ -22,6 +22,7 @@ import categ13 from '../../asset/categ13.jpg';
 import categ14 from '../../asset/categ14.jpg';
 import categ15 from '../../asset/categ15.jpg';
 import categ16 from '../../asset/categ16.jpg';
+import SimpleCategoryCard from './SimpleCategoryCard';
 
 const Data = [
   {
@@ -104,7 +105,7 @@ const Categories = () => {
     <div className={classes.container}>
       <div className={classes.header}>
         <h2 className={classes.heading}>Categories</h2>
-        <div className={classes.arrowDiv}>
+        {/* <div className={classes.arrowDiv}>
           <ArrowBackIosNewIcon
             className={classes.icon}
             onClick={() => onArrowCLick(`previous`)}
@@ -113,14 +114,11 @@ const Categories = () => {
             className={classes.icon}
             onClick={() => onArrowCLick(`next`)}
           />
-        </div>
+        </div> */}
       </div>
       <div className={classes.main}>
         {DataArray?.map((data: any, index: number) => (
-          <div key={index} className={classes.imageDiv}>
-            <Image src={data?.image} className={classes.image} />
-            <h3 className={classes.title}>{data?.title}</h3>
-          </div>
+          <SimpleCategoryCard data={data} />
         ))}
       </div>
     </div>

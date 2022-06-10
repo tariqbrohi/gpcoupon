@@ -8,6 +8,10 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `center`,
     flexDirection: `column`,
     margin: `4rem 0`,
+    '@media(max-width:550px)': {
+      margin: `0`,
+
+    },
   },
   header: {
     width: `78%`,
@@ -15,6 +19,18 @@ export const useStyles = makeStyles((theme: any) => ({
     display: `flex`,
     alignItems: `center`,
     justifyContent: `space-between`,
+    '@media(max-width:770px)': {
+      width: '100%',
+      padding: '0 20px',
+    },
+  },
+  stack: {
+    '@media(max-width:770px)': {
+      flexWrap: 'wrap',
+      '& div': {
+        margin: '10px 5px !important',
+      },
+    },
   },
   heading: {
     fontSize: `28px`,
@@ -34,7 +50,7 @@ export const useStyles = makeStyles((theme: any) => ({
   itemHeader: {
     display: 'flex',
     alignItems: 'center',
-    fontWeight: 600
+    fontWeight: 600,
   },
   arrowDiv: {
     display: `flex`,
@@ -63,28 +79,35 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `center`,
     width: `75% !important`,
     gap: `1rem`,
+    '@media(max-width:770px)': {
+      width: '100% !important',
+      padding: '0 20px',
+      gap: '0',
+      flexWrap: 'nowrap',
+      overflowX: 'auto',
+      justifyContent: 'flex-start',
+    },
   },
   imageDiv: {
     display: `flex`,
     justifyContent: `center`,
     flexDirection: `column`,
-    maxHeight: "100px !important",
-    minHeight: "100px !important",
+    maxHeight: '100px !important',
+    minHeight: '100px !important',
     maxWidth: `200px !important`,
     minWidth: `200px !important`,
-
   },
   image: {
     borderRadius: `12px`,
     cursor: `pointer`,
-    objectFit: `cover`
+    objectFit: `cover`,
   },
   avatar: {
     maxWidth: `45px !important`,
     minWidth: `45px !important`,
     maxHeight: `45px !important`,
     minHeight: `45px !important`,
-    borderRadius: `12px`
+    borderRadius: `12px`,
   },
   avatarDiv: {
     height: `45px`,
@@ -104,7 +127,6 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: `#f3f3f3`,
     fontSize: `14px`,
     fontWeight: 600,
-
   },
   chipSelected: {
     height: `48px`,
@@ -113,6 +135,6 @@ export const useStyles = makeStyles((theme: any) => ({
     fontSize: `14px`,
     fontWeight: 600,
     backgroundColor: `#ff3c78`,
-    color: `#fff`
-  }
+    color: `#fff`,
+  },
 }));

@@ -8,6 +8,10 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `center`,
     flexDirection: `column`,
     margin: `4rem 0`,
+    '@media(max-width:550px)': {
+      margin: `3rem 0 0rem 0`,
+
+    },
   },
   header: {
     width: `78%`,
@@ -15,6 +19,9 @@ export const useStyles = makeStyles((theme: any) => ({
     display: `flex`,
     alignItems: `center`,
     justifyContent: `space-between`,
+    '@media(max-width:1030px)': {
+      width: '95%',
+    },
   },
   heading: {
     fontSize: `28px`,
@@ -46,6 +53,11 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `center`,
     width: `75%`,
     gap: `1rem`,
+    '@media(max-width:1030px)': {
+      width: '95%',
+      overflowX: 'auto',
+      justifyContent: 'flex-start',
+    },
   },
   imageDiv: {
     display: `flex`,

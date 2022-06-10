@@ -36,7 +36,7 @@ const BasicChips = () => {
   const classes = useStyles();
 
   return (
-    <Stack direction="row" spacing={1}>
+    <Stack direction="row" spacing={1} className={classes.stack}>
       <Chip
         className={classes.chip}
         label="

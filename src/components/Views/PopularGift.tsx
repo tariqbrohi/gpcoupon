@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import Carousel from 'react-material-ui-carousel';
+// import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import Carousel from 'react-multi-carousel';
 
 import { useStyles } from '../../styles/components/PopularGiftStyle';
 import image1 from '../../asset/popular1.jpg';
@@ -63,9 +65,28 @@ const Data = [
   },
 ];
 
-const PopularGift = () => {
+const responsive = {
+  desktop: {
+    breakpoint: { max: 4000, min: 1024 },
+    items: 4,
+    slidesToSlide: 4,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 760 },
+    items: 2,
+    slidesToSlide: 2,
+  },
+  mobile: {
+    breakpoint: { max: 760, min: 0 },
+    items: 1.5,
+    slidesToSlide: 1,
+  },
+};
+
+const PopularGift = (props: any) => {
   const classes = useStyles();
   const [index, setIndex] = React.useState(0);
+  const router = useRouter()
 
   const handleChange = (cur: number, prev: number) => {
     setIndex(cur);
@@ -73,19 +94,17 @@ const PopularGift = () => {
 
   function Item({ item }: any) {
     return (
-      <div className={classes.imageDiv}>
-        {item?.map((data: any, index: number) => (
-          <div key={index} className={classes.card}>
-            <Image
-              src={data.image}
-              style={{ borderRadius: `16px` }}
-              className={classes.image}
-            />
-            <p className={classes.company}>{data.company}</p>
-            <p className={classes.title}>{data.title}</p>
-            <p className={classes.price}>US$ {data.price}</p>
-          </div>
-        ))}
+      <div className={classes.imageDiv} onClick={() => router.push(`/item/${item.company}${item.title}`)}>
+        <div key={index} className={classes.card}>
+          <Image
+            src={item.image}
+            style={{ borderRadius: `16px` }}
+            className={classes.image}
+          />
+          <p className={classes.company}>{item.company}</p>
+          <p className={classes.title}>{item.title}</p>
+          <p className={classes.price}>US$ {item.price}</p>
+        </div>
       </div>
     );
   }
@@ -94,22 +113,21 @@ const PopularGift = () => {
     <div className={classes.carousaldiv}>
       <h2>🎁 Most Popular Gifts 🎁</h2>
       <Carousel
-        index={index}
-        onChange={() => handleChange}
-        interval={4000}
-        animation="slide"
-        indicators={false}
-        stopAutoPlayOnHover
-        swipe
-        navButtonsAlwaysVisible
+        swipeable={true}
+        draggable={true}
+        autoPlay={false}
+        showDots={false}
+        responsive={responsive}
+        infinite={true}
+        removeArrowOnDeviceType={['mobile']}
+        deviceType={props.deviceType}
         className={classes.carousal}
       >
-        {/* {items.map((item, i) => (
-                    <Item key={i} item={item} />
-                ))} */}
-        <Item item={Data?.slice(0, 4)} />
-        <Item item={Data?.slice(4, 8)} />
+        {Data?.map((data: any, index: number) => (
+          <Item item={data} />
+        ))}
       </Carousel>
+
     </div>
   );
 };

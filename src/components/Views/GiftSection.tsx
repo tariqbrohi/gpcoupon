@@ -3,6 +3,8 @@ import Image from 'next/image';
 
 import { useStyles } from '../../styles/components/GiftSectionStyle';
 
+import { Grid } from '@mui/material';
+
 import gift1 from '../../asset/gift1.jpg';
 import gift2 from '../../asset/gift2.jpg';
 import gift3 from '../../asset/gift3.jpg';
@@ -48,12 +50,16 @@ const GiftSection = () => {
   return (
     <div className={classes.container}>
       <div className={classes.main}>
-        {Data?.map((data: any, index: number) => (
-          <div key={index} className={classes.imageDiv}>
-            <Image src={data?.image} className={classes.image} />
-            <h3 className={classes.title}>{data?.title}</h3>
-          </div>
-        ))}
+        <Grid container spacing={3}>
+          {Data?.map((data: any, index: number) => (
+            <Grid item xs={4} md={2}>
+              <div key={index} className={classes.imageDiv}>
+                <Image src={data?.image} className={classes.image} />
+                <h3 className={classes.title}>{data?.title}</h3>
+              </div>
+            </Grid>
+          ))}
+        </Grid>
       </div>
     </div>
   );

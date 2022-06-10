@@ -7,6 +7,10 @@ export const useStyles = makeStyles((theme: any) => ({
     alignItems: `center`,
     justifyContent: `center`,
     margin: `4rem 0`,
+    '@media(max-width:550px)': {
+      margin: `1.5rem 0`,
+
+    },
   },
   main: {
     display: `flex`,
@@ -14,6 +18,9 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `center`,
     width: `75%`,
     gap: `2rem`,
+    '@media(max-width:1030px)': {
+      width: '95%',
+    },
   },
   imageDiv: {
     display: `flex`,
