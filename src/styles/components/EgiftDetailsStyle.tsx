@@ -61,10 +61,12 @@ export const useStyles = makeStyles((theme: any) => ({
         width: '45%',
         border: '1px solid #efefef',
         padding: "6px",
-        borderRadius: "12px"
+        borderRadius: "12px",
+        height : "55px"
     },
     buttonContained: {
         width: '45%',
+        height : "55px",
         background: `var(--primary)`,
         borderRadius: "12px",
         '&:hover': {
