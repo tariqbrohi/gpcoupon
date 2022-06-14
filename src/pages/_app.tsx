@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { theme } from '../theme';
 import '../styles/global.css';
 import 'react-multi-carousel/lib/styles.css';
+import { UserProvider } from '@auth0/nextjs-auth0';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -15,9 +16,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
+    <UserProvider>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Component {...pageProps} />
     </ThemeProvider>
+    </UserProvider>
   );
 }

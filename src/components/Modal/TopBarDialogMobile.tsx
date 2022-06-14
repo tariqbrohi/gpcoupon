@@ -1,9 +1,7 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 
 import Image from 'next/image';
-import Logo from '@/asset/korea.png';
+import setLanguage from 'next-translate/setLanguage';
 import giftBox from '@/asset/giftBox.png';
 import { useStyles } from '../../styles/components/navbarStyles';
 
@@ -13,27 +11,17 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Drawer from '@mui/material/Drawer';
-import PersonIcon from '@mui/icons-material/Person';
+import useTranslation from 'next-translate/useTranslation';
 import ArrowDownwardOutlined from '@mui/icons-material/KeyboardArrowDown';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 
-const emails = [
-  {
-    title: 'South Korea',
-    Logo: Logo,
-  },
-  {
-    title: 'United States',
-    Logo: Logo,
-  },
-  {
-    title: 'Canada',
-    Logo: Logo,
-  },
-];
+const mapLocaleToCountry: Record<string, any> = {
+  en: 'United States 🇺🇸 ',
+  ko: 'South Korea 🇰🇷',
+};
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -41,12 +29,23 @@ export interface SimpleDialogProps {
 }
 
 export default function SimpleDialogDemo() {
+  const { lang } = useTranslation();
+
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleChange = (lang: string) => () => {
+    if (lang !== 'us') {
+      setLanguage(lang);
+      localStorage.setItem('gp_lang', lang);
+    }
+
+    setOpen(false);
   };
 
   const handleClose = (value: string) => {
@@ -67,18 +66,12 @@ export default function SimpleDialogDemo() {
         </div> */}
         <DialogTitle>Where do you want to send your gift to?</DialogTitle>
         <List sx={{ pt: 0 }}>
-          {emails.map((email) => (
-            <ListItem
-              button
-              // onClick={() => handleListItemClick(email)}
-              key={email.title}
-            >
-              <div style={{ marginRight: '10px' }}>
-                <Image src={email.Logo} width="20px" height={`20px`} />
-              </div>
-              <ListItemText primary={email.title} />
-            </ListItem>
-          ))}
+          <ListItem button onClick={handleChange('en')}>
+            <ListItemText primary="United States 🇺🇸" />
+          </ListItem>
+          <ListItem button onClick={handleChange('ko')}>
+            <ListItemText primary="South Korea 🇰🇷" />
+          </ListItem>
         </List>
       </>
     );
@@ -91,13 +84,11 @@ export default function SimpleDialogDemo() {
         variant="caption"
         onClick={handleClickOpen}
       >
-        To : South Korea
-        <Image src={Logo} width="17px" height={`17px`} />
-        <ArrowDownwardOutlined />
+        To: {mapLocaleToCountry[lang]}
       </Typography>
       <div className={classes.mobileBottom}>
         <h2>
-          Find the perfect gift <br /> to South Korea
+          Find the perfect gift <br /> to {mapLocaleToCountry[lang]}
         </h2>
         <Image src={giftBox} width="166px" height="120px" />
       </div>

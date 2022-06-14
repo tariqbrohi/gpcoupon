@@ -1,0 +1,36 @@
+{
+  "login": "Login",
+  "signup": "Signup",
+  "buyGiftCoupon": "Buy Gift Coupon",
+  "pleaseLogin": "Please login with us to purchase the gift.",
+  "purchase": "Purchase",
+  "continue": "Continue",
+  "invalidEmail": "Invalid email",
+  "fillRecipientInfo": "Please fill in the recipient information",
+  "name": "Name",
+  "email": "Email",
+  "save": "Save",
+  "howToUse": "How to use",
+  "username": "Username",
+  "password": "Password",
+  "loginWithGpointDetail": "Login with GPoint Wallet",
+  "dontHaveAccount": "You don't have GPoint Wallet account yet?",
+  "price": "Price",
+  "quantity": "Quantity",
+  "total": "Total",
+  "totalPrice": "Total",
+  "orderSuccess": "Order has been placed successfully!",
+  "allowMoment": "Please allow us a day to process your order.",
+  "gift_on_the_go": {
+    "title": "Gift on-the-go",
+    "description": "ㅇㅁㄴㅇㅁㅇㅁㄴㅇㅁㄴㅇ"
+  },
+  "global_pay": {
+    "title": "Global pay",
+    "description": "Pay with GPoint"
+  },
+  "timing": {
+    "title": "Gift on time",
+    "description": "Real time mobile delivery, 365 days, 24 hours"
+  }
+}
