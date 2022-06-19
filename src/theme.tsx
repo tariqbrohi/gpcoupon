@@ -3,12 +3,12 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#ff3c78',
+      main: `#ff3c78`,
       // main: '#65C988',
       // main: 'linear-gradient(269.27deg, #2F8AF5 .52%, #0361CE 48.96%, #0FBEE4 100%)',
     },
     error: {
-      main: '#c66065',
+      main: `#c66065`,
     },
     //   background: {
     //     main: '#F5F5F5',
@@ -33,7 +33,7 @@ export const theme = createTheme({
     //   },
   },
   typography: {
-    fontFamily: 'Montserrat',
+    fontFamily: `Montserrat`,
   },
 });
 
@@ -42,6 +42,6 @@ export const lightTheme: any = {
   primaryHover: `rgba(255,60,120,.7)`,
   secondary: `#ff3c78`,
   secondaryHover: `rgba(255,60,120,.7)`,
-  black: 'black',
+  black: `black`,
   white: `#fff`,
 };

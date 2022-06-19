@@ -41,10 +41,10 @@ export default function Home() {
     <Layout>
       <div className={classes.mainConfirmation}>
         <Typography variant="h5">Confirmation</Typography>
-        <Grid container alignItems={'center'} columns={12} className={''}>
+        <Grid container alignItems={`center`} columns={12} className={``}>
           <Grid item xs={12} className={classes.productContainer}>
             <div className={classes.image}>
-              <Image src={Logo} />
+              <Image alt={`image`} src={Logo} />
             </div>
             <div>
               <Typography variant="caption" display="block" gutterBottom>
@@ -67,12 +67,12 @@ export default function Home() {
                 }}
                 variant="h6"
               >
-                0 Coupons {'>'}
+                0 Coupons {`>`}
               </Typography>
               <Dialog
                 className={classes.modalBody}
                 onClose={handleClose}
-                maxWidth={'xs'}
+                maxWidth={`xs`}
                 open={allCoupon}
               >
                 <IconButton
@@ -110,7 +110,7 @@ export default function Home() {
               <Dialog
                 className={`${classes.modalBody} ${classes.modalSecondBody}`}
                 onClose={handleClose}
-                maxWidth={'xs'}
+                maxWidth={`xs`}
                 open={newCoupon}
               >
                 <IconButton
@@ -179,7 +179,7 @@ export default function Home() {
             <Dialog
               className={`${classes.modalBody} ${classes.modalSecondBody}`}
               onClose={handleClose}
-              maxWidth={'xs'}
+              maxWidth={`xs`}
               open={showConfirm}
             >
               <IconButton
@@ -213,7 +213,7 @@ export default function Home() {
               </div>
               <Button
                 className={classes.buttonContained}
-                onClick={() => router.push('/payment/recipient_info')}
+                onClick={() => router.push(`/payment/recipient_info`)}
                 variant="contained"
               >
                 Next

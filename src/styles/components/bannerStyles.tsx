@@ -9,8 +9,8 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `space-evenly`,
     marginTop: `1rem`,
     '@media(max-width:770px)': {
-      padding: '0 20px',
-      display: 'none',
+      padding: `0 20px`,
+      display: `none`,
     },
   },
   image: {},

@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
-
-
-
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
 import { useStyles } from '../../styles/components/TopBrandStyle';
 
 import categ1 from '../../asset/categ1.jpg';
@@ -26,13 +20,10 @@ import categ14 from '../../asset/categ14.jpg';
 import categ15 from '../../asset/categ15.jpg';
 import categ16 from '../../asset/categ16.jpg';
 
-
-
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import DoneIcon from '@mui/icons-material/Done';
-const BasicChips = () => {
 
+const BasicChips = () => {
   const classes = useStyles();
 
   return (
@@ -68,10 +59,9 @@ const BasicChips = () => {
         Delivery 📦
       "
       />
-
     </Stack>
   );
-}
+};
 
 const Data = [
   {
@@ -154,28 +144,33 @@ const TopBrand = () => {
 
   return (
     <div className={classes.container}>
-
       <div className={classes.header}>
         <h2 className={classes.heading}>Top Brands</h2>
       </div>
 
-
       <div className={classes.header}>
-
         <BasicChips />
       </div>
 
       <div className={classes.main}>
         {DataArray?.map((data: any, index: number) => (
-          <div className={classes.itemContainer} >
+          <div key={index} className={classes.itemContainer}>
             <div className={classes.itemHeader}>
-              <div className={classes.avatarDiv} >
-                <Image src={data?.image} className={classes.avatar} />
+              <div className={classes.avatarDiv}>
+                <Image
+                  alt={`image`}
+                  src={data?.image}
+                  className={classes.avatar}
+                />
               </div>
               Startbucks
             </div>
             <div key={index} className={classes.imageDiv}>
-              <Image src={data?.image} className={classes.image} />
+              <Image
+                alt={`image`}
+                src={data?.image}
+                className={classes.image}
+              />
             </div>
           </div>
         ))}

@@ -52,9 +52,13 @@ const GiftSection = () => {
       <div className={classes.main}>
         <Grid container spacing={3}>
           {Data?.map((data: any, index: number) => (
-            <Grid item xs={4} md={2}>
+            <Grid key={index} item xs={4} md={2}>
               <div key={index} className={classes.imageDiv}>
-                <Image src={data?.image} className={classes.image} />
+                <Image
+                  alt={`image`}
+                  src={data?.image}
+                  className={classes.image}
+                />
                 <h3 className={classes.title}>{data?.title}</h3>
               </div>
             </Grid>

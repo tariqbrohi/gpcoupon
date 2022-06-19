@@ -3,9 +3,9 @@ import { display } from '@mui/system';
 
 export const useStyles = makeStyles((theme: any) => ({
   card: {
-    display: 'block',
-    maxWidth: '260px',
-    margin: '0 auto 32px',
+    display: `block`,
+    maxWidth: `260px`,
+    margin: `0 auto 32px`,
   },
   image: {
     // minHeight: `200px !important`,
@@ -16,10 +16,10 @@ export const useStyles = makeStyles((theme: any) => ({
     // borderRadius: `8px`,
     // width: `210px !important`,
     boxShadow: `0 0 12px 0 rgb(89 102 109 / 15%)`,
-    borderRadius: '1.6rem',
+    borderRadius: `1.6rem`,
     cursor: `pointer`,
     '& img': {
-      with: '100%',
+      with: `100%`,
     },
   },
   company: {
@@ -30,6 +30,7 @@ export const useStyles = makeStyles((theme: any) => ({
   title: {
     fontSize: `14px`,
     paddingLeft: `12px`,
+    width: `170px`,
   },
   price: {
     fontSize: `14px`,

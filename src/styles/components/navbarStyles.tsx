@@ -3,15 +3,15 @@ import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles((theme: any) => ({
   menubar: {
     '& .MuiPaper-root': {
-      borderRadius: '20px',
+      borderRadius: `20px`,
     },
     '& ul': {
-      padding: '10px 4px',
-      minWidth: '200px',
+      padding: `10px 4px`,
+      minWidth: `200px`,
     },
 
     '& li': {
-      fontSize: '12px',
+      fontSize: `12px`,
     },
   },
   topBar: {
@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme: any) => ({
     width: `100%`,
     backgroundColor: `#ffebf1`,
     '@media(max-width:770px)': {
-      display: 'none',
+      display: `none`,
     },
   },
   navMain: {
@@ -30,11 +30,11 @@ export const useStyles = makeStyles((theme: any) => ({
     justifyContent: `space-between`,
     marginTop: `1rem`,
     '@media(max-width:1030px)': {
-      width: '100%',
-      padding: '0 15px',
+      width: `100%`,
+      padding: `0 15px`,
     },
     '@media(max-width:770px)': {
-      display: 'none',
+      display: `none`,
     },
   },
   buttonContained: {
@@ -62,74 +62,74 @@ export const useStyles = makeStyles((theme: any) => ({
       cursor: `pointer`,
     },
     '@media(max-width:1030px)': {
-      width: '250px',
-      height: '50px',
+      width: `250px`,
+      height: `50px`,
     },
   },
   modalHead: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    fontWeight: 'bold',
+    display: `flex`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    cursor: `pointer`,
+    fontWeight: `bold`,
     '& img': {
-      marginLeft: '10px',
+      marginLeft: `10px`,
     },
   },
   modalHeadMobile: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    background: 'white',
-    width: 'max-content',
-    margin: '0 auto',
-    borderRadius: '20px',
-    padding: '5px 10px',
+    display: `flex`,
+    justifyContent: `center`,
+    alignItems: `center`,
+    cursor: `pointer`,
+    fontWeight: `bold`,
+    background: `white`,
+    width: `max-content`,
+    margin: `0 auto`,
+    borderRadius: `20px`,
+    padding: `5px 10px`,
     '& img': {
-      marginLeft: '10px',
+      marginLeft: `10px`,
     },
   },
   mobileBottom: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft : "10px"
+    display: `flex`,
+    justifyContent: `space-between`,
+    alignItems: `center`,
+    paddingLeft: `10px`,
   },
   modalClose: {
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: `flex`,
+    justifyContent: `flex-end`,
   },
   modalBody: {
     '& .MuiPaper-root': {
-      borderRadius: '20px !important',
-      padding: '10px 20px',
+      borderRadius: `20px !important`,
+      padding: `10px 20px`,
     },
     '& .MuiListItem-root': {
-      display: 'flex',
-      alignItems: 'center',
+      display: `flex`,
+      alignItems: `center`,
     },
 
     '& .MuiListItem-root div': {
-      display: 'flex',
-      alignItems: 'center',
+      display: `flex`,
+      alignItems: `center`,
     },
     '& .MuiList-root span': {
-      fontSize: '12px',
+      fontSize: `12px`,
     },
     '& .MuiDialogTitle-root': {
-      fontWeight: 'bold',
-      color: 'black',
-      paddingTop: '0',
+      fontWeight: `bold`,
+      color: `black`,
+      paddingTop: `0`,
     },
   },
 
   topBarDrawer: {
     '& .MuiPaper-elevation': {
-      borderRadius: '20px 20px 0 0',
-      paddingBottom: '60px',
-      paddingTop: '20px',
+      borderRadius: `20px 20px 0 0`,
+      paddingBottom: `60px`,
+      paddingTop: `20px`,
     },
   },
 }));

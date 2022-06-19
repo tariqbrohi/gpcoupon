@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme: any) => ({
     backgroundColor: `#ffedf2`,
     padding: `2rem 0`,
     '@media(max-width:770px)': {
-      flexDirection: 'column',
+      flexDirection: `column`,
     },
   },
   para: {
@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: any) => ({
     fontWeight: `600`,
     marginLeft: `1rem`,
     '@media(max-width:770px)': {
-      marginTop: '20px',
+      marginTop: `20px`,
     },
   },
   image: {},
@@ -26,14 +26,14 @@ export const useStyles = makeStyles((theme: any) => ({
     alignItems: `center`,
     justifyContent: `center`,
     '@media(max-width:770px)': {
-      flexDirection: 'column',
-      marginBottom: '20px',
+      flexDirection: `column`,
+      marginBottom: `20px`,
     },
   },
   buttonContained: {
     background: `var(--primary)`,
-    borderRadius: '15px',
-    height: '48px',
+    borderRadius: `15px`,
+    height: `48px`,
     '&:hover': {
       background: `var(--primaryHover)`,
     },

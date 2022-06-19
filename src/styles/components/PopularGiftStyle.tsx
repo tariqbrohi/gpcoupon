@@ -17,10 +17,10 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   carousal: {
     width: `82%`,
-    margin: '50px 0',
+    margin: `50px 0`,
     '@media(max-width:1030px)': {
-      width: '95%',
-      padding: '0 20px',
+      width: `95%`,
+      padding: `0 20px`,
     },
   },
   imageDiv: {
@@ -40,8 +40,14 @@ export const useStyles = makeStyles((theme: any) => ({
     // maxWidth: `210px !important`,
     borderRadius: `8px`,
     width: `100% !important`,
-    boxShadow: `0 0 12px 0 rgb(89 102 109 / 15%)`,
+    // boxShadow: `0 0 12px 0 rgb(89 102 109 / 15%)`,
     cursor: `pointer`,
+    '& span': {
+      width: `210px !important`,
+      height: `193px !important`,
+      borderRadius: `8px`,
+      boxShadow: `0 0 12px 0 rgb(89 102 109 / 15%)`,
+    },
   },
   company: {
     color: `#7b7b7b`,

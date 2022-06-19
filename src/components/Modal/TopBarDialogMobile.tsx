@@ -22,15 +22,15 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const emails = [
   {
-    title: 'South Korea',
+    title: `South Korea`,
     Logo: Logo,
   },
   {
-    title: 'United States',
+    title: `United States`,
     Logo: Logo,
   },
   {
-    title: 'Canada',
+    title: `Canada`,
     Logo: Logo,
   },
 ];
@@ -67,14 +67,19 @@ export default function SimpleDialogDemo() {
         </div> */}
         <DialogTitle>Where do you want to send your gift to?</DialogTitle>
         <List sx={{ pt: 0 }}>
-          {emails.map((email) => (
+          {emails.map((email: any, index: number) => (
             <ListItem
               button
               // onClick={() => handleListItemClick(email)}
               key={email.title}
             >
-              <div style={{ marginRight: '10px' }}>
-                <Image src={email.Logo} width="20px" height={`20px`} />
+              <div style={{ marginRight: `10px` }}>
+                <Image
+                  alt={`image`}
+                  src={email.Logo}
+                  width="20px"
+                  height={`20px`}
+                />
               </div>
               <ListItemText primary={email.title} />
             </ListItem>
@@ -92,18 +97,27 @@ export default function SimpleDialogDemo() {
         onClick={handleClickOpen}
       >
         To : South Korea
-        <Image src={Logo} width="17px" height={`17px`} />
+        <Image alt={`image`} src={Logo} width="17px" height={`17px`} />
         <ArrowDownwardOutlined />
       </Typography>
+      {/* <p
+        className={classes.modalHeadMobile}
+        variant="caption"
+        onClick={handleClickOpen}
+      >
+        To : South Korea
+        <Image alt={`image`} src={Logo} width="17px" height={`17px`} />
+        <ArrowDownwardOutlined />
+      </p> */}
       <div className={classes.mobileBottom}>
         <h2>
           Find the perfect gift <br /> to South Korea
         </h2>
-        <Image src={giftBox} width="166px" height="120px" />
+        <Image alt={`image`} src={giftBox} width="166px" height="120px" />
       </div>
       <Drawer
         className={classes.topBarDrawer}
-        anchor={'bottom'}
+        anchor={`bottom`}
         open={open}
         onClose={handleClose}
       >

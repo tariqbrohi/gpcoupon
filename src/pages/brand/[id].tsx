@@ -84,10 +84,10 @@ export default function Home() {
         <div className={classes.singleBrandsContainer}>
           <div className={classes.singleBrandsContainerHeader}>
             <div className={classes.singleBrandsContainerHeaderImage1}>
-              <Image src={shinshage}></Image>
+              <Image alt={`image`} src={shinshage}></Image>
             </div>
             <div className={classes.singleBrandsContainerHeaderImage2}>
-              <Image src={Pursegirl}></Image>
+              <Image alt={`image`} src={Pursegirl}></Image>
             </div>
             <div className={classes.singleBrandsContainerHeaderDetails}>
               <Typography variant="h4">Shinsegae</Typography>
@@ -103,13 +103,13 @@ export default function Home() {
               <Typography variant="h6">Result 10</Typography>
               <Button
                 id="basic-button"
-                aria-controls={open ? 'basic-menu' : undefined}
+                aria-controls={open ? `basic-menu` : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
+                aria-expanded={open ? `true` : undefined}
                 onClick={handleClick}
-                style={{ color: 'black' }}
+                style={{ color: `black` }}
                 disableRipple
-                endIcon={<KeyboardArrowDown style={{ color: 'black' }} />}
+                endIcon={<KeyboardArrowDown style={{ color: `black` }} />}
               >
                 Most Popular
               </Button>
@@ -119,7 +119,7 @@ export default function Home() {
                 open={open}
                 onClose={handleClose}
                 MenuListProps={{
-                  'aria-labelledby': 'basic-button',
+                  'aria-labelledby': `basic-button`,
                 }}
               >
                 <MenuItem onClick={handleClose}>Most Popular</MenuItem>
@@ -129,8 +129,8 @@ export default function Home() {
             </div>
             <div className={classes.root}>
               <div className={classes.productsContainer}>
-                {Data.map((item) => (
-                  <div>
+                {Data.map((item: any, index: number) => (
+                  <div key={index}>
                     <BrandCard data={item} />
                   </div>
                 ))}

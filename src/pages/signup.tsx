@@ -31,23 +31,24 @@ export default function Home() {
     <section className={classes.signUpContainer}>
       <div className={classes.leftWrapper}>
         <div className={classes.imageWrapper}>
-          <Image src={man}></Image>
-          <Image src={boy}></Image>
-          <Image src={girl}></Image>
+          <Image alt={`image`} src={man}></Image>
+          <Image alt={`image`} src={boy}></Image>
+          <Image alt={`image`} src={girl}></Image>
         </div>
       </div>
       <div className={classes.rightWrapper}>
         <div className={classes.rightHeader}>
           <div className={classes.headerLogo}>
             <Image
-              onClick={() => router.push('/')}
-              style={{ cursor: 'pointer' }}
+              alt={`image`}
+              onClick={() => router.push(`/`)}
+              style={{ cursor: `pointer` }}
               src={logo}
             ></Image>
           </div>
           <div className={classes.headerInnerRight}>
             <Typography variant="h6" component="span">
-              Already Registered?{' '}
+              Already Registered?{` `}
             </Typography>
             <NextLink href="/login">
               <button className={classes.loginButton}>Login</button>
@@ -57,24 +58,25 @@ export default function Home() {
         <div className={classes.rightMain}>
           <Typography
             variant="h4"
-            style={{ width: 'fit-content', fontWeight: 'bold' }}
+            style={{ width: `fit-content`, fontWeight: `bold` }}
           >
             Sign up
           </Typography>
-          <Typography variant="h6" style={{ width: 'fit-content' }}>
+          <Typography variant="h6" style={{ width: `fit-content` }}>
             Welcome to SodaGift
           </Typography>
           <button className={classes.rightMainLoginEmailButton}>
             Sign up with E-mail
           </button>
-          <Divider style={{ width: '100%' }}>OR</Divider>
+          <Divider style={{ width: `100%` }}>OR</Divider>
           <button className={classes.rightMainLoginGoogleButton}>
-            <Image src={google}></Image>
+            <Image alt={`image`} src={google}></Image>
             <span>Continue With Google</span>
           </button>
           <button className={classes.rightMainLoginFacebookButton}>
-            <Image src={facebook}></Image>
-            <span>Continue With Facebook</span>{' '}
+            <Image alt={`image`} src={facebook}></Image>
+            <span>Continue With Facebook</span>
+            {` `}
           </button>
         </div>
       </div>

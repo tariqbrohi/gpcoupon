@@ -31,17 +31,18 @@ export default function SignupCompleted() {
     <section className={classes.signUpContainer}>
       <div className={classes.leftWrapper}>
         <div className={classes.imageWrapper}>
-          <Image src={man}></Image>
-          <Image src={boy}></Image>
-          <Image src={girl}></Image>
+          <Image alt={`image`} src={man}></Image>
+          <Image alt={`image`} src={boy}></Image>
+          <Image alt={`image`} src={girl}></Image>
         </div>
       </div>
       <div className={classes.rightWrapper}>
         <div className={classes.rightHeader}>
           <div className={classes.headerLogo}>
             <Image
-              onClick={() => router.push('/')}
-              style={{ cursor: 'pointer' }}
+              alt={`image`}
+              onClick={() => router.push(`/`)}
+              style={{ cursor: `pointer` }}
               src={logo}
             ></Image>
           </div>
@@ -54,22 +55,22 @@ export default function SignupCompleted() {
         <div className={classes.rightMain}>
           <div
             className={classes.emailVerifiedImage}
-            style={{ display: 'flex', justifyContent: 'center' }}
+            style={{ display: `flex`, justifyContent: `center` }}
           >
-            <Image src={verified_email} />
+            <Image alt={`image`} src={verified_email} />
           </div>
           <Typography
             variant="h4"
-            style={{ width: 'fit-content', fontWeight: 'bold' }}
+            style={{ width: `fit-content`, fontWeight: `bold` }}
           >
             Thank you!
           </Typography>
           <Typography
             variant="h6"
             style={{
-              width: 'fit-content',
-              fontWeight: 'bold',
-              textAlign: 'center',
+              width: `fit-content`,
+              fontWeight: `bold`,
+              textAlign: `center`,
             }}
           >
             Your email address has been successfully verified

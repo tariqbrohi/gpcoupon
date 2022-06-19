@@ -1,8 +1,4 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import React, { useEffect, useState } from 'react';
 
 import { useStyles } from '../../styles/components/CategoriesStyle';
 
@@ -23,6 +19,7 @@ import categ14 from '../../asset/categ14.jpg';
 import categ15 from '../../asset/categ15.jpg';
 import categ16 from '../../asset/categ16.jpg';
 import SimpleCategoryCard from './SimpleCategoryCard';
+import { getCategories } from '@/redux/actions/authActions';
 
 const Data = [
   {
@@ -92,33 +89,24 @@ const Data = [
 ];
 
 const Categories = () => {
-  const [DataArray, setDataArray] = useState(Data.slice(0, 6));
+  const [Categorydata, setData] = useState([]);
   const classes = useStyles();
 
-  const onArrowCLick = (arrow: string) => {
-    // if(arrow === 'next'){
-    //   Data.slice()
-    // }
-  };
+  useEffect(() => {
+    (async () => {
+      const resp = await getCategories(`voucher_category`);
+      setData(resp);
+    })();
+  }, []);
 
   return (
     <div className={classes.container}>
       <div className={classes.header}>
         <h2 className={classes.heading}>Categories</h2>
-        {/* <div className={classes.arrowDiv}>
-          <ArrowBackIosNewIcon
-            className={classes.icon}
-            onClick={() => onArrowCLick(`previous`)}
-          />
-          <ArrowForwardIosIcon
-            className={classes.icon}
-            onClick={() => onArrowCLick(`next`)}
-          />
-        </div> */}
       </div>
       <div className={classes.main}>
-        {DataArray?.map((data: any, index: number) => (
-          <SimpleCategoryCard data={data} />
+        {Categorydata?.slice(0, 6)?.map((data: any, index: number) => (
+          <SimpleCategoryCard key={index} data={data} />
         ))}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Logo from '@/asset/logo.png';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStyles } from '../../styles/components/navbarStyles';
 import TopBarDialog from '../../components/Modal/TopBarDialog';
 import {
@@ -28,6 +28,25 @@ const Desktop = () => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const [isUser, setisUser] = useState(false);
+  const [userName, setUserName] = useState(``);
+
+  useEffect(() => {
+    if (typeof window === `object`) {
+      const userId: any = localStorage.getItem(`userId`);
+      console.log(`userId`, userId);
+      if (userId.length !== 2) {
+        setisUser(true);
+      }
+      const username: any = localStorage.getItem(`userName`);
+      if (username !== ``) {
+        setUserName(username);
+      }
+    }
+  }, []);
+
+  // console.log('isUser', isUser)
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -41,18 +60,19 @@ const Desktop = () => {
       </div>
       <div className={classes.navMain}>
         <Image
+          alt={`image`}
           src={Logo}
           width="155px"
           height={`35px`}
-          onClick={() => router.push('/')}
-          style={{ cursor: 'pointer' }}
+          onClick={() => router.push(`/`)}
+          style={{ cursor: `pointer` }}
         />
 
         <Typography
           className={classes.headText}
           variant="subtitle2"
           component="div"
-          onClick={() => router.push('/brands')}
+          onClick={() => router.push(`/brands`)}
         >
           Brands
         </Typography>
@@ -60,7 +80,7 @@ const Desktop = () => {
           className={classes.headText}
           variant="subtitle2"
           component="div"
-          onClick={() => router.push('/categories')}
+          onClick={() => router.push(`/categories`)}
         >
           Categories
         </Typography>
@@ -69,6 +89,7 @@ const Desktop = () => {
           disabled
           onClick={() => {
             console.log(`hello`);
+            router.push(`/searching`);
           }}
           placeholder="Search gifts or brands"
           startAdornment={
@@ -81,6 +102,7 @@ const Desktop = () => {
           className={classes.headText}
           variant="subtitle2"
           component="div"
+          onClick={() => router.push(`/help`)}
         >
           Help
         </Typography>
@@ -88,73 +110,90 @@ const Desktop = () => {
           className={classes.headText}
           variant="subtitle2"
           component="div"
+          onClick={() => router.push(`/howtouse`)}
         >
           How to Use
         </Typography>
-        <Typography
-          className={classes.headText}
-          variant="subtitle2"
-          component="div"
-        >
-          Login
-        </Typography>
 
-        <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-          <Avatar sx={{ width: 32, height: 32 }}>
-            <FaUserCircle />
-          </Avatar>
-        </IconButton>
+        {isUser ? (
+          <>
+            <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+              <Avatar sx={{ width: 32, height: 32 }}>
+                <FaUserCircle />
+              </Avatar>
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              className={classes.menubar}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: `visible`,
+                  filter: `drop-shadow(0px 2px 8px rgba(0,0,0,0.32))`,
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&:before': {
+                    content: `""`,
+                    display: `block`,
+                    position: `absolute`,
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: `background.paper`,
+                    transform: `translateY(-50%) rotate(45deg)`,
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: `right`, vertical: `top` }}
+              anchorOrigin={{ horizontal: `right`, vertical: `bottom` }}
+            >
+              <MenuItem>
+                <Avatar sx={{ width: 28, height: 28 }} /> {userName}
+              </MenuItem>
+              <MenuItem onClick={() => router.push(`/my-gift`)}>
+                My gifts
+              </MenuItem>
+              <MenuItem>Coupons</MenuItem>
 
-        <Menu
-          anchorEl={anchorEl}
-          id="account-menu"
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          className={classes.menubar}
-          PaperProps={{
-            elevation: 0,
-            sx: {
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              mt: 1.5,
-              '& .MuiAvatar-root': {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-              },
-              '&:before': {
-                content: '""',
-                display: 'block',
-                position: 'absolute',
-                top: 0,
-                right: 14,
-                width: 10,
-                height: 10,
-                bgcolor: 'background.paper',
-                transform: 'translateY(-50%) rotate(45deg)',
-                zIndex: 0,
-              },
-            },
-          }}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        >
-          <MenuItem>
-            <Avatar sx={{ width: 28, height: 28 }} /> John Doe
-          </MenuItem>
-          <MenuItem>My gifts</MenuItem>
-          <MenuItem>Coupons</MenuItem>
+              <MenuItem>Invite Friends</MenuItem>
+              <Divider />
 
-          <MenuItem>Invite Friends</MenuItem>
-          <Divider />
-
-          <MenuItem>Logout</MenuItem>
-        </Menu>
-        {/* <Button className={classes.buttonContained} variant="contained">
-          Sign up
-        </Button> */}
+              <MenuItem
+                onClick={() => {
+                  typeof window === `object` && localStorage.clear();
+                  router.push(`/login`);
+                }}
+              >
+                Logout
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <>
+            <Typography
+              className={classes.headText}
+              variant="subtitle2"
+              onClick={() => router.push(`/login`)}
+              component="div"
+            >
+              Login
+            </Typography>
+            <Button className={classes.buttonContained} variant="contained">
+              Sign up
+            </Button>
+          </>
+        )}
       </div>
     </>
   );

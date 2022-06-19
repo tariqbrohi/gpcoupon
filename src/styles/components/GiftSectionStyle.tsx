@@ -9,7 +9,6 @@ export const useStyles = makeStyles((theme: any) => ({
     margin: `4rem 0`,
     '@media(max-width:550px)': {
       margin: `1.5rem 0`,
-
     },
   },
   main: {
@@ -19,7 +18,7 @@ export const useStyles = makeStyles((theme: any) => ({
     width: `75%`,
     gap: `2rem`,
     '@media(max-width:1030px)': {
-      width: '95%',
+      width: `95%`,
     },
   },
   imageDiv: {

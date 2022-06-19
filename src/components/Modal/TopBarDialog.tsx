@@ -1,9 +1,10 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
+import React, { useContext, useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 
 import Image from 'next/image';
-import Logo from '@/asset/korea.png';
+import KoreaLogo from '@/asset/korea.png';
+import CaLogo from '@/asset/ca.png';
+import UsaLogo from '@/asset/us.png';
 import { useStyles } from '../../styles/components/navbarStyles';
 
 import List from '@mui/material/List';
@@ -19,20 +20,44 @@ import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 
+import AppContext from '@/providers/app-context';
+import { AppContextInterface } from '@/annotations/types';
+
 const emails = [
   {
-    title: 'South Korea',
-    Logo: Logo,
+    filterValue: `South Korea`,
+    isoCode: `KR`,
+    filterValueCode: `south_korea`,
+    Logo: KoreaLogo,
   },
   {
-    title: 'United States',
-    Logo: Logo,
+    filterValue: `USA`,
+    isoCode: `US`,
+    filterValueCode: `usa`,
+    Logo: UsaLogo,
   },
   {
-    title: 'Canada',
-    Logo: Logo,
+    filterValue: `Canada`,
+    isoCode: `CA`,
+    filterValueCode: `canada`,
+    Logo: CaLogo,
   },
 ];
+
+// const emails = [
+//   {
+//     title: `South Korea`,
+//     Logo: Logo,
+//   },
+//   {
+//     title: `United States`,
+//     Logo: Logo,
+//   },
+//   {
+//     title: `Canada`,
+//     Logo: Logo,
+//   },
+// ];
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -41,6 +66,22 @@ export interface SimpleDialogProps {
 
 export default function SimpleDialogDemo() {
   const classes = useStyles();
+  const { setCountry, country } = useContext(AppContext) as AppContextInterface;
+
+  const [localCountry, setLocalCountry] = useState(``);
+
+  const SetCountryOnUseEffect = () => {
+    const localCheck: any =
+      typeof window === `object` && localStorage.getItem(`country`);
+    if (localCheck?.length === 2) {
+      setCountry(`south_korea`);
+    }
+  };
+
+  useEffect(() => {
+    setLocalCountry(country);
+    SetCountryOnUseEffect();
+  }, [country]);
 
   const [open, setOpen] = React.useState(false);
 
@@ -48,26 +89,43 @@ export default function SimpleDialogDemo() {
     setOpen(true);
   };
 
-  const handleClose = (value: string) => {
-    setOpen(false);
-  };
+  return (
+    <div>
+      <Typography
+        className={classes.modalHead}
+        variant={`caption`}
+        onClick={handleClickOpen}
+      >
+        {localCountry === `south_korea`
+          ? `South Korea`
+          : localCountry === `usa`
+          ? `USA`
+          : `Canada`}
+        <Image
+          alt={`image`}
+          src={
+            localCountry === `south_korea`
+              ? KoreaLogo
+              : localCountry === `usa`
+              ? UsaLogo
+              : CaLogo
+          }
+          width="17px"
+          height={`17px`}
+          style={{ marginLeft: `3px` }}
+        />
+        <ArrowDownwardOutlined />
+      </Typography>
 
-  function SimpleDialog(props: SimpleDialogProps) {
-    const { onClose, open } = props;
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-
-    return (
+      {/* Country Select Dialog */}
       <Dialog
-        onClose={handleClose}
-        maxWidth={'xs'}
+        onClick={() => setOpen(false)}
+        maxWidth={`xs`}
         open={open}
         className={classes.modalBody}
       >
         <div className={classes.modalClose}>
-          <IconButton onClick={handleClose}>
+          <IconButton onClick={() => setOpen(false)}>
             <CloseIcon />
           </IconButton>
         </div>
@@ -75,33 +133,27 @@ export default function SimpleDialogDemo() {
         <List sx={{ pt: 0 }}>
           {emails.map((email) => (
             <ListItem
-              button
+              button={true}
               // onClick={() => handleListItemClick(email)}
-              key={email.title}
+              key={email.filterValue}
+              onClick={() => {
+                setCountry(email.filterValueCode);
+                setOpen(false);
+              }}
             >
-              <div style={{ marginRight: '10px' }}>
-                <Image src={email.Logo} width="20px" height={`20px`} />
+              <div style={{ marginRight: `10px` }}>
+                <Image
+                  alt={`image`}
+                  src={email.Logo}
+                  width="20px"
+                  height={`20px`}
+                />
               </div>
-              <ListItemText primary={email.title} />
+              <ListItemText primary={email.filterValue} />
             </ListItem>
           ))}
         </List>
       </Dialog>
-    );
-  }
-
-  return (
-    <div>
-      <Typography
-        className={classes.modalHead}
-        variant="caption"
-        onClick={handleClickOpen}
-      >
-        To : South Korea
-        <Image src={Logo} width="17px" height={`17px`} />
-        <ArrowDownwardOutlined />
-      </Typography>
-      <SimpleDialog open={open} onClose={handleClose} />
     </div>
   );
 }

@@ -10,7 +10,7 @@ const Card = (data: any) => {
   const classes = useStyles();
   return (
     <div className={classes.card}>
-      <Image src={data.image} className={classes.image} />
+      <Image alt={`image`} src={data.image} className={classes.image} />
       <div>
         <h4 className={classes.heading}>{data.heading}</h4>
         <p className={classes.para}>{data.para}</p>
@@ -25,18 +25,18 @@ const HowTo = () => {
     <div className={classes.container}>
       <div className={classes.main}>
         <Card
-          heading={'Gift on the go'}
-          para={'Shop in 3 minutes and delivered for instant use'}
+          heading={`Gift on the go`}
+          para={`Shop in 3 minutes and delivered for instant use`}
           image={gift_on_the_go}
         />
         <Card
-          heading={'Gift at ease'}
-          para={'Pay with your debit / credit card'}
+          heading={`Gift at ease`}
+          para={`Pay with your debit / credit card`}
           image={global_pay}
         />
         <Card
-          heading={'Gift on time'}
-          para={'Real time mobile delivery 365 days, 24 hours'}
+          heading={`Gift on time`}
+          para={`Real time mobile delivery 365 days, 24 hours`}
           image={timing}
         />
       </div>

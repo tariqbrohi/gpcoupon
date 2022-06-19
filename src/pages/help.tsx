@@ -12,49 +12,49 @@ export default function Home() {
   const classes = useStyles();
   const paramater = [
     {
-      title: 'SodaGift',
+      title: `SodaGift`,
       qusetions: [
-        'What is SodaGift?',
-        'How do I use SodaGift?',
-        'What is a Gift Card?',
-        'Can I make bulk orders?',
+        `What is SodaGift?`,
+        `How do I use SodaGift?`,
+        `What is a Gift Card?`,
+        `Can I make bulk orders?`,
       ],
     },
     {
-      title: 'SodaGift',
+      title: `SodaGift`,
       qusetions: [
-        'What is SodaGift?',
-        'How do I use SodaGift?',
-        'What is a Gift Card?',
-        'Can I make bulk orders?',
+        `What is SodaGift?`,
+        `How do I use SodaGift?`,
+        `What is a Gift Card?`,
+        `Can I make bulk orders?`,
       ],
     },
     {
-      title: 'SodaGift',
+      title: `SodaGift`,
       qusetions: [
-        'What is SodaGift?',
-        'How do I use SodaGift?',
-        'What is a Gift Card?',
-        'Can I make bulk orders?',
+        `What is SodaGift?`,
+        `How do I use SodaGift?`,
+        `What is a Gift Card?`,
+        `Can I make bulk orders?`,
       ],
     },
     {
-      title: 'SodaGift',
+      title: `SodaGift`,
       qusetions: [
-        'What is SodaGift?',
-        'How do I use SodaGift?',
-        'What is a Gift Card?',
-        'Can I make bulk orders?',
+        `What is SodaGift?`,
+        `How do I use SodaGift?`,
+        `What is a Gift Card?`,
+        `Can I make bulk orders?`,
       ],
     },
 
     {
-      title: 'SodaGift',
+      title: `SodaGift`,
       qusetions: [
-        'What is SodaGift?',
-        'How do I use SodaGift?',
-        'What is a Gift Card?',
-        'Can I make bulk orders?',
+        `What is SodaGift?`,
+        `How do I use SodaGift?`,
+        `What is a Gift Card?`,
+        `Can I make bulk orders?`,
       ],
     },
   ];
@@ -64,26 +64,28 @@ export default function Home() {
         <section className={classes.helpBanner}>
           <Typography
             variant="h4"
-            style={{ fontWeight: 'bold' }}
+            style={{ fontWeight: `bold` }}
             className={classes.bannerTitle}
           >
             Help
           </Typography>
         </section>
         <section className={classes.cardContainer}>
-          {paramater?.map((el) => (
-            <DetailsCard>
+          {paramater?.map((el: any, index: number) => (
+            <DetailsCard key={index}>
               <Typography variant="h4">{el?.title}</Typography>
 
-              {el.qusetions?.map((ques) => (
-                <Typography variant="body1">{ques}</Typography>
+              {el.qusetions?.map((ques: any, index: number) => (
+                <Typography key={index} variant="body1">
+                  {ques}
+                </Typography>
               ))}
             </DetailsCard>
           ))}
         </section>
         <section className={classes.HaveAnyQuestionsContainer}>
           <div className={classes.HaveAnyQuestionsLeft}>
-            <NextImage src={CONTACT}></NextImage>
+            <NextImage alt={`image`} src={CONTACT}></NextImage>
           </div>
           <div className={classes.HaveAnyQuestionsRight}>
             <Typography variant="h5">Have any questions? Concerns?</Typography>

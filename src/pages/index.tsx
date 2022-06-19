@@ -1,4 +1,3 @@
-import styles from '@/styles/Home.module.css';
 import Layout from '@/components/layout/Layout';
 import Banner from '@/components/Views/Banner';
 import BrandCarousal from '@/components/Views/BrandCarousal';

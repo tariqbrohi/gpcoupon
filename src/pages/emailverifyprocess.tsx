@@ -15,7 +15,7 @@ export default function Home() {
     <Layout>
       <div className={classes.emailverifyprocessContainer}>
         <div className={classes.emailverifyprocessLogo}>
-          <Image src={Logo}></Image>
+          <Image alt={`image`} src={Logo}></Image>
         </div>
         <Typography variant="h4">Social login in process</Typography>
       </div>
