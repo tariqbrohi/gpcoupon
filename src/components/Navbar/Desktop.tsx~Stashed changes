@@ -12,7 +12,7 @@ const Desktop = () => {
       <div className={classes.topBar}></div>
       <div className={classes.navMain}>
         <NextLink href={"/"}>
-        <Image src={Logo} width="155px" height={`35px`} />
+        <Image alt={"image"} src={Logo} width="155px" height={`35px`} />
         </NextLink>
         <Typography
           className={classes.headText}

@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme: any) => ({
     flexDirection: `column`,
     paddingBottom: `2rem`,
     '@media(max-width:770px)': {
-      display: 'none',
+      display: `none`,
     },
   },
   linksection: {

@@ -10,7 +10,6 @@ export const useStyles = makeStyles((theme: any) => ({
     margin: `4rem 0`,
     '@media(max-width:550px)': {
       margin: `0`,
-
     },
   },
   header: {
@@ -20,15 +19,15 @@ export const useStyles = makeStyles((theme: any) => ({
     alignItems: `center`,
     justifyContent: `space-between`,
     '@media(max-width:770px)': {
-      width: '100%',
-      padding: '0 20px',
+      width: `100%`,
+      padding: `0 20px`,
     },
   },
   stack: {
     '@media(max-width:770px)': {
-      flexWrap: 'wrap',
+      flexWrap: `wrap`,
       '& div': {
-        margin: '10px 5px !important',
+        margin: `10px 5px !important`,
       },
     },
   },
@@ -48,8 +47,8 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   },
   itemHeader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: `flex`,
+    alignItems: `center`,
     fontWeight: 600,
   },
   arrowDiv: {
@@ -74,26 +73,26 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   main: {
     display: `flex`,
-    flexWrap: 'wrap',
+    flexWrap: `wrap`,
     alignItems: `baseline`,
     justifyContent: `center`,
     width: `75% !important`,
     gap: `1rem`,
     '@media(max-width:770px)': {
-      width: '100% !important',
-      padding: '0 20px',
-      gap: '0',
-      flexWrap: 'nowrap',
-      overflowX: 'auto',
-      justifyContent: 'flex-start',
+      width: `100% !important`,
+      padding: `0 20px`,
+      gap: `0`,
+      flexWrap: `nowrap`,
+      overflowX: `auto`,
+      justifyContent: `flex-start`,
     },
   },
   imageDiv: {
     display: `flex`,
     justifyContent: `center`,
     flexDirection: `column`,
-    maxHeight: '100px !important',
-    minHeight: '100px !important',
+    maxHeight: `100px !important`,
+    minHeight: `100px !important`,
     maxWidth: `200px !important`,
     minWidth: `200px !important`,
   },

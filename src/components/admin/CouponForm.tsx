@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
-import parseErrorMessage from '@/lib/parse-error-message';
-import Router from 'next/router';
-import { ROUTES } from '@/ROUTES';
 import {
   FormControl,
   InputLabel,
@@ -16,7 +13,7 @@ import { Categories, Countries } from '@/constants';
 import { LoadingButton } from '@mui/lab';
 import Spacer from '../Spacer';
 
-type State = {
+type State = Partial<{
   description: string;
   name: string;
   extendedName: string;
@@ -28,32 +25,32 @@ type State = {
   discountRate: string;
   country: string;
   imageUrl: string;
-};
+}>;
 
 type Props = {
   state: State;
   btnText: string;
-  onSubmit: any;
+  onSubmit: (state: State) => Promise<void>;
 };
 
 export default function CouponForm({
-  state: {
-    description = `1. Visit the nearest Home Depot outlet near you and inquire if they accept gift cards (vouchers) or visit the website. 
-
-2. Choose your preferred products.
-
-3. At checkout, use the Gift Card (voucher) to redeem.`,
-    ...rest
-  },
+  state: _state,
   onSubmit,
   btnText,
 }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [image, setImage] = useState<any>();
-  const [state, setState] = useState<State>({
-    description,
-    ...rest,
-  });
+  const [state, setState] = useState<State>(_state);
+  const [data, setData] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get(`/api/brands`)
+      .then(({ data }) => setData(data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleChange = (e: any) => {
     setState({
@@ -62,10 +59,45 @@ export default function CouponForm({
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     setSubmitting(true);
+
+    const data: any = {
+      ...state,
+      expiresIn: +(state.expiresIn || 0),
+    };
+
+    if (state.amount) {
+      data.amount = +state.amount;
+    }
+
+    if (state.discountRate) {
+      data.discountRate = +state.discountRate;
+    }
+
     try {
-      await onSubmit();
+      if (image) {
+        const res = await axios.get(`/api/admin/get-signed-url`);
+
+        const { signedUrl } = res.data;
+
+        const formData = new FormData();
+        formData.append('file', image);
+        formData.append('upload_preset', 'pgulp8vg');
+
+        const {
+          data: { url, secure_url },
+        } = await axios.post(signedUrl, formData, {
+          headers: {
+            'Content-Type': image.type,
+          },
+        });
+
+        data.imageUrl = url || secure_url;
+      }
+
+      await onSubmit(data);
     } catch {}
     setSubmitting(false);
   };
@@ -180,6 +212,25 @@ export default function CouponForm({
           style={{ width: 500 }}
         />
       </div>
+      {data && (
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Brand</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            name="brand"
+            value={state.brand}
+            label="Brand"
+            onChange={handleChange}
+          >
+            {data.map(({ id, name, slug }: any) => (
+              <MenuItem value={slug} key={slug}>
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
       <Spacer size={30} />
       <div>
         <label>Image</label>

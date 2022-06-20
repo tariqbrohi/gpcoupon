@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme: any) => ({
   container: {
-    display: 'none',
+    display: `none`,
     padding: `2rem 1rem 5rem 1rem`,
     '@media(max-width:770px)': {
       display: `flex`,
@@ -21,8 +21,8 @@ export const useStyles = makeStyles((theme: any) => ({
     display: `flex`,
     flexDirection: `column`,
     '& div': {
-      borderRadius: '16px',
-      padding : "6px"
+      borderRadius: `16px`,
+      padding: `6px`,
     },
   },
   secHeading: {
@@ -48,21 +48,21 @@ export const useStyles = makeStyles((theme: any) => ({
     color: `#606060`,
   },
   mainAccordion: {
-    margin: '10px 0',
+    margin: `10px 0`,
   },
   accordian: {
-    boxShadow: 'none',
-    fontSize: '14px',
+    boxShadow: `none`,
+    fontSize: `14px`,
     '& .MuiAccordionSummary-content': {
-      color: '#606060',
+      color: `#606060`,
     },
     '&:before , &:after': {
-      display: 'none',
+      display: `none`,
     },
     '& p': {
-      color: '#606060',
-      fontSize: '13px',
-      margin: '10px 0',
+      color: `#606060`,
+      fontSize: `13px`,
+      margin: `10px 0`,
     },
     // '@media(max-width:330px)': {
     //   '& .MuiAccordionDetails-root': {

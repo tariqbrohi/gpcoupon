@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 
-import Layout from '@/components/layout/Layout'
+import Layout from '@/components/layout/Layout';
 import { useStyles } from '../../styles/pages/CategoriesStyle';
 import SimpleCategoryCard from '@/components/Views/SimpleCategoryCard';
 
@@ -35,150 +35,152 @@ import brand3 from '../../asset/brand3.jpg';
 import brand4 from '../../asset/brand4.jpg';
 import brand5 from '../../asset/brand5.jpg';
 import brand6 from '../../asset/brand6.jpg';
+import { getCategories } from '@/redux/actions/authActions';
 
 const BrandData = [
-    {
-        logo: brand1,
-        name: `Shinsegae`,
-        banner: bi1,
-    },
-    {
-        logo: brand2,
-        name: `Lotte`,
-        banner: bi2,
-    },
-    {
-        logo: brand3,
-        name: `Hyundai`,
-        banner: bi3,
-    },
-    {
-        logo: brand4,
-        name: `Galleria`,
-        banner: bi4,
-    },
-    {
-        logo: brand5,
-        name: `Lotte Mart`,
-        banner: bi5,
-    },
-    {
-        logo: brand6,
-        name: `EMart`,
-        banner: bi6,
-    },
-    {
-        logo: brand1,
-        name: `Shinsegae`,
-        banner: bi1,
-    },
-    {
-        logo: brand2,
-        name: `Lotte`,
-        banner: bi2,
-    },
-]
+  {
+    logo: brand1,
+    name: `Shinsegae`,
+    banner: bi1,
+  },
+  {
+    logo: brand2,
+    name: `Lotte`,
+    banner: bi2,
+  },
+  {
+    logo: brand3,
+    name: `Hyundai`,
+    banner: bi3,
+  },
+  {
+    logo: brand4,
+    name: `Galleria`,
+    banner: bi4,
+  },
+  {
+    logo: brand5,
+    name: `Lotte Mart`,
+    banner: bi5,
+  },
+  {
+    logo: brand6,
+    name: `EMart`,
+    banner: bi6,
+  },
+  {
+    logo: brand1,
+    name: `Shinsegae`,
+    banner: bi1,
+  },
+  {
+    logo: brand2,
+    name: `Lotte`,
+    banner: bi2,
+  },
+];
 const Data = [
-    {
-        image: categ1,
-        title: `Coffee & Drinks`,
-    },
-    {
-        image: categ2,
-        title: `Cakes & Desserts`,
-    },
-    {
-        image: categ3,
-        title: `Flowers & Plants & Fruit Hampers`,
-    },
-    {
-        image: categ4,
-        title: `Gift Sets`,
-    },
-    {
-        image: categ5,
-        title: `Health Supplements`,
-    },
-    {
-        image: categ6,
-        title: `Shopping`,
-    },
-    {
-        image: categ7,
-        title: `Grocery`,
-    },
-    {
-        image: categ8,
-        title: `Fast Food`,
-    },
-    {
-        image: categ9,
-        title: `Korean Food`,
-    },
-    {
-        image: categ10,
-        title: `Convenience Stores`,
-    },
-    {
-        image: categ11,
-        title: `Hotel & Restaurants`,
-    },
-    {
-        image: categ12,
-        title: `Entertainment & Games`,
-    },
-    {
-        image: categ13,
-        title: `Beauty & Hair`,
-    },
-    {
-        image: categ14,
-        title: `Meal Kits`,
-    },
-    {
-        image: categ15,
-        title: `Small Appliance`,
-    },
-    {
-        image: categ16,
-        title: `Home & Kitchen`,
-    },
+  {
+    image: categ1,
+    title: `Coffee & Drinks`,
+  },
+  {
+    image: categ2,
+    title: `Cakes & Desserts`,
+  },
+  {
+    image: categ3,
+    title: `Flowers & Plants & Fruit Hampers`,
+  },
+  {
+    image: categ4,
+    title: `Gift Sets`,
+  },
+  {
+    image: categ5,
+    title: `Health Supplements`,
+  },
+  {
+    image: categ6,
+    title: `Shopping`,
+  },
+  {
+    image: categ7,
+    title: `Grocery`,
+  },
+  {
+    image: categ8,
+    title: `Fast Food`,
+  },
+  {
+    image: categ9,
+    title: `Korean Food`,
+  },
+  {
+    image: categ10,
+    title: `Convenience Stores`,
+  },
+  {
+    image: categ11,
+    title: `Hotel & Restaurants`,
+  },
+  {
+    image: categ12,
+    title: `Entertainment & Games`,
+  },
+  {
+    image: categ13,
+    title: `Beauty & Hair`,
+  },
+  {
+    image: categ14,
+    title: `Meal Kits`,
+  },
+  {
+    image: categ15,
+    title: `Small Appliance`,
+  },
+  {
+    image: categ16,
+    title: `Home & Kitchen`,
+  },
 ];
 
-
 const Categories = () => {
-    const classes = useStyles();
+  const classes = useStyles();
+  const [Categorydata, setData] = useState([]);
 
+  useEffect(() => {
+    (async () => {
+      const resp = await getCategories(`voucher_category`);
+      setData(resp);
+    })();
+  }, []);
 
-    return (
-        <Layout>
-            <div className={classes.container}>
-                <div className={classes.main}>
-                    <h2 className={classes.heading}>Categories</h2>
-                    <Grid container columns={12}>
-                        {
-                            Data?.map((data: any, index: number) => (
-                                <Grid item xs={12} sm={4} md={3} lg={2}>
-                                    <SimpleCategoryCard data={data} />
-                                </Grid>
-                            ))
-                        }
-                    </Grid>
-                    <h2 className={classes.heading}>Popular Brands</h2>
-                    <Grid container spacing={2} columns={12} className={classes.grid2}>
-                        {
-                            BrandData?.map((data: any, index: number) => (
-                                <Grid item xs={12} sm={4} md={3} lg={3}>
-                                    <BrandCard data={data} />
-                                </Grid>
-                            ))
-                        }
-                    </Grid>
-                </div>
+  return (
+    <Layout>
+      <div className={classes.container}>
+        <div className={classes.main}>
+          <h2 className={classes.heading}>Categories</h2>
+          <Grid container columns={12}>
+            {Categorydata?.map((data: any, index: number) => (
+              <Grid key={index} item xs={12} sm={4} md={3} lg={2}>
+                <SimpleCategoryCard data={data} />
+              </Grid>
+            ))}
+          </Grid>
+          <h2 className={classes.heading}>Popular Brands</h2>
+          <Grid container spacing={2} columns={12} className={classes.grid2}>
+            {BrandData?.map((data: any, index: number) => (
+              <Grid key={index} item xs={12} sm={4} md={3} lg={3}>
+                <BrandCard data={data} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+      </div>
+    </Layout>
+  );
+};
 
-            </div>
-        </Layout>
-    )
-}
-
-export default Categories
+export default Categories;

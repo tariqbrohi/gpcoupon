@@ -10,7 +10,6 @@ export const useStyles = makeStyles((theme: any) => ({
     margin: `4rem 0`,
     '@media(max-width:550px)': {
       margin: `3rem 0 0rem 0`,
-
     },
   },
   header: {
@@ -20,7 +19,7 @@ export const useStyles = makeStyles((theme: any) => ({
     alignItems: `center`,
     justifyContent: `space-between`,
     '@media(max-width:1030px)': {
-      width: '95%',
+      width: `95%`,
     },
   },
   heading: {
@@ -50,13 +49,13 @@ export const useStyles = makeStyles((theme: any) => ({
   main: {
     display: `flex`,
     alignItems: `baseline`,
-    justifyContent: `center`,
+    justifyContent: `space-evenly`,
     width: `75%`,
     gap: `1rem`,
     '@media(max-width:1030px)': {
-      width: '95%',
-      overflowX: 'auto',
-      justifyContent: 'flex-start',
+      width: `95%`,
+      overflowX: `auto`,
+      justifyContent: `flex-start`,
     },
   },
   imageDiv: {

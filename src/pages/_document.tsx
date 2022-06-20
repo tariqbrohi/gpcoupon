@@ -20,7 +20,6 @@ export default class MyDocument extends Document {
 }
 MyDocument.getInitialProps = async (ctx) => {
   const styleSheets = new ServerStyleSheets();
-  const styledSheet = new ServerStyleSheet();
 
   const orignalRenderPage = ctx.renderPage;
   ctx.renderPage = () => {
@@ -35,7 +34,6 @@ MyDocument.getInitialProps = async (ctx) => {
     styles: [
       ...React.Children.toArray(initialProps.styles),
       styleSheets.getStyleElement(),
-      styledSheet.getStyleElement(),
     ],
   };
 };

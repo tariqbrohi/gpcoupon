@@ -16,22 +16,22 @@ const CardItem = () => {
       <Card className={classes.card}>
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'row',
+            display: `flex`,
+            flexDirection: `row`,
             margin: 35,
             marginBottom: 0,
           }}
         >
           {/* <div style={{ margin: 30, width: 10 }} > */}
           <AccountCircleRoundedIcon
-            style={{ fontSize: 40, margin: 20, marginRight: 5, color: 'grey' }}
+            style={{ fontSize: 40, margin: 20, marginRight: 5, color: `grey` }}
           />
           {/* </div> */}
           <div
             style={{
               flex: 1,
-              textAlign: 'left',
-              alignSelf: 'center',
+              textAlign: `left`,
+              alignSelf: `center`,
             }}
           >
             <h4>Yasir Ahmed</h4>
@@ -39,12 +39,12 @@ const CardItem = () => {
           </div>
         </div>
         <div style={{ marginLeft: 35, marginRight: 35 }}>
-          <p style={{ textAlign: 'center' }}>
-            "I was so happy to come across your website. I have sent several
-            gifts already to my my family and friends back home. I am looking
-            forward to keep using your service."
+          <p style={{ textAlign: `center` }}>
+            &quot;I was so happy to come across your website. I have sent
+            several gifts already to my my family and friends back home. I am
+            looking forward to keep using your service.&quot;
           </p>
-          <p style={{ textAlign: 'center', padding: 20, fontSize: 12 }}>
+          <p style={{ textAlign: `center`, padding: 20, fontSize: 12 }}>
             ⭐⭐⭐⭐⭐️
           </p>
         </div>
@@ -64,7 +64,6 @@ const Reviews = (props: any) => {
   function Item({ item }: any) {
     return (
       <div className={classes.itemDiv}>
-        {/* <CardItem /> */}
         <CardItem />
       </div>
     );
@@ -97,7 +96,7 @@ const Reviews = (props: any) => {
         showDots={true}
         responsive={responsive}
         infinite={true}
-        removeArrowOnDeviceType={['tablet', 'mobile']}
+        removeArrowOnDeviceType={[`tablet`, `mobile`]}
         deviceType={props.deviceType}
         className={classes.carousal}
       >
@@ -107,21 +106,6 @@ const Reviews = (props: any) => {
         <Item />
         <Item />
       </Carousel>
-
-      {/* <Carousel
-        index={index}
-        onChange={() => handleChange}
-        interval={4000}
-        animation="slide"
-        indicators={false}
-        stopAutoPlayOnHover
-        swipe
-        navButtonsAlwaysVisible
-        className={classes.carousal}
-      >
-        <Item />
-        <Item />
-      </Carousel> */}
     </div>
   );
 };

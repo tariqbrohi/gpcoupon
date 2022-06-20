@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 // import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Carousel from 'react-multi-carousel';
 
 import { useStyles } from '../../styles/components/PopularGiftStyle';
@@ -13,8 +13,11 @@ import image5 from '../../asset/popular5.jpg';
 import image6 from '../../asset/popular6.jpg';
 import image7 from '../../asset/popular7.jpg';
 import image8 from '../../asset/popular8.jpg';
+import { getVouchers } from '@/redux/actions/authActions';
+import AppContext from '@/providers/app-context';
+import { AppContextInterface } from '@/annotations/types';
 
-const Data = [
+const DataCarousel = [
   {
     image: image1,
     company: `Plants (Delivery)`,
@@ -85,25 +88,45 @@ const responsive = {
 
 const PopularGift = (props: any) => {
   const classes = useStyles();
-  const [index, setIndex] = React.useState(0);
-  const router = useRouter()
+  const [Data, setData] = React.useState([]);
 
-  const handleChange = (cur: number, prev: number) => {
-    setIndex(cur);
-  };
+  const { setSingleVoucher, country } = useContext(
+    AppContext,
+  ) as AppContextInterface;
 
-  function Item({ item }: any) {
+  useEffect(() => {
+    (async () => {
+      const data = await getVouchers(`all`, country, 20);
+      setData(data);
+    })();
+  }, [country]);
+
+  function Item({ item, key }: any) {
     return (
-      <div className={classes.imageDiv} onClick={() => router.push(`/item/${item.company}${item.title}`)}>
-        <div key={index} className={classes.card}>
-          <Image
-            src={item.image}
-            style={{ borderRadius: `16px` }}
-            className={classes.image}
-          />
-          <p className={classes.company}>{item.company}</p>
-          <p className={classes.title}>{item.title}</p>
-          <p className={classes.price}>US$ {item.price}</p>
+      <div
+        className={classes.imageDiv}
+        onClick={() => {
+          // localStorage.setItem(`voucher`, JSON.stringify(item));
+          setSingleVoucher(item);
+          Router.push({
+            pathname: `/item/${item.name}`,
+          });
+        }}
+      >
+        <div key={key} className={classes.card}>
+          <div style={{ borderRadius: `16px` }} className={classes.image}>
+            <Image
+              alt={`image`}
+              src={item.imageUrl}
+              width={`100%`}
+              height={`100%`}
+            />
+          </div>
+          <p className={classes.company}>{item.categories}</p>
+          <p className={classes.title}>{item.name}</p>
+          <p className={classes.price}>
+            US$ {item?.valueDenominations?.split(`,`)?.[0]}
+          </p>
         </div>
       </div>
     );
@@ -116,18 +139,18 @@ const PopularGift = (props: any) => {
         swipeable={true}
         draggable={true}
         autoPlay={false}
+        shouldResetAutoplay={false}
         showDots={false}
         responsive={responsive}
         infinite={true}
-        removeArrowOnDeviceType={['mobile']}
+        removeArrowOnDeviceType={[`mobile`]}
         deviceType={props.deviceType}
         className={classes.carousal}
       >
         {Data?.map((data: any, index: number) => (
-          <Item item={data} />
+          <Item key={index} item={data} />
         ))}
       </Carousel>
-
     </div>
   );
 };

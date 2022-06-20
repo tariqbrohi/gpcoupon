@@ -19,6 +19,7 @@ const Banner = () => {
       </div>
       <div>
         <Image
+          alt={`image`}
           src={BannerImage}
           className={classes.image}
           height={`340px`}

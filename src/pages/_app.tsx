@@ -1,12 +1,14 @@
 import { AppProps } from 'next/app';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { lightTheme } from '../theme';
 import { ThemeProvider } from '@mui/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { theme } from '../theme';
+import AppContext from '../providers/app-context';
 import '../styles/global.css';
 import 'react-multi-carousel/lib/styles.css';
 import { UserProvider } from '@auth0/nextjs-auth0';
+import { useLocalStorage } from '@/providers/useLocalStorage';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -15,12 +17,39 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     });
   }, []);
 
+  const [user, setUser] = useLocalStorage(`userId`, ``);
+  const [country, setCountry] = useLocalStorage(`country`, ``);
+  const [singleVoucher, setSingleVoucher] = useLocalStorage(
+    `singleVoucher`,
+    ``,
+  );
+  const [name, setName] = useLocalStorage(`name`, ``);
+
+  // const [user, setUser] = useState('isAuthenticated');
+  // const [country, setCountry] = useState('country');
+  // const [singleVoucher, setSingleVoucher] = useState('singleVoucher');
+  // const [name, setName] = useState('name');
+
+  // console.log('country App', country)
+
   return (
-    <UserProvider>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
-    </UserProvider>
+    <AppContext.Provider
+      value={{
+        singleVoucher,
+        setSingleVoucher,
+        name,
+        setName,
+        user,
+        setUser,
+        country,
+        setCountry,
+      }}
+    >
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {/* <Component {...pageProps} /> */}
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </AppContext.Provider>
   );
 }

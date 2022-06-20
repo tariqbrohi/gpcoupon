@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -14,6 +15,7 @@ import {
   TextField,
   Divider,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import NextImage from 'next/image';
 import { useStyles } from '../styles/pages/SignUpAndLoginAndSignupCompleted';
 import facebook from '../asset/facebook.svg';
@@ -24,31 +26,62 @@ import man from '../asset/man3x.png';
 import logo from '../asset/logo.png';
 import Layout from '@/components/layout/Layout';
 import SearchOutlined from '@mui/icons-material/SearchOutlined';
+import AppContext from '@/providers/app-context';
+import { AppContextInterface } from '@/annotations/types';
+import { postLogin } from '@/redux/actions/authActions';
 
 export default function Login() {
   const classes = useStyles();
   const router = useRouter();
+  const { setAuthenticated, setUser } = useContext(
+    AppContext,
+  ) as AppContextInterface;
+
+  const [username, setUsername] = useState(``);
+  const [password, setPassword] = useState(``);
+  const [loading, setLoading] = useState(false);
+
+  const loginUser = async () => {
+    try {
+      setLoading(true);
+      const response: any = await postLogin({
+        username,
+        password,
+      });
+      // setBasicToken(response.token);
+      // setAuthenticated(true);
+      setUser(response.user.userId);
+      setLoading(false);
+      router.replace(`/`);
+    } catch (error) {
+      // user sweetalert or somthing else
+      setLoading(false);
+      // alert(JSON.stringify(error));
+    }
+  };
+
   return (
     <section className={classes.signUpContainer}>
       <div className={classes.leftWrapper}>
         <div className={classes.imageWrapper}>
-          <Image src={man}></Image>
-          <Image src={boy}></Image>
-          <Image src={girl}></Image>
+          <Image alt={`image`} src={man}></Image>
+          <Image alt={`image`} src={boy}></Image>
+          <Image alt={`image`} src={girl}></Image>
         </div>
       </div>
       <div className={classes.rightWrapper}>
         <div className={classes.rightHeader}>
           <div className={classes.headerLogo}>
             <Image
-              onClick={() => router.push('/')}
-              style={{ cursor: 'pointer' }}
+              alt={`image`}
+              onClick={() => router.push(`/`)}
+              style={{ cursor: `pointer` }}
               src={logo}
             ></Image>
           </div>
           <div className={classes.headerInnerRight}>
             <Typography variant="h6" component="span">
-              New to SodaGift?{' '}
+              New to SodaGift?{` `}
             </Typography>
             <NextLink href="/signup">
               <button className={classes.loginButton}>Signup</button>
@@ -58,37 +91,51 @@ export default function Login() {
         <div className={classes.rightMain}>
           <TextField
             id="outlined-basic"
-            label="Email Address"
+            label="User Name"
             variant="outlined"
-            style={{ width: '100%' }}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            style={{ width: `100%` }}
           ></TextField>
           <TextField
             id="outlined-basic"
             label="Password"
             variant="outlined"
-            style={{ width: '100%' }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            style={{ width: `100%` }}
           ></TextField>
           <NextLink href="/">
             <a
               style={{
-                width: '100%',
-                textAlign: 'left',
-                color: '#2eafff',
-                marginTop: '-1rem',
+                width: `100%`,
+                textAlign: `left`,
+                color: `#2eafff`,
+                marginTop: `-1rem`,
               }}
             >
               Forgot Password?
             </a>
           </NextLink>
-          <button className={classes.rightMainLoginEmailButton}>Login</button>
-          <Divider style={{ width: '100%' }}>OR</Divider>
+          <LoadingButton
+            loading={loading}
+            variant="contained"
+            onClick={loginUser}
+            className={classes.rightMainLoginEmailButton}
+          >
+            Login
+          </LoadingButton>
+          <Divider style={{ width: `100%` }}>OR</Divider>
           <button className={classes.rightMainLoginGoogleButton}>
-            <Image src={google}></Image>
+            <Image alt={`image`} src={google}></Image>
             <span>Continue With Google</span>
           </button>
           <button className={classes.rightMainLoginFacebookButton}>
-            <Image src={facebook}></Image>
-            <span>Continue With Facebook</span>{' '}
+            <Image alt={`image`} src={facebook}></Image>
+            <span>Continue With Facebook</span>
+            {` `}
           </button>
         </div>
       </div>

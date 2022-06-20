@@ -29,28 +29,28 @@ export default function Home() {
 
   const router = useRouter();
 
-  const handleClose = () => {};
+  // const handleClose = () => {};
 
-  const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
+  const QontoStepIconRoot = styled(`div`)<{ ownerState: { active?: boolean } }>(
     ({ theme, ownerState }) => ({
       color:
-        theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
-      display: 'flex',
+        theme.palette.mode === `dark` ? theme.palette.grey[700] : `#eaeaf0`,
+      display: `flex`,
       height: 22,
-      alignItems: 'center',
+      alignItems: `center`,
       ...(ownerState.active && {
-        color: '#ff3c78',
+        color: `#ff3c78`,
       }),
       '& .QontoStepIcon-completedIcon': {
-        color: '#ff3c78',
+        color: `#ff3c78`,
         zIndex: 1,
         fontSize: 18,
       },
       '& .QontoStepIcon-circle': {
         width: 12,
         height: 12,
-        borderRadius: '50%',
-        backgroundColor: 'currentColor',
+        borderRadius: `50%`,
+        backgroundColor: `currentColor`,
       },
     }),
   );
@@ -72,28 +72,28 @@ export default function Home() {
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
       top: 10,
-      left: 'calc(-50% + 16px)',
-      right: 'calc(50% + 16px)',
+      left: `calc(-50% + 16px)`,
+      right: `calc(50% + 16px)`,
     },
     [`&.${stepConnectorClasses.active}`]: {
       [`& .${stepConnectorClasses.line}`]: {
-        borderColor: '#ff3c78',
+        borderColor: `#ff3c78`,
       },
     },
     [`&.${stepConnectorClasses.completed}`]: {
       [`& .${stepConnectorClasses.line}`]: {
-        borderColor: '#ff3c78',
+        borderColor: `#ff3c78`,
       },
     },
     [`& .${stepConnectorClasses.line}`]: {
       borderColor:
-        theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+        theme.palette.mode === `dark` ? theme.palette.grey[800] : `#eaeaf0`,
       borderTopWidth: 3,
       borderRadius: 1,
     },
   }));
 
-  const steps = ['Reciepent', 'Payment'];
+  const steps = [`Reciepent`, `Payment`];
 
   return (
     <Layout>
@@ -104,10 +104,10 @@ export default function Home() {
             activeStep={activeStep}
             connector={<QontoConnector />}
           >
-            <Step key={'receipt'}>
+            <Step key={`receipt`}>
               <StepLabel StepIconComponent={QontoStepIcon}>Receipt</StepLabel>
             </Step>
-            <Step key={'payment'}>
+            <Step key={`payment`}>
               <StepLabel StepIconComponent={QontoStepIcon}>Payment</StepLabel>
             </Step>
           </Stepper>

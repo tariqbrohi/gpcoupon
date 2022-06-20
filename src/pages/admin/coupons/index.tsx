@@ -17,6 +17,7 @@ import Router from 'next/router';
 import { ROUTES } from '@/ROUTES';
 import WarningPopup from '@/components/WarningPopup';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 export default withPageAuthRequired(function Coupons() {
   const {} = useRouter();
@@ -32,10 +33,14 @@ export default withPageAuthRequired(function Coupons() {
 
   const handleYes = () => {
     setLoading(true);
+    axios
+      .delete(`/api/admin/coupons/${id}`)
+      .then(() => Router.reload())
+      .catch(() => setLoading(false));
   };
 
   const onClose = () => setOpen(false);
-  console.log(data);
+
   return (
     <Layout>
       <TableContainer component={Paper}>
@@ -77,9 +82,7 @@ export default withPageAuthRequired(function Coupons() {
                       },
                       cursor: 'pointer',
                     }}
-                    onClick={() =>
-                      Router.push(`${ROUTES.admin.coupons}/${slug}`)
-                    }
+                    onClick={() => Router.push(`${ROUTES.admin.coupons}/${id}`)}
                   >
                     {name}
                   </TableCell>
@@ -101,12 +104,12 @@ export default withPageAuthRequired(function Coupons() {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <WarningPopup
+      <WarningPopup
         open={open}
         onClose={onClose}
         onYes={handleYes}
         title="Are you sure you want to delete? You will lose all the related items"
-      /> */}
+      />
     </Layout>
   );
 });

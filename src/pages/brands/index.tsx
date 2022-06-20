@@ -11,10 +11,9 @@ import { useStyles } from '../../styles/pages/brandsStyle';
 import CategorySection from '@/components/Views/CategorySection';
 import AlphaCategory from '@/components/Views/AlphaCategory';
 
-const brands = () => {
+const Brands = () => {
   const classes = useStyles();
-  const [tab, setTab] = React.useState('byCategory');
-
+  const [tab, setTab] = React.useState(`byCategory`);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTab(newValue);
   };
@@ -24,14 +23,14 @@ const brands = () => {
       <div className={classes.container}>
         <h2 className={classes.heading}>Brands</h2>
         <p className={classes.para}>What would you like to gift?</p>
-        <Box sx={{ width: '100%', fontWeight: 'bold' }} className={classes.box}>
+        <Box sx={{ width: `100%`, fontWeight: `bold` }} className={classes.box}>
           <TabContext value={tab}>
             <Box
               sx={{
                 borderBottom: 1,
-                borderColor: 'divider',
-                display: 'flex',
-                justifyContent: 'center',
+                borderColor: `divider`,
+                display: `flex`,
+                justifyContent: `center`,
               }}
             >
               <TabList
@@ -63,4 +62,4 @@ const brands = () => {
   );
 };
 
-export default brands;
+export default Brands;

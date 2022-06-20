@@ -10,7 +10,7 @@ const Download = () => {
   return (
     <div className={classes.container}>
       <div className={classes.left}>
-        <Image src={logo} className={classes.image} />
+        <Image alt={`image`} src={logo} className={classes.image} />
         <p className={classes.para}>DOWNLOAD OUR APP TODAY!</p>
       </div>
       <Button className={classes.buttonContained} variant="contained">

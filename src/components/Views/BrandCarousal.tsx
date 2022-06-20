@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 
 import Carousel from 'react-multi-carousel';
@@ -12,12 +11,6 @@ import image4 from '../../asset/sliderImage4.jpg';
 
 const BrandCarousal = (props: any) => {
   const classes = useStyles();
-  const [index, setIndex] = React.useState(0);
-
-  const handleChange = (cur: number, prev: number) => {
-    if (cur) setIndex(cur);
-    else setIndex(prev);
-  };
 
   const responsive = {
     desktop: {
@@ -36,15 +29,11 @@ const BrandCarousal = (props: any) => {
     return (
       <div className={classes.imageDiv}>
         <Image
+          alt={`image`}
           src={item[0]}
           style={{ borderRadius: `16px` }}
           className={classes.image}
         />
-        {/* <Image
-          src={item[1]}
-          style={{ borderRadius: `16px` }}
-          className={classes.image}
-        /> */}
       </div>
     );
   }
@@ -58,7 +47,7 @@ const BrandCarousal = (props: any) => {
         showDots={true}
         responsive={responsive}
         infinite={true}
-        removeArrowOnDeviceType={['mobile']}
+        removeArrowOnDeviceType={[`mobile`]}
         deviceType={props.deviceType}
         className={classes.carousal}
       >
@@ -67,21 +56,6 @@ const BrandCarousal = (props: any) => {
         <Item item={[image3]} />
         <Item item={[image4]} />
       </Carousel>
-      {/* <Carousel
-        index={index}
-        onChange={() => handleChange}
-        interval={4000}
-        animation="slide"
-        indicators={false}
-        stopAutoPlayOnHover
-        swipe
-        navButtonsAlwaysVisible
-        className={classes.carousal}
-      >
-        
-        <Item item={[image1, image2]} />
-        <Item item={[image3, image4]} />
-      </Carousel> */}
     </div>
   );
 };

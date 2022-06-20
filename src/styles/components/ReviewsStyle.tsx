@@ -3,12 +3,13 @@ import { display } from '@mui/system';
 
 export const useStyles = makeStyles((theme: any) => ({
   carousaldiv: {
-    padding: `1rem`,
+    padding: `3rem 1rem`,
     width: `100%`,
     display: `flex`,
     justifyContent: `center`,
     margin: `2rem 0`,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: `#f9f9f9`,
+    marginBottom: `0`,
   },
 
   itemDiv: {
@@ -22,13 +23,13 @@ export const useStyles = makeStyles((theme: any) => ({
 
   carousal: {
     width: `78%`,
-    height: '400px',
+    height: `400px`,
     '@media(max-width:1030px)': {
-      width: '95%',
-      padding: '0 20px',
+      width: `95%`,
+      padding: `0 20px`,
     },
     '@media(max-width:770px)': {
-      height: '450px',
+      height: `450px`,
     },
   },
   cardDiv: {
@@ -42,10 +43,10 @@ export const useStyles = makeStyles((theme: any) => ({
     // padding: `0 4rem`,
   },
   card: {
-    width: '90%',
-    height: 'auto',
+    width: `90%`,
+    height: `auto`,
     paddingBottom: `50px`,
-    boxShadow: '0px 0px 5px #c1c1c1',
+    boxShadow: `0px 0px 5px #c1c1c1`,
     margin: 20,
   },
 }));

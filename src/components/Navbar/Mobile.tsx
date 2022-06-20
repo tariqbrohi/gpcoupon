@@ -3,7 +3,7 @@ import TopBarDialogMobile from '../../components/Modal/TopBarDialogMobile';
 import { Typography, Input, InputAdornment, Button } from '@mui/material';
 import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import { BiCategory } from 'react-icons/bi';
-import { AiOutlineShop,AiFillHome } from 'react-icons/ai';
+import { AiOutlineShop, AiFillHome } from 'react-icons/ai';
 import { HiOutlineHome } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineManageSearch } from 'react-icons/md';
@@ -36,7 +36,7 @@ const Desktop = () => {
             className={classes.headText}
             variant="subtitle2"
             component="div"
-            onClick={() => router.push('/categories')}
+            onClick={() => router.push(`/categories`)}
           >
             <BiCategory /> Categories
           </Typography>
@@ -44,15 +44,15 @@ const Desktop = () => {
             className={classes.headText}
             variant="subtitle2"
             component="div"
-            onClick={() => router.push('/brands')}
+            onClick={() => router.push(`/brands`)}
           >
             <AiOutlineShop /> Brands
           </Typography>
         </div>
         <div className={classes.bottomTab}>
-<HiOutlineHome />
-<MdOutlineManageSearch />
-<CgProfile />
+          <HiOutlineHome />
+          <MdOutlineManageSearch />
+          <CgProfile />
         </div>
       </div>
     </>

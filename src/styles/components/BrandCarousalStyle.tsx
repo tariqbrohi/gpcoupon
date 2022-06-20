@@ -10,19 +10,18 @@ export const useStyles = makeStyles((theme: any) => ({
     margin: `2rem 0`,
     '@media(max-width:550px)': {
       margin: `0rem 0`,
-    padding: `0 1rem`,
-
+      padding: `0 1rem`,
     },
   },
   carousal: {
     width: `78%`,
-    height: '350px',
+    height: `350px`,
     '@media(max-width:1030px)': {
-      width: '100%',
-      height: '450px',
+      width: `100%`,
+      height: `450px`,
     },
     '@media(max-width:550px)': {
-      height: '250px',
+      height: `250px`,
     },
   },
   imageDiv: {

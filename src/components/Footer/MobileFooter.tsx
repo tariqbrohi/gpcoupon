@@ -49,12 +49,13 @@ const DesktopFooter = () => {
 
       <div className={classes.mainAccordion}>
         <Accordion
-          expanded={expanded === 'panel1'}
+          expanded={expanded === `panel1`}
           className={classes.accordian}
-          onChange={accordionChange('panel1')}
+          onChange={accordionChange(`panel1`)}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>SodaGift</Typography>
+            {/* <Typography>SodaGift</Typography> */}
+            <p>SodaGift</p>
           </AccordionSummary>
           <AccordionDetails>
             <p>About Us</p>
@@ -63,12 +64,13 @@ const DesktopFooter = () => {
           </AccordionDetails>
         </Accordion>
         <Accordion
-          expanded={expanded === 'panel2'}
+          expanded={expanded === `panel2`}
           className={classes.accordian}
-          onChange={accordionChange('panel2')}
+          onChange={accordionChange(`panel2`)}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Send Gifts to</Typography>
+            {/* <Typography>Send Gifts to</Typography> */}
+            <p>Send Gifts to</p>
           </AccordionSummary>
           <AccordionDetails>
             <p>South Korea</p>
@@ -77,12 +79,13 @@ const DesktopFooter = () => {
           </AccordionDetails>
         </Accordion>
         <Accordion
-          expanded={expanded === 'panel3'}
+          expanded={expanded === `panel3`}
           className={classes.accordian}
-          onChange={accordionChange('panel3')}
+          onChange={accordionChange(`panel3`)}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Support</Typography>
+            {/* <Typography>Support</Typography> */}
+            <p>Support</p>
           </AccordionSummary>
           <AccordionDetails>
             <p>Help</p>
@@ -91,12 +94,13 @@ const DesktopFooter = () => {
           </AccordionDetails>
         </Accordion>
         <Accordion
-          expanded={expanded === 'panel4'}
+          expanded={expanded === `panel4`}
           className={classes.accordian}
-          onChange={accordionChange('panel4')}
+          onChange={accordionChange(`panel4`)}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>Follow us</Typography>
+            {/* <Typography>Follow us</Typography> */}
+            <p>Follow us</p>
           </AccordionSummary>
           <AccordionDetails>
             <p>

@@ -38,8 +38,8 @@ export default function Home() {
     },
   };
   const classes = useStyles();
-  const [value, setValue] = useState('1');
-  const [value2, setValue2] = useState('first');
+  const [value, setValue] = useState(`1`);
+  const [value2, setValue2] = useState(`first`);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -68,13 +68,13 @@ export default function Home() {
                 className={`${classes.stepCarouselItem} ${classes.stepCarouselFirstItem} `}
               >
                 <div className={classes.stepCarouselFirstItemImage}>
-                  <Image src={send_step1_en} />
+                  <Image alt={`image`} src={send_step1_en} />
                 </div>
                 <div className={classes.stepCarouselFirstItemDetails}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+                  <Typography variant="h6" style={{ fontWeight: `bold` }}>
                     step 1
                   </Typography>
-                  <Typography variant="h5" style={{ fontWeight: 'bolder' }}>
+                  <Typography variant="h5" style={{ fontWeight: `bolder` }}>
                     Choose a gift
                   </Typography>
                   <Typography variant="body1">
@@ -86,7 +86,7 @@ export default function Home() {
                 className={`${classes.stepCarouselItem} ${classes.stepCarouselSecondItem} `}
               >
                 <div className={classes.stepCarouselSecondItemImage}>
-                  <Image src={send_step2_en} />
+                  <Image alt={`image`} src={send_step2_en} />
                 </div>
                 <div>
                   <div className={classes.stepCarouselSecondItemDetails}>
@@ -107,7 +107,7 @@ export default function Home() {
                 className={`${classes.stepCarouselItem} ${classes.stepCarouselThirdItem} `}
               >
                 <div className={classes.stepCarouselThirdItemImage}>
-                  <Image src={send_step3_en} />
+                  <Image alt={`image`} src={send_step3_en} />
                 </div>
                 <div>
                   <div className={classes.stepCarouselThirdItemDetails}>
@@ -129,8 +129,9 @@ export default function Home() {
               >
                 <div className={classes.stepCarouselFourthItemImage}>
                   <Image
+                    alt={`image`}
                     src={
-                      value2 === 'first'
+                      value2 === `first`
                         ? send_step4_link_en
                         : send_step4_mms_en
                     }
@@ -140,9 +141,9 @@ export default function Home() {
                   <div className={classes.stepCarouselFourthItemDetails}>
                     <Typography variant="h6">step 4</Typography>
                     <Typography variant="h5">
-                      {value2 === 'first'
-                        ? 'Order completed!'
-                        : 'Your gift is delivered!'}
+                      {value2 === `first`
+                        ? `Order completed!`
+                        : `Your gift is delivered!`}
                     </Typography>
                     <TabContext value={value2}>
                       <TabList
@@ -176,13 +177,13 @@ export default function Home() {
                 className={`${classes.stepRendomItem} ${classes.stepRemdomFirstItem} `}
               >
                 <div className={classes.stepRemdomFirstItemImage}>
-                  <Image src={redeem_link_en} />
+                  <Image alt={`image`} src={redeem_link_en} />
                 </div>
                 <div className={classes.stepRemdomFirstItemDetails}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+                  <Typography variant="h6" style={{ fontWeight: `bold` }}>
                     Received a link?
                   </Typography>
-                  <Typography variant="h5" style={{ fontWeight: 'bolder' }}>
+                  <Typography variant="h5" style={{ fontWeight: `bolder` }}>
                     Click the link and check out the barcode and instructions on
                     how you redeem your gift.
                   </Typography>
@@ -196,13 +197,13 @@ export default function Home() {
                 className={`${classes.stepRendomItem} ${classes.stepRemdomSecondItem} `}
               >
                 <div className={classes.stepRemdomSecondItemImage}>
-                  <Image src={redeem_mms} />
+                  <Image alt={`image`} src={redeem_mms} />
                 </div>
                 <div className={classes.stepRemdomSecondItemDetails}>
-                  <Typography variant="h6" style={{ fontWeight: 'bold' }}>
+                  <Typography variant="h6" style={{ fontWeight: `bold` }}>
                     Received a text message?
                   </Typography>
-                  <Typography variant="h5" style={{ fontWeight: 'bolder' }}>
+                  <Typography variant="h5" style={{ fontWeight: `bolder` }}>
                     Open the text message and check out the barcode and
                     instructions on how you redeem your gift.
                   </Typography>
