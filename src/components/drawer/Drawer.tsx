@@ -77,6 +77,16 @@ export default function Drawer({
             <ListItemText primary={'Orders'} />
           </ListItemButton>
         </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleRoute(ROUTES.admin.brands)}>
+            <ListItemText primary={'Brands'} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleRoute(ROUTES.admin.coupons)}>
+            <ListItemText primary={'Coupons'} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </MUIDrawer>
   );

@@ -35,6 +35,7 @@ model Item {
   notes                   Note[]
   expiresIn               Int
   imageUrl                String
+  slug                    String
   state                   State
   createdBy               String
   brand                   String

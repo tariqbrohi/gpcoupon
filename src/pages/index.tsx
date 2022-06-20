@@ -8,11 +8,16 @@ import PopularGift from '@/components/Views/PopularGift';
 import TopBrand from '@/components/Views/TopBrand';
 import Reviews from '@/components/Views/Reviews';
 import HowTo from '@/components/Views/HowTo';
+import useTranslation from 'next-translate/useTranslation';
+import GPoints from '@/components/Gpoint';
 
 export default function Home() {
+  const { lang } = useTranslation();
+
   return (
     <Layout>
       <div className="home-main">
+        {lang === 'ko' && <GPoints />}
         <Banner />
         <BrandCarousal />
         <GiftSection />

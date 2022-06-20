@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { omit } from 'lodash';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +11,7 @@ export default withApiAuthRequired(async function handler(
 ) {
   const method = req.method?.toLowerCase();
 
-  if (method !== 'post') {
+  if (method !== 'put' && method !== 'delete') {
     return res.status(404).send({
       errors: [
         {
@@ -20,40 +21,41 @@ export default withApiAuthRequired(async function handler(
     });
   }
 
+  const { id } = req.query as any;
+
   try {
-    if (!req.body.name || !req.body.logo || !req.body.descriptiveImage) {
-      return res.status(400).send({
-        errors: [
-          {
-            message: 'Name and image are requried.',
-          },
-        ],
+    if (method === 'put') {
+      await prisma.brand.update({
+        where: {
+          id,
+        },
+        data: omit(req.body, ['createdAt', 'updatedAt', 'id']),
       });
+
+      res.send({});
     }
 
-    if (method === 'post') {
-      const existingBrand = await prisma.brand.findFirst({
+    if (method === 'delete') {
+      const b = await prisma.brand.findUnique({
         where: {
-          name: req.body.name,
-          slug: req.body.slug,
+          id,
         },
       });
 
-      if (existingBrand) {
-        return res.status(400).send({
-          errors: [
-            {
-              message: 'Duplicate name',
-            },
-          ],
-        });
-      }
+      await prisma.$transaction([
+        prisma.item.deleteMany({
+          where: {
+            brand: b?.slug,
+          },
+        }),
+        prisma.brand.delete({
+          where: {
+            id,
+          },
+        }),
+      ]);
 
-      const brand = await prisma.brand.create({
-        data: req.body,
-      });
-
-      res.send(brand);
+      res.send({});
     }
   } catch (err: any) {
     console.log(err);

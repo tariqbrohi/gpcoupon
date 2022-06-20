@@ -16,91 +16,58 @@ import { Categories, Countries } from '@/constants';
 import { LoadingButton } from '@mui/lab';
 import Spacer from '../Spacer';
 
-export default function CreateBrandForm() {
-  const [state, setState] = useState<any>({
-    description: `1. Visit the nearest Home Depot outlet near you and inquire if they accept gift cards (vouchers) or visit the website. 
+type State = {
+  description: string;
+  name: string;
+  extendedName: string;
+  slug: string;
+  amount: string;
+  brand: string;
+  category: string;
+  expiresIn: string;
+  discountRate: string;
+  country: string;
+  imageUrl: string;
+};
+
+type Props = {
+  state: State;
+  btnText: string;
+  onSubmit: any;
+};
+
+export default function CouponForm({
+  state: {
+    description = `1. Visit the nearest Home Depot outlet near you and inquire if they accept gift cards (vouchers) or visit the website. 
 
 2. Choose your preferred products.
 
 3. At checkout, use the Gift Card (voucher) to redeem.`,
-  });
+    ...rest
+  },
+  onSubmit,
+  btnText,
+}: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [image, setImage] = useState<any>();
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>([]);
-
-  useEffect(() => {
-    axios
-      .get(`/api/brands`)
-      .then(({ data }) => setData(data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
-
-  const handleCreate = async (e: any) => {
-    e.preventDefault();
-
-    if (submitting) return;
-
-    if (!image) {
-      return alert('Image is required!');
-    }
-
-    setSubmitting(true);
-
-    const data: any = {
-      ...state,
-      expiresIn: +state.expiresIn,
-    };
-
-    if (state.amount) {
-      data.amount = +state.amount;
-    }
-
-    if (state.discountRate) {
-      data.discountRate = +state.discountRate;
-    }
-
-    try {
-      const res = await axios.get(`/api/admin/get-signed-url`);
-
-      const { signedUrl } = res.data;
-
-      const formData = new FormData();
-      formData.append('file', image);
-      formData.append('upload_preset', 'pgulp8vg');
-
-      const {
-        data: { url, secure_url },
-      } = await axios.post(signedUrl, formData, {
-        headers: {
-          'Content-Type': image.type,
-        },
-      });
-
-      data.imageUrl = url || secure_url;
-    } catch (err) {
-      return alert(parseErrorMessage(err));
-    }
-
-    axios
-      .post('/api/admin/coupons', data)
-      .then(() => {
-        setSubmitting(false);
-        alert('Success!');
-        Router.push(ROUTES.admin.dashboard);
-      })
-      .catch((err) => {
-        alert(parseErrorMessage(err));
-        setSubmitting(false);
-      });
-  };
+  const [state, setState] = useState<State>({
+    description,
+    ...rest,
+  });
 
   const handleChange = (e: any) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      await onSubmit();
+    } catch {}
+    setSubmitting(false);
   };
 
   return (
@@ -213,25 +180,6 @@ export default function CreateBrandForm() {
           style={{ width: 500 }}
         />
       </div>
-      {data && (
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Brand</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            name="brand"
-            value={state.brand}
-            label="Brand"
-            onChange={handleChange}
-          >
-            {data.map(({ id, name, slug }: any) => (
-              <MenuItem value={slug} key={slug}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
       <Spacer size={30} />
       <div>
         <label>Image</label>
@@ -248,9 +196,9 @@ export default function CreateBrandForm() {
         <LoadingButton
           variant="contained"
           loading={submitting}
-          onClick={handleCreate}
+          onClick={handleSubmit}
         >
-          Create
+          {btnText}
         </LoadingButton>
       </div>
     </Box>

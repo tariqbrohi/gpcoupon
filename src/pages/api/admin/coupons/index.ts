@@ -10,7 +10,7 @@ export default withApiAuthRequired(async function handler(
 ) {
   const method = req.method?.toLowerCase();
 
-  if (method !== 'post') {
+  if (method !== 'post' && method !== 'get') {
     return res.status(404).send({
       errors: [
         {
@@ -41,6 +41,33 @@ export default withApiAuthRequired(async function handler(
       });
 
       res.send(item);
+    }
+
+    if (method === 'get') {
+      const { brand, category, name, country = 'en' } = req.query as any;
+
+      const params: any = {};
+
+      if (brand) {
+        params.brand = brand;
+      }
+
+      if (category) {
+        params.category = category;
+      }
+
+      if (name) {
+        params.name = name;
+      }
+
+      const items = await prisma.item.findMany({
+        where: {
+          country,
+          ...params,
+        },
+      });
+
+      res.send(items);
     }
   } catch (err: any) {
     res.status(err?.statusCode || 500).send({
