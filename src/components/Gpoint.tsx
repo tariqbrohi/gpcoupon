@@ -39,7 +39,7 @@ export default function GPoints() {
         <Card
           key={item.id}
           sx={{ display: 'flex', mx: 1.5, cursor: 'pointer' }}
-          onClick={() => Router.push(`/coupon/${item.id}`)}
+          onClick={() => Router.push(`/coupon/${item.slug}`)}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ flex: '1 0 auto' }}>

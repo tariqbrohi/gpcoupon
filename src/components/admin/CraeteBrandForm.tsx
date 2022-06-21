@@ -12,13 +12,14 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material';
-import { Countries } from '@/constants';
+import { Categories, Countries } from '@/constants';
 import { LoadingButton } from '@mui/lab';
 
 export default function CreateBrandForm() {
   const [name, setName] = React.useState('');
   const [country, setCountry] = useState('');
   const [slug, setSlug] = useState('');
+  const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [logo, setLogo] = useState<any>();
   const [descriptiveImage, setDescriptiveImage] = useState<any>();
@@ -31,7 +32,8 @@ export default function CreateBrandForm() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (submitting || !country || !name || !description || !slug) return;
+    if (submitting || !category || !country || !name || !description || !slug)
+      return;
 
     setSubmitting(true);
 
@@ -40,6 +42,7 @@ export default function CreateBrandForm() {
       description,
       country,
       slug,
+      category,
     };
 
     try {
@@ -128,6 +131,23 @@ export default function CreateBrandForm() {
           placeholder="Introduce Brand"
           onChange={(e) => setDescription(e.target.value)}
         />
+        <FormControl>
+          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            name="category"
+            value={category}
+            label="Category"
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            {Categories.map(({ key, text }) => (
+              <MenuItem value={key} key={key}>
+                {text}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <FormControl>
           <InputLabel id="demo-simple-select-label">Country</InputLabel>
           <Select

@@ -8,7 +8,6 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const method = req.method?.toLowerCase();
-
   if (method !== 'get') {
     return res.status(404).send({
       errors: [
@@ -20,27 +19,23 @@ export default async function handler(
   }
 
   try {
-    const { country, category } = req.query as any;
+    if (method === 'get') {
+      const { country, slug } = req.query as any;
 
-    const where: any = { country };
+      const where: any = {
+        country,
+        slug,
+      };
 
-    if (category?.toLowerCase() !== 'all') {
-      where.category = category;
+      // If only id is passed, it query one item
+      const item = await prisma.item.findFirst({
+        where,
+      });
+
+      res.send(item);
     }
-    console.log(where);
-    const brands = await prisma.brand.findMany({
-      where,
-    });
-
-    return res.send(brands);
   } catch (err: any) {
     console.log(err);
-    res.status(500).send({
-      errors: [
-        {
-          message: 'Opps Something went wrong',
-        },
-      ],
-    });
+    res.send([]);
   }
 }

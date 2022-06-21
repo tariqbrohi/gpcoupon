@@ -3,18 +3,13 @@ import Grid from '@mui/material/Grid';
 import Image from 'next/image';
 
 import Box from '@mui/material/Box';
-import Router, { useRouter } from 'next/router';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Layout from '@/components/layout/Layout';
 import { useStyles } from '../../styles/pages/itemStyle';
-import BreadCrumbs from '@/components/Views/BreadCrumbs';
 import EgiftDetails from '@/components/Views/EgiftDetails';
-
-import ProductImage from '../../asset/popular2.jpg';
-import ReedamImage from '../../asset/reedam.png';
 
 import Parse from 'html-react-parser';
 

@@ -26,6 +26,7 @@ export default withPageAuthRequired(function Brand() {
   const [country, setCountry] = useState('');
   const [slug, setSlug] = useState('');
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
   const [logo, setLogo] = useState<any>();
   const [descriptiveImage, setDescriptiveImage] = useState<any>();
   const [submitting, setSubmitting] = useState(false);
@@ -36,11 +37,20 @@ export default withPageAuthRequired(function Brand() {
 
   useEffect(() => {
     if (data) {
-      const { name, slug, description, country, descriptiveImage, logo } = data;
+      const {
+        name,
+        category,
+        slug,
+        description,
+        country,
+        descriptiveImage,
+        logo,
+      } = data;
       setName(name);
       setSlug(slug);
       setCountry(country);
       setDescription(description);
+      setCategory(category);
       setLogo(logo);
       setDescriptiveImage(descriptiveImage);
     }
@@ -53,7 +63,8 @@ export default withPageAuthRequired(function Brand() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (submitting || !country || !name || !description || !slug) return;
+    if (submitting || !category || !country || !name || !description || !slug)
+      return;
 
     setSubmitting(true);
 
@@ -62,6 +73,7 @@ export default withPageAuthRequired(function Brand() {
       description,
       country,
       slug,
+      category,
     };
 
     try {

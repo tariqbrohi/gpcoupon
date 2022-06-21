@@ -47,8 +47,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     >
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {/* <Component {...pageProps} /> */}
-        <Component {...pageProps} />
+        <UserProvider>
+          {/* <Component {...pageProps} /> */}
+          <Component {...pageProps} />
+        </UserProvider>
       </ThemeProvider>
     </AppContext.Provider>
   );

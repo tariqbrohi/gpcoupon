@@ -12,29 +12,52 @@ import {
 import { Categories, Countries } from '@/constants';
 import { LoadingButton } from '@mui/lab';
 import Spacer from '../Spacer';
+import { isNil, omitBy } from 'lodash';
 
 type State = Partial<{
   description: string;
   name: string;
+  discountRateType: string;
   extendedName: string;
   slug: string;
   amount: string;
   brand: string;
   category: string;
   expiresIn: string;
+  bizAccountId: string;
   discountRate: string;
   country: string;
   imageUrl: string;
 }>;
 
 type Props = {
-  state: State;
+  state?: State;
   btnText: string;
   onSubmit: (state: State) => Promise<void>;
 };
 
+const initState = {
+  description: `1. Visit the nearest Home Depot outlet near you and inquire if they accept gift cards (vouchers) or visit the website. 
+
+2. Choose your preferred products.
+
+3. At checkout, use the Gift Card (voucher) to redeem.`,
+  name: '',
+  discountRateType: '',
+  extendedName: '',
+  slug: '',
+  amount: '',
+  brand: '',
+  category: '',
+  expiresIn: '',
+  bizAccountId: '',
+  discountRate: '',
+  country: '',
+  imageUrl: '',
+};
+
 export default function CouponForm({
-  state: _state,
+  state: _state = initState,
   onSubmit,
   btnText,
 }: Props) {
@@ -97,7 +120,9 @@ export default function CouponForm({
         data.imageUrl = url || secure_url;
       }
 
-      await onSubmit(data);
+      const ommitedData = omitBy(data, (v) => v === '' || isNil(v));
+
+      await onSubmit(ommitedData);
     } catch {}
     setSubmitting(false);
   };
@@ -132,6 +157,14 @@ export default function CouponForm({
           onChange={handleChange}
         />
         <TextField
+          id="outlined-required"
+          label="Business Account ID"
+          name="bizAccountId"
+          value={state.bizAccountId}
+          placeholder=""
+          onChange={handleChange}
+        />
+        <TextField
           required
           id="outlined-required"
           label="Slug"
@@ -157,6 +190,21 @@ export default function CouponForm({
           placeholder="60 (60 days)"
           onChange={handleChange}
         />
+
+        <InputLabel id="demo-simple-select-label">
+          Discount rate type
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          name="discountRateType"
+          value={state.discountRateType}
+          label="discountRateType"
+          onChange={handleChange}
+        >
+          <MenuItem value={'fixed'}>Fixed</MenuItem>
+          <MenuItem value={'percent'}>%</MenuItem>
+        </Select>
         <TextField
           id="outlined-required"
           name="discountRate"

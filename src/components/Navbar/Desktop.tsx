@@ -68,9 +68,9 @@ const Desktop = () => {
           className={classes.headText}
           variant="subtitle2"
           component="div"
-          onClick={() => router.push(`/brands`)}
+          onClick={() => router.push(`/affiliates`)}
         >
-          Brands
+          Affiliates
         </Typography>
         <Typography
           className={classes.headText}
@@ -94,7 +94,7 @@ const Desktop = () => {
             </InputAdornment>
           }
         />
-        <Typography
+        {/* <Typography
           className={classes.headText}
           variant="subtitle2"
           component="div"
@@ -109,7 +109,7 @@ const Desktop = () => {
           onClick={() => router.push(`/howtouse`)}
         >
           How to Use
-        </Typography>
+        </Typography> */}
 
         {isUser ? (
           <>

@@ -33,7 +33,7 @@ import { postLogin } from '@/redux/actions/authActions';
 export default function Login() {
   const classes = useStyles();
   const router = useRouter();
-  const { setAuthenticated, setUser } = useContext(
+  const { setAuthenticated, setUser, setUserDetail } = useContext(
     AppContext,
   ) as AppContextInterface;
 
@@ -48,9 +48,12 @@ export default function Login() {
         username,
         password,
       });
+      console.log(response.user);
+      setUserDetail(response.user);
       // setBasicToken(response.token);
       // setAuthenticated(true);
       setUser(response.user.userId);
+
       setLoading(false);
       router.replace(`/`);
     } catch (error) {

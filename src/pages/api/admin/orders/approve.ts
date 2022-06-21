@@ -1,22 +1,22 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { withApiAuthRequired } from "@auth0/nextjs-auth0";
-import { OrderStatus, PrismaClient } from "@prisma/client";
-import moment from "moment";
-import { sendCoupon } from "../../../../lib/send-email";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { OrderStatus, PrismaClient } from '@prisma/client';
+import moment from 'moment';
+import { sendCoupon } from '../../../../lib/send-email';
 
 const prisma = new PrismaClient();
 
 export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const method = req.method?.toLowerCase();
 
-  if (method !== "post") {
+  if (method !== 'post') {
     return res.status(404).send({
       errors: [
         {
-          message: "NotFound",
+          message: 'NotFound',
         },
       ],
     });
@@ -35,7 +35,7 @@ export default withApiAuthRequired(async function handler(
       return res.status(404).send({
         errors: [
           {
-            message: "Order NotFound",
+            message: 'Order NotFound',
           },
         ],
       });
@@ -45,10 +45,10 @@ export default withApiAuthRequired(async function handler(
       prisma.coupon.create({
         data: {
           item: order.item,
-          expiresAt: moment().add(order.item.expiresIn, "days").unix(),
+          expiresAt: moment().add(order.item.expiresIn, 'days').unix(),
           orderId: order.id,
         },
-      })
+      }),
     );
 
     await prisma.$transaction([
@@ -67,9 +67,9 @@ export default withApiAuthRequired(async function handler(
       to: order.receiverEmail,
       dynamicTemplateData: {
         giver: order.senderName,
-        link: `https://coupon.gpointwallet.com/r/${Buffer.from(
-          `${order.id}:${order.code}`
-        ).toString("base64")}`,
+        link: `${process.env.GPOINT_WALLET_URI}/g/${Buffer.from(
+          `${order.id}:${order.code}`,
+        ).toString('base64')}`,
         // message: "",
       },
     });
@@ -79,8 +79,8 @@ export default withApiAuthRequired(async function handler(
       dynamicTemplateData: {
         giver: order.senderName,
         link: `https://coupon.gpointwallet.com/g/${Buffer.from(
-          `${order.id}:${order.code}`
-        ).toString("base64")}`,
+          `${order.id}:${order.code}`,
+        ).toString('base64')}`,
         // message: "",
       },
     });
@@ -90,7 +90,7 @@ export default withApiAuthRequired(async function handler(
     res.status(err).send({
       errors: [
         {
-          message: err?.message || "Something went wrong.",
+          message: err?.message || 'Something went wrong.',
         },
       ],
     });

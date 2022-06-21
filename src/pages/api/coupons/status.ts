@@ -1,26 +1,29 @@
-import moment from "moment";
-import { NextApiRequest, NextApiResponse } from "next";
-import { pick } from "lodash";
-import { PrismaClient } from "@prisma/client";
+import moment from 'moment';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { pick } from 'lodash';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-import NextCors from "nextjs-cors";
+import NextCors from 'nextjs-cors';
 
 // Initializing the cors middleware
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   await NextCors(req, res, {
     // Options
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
-    origin: "https://gpointwallet.com/",
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    origin: process.env.GPOINT_WALLET_URI,
   });
 
   const method = req.method?.toLowerCase();
-  if (method !== "post") {
+  if (method !== 'post') {
     return res.status(404).send({
       errors: [
         {
-          message: "NotFound",
+          message: 'NotFound',
         },
       ],
     });
@@ -40,23 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(403).send({
         errors: [
           {
-            message: "Invalid id or code.",
-          },
-        ],
-      });
-    }
-
-    const order = await prisma.order.findUnique({
-      where: {
-        id: coupon.orderId,
-      },
-    });
-
-    if (!code || `${order.code}` !== `${code}`) {
-      return res.status(403).send({
-        errors: [
-          {
-            message: "Invalid id or code.",
+            message: 'Invalid id or code.',
           },
         ],
       });
@@ -66,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).send({
         errors: [
           {
-            message: "This coupon has already been used.",
+            message: 'This coupon has already been used.',
           },
         ],
       });
@@ -84,13 +71,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    res.send(pick(coupon.item, ["gpointAmount"]));
+    res.send(pick(coupon.item, ['amount']));
   } catch (err: any) {
     console.log(err);
     res.status(500).send({
       errors: [
         {
-          message: "Invalid id or code.",
+          message: 'Invalid id or code.',
         },
       ],
     });

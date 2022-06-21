@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStyles } from '../../styles/components/EgiftDetailsStyle';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Box, Button, Divider } from '@mui/material';
-import { Modal } from '@mui/material';
+import { Button, Divider } from '@mui/material';
 import { useRouter } from 'next/router';
 import GPointConfirmationModal from './GPointConfirmationModal';
 import convert from '@/lib/forex';
 import useAxios from 'axios-hooks';
+import axios from 'axios';
 
 const GGiftDetails = (props: any) => {
   const { name, extendedName, brand, category, description, notes, amount } =
@@ -16,21 +16,35 @@ const GGiftDetails = (props: any) => {
   const [counter, setcounter] = useState(1);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [{ data }] = useAxios({
-    method: 'post',
-    url: '/api/forex',
-  });
+  const [currency, setCurrency] = useState(1);
+
+  useEffect(() => {
+    if (brand == 'gpoint') {
+      axios
+        .post('/api/forex')
+        .then(({ data }) => {
+          setCurrency(data);
+        })
+        .catch(() => {});
+    }
+  }, [brand]);
 
   const handleCounter = (counter: number) => setcounter(counter);
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    setOpen(true);
+  };
 
   return (
     <div className={classes.container}>
       <p className={classes.tag}>eGift</p>
       <h1 className={classes.heading}>{name}</h1>
       <h2 className={classes.info}>{extendedName}</h2>
-      <h2 className={classes.price}>{convert(amount, data, 1)}</h2>
+      <h2 className={classes.price}>
+        {brand === 'gpoint'
+          ? convert(amount, currency, 1)
+          : `G${amount?.toFixed(2)}`}
+      </h2>
       {notes?.map((note: any, idx: number) => (
         <p className={classes.para} key={idx}>
           • {note.text}
@@ -59,21 +73,20 @@ const GGiftDetails = (props: any) => {
         </div>
         <Button
           className={classes.buttonContained}
-          onClick={() => setOpen(true)}
+          onClick={handleSubmit}
           variant="contained"
         >
           Send Gift
         </Button>
       </div>
       <Divider />
-      {brand === 'gpoint' && (
-        <GPointConfirmationModal
-          {...props}
-          qty={counter}
-          open={open}
-          setOpen={setOpen}
-        />
-      )}
+      <GPointConfirmationModal
+        item={props}
+        qty={counter}
+        open={open}
+        currency={currency}
+        setOpen={setOpen}
+      />
     </div>
   );
 };

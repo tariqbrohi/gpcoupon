@@ -78,8 +78,6 @@ const CategoryList = ({ setCategory }: any) => {
     })();
   }, []);
 
-  console.log(`categoryData`, categoryData);
-
   return (
     <div className={classes.container}>
       <div

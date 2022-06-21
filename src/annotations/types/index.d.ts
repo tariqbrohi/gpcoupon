@@ -20,6 +20,26 @@ export interface AppContextInterface {
   // setBasicToken: (param: string) => null;
   // user: any;
   // setUser: (param: string) => null;
+  userDetail: {
+    id: string;
+    confirmed: boolean;
+    type: 'PERSONAL' | 'BUSINESS';
+    userId: string;
+    username: string;
+    profile: {
+      avatarUrl: string | null;
+      firstName: 'steven';
+      lastName: 'pinker';
+      contact: {
+        id: string;
+        email: string;
+        phoneNumber: null;
+        createdAt: string;
+        updatedAt: string;
+      };
+    };
+  };
+  setUserDetail: (param: any) => null;
   authenticated: boolean;
   setAuthenticated: (param: boolean) => null;
   singleVoucher: any;

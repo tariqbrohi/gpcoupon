@@ -12,6 +12,7 @@ model Brand {
   name                    String            
   description             String?     
   logo                    String
+  category                String
   country                 Country
   slug                    String            @unique
   descriptiveImage        String
@@ -22,6 +23,7 @@ model Brand {
 model Item {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   name                    String
+  bizAccountId            String?
   type                    String?
   extendedName            String
   provider                String?
@@ -32,6 +34,7 @@ model Item {
   amount                  Float
   display                 Boolean
   discountRate            Int?
+  discountRateType        String?
   notes                   Note[]
   expiresIn               Int
   imageUrl                String
@@ -61,6 +64,7 @@ model Order {
   senderName              String?
   senderEmail             String?
   status                  OrderStatus       @default(processing)           
+  meta                    Json?
   reason                  String?
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @default(now())

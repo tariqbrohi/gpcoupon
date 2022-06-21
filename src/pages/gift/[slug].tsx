@@ -61,13 +61,13 @@ let Data2 = [
 
 const Item = () => {
   const {
-    query: { id },
+    query: { slug },
   } = useRouter();
   const { lang } = useTranslation();
   const classes = useStyles();
   const [tab, setTab] = React.useState('desc');
-  const [{ data }] = useAxios(`/api/items/${id}?country=${lang}`);
-
+  const [{ data }] = useAxios(`/api/items/${slug}?country=${lang}`);
+  console.log(data);
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTab(newValue);
   };
@@ -76,15 +76,18 @@ const Item = () => {
     <Layout>
       <div className={classes.container}>
         <div className={classes.main}>
-          <BreadCrumbs />
+          {/* <BreadCrumbs /> */}
           <Grid container spacing={2} columns={12} className={classes.sec1}>
             <Grid item xs={6}>
               <div className={classes.imageDiv}>
-                <Image src={ProductImage} />
+                <img
+                  src={data?.imageUrl}
+                  style={{ width: '100%', borderRadius: '20px' }}
+                />
               </div>
             </Grid>
             <Grid item xs={6}>
-              <GGiftDetails {...data} />
+              {data && <GGiftDetails {...data} />}
             </Grid>
           </Grid>
           <Box
