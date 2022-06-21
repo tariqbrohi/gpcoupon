@@ -41,7 +41,8 @@ const MyGifts = () => {
               <div className={classes.head}>
                 <h2 className={classes.done}>Done</h2>
                 <p className={classes.date}>
-                  Order date: {moment(data?.createdAt).format(`D.MM.YYYY`)}
+                  Order date:{` `}
+                  {moment(data?.createdAt).format(`D.MM.YYYY, hh:mm a`)}
                 </p>
               </div>
               <div className={classes.productCard}>

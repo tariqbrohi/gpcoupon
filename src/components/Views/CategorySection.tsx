@@ -1,26 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
-
-import CategoryCard from './CategoryCard';
-import BrandCard from '../BrandCard';
 import CategoryList from './CategoryList';
 import CategoryMobileList from './CategoryMobileList';
 import { useStyles } from '../../styles/components/CategorySectionStyle';
 
-import bi1 from '../../asset/bi1.jpg';
-import bi2 from '../../asset/bi2.jpg';
-import bi3 from '../../asset/bi3.png';
-import bi4 from '../../asset/bi4.png';
-import bi5 from '../../asset/bi5.jpg';
-import bi6 from '../../asset/bi6.jpg';
-
-import brand1 from '../../asset/brand1.jpg';
-import brand2 from '../../asset/brand2.jpg';
-import brand3 from '../../asset/brand3.jpg';
-import brand4 from '../../asset/brand4.jpg';
-import brand5 from '../../asset/brand5.jpg';
-import brand6 from '../../asset/brand6.jpg';
-import { getVouchers } from '@/redux/actions/authActions';
 import AppContext from '@/providers/app-context';
 import { AppContextInterface } from '@/annotations/types';
 import axios from 'axios';

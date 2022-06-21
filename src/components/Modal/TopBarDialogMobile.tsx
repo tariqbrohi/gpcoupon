@@ -1,6 +1,5 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
+import React, { useContext, useState, useEffect } from 'react';
+import setLanguage from 'next-translate/setLanguage';
 
 import Image from 'next/image';
 import Logo from '@/asset/korea.png';
@@ -9,36 +8,42 @@ import { useStyles } from '../../styles/components/navbarStyles';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Drawer from '@mui/material/Drawer';
-import PersonIcon from '@mui/icons-material/Person';
 import ArrowDownwardOutlined from '@mui/icons-material/KeyboardArrowDown';
-import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
-import { blue } from '@mui/material/colors';
-import CloseIcon from '@mui/icons-material/Close';
+import AppContext from '@/providers/app-context';
+import { AppContextInterface } from '@/annotations/types';
+import KoreaLogo from '@/asset/korea.png';
+import CaLogo from '@/asset/ca.png';
+import UsaLogo from '@/asset/us.png';
 
 const emails = [
   {
-    title: `South Korea`,
-    Logo: Logo,
+    filterValue: `South Korea`,
+    isoCode: `KR`,
+    filterValueCode: `south_korea`,
+    Logo: KoreaLogo,
   },
   {
-    title: `United States`,
-    Logo: Logo,
+    filterValue: `USA`,
+    isoCode: `US`,
+    filterValueCode: `usa`,
+    Logo: UsaLogo,
   },
   {
-    title: `Canada`,
-    Logo: Logo,
+    filterValue: `Canada`,
+    isoCode: `CA`,
+    filterValueCode: `canada`,
+    Logo: CaLogo,
   },
 ];
 
 const mapCountryToLocale: Record<string, any> = {
-  usa: 'en',
-  south_korea: 'ko',
-  canada: 'en',
+  usa: `en`,
+  south_korea: `ko`,
+  canada: `en`,
 };
 
 export interface SimpleDialogProps {
@@ -48,8 +53,26 @@ export interface SimpleDialogProps {
 
 export default function SimpleDialogDemo() {
   const classes = useStyles();
-
   const [open, setOpen] = React.useState(false);
+  const { setCountry, country } = useContext(AppContext) as AppContextInterface;
+  const [localCountry, setLocalCountry] = useState(``);
+
+  const SetCountryOnUseEffect = () => {
+    const lang: any =
+      typeof window === `object` && localStorage.getItem(`gp_lang`);
+    setLanguage(lang || `en`);
+
+    const localCheck: any =
+      typeof window === `object` && localStorage.getItem(`country`);
+    if (localCheck?.length === 2) {
+      setCountry(`south_korea`);
+    }
+  };
+
+  useEffect(() => {
+    setLocalCountry(country);
+    // SetCountryOnUseEffect();
+  }, [country]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -59,25 +82,28 @@ export default function SimpleDialogDemo() {
     setOpen(false);
   };
 
-  function SimpleDialog() {
-    const handleClose = () => {
-      setOpen(false);
-    };
+  const handleChangeLanguage = (filterValueCode: string) => () => {
+    const lang = mapCountryToLocale[filterValueCode];
 
+    if (lang !== `us`) {
+      setLanguage(lang);
+      localStorage.setItem(`gp_lang`, lang);
+    }
+
+    setCountry(filterValueCode);
+    setOpen(false);
+  };
+
+  const SimpleDialog = () => {
     return (
       <>
-        {/* <div className={classes.modalClose}>
-          <IconButton onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
-        </div> */}
         <DialogTitle>Where do you want to send your gift to?</DialogTitle>
         <List sx={{ pt: 0 }}>
           {emails.map((email: any, index: number) => (
             <ListItem
               button
-              // onClick={() => handleListItemClick(email)}
-              key={email.title}
+              onClick={handleChangeLanguage(email.filterValueCode)}
+              key={email.filterValue}
             >
               <div style={{ marginRight: `10px` }}>
                 <Image
@@ -87,13 +113,13 @@ export default function SimpleDialogDemo() {
                   height={`20px`}
                 />
               </div>
-              <ListItemText primary={email.title} />
+              <ListItemText primary={email.filterValue} />
             </ListItem>
           ))}
         </List>
       </>
     );
-  }
+  };
 
   return (
     <div>
@@ -102,19 +128,26 @@ export default function SimpleDialogDemo() {
         variant="caption"
         onClick={handleClickOpen}
       >
-        To : South Korea
-        <Image alt={`image`} src={Logo} width="17px" height={`17px`} />
+        To :{` `}
+        {localCountry === `south_korea`
+          ? `South Korea`
+          : localCountry === `usa`
+          ? `USA`
+          : `Canada`}
+        <Image
+          alt={`image`}
+          src={
+            localCountry === `south_korea`
+              ? KoreaLogo
+              : localCountry === `usa`
+              ? UsaLogo
+              : CaLogo
+          }
+          width="17px"
+          height={`17px`}
+        />
         <ArrowDownwardOutlined />
       </Typography>
-      {/* <p
-        className={classes.modalHeadMobile}
-        variant="caption"
-        onClick={handleClickOpen}
-      >
-        To : South Korea
-        <Image alt={`image`} src={Logo} width="17px" height={`17px`} />
-        <ArrowDownwardOutlined />
-      </p> */}
       <div className={classes.mobileBottom}>
         <h2>
           Find the perfect gift <br /> to South Korea

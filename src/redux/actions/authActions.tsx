@@ -100,7 +100,7 @@ export const postCharge = async (payload: any) => {
 
     const response = await res.json();
     if (response?.status === 500) {
-      NotifyComponent(NotifyMethodEnum.failure, response?.message);
+      NotifyComponent(NotifyMethodEnum.failure, `Insufficient Balance!`);
       return response;
     } else {
       NotifyComponent(NotifyMethodEnum.success, response?.message);
@@ -132,7 +132,6 @@ export const getGiftOrders = async (userId: any) => {
   }
 };
 
-
 export const getSearchedProducts = async (name: any, country: any) => {
   try {
     const res: any = await fetch(`${base_url}/vouchers/search`, {
@@ -141,8 +140,9 @@ export const getSearchedProducts = async (name: any, country: any) => {
         'Content-Type': `application/json`,
       },
       body: JSON.stringify({
-        name, country
-      })
+        name,
+        country,
+      }),
     });
 
     const response = await res.json();

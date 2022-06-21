@@ -9,7 +9,7 @@ import { CgProfile } from 'react-icons/cg';
 import { MdOutlineManageSearch } from 'react-icons/md';
 import { useRouter } from 'next/router';
 
-const Desktop = () => {
+const Mobile = () => {
   const classes = useStyles();
   const router = useRouter();
   return (
@@ -22,7 +22,7 @@ const Desktop = () => {
           className={classes.root}
           disabled
           onClick={() => {
-            console.log(`hello`);
+            router.push(`/searching`);
           }}
           placeholder="Search gifts or brands"
           startAdornment={
@@ -50,13 +50,13 @@ const Desktop = () => {
           </Typography>
         </div>
         <div className={classes.bottomTab}>
-          <HiOutlineHome />
-          <MdOutlineManageSearch />
-          <CgProfile />
+          <HiOutlineHome onClick={() => router.push(`/`)} />
+          <MdOutlineManageSearch onClick={() => router.push(`/categories`)} />
+          <CgProfile onClick={() => router.push(`/my-gift`)} />
         </div>
       </div>
     </>
   );
 };
 
-export default Desktop;
+export default Mobile;

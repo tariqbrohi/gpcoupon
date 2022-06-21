@@ -13,11 +13,8 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import PersonIcon from '@mui/icons-material/Person';
 import ArrowDownwardOutlined from '@mui/icons-material/KeyboardArrowDown';
-import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
-import { blue } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 
 import AppContext from '@/providers/app-context';
@@ -45,9 +42,9 @@ const emails = [
 ];
 
 const mapCountryToLocale: Record<string, any> = {
-  usa: 'en',
-  south_korea: 'ko',
-  canada: 'en',
+  usa: `en`,
+  south_korea: `ko`,
+  canada: `en`,
 };
 
 export interface SimpleDialogProps {
@@ -60,10 +57,11 @@ export default function SimpleDialogDemo() {
   const { setCountry, country } = useContext(AppContext) as AppContextInterface;
 
   const [localCountry, setLocalCountry] = useState(``);
+  const [open, setOpen] = React.useState(false);
 
   const SetCountryOnUseEffect = () => {
-    const lang = localStorage.getItem('gp_lang');
-    setLanguage(lang || 'en');
+    const lang = localStorage.getItem(`gp_lang`);
+    setLanguage(lang || `en`);
 
     const localCheck: any =
       typeof window === `object` && localStorage.getItem(`country`);
@@ -77,8 +75,6 @@ export default function SimpleDialogDemo() {
     SetCountryOnUseEffect();
   }, [country]);
 
-  const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -86,9 +82,9 @@ export default function SimpleDialogDemo() {
   const handleChangeLanguage = (filterValueCode: string) => () => {
     const lang = mapCountryToLocale[filterValueCode];
 
-    if (lang !== 'us') {
+    if (lang !== `us`) {
       setLanguage(lang);
-      localStorage.setItem('gp_lang', lang);
+      localStorage.setItem(`gp_lang`, lang);
     }
 
     setCountry(filterValueCode);
