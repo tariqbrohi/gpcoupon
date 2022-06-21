@@ -106,7 +106,7 @@ const Categories = () => {
       </div>
       <div className={classes.main}>
         {Categorydata?.slice(0, 6)?.map((data: any, index: number) => (
-          <SimpleCategoryCard key={index} data={data} />
+          <SimpleCategoryCard key={index} data={data} img="/assets/categ1" />
         ))}
       </div>
     </div>

@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
-import categ1 from '../../asset/categ1.jpg';
 
 import { useStyles } from '../../styles/components/SimpleCategoryCardStyle';
 
-const SimpleCategoryCard = ({ data }: any) => {
+const SimpleCategoryCard = ({ data, img }: any) => {
   const classes = useStyles();
   const router = useRouter();
   return (
@@ -13,7 +12,13 @@ const SimpleCategoryCard = ({ data }: any) => {
       className={classes.imageDiv}
       onClick={() => router.push(`/categories/${data?.filterValueCode}`)}
     >
-      <Image alt={`image`} src={categ1} className={classes.image} />
+      <Image
+        src={img}
+        alt={`image`}
+        className={classes.image}
+        width={100}
+        height={100}
+      />
       <h3 className={classes.title}>{data?.filterValue}</h3>
     </div>
   );
