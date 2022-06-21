@@ -9,16 +9,12 @@ import {
   InputAdornment,
   Button,
   Divider,
-  ListItemIcon,
   Avatar,
   IconButton,
   Menu,
   MenuItem,
 } from '@mui/material';
 import SearchOutlined from '@mui/icons-material/SearchOutlined';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
 import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 

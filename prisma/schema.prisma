@@ -1,0 +1,101 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+}
+
+model Brand {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String            
+  description             String?     
+  logo                    String
+  country                 Country
+  slug                    String            @unique
+  descriptiveImage        String
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @default(now())
+} 
+
+model Item {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String
+  type                    String?
+  extendedName            String
+  provider                String?
+  summary                 String?
+  country                 Country
+  description             String
+  remark                  String?
+  amount                  Float
+  display                 Boolean
+  discountRate            Int?
+  notes                   Note[]
+  expiresIn               Int
+  imageUrl                String
+  slug                    String
+  state                   State
+  createdBy               String
+  brand                   String
+  category                String          
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @default(now())
+  deletedAt               Int?
+  meta                    Json?
+
+  @@index([category])
+  @@index([brand])
+  @@index([name])
+  @@index([provider])
+}
+
+model Order {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  item                    Json
+  receiverName            String
+  receiverEmail           String
+  code                    String
+  quantity                Int
+  senderName              String?
+  senderEmail             String?
+  status                  OrderStatus       @default(processing)           
+  reason                  String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @default(now())
+}
+
+model Coupon {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  item                    Json
+  orderId                 String?
+  expiresAt               Int
+  used                    Boolean           @default(false)
+  createdAt               DateTime          @default(now())
+  usedAt                  Int?
+  usedBy                  String?
+}
+
+type Note {
+  text        String
+}
+
+enum State {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum Country {
+  en
+  ko
+}
+
+enum Role {
+  root
+}
+enum OrderStatus {
+  approved
+  denied
+  processing
+}

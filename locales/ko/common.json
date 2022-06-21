@@ -1,0 +1,36 @@
+{
+  "login": "로그인",
+  "signup": "회원가입",
+  "buyGiftCoupon": "쿠폰 바로 구매",
+  "pleaseLogin": "쿠폰을 구매하시려면 로그인을 해주세요.",
+  "purchase": "구매하기",
+  "continue": "다음",
+  "invalidEmail": "잘못된 형식의 이메일 주소입니다.",
+  "fillRecipientInfo": "수신자의 정보를 입력해주세요.",
+  "name": "이름",
+  "email": "이메일",
+  "save": "저장하기",
+  "howToUse": "사용 방법",
+  "username": "사용자 이름",
+  "password": "비밀번호",
+  "loginWithGpointDetail": "지포인트 월렛 계정으로 로그인해주세요",
+  "dontHaveAccount": "GPoint Wallet 계정이 없으신가요?",
+  "price": "가격",
+  "quantity": "수량",
+  "total": "총",
+  "totalPrice": "합계",
+  "orderSuccess": "주문이 성공적으로 완료 됐습니다.",
+  "allowMoment": "주문을 처리하는데 최대 하루정도 소요가 됩니다.",
+  "gift_on_the_go": {
+    "title": "간단한 사용법",
+    "description": "지포인트 월렛을 이용한 간단한 사용"
+  },
+  "global_pay": {
+    "title": "글로벌 결제",
+    "description": "지포인트로 글로벌하게 결제하세요"
+  },
+  "timing": {
+    "title": "실시간 전송",
+    "description": "365일, 24시간! 언제든!"
+  }
+}

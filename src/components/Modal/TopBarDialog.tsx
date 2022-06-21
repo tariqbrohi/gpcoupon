@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
+import setLanguage from 'next-translate/setLanguage';
 
 import Image from 'next/image';
 import KoreaLogo from '@/asset/korea.png';
@@ -44,20 +44,11 @@ const emails = [
   },
 ];
 
-// const emails = [
-//   {
-//     title: `South Korea`,
-//     Logo: Logo,
-//   },
-//   {
-//     title: `United States`,
-//     Logo: Logo,
-//   },
-//   {
-//     title: `Canada`,
-//     Logo: Logo,
-//   },
-// ];
+const mapCountryToLocale: Record<string, any> = {
+  usa: 'en',
+  south_korea: 'ko',
+  canada: 'en',
+};
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -71,6 +62,9 @@ export default function SimpleDialogDemo() {
   const [localCountry, setLocalCountry] = useState(``);
 
   const SetCountryOnUseEffect = () => {
+    const lang = localStorage.getItem('gp_lang');
+    setLanguage(lang || 'en');
+
     const localCheck: any =
       typeof window === `object` && localStorage.getItem(`country`);
     if (localCheck?.length === 2) {
@@ -87,6 +81,18 @@ export default function SimpleDialogDemo() {
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleChangeLanguage = (filterValueCode: string) => () => {
+    const lang = mapCountryToLocale[filterValueCode];
+
+    if (lang !== 'us') {
+      setLanguage(lang);
+      localStorage.setItem('gp_lang', lang);
+    }
+
+    setCountry(filterValueCode);
+    setOpen(false);
   };
 
   return (
@@ -136,10 +142,7 @@ export default function SimpleDialogDemo() {
               button={true}
               // onClick={() => handleListItemClick(email)}
               key={email.filterValue}
-              onClick={() => {
-                setCountry(email.filterValueCode);
-                setOpen(false);
-              }}
+              onClick={handleChangeLanguage(email.filterValueCode)}
             >
               <div style={{ marginRight: `10px` }}>
                 <Image

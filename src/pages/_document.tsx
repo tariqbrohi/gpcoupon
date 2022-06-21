@@ -1,6 +1,7 @@
 import { ServerStyleSheets } from '@mui/styles';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
+import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
   render() {
@@ -19,6 +20,7 @@ export default class MyDocument extends Document {
 }
 MyDocument.getInitialProps = async (ctx) => {
   const styleSheets = new ServerStyleSheets();
+
   const orignalRenderPage = ctx.renderPage;
   ctx.renderPage = () => {
     return orignalRenderPage({

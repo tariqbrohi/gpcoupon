@@ -1,5 +1,7 @@
-/** @type {import("next").NextConfig} */
-module.exports = {
+const nextTranslate = require('next-translate');
+
+
+module.exports = nextTranslate({
   reactStrictMode: true,
   env: {
     ID: process.env.ID,
@@ -11,4 +13,4 @@ module.exports = {
   images: {
     domains: ['res.cloudinary.com'],
   },
-};
+});

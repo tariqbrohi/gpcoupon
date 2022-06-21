@@ -14,7 +14,6 @@ import AlphaCategory from '@/components/Views/AlphaCategory';
 const Brands = () => {
   const classes = useStyles();
   const [tab, setTab] = React.useState(`byCategory`);
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTab(newValue);
   };
