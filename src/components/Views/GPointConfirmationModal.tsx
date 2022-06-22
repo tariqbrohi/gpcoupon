@@ -70,7 +70,7 @@ const GPointConfirmationModal = (props: any) => {
         setLoading(true);
         const token =
           typeof window === `object` && localStorage.getItem(`token`);
-
+        console.log(userDetail);
         try {
           await postCharge({
             userId: user,

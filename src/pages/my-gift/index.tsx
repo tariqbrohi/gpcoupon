@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Divider } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -10,6 +10,7 @@ import { getGiftOrders } from '@/redux/actions/authActions';
 import AppContext from '@/providers/app-context';
 import { AppContextInterface } from '@/annotations/types';
 import moment from 'moment';
+import Spacer from '@/components/Spacer';
 
 const MyGifts = () => {
   const { user, setSingleVoucher } = useContext(
@@ -42,38 +43,42 @@ const MyGifts = () => {
                 <h2 className={classes.done}>Done</h2>
                 <p className={classes.date}>
                   Order date:{` `}
-                  {moment(data?.createdAt).format(`D.MM.YYYY, hh:mm a`)}
+                  {moment(data?.createdAt).format(`MM-DD-YYYY`)}
                 </p>
               </div>
               <div className={classes.productCard}>
                 <div
                   className={classes.imageDiv}
                   onClick={() => {
-                    setSingleVoucher(data.products);
-                    router.push(`/item/${data.products.name}`);
+                    setSingleVoucher(data.item);
+                    router.push(`/item/${data?.item?.name}`);
                   }}
                 >
                   <img
-                    src={data?.products?.imageUrl}
+                    src={data?.item?.imageUrl}
                     width={`80px`}
                     height={`80px`}
                     alt={`product`}
                   />
                 </div>
                 <div className={classes.info}>
-                  <h4 className={classes.brand}>Starbucks</h4>
                   <h4
                     className={classes.title}
                     onClick={() => {
-                      setSingleVoucher(data.products);
-                      router.push(`/item/${data.products.name}`);
+                      setSingleVoucher(data.item);
+                      router.push(`/item/${data?.item?.name}`);
                     }}
                   >
-                    {data?.products?.name}
+                    {data?.item?.name}
                   </h4>
                   <h4 className={classes.price}>
                     G {data?.amount} / quantity {data?.quantity}
                   </h4>
+                  <Spacer size={15} />
+                  <Typography fontSize={18}>
+                    <b>Total</b> G
+                    {(parseFloat(data?.amount) * data.quantity).toFixed(2)}
+                  </Typography>
                 </div>
               </div>
               {/* <p className={classes.para}>To. kyunhak</p> */}
