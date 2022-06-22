@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 // import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
 import Router, { useRouter } from 'next/router';
-import Carousel from 'react-multi-carousel';
+// import Carousel from 'react-multi-carousel';
 
 import { useStyles } from '../../styles/components/PopularGiftStyle';
 import image1 from '../../asset/popular1.jpg';
@@ -135,7 +135,7 @@ const PopularGift = (props: any) => {
   return (
     <div className={classes.carousaldiv}>
       <h2>🎁 Most Popular Gifts 🎁</h2>
-      <Carousel
+      {/* <Carousel
         swipeable={true}
         draggable={true}
         autoPlay={false}
@@ -150,7 +150,7 @@ const PopularGift = (props: any) => {
         {Data?.map((data: any, index: number) => (
           <Item key={index} item={data} />
         ))}
-      </Carousel>
+      </Carousel> */}
     </div>
   );
 };

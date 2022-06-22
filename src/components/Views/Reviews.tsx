@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Carousel from 'react-multi-carousel';
+// import Carousel from 'react-multi-carousel';
 
 // import Carousel from 'react-material-ui-carousel';
 
@@ -89,7 +89,7 @@ const Reviews = (props: any) => {
 
   return (
     <div className={classes.carousaldiv}>
-      <Carousel
+      {/* <Carousel
         swipeable={true}
         draggable={false}
         autoPlay={false}
@@ -105,7 +105,7 @@ const Reviews = (props: any) => {
         <Item />
         <Item />
         <Item />
-      </Carousel>
+      </Carousel> */}
     </div>
   );
 };
