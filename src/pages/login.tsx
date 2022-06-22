@@ -55,8 +55,9 @@ export default function Login() {
       setUser(response.user.userId);
 
       setLoading(false);
-      router.replace(`/`);
+      router.push('/');
     } catch (error) {
+      console.log(error);
       // user sweetalert or somthing else
       setLoading(false);
       // alert(JSON.stringify(error));
@@ -104,6 +105,7 @@ export default function Login() {
           <TextField
             id="outlined-basic"
             label="Password"
+            type="password"
             variant="outlined"
             onChange={(e) => {
               setPassword(e.target.value);

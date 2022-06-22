@@ -6,7 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { theme } from '../theme';
 import AppContext from '../providers/app-context';
 import '../styles/global.css';
-// import 'react-multi-carousel/lib/styles.css';
+import 'react-multi-carousel/lib/styles.css';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { useLocalStorage } from '@/providers/useLocalStorage';
 
@@ -18,6 +18,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   const [user, setUser] = useLocalStorage(`userId`, ``);
+  const [userDetail, setUserDetail] = useState({});
   const [country, setCountry] = useLocalStorage(`country`, ``);
   const [singleVoucher, setSingleVoucher] = useLocalStorage(
     `singleVoucher`,
@@ -36,6 +37,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <AppContext.Provider
       value={{
         singleVoucher,
+        userDetail,
+        setUserDetail,
         setSingleVoucher,
         name,
         setName,
