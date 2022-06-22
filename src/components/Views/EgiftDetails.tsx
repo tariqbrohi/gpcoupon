@@ -5,6 +5,7 @@ import { useStyles } from '../../styles/components/EgiftDetailsStyle';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Chip, Divider } from '@mui/material';
+import GPointConfirmationModal from './GPointConfirmationModal';
 import Logo from '../../asset/starbucks.jpg';
 import { useRouter } from 'next/router';
 
@@ -17,6 +18,7 @@ import { LoadingButton } from '@mui/lab';
 
 import { NotifyMethodEnum } from '@/annotations/enums/notify-method.enum';
 import NotifyComponent from '@/components/shared/notify';
+import { pick } from 'lodash';
 
 const EgiftDetails = ({ data }: any) => {
   const classes = useStyles();
@@ -112,12 +114,25 @@ const EgiftDetails = ({ data }: any) => {
         </LoadingButton>
       </div>
       <Divider />
-      <div className={classes.companyDiv}>
-        <Image alt={`image`} src={Logo} />
-        <p className={classes.name}>Starbucks</p>
-      </div>
+      {/* <GPointConfirmationModal
+        item={{
+          id: data.productId,
+          name: data.name,
+
+        }}
+        qty={counter}
+        open={open}
+        currency={currency}
+        setOpen={setOpen}
+      /> */}
     </div>
   );
 };
-
+// 'productId',
+//           'name',
+//           'currencyCode',
+//           'currencyName',
+//           'countryCode',
+//           'exchangeRateRule',
+//           'deliveryType',
 export default EgiftDetails;

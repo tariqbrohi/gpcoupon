@@ -18,11 +18,11 @@ export default function Home() {
       <div className="home-main">
         {lang === 'ko' && <GPoints />}
         <Banner />
-        <BrandCarousal />
+        {/* <BrandCarousal /> */}
         <GiftSection />
         <Categories />
         <PopularGift />
-        <TopBrand />
+        {/* <TopBrand /> */}
         <HowTo />
         <Reviews />
       </div>

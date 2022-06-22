@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import setLanguage from 'next-translate/setLanguage';
+// import setLanguage from 'next-translate/setLanguage';
 
 import Image from 'next/image';
 import Logo from '@/asset/korea.png';
@@ -58,9 +58,9 @@ export default function SimpleDialogDemo() {
   const [localCountry, setLocalCountry] = useState(``);
 
   const SetCountryOnUseEffect = () => {
-    const lang: any =
-      typeof window === `object` && localStorage.getItem(`gp_lang`);
-    setLanguage(lang || `en`);
+    // const lang: any =
+    //   typeof window === `object` && localStorage.getItem(`gp_lang`);
+    // setLanguage(lang || `en`);
 
     const localCheck: any =
       typeof window === `object` && localStorage.getItem(`country`);
@@ -83,12 +83,12 @@ export default function SimpleDialogDemo() {
   };
 
   const handleChangeLanguage = (filterValueCode: string) => () => {
-    const lang = mapCountryToLocale[filterValueCode];
+    // const lang = mapCountryToLocale[filterValueCode];
 
-    if (lang !== `us`) {
-      setLanguage(lang);
-      localStorage.setItem(`gp_lang`, lang);
-    }
+    // if (lang !== `us`) {
+    //   // setLanguage(lang);
+    //   localStorage.setItem(`gp_lang`, lang);
+    // }
 
     setCountry(filterValueCode);
     setOpen(false);

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import setLanguage from 'next-translate/setLanguage';
+// import setLanguage from 'next-translate/setLanguage';
 
 import Image from 'next/image';
 import KoreaLogo from '@/asset/korea.png';
@@ -60,8 +60,8 @@ export default function SimpleDialogDemo() {
   const [open, setOpen] = React.useState(false);
 
   const SetCountryOnUseEffect = () => {
-    const lang = localStorage.getItem(`gp_lang`);
-    setLanguage(lang || `en`);
+    // const lang = localStorage.getItem(`gp_lang`);
+    // setLanguage(lang || `en`);
 
     const localCheck: any =
       typeof window === `object` && localStorage.getItem(`country`);
@@ -82,10 +82,10 @@ export default function SimpleDialogDemo() {
   const handleChangeLanguage = (filterValueCode: string) => () => {
     const lang = mapCountryToLocale[filterValueCode];
 
-    if (lang !== `us`) {
-      setLanguage(lang);
-      localStorage.setItem(`gp_lang`, lang);
-    }
+    // if (lang !== `us`) {
+    //   // setLanguage(lang);
+    //   localStorage.setItem(`gp_lang`, lang);
+    // }
 
     setCountry(filterValueCode);
     setOpen(false);
@@ -100,17 +100,17 @@ export default function SimpleDialogDemo() {
       >
         {localCountry === `south_korea`
           ? `South Korea`
-          : localCountry === `usa`
-          ? `USA`
-          : `Canada`}
+          : localCountry === `canada`
+          ? `Canada`
+          : `USA`}
         <Image
           alt={`image`}
           src={
             localCountry === `south_korea`
               ? KoreaLogo
-              : localCountry === `usa`
-              ? UsaLogo
-              : CaLogo
+              : localCountry === `canada`
+              ? CaLogo
+              : UsaLogo
           }
           width="17px"
           height={`17px`}
