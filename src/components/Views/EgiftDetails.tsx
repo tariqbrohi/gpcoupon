@@ -22,6 +22,7 @@ import { pick } from 'lodash';
 
 const EgiftDetails = ({ data }: any) => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
   const [counter, setcounter] = useState(1);
   const router = useRouter();
   const [selectedChip, setselectedChip] = useState(0);
@@ -107,24 +108,27 @@ const EgiftDetails = ({ data }: any) => {
         <LoadingButton
           loading={loading}
           className={classes.buttonContained}
-          onClick={() => sendGift()}
+          onClick={() => {
+            setOpen(true);
+          }}
           variant="contained"
         >
           Send Gift
         </LoadingButton>
       </div>
       <Divider />
-      {/* <GPointConfirmationModal
+      <GPointConfirmationModal
         item={{
           id: data.productId,
           name: data.name,
-
+          imageUrl: data.imageUrl,
+          amount: selectedChip,
         }}
         qty={counter}
+        affiliate={false}
         open={open}
-        currency={currency}
         setOpen={setOpen}
-      /> */}
+      />
     </div>
   );
 };

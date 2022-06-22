@@ -16,7 +16,7 @@ import parseErrorMessage from '@/lib/parse-error-message';
 import { omit } from 'lodash';
 
 const GPointConfirmationModal = (props: any) => {
-  const { open, setOpen, qty, currency, item } = props;
+  const { open, setOpen, qty, currency, item, affiliate = true } = props;
   const { name, amount, id, brand, imageUrl } = item;
   const { userDetail } = useContext(AppContext) as AppContextInterface;
   const classes = useStyles();
@@ -78,7 +78,7 @@ const GPointConfirmationModal = (props: any) => {
           products: item,
           quantity: +qty,
           //
-          affiliate: true,
+          affiliate,
           code,
           name: recipientName,
           email,
