@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Logo from '@/asset/korea.png';
 import giftBox from '@/asset/giftBox.png';
 import { useStyles } from '../../styles/components/navbarStyles';
-
+import Router from 'next/router';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -92,6 +92,7 @@ export default function SimpleDialogDemo() {
 
     setCountry(filterValueCode);
     setOpen(false);
+    Router.reload();
   };
 
   const SimpleDialog = () => {

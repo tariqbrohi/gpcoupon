@@ -71,20 +71,27 @@ const GPointConfirmationModal = (props: any) => {
         const token =
           typeof window === `object` && localStorage.getItem(`token`);
 
-        await postCharge({
-          userId: user,
-          token,
-          amount: amount * qty,
-          products: item,
-          quantity: +qty,
-          //
-          affiliate,
-          code,
-          name: recipientName,
-          email,
-          giver: userDetail.username,
-          giverEmail: userDetail?.profile?.contact?.email,
-        });
+        try {
+          await postCharge({
+            userId: user,
+            token,
+            amount: amount,
+            products: item,
+            quantity: +qty,
+            //
+            affiliate,
+            code,
+            name: recipientName,
+            email,
+            giver: userDetail.username,
+            giverEmail: userDetail?.profile?.contact?.email,
+          });
+
+          alert(`Coupon has been sent to ${email}`);
+          router.push('/');
+        } catch (err: any) {
+          alert(err?.message);
+        }
 
         setLoading(false);
       }

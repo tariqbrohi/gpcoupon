@@ -19,6 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import AppContext from '@/providers/app-context';
 import { AppContextInterface } from '@/annotations/types';
+import Router from 'next/router';
 
 const emails = [
   {
@@ -80,7 +81,7 @@ export default function SimpleDialogDemo() {
   };
 
   const handleChangeLanguage = (filterValueCode: string) => () => {
-    const lang = mapCountryToLocale[filterValueCode];
+    // const lang = mapCountryToLocale[filterValueCode];
 
     // if (lang !== `us`) {
     //   // setLanguage(lang);
@@ -89,6 +90,7 @@ export default function SimpleDialogDemo() {
 
     setCountry(filterValueCode);
     setOpen(false);
+    Router.reload();
   };
 
   return (

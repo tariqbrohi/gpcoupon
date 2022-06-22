@@ -53,7 +53,7 @@ const MyGifts = () => {
                     router.push(`/item/${data.products.name}`);
                   }}
                 >
-                  <Image
+                  <img
                     src={data?.products?.imageUrl}
                     width={`80px`}
                     height={`80px`}
@@ -72,7 +72,7 @@ const MyGifts = () => {
                     {data?.products?.name}
                   </h4>
                   <h4 className={classes.price}>
-                    US$ {data?.amount} / quantity {data?.quantity}
+                    G {data?.amount} / quantity {data?.quantity}
                   </h4>
                 </div>
               </div>

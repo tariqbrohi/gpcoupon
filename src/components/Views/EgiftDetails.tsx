@@ -62,7 +62,7 @@ const EgiftDetails = ({ data }: any) => {
       <h2 className={classes.info}>
         {Parse(`${data?.description?.slice(0, 150)}...` || ``)}
       </h2>
-      <h2 className={classes.price}>US$ {counter * selectedChip}</h2>
+      <h2 className={classes.price}>G {selectedChip}</h2>
       <p className={classes.para}>
         • Expires in {Parse(data?.expiryAndValidity || ``)}
       </p>
@@ -74,7 +74,7 @@ const EgiftDetails = ({ data }: any) => {
           ?.map((chip: any, index: number) => (
             <Chip
               key={index}
-              label={` ${counter * chip} `}
+              label={` ${chip} `}
               className={classes.chip}
               variant={selectedChip === Number(chip) ? `filled` : `outlined`}
               onClick={() => setselectedChip(Number(chip))}
@@ -93,8 +93,12 @@ const EgiftDetails = ({ data }: any) => {
           />
           <p className={classes.counter}>{counter}</p>
           <AddIcon
-            className={`${classes.active}`}
-            onClick={() => setcounter(counter + 1)}
+            className={`${counter === 5 ? classes.unactive : classes.active}`}
+            onClick={() => {
+              if (counter < 5) {
+                setcounter(counter + 1);
+              }
+            }}
           />
         </div>
 
