@@ -4,6 +4,7 @@ import { useStyles } from '../../styles/components/CategoriesStyle';
 
 import SimpleCategoryCard from './SimpleCategoryCard';
 import { getCategories } from '@/redux/actions/authActions';
+import { Box } from '@mui/material';
 
 const mapCatToImg = {
   apparel_fashion_accessories: `/categories/Apparel.jpg`,
@@ -60,13 +61,22 @@ const Categories = () => {
         <h2 className={classes.heading}>Categories</h2>
       </div>
       <div className={classes.main}>
-        {Categorydata?.slice(0, 6)?.map((data: any, index: number) => (
-          <SimpleCategoryCard
-            key={index}
-            data={data}
-            img={mapCatToImg[data.filterValueCode]}
-          />
-        ))}
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }}
+        >
+          {Categorydata?.slice(0, 16)?.map((data: any, index: number) => (
+            <SimpleCategoryCard
+              key={index}
+              data={data}
+              img={mapCatToImg[data.filterValueCode]}
+            />
+          ))}
+        </Box>
       </div>
     </div>
   );

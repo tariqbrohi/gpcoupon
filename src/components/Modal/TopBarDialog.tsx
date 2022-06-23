@@ -61,9 +61,6 @@ export default function SimpleDialogDemo() {
   const [open, setOpen] = React.useState(false);
 
   const SetCountryOnUseEffect = () => {
-    // const lang = localStorage.getItem(`gp_lang`);
-    // setLanguage(lang || `en`);
-
     const localCheck: any =
       typeof window === `object` && localStorage.getItem(`country`);
     if (localCheck?.length === 2) {

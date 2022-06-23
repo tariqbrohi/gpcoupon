@@ -23,6 +23,57 @@ import { getVouchers } from '@/redux/actions/authActions';
 import { AppContextInterface } from '@/annotations/types';
 import AppContext from '@/providers/app-context';
 
+const Data = [
+  {
+    image: category1,
+    company: `Plants (Delivery)`,
+    price: `54.84`,
+    title: `Sansevieria Mini H`,
+  },
+  {
+    image: category2,
+    company: `Starbucks`,
+    price: `18.05`,
+    title: `Perfect Dessert Set`,
+  },
+  {
+    image: category3,
+    company: `Emart`,
+    price: `84.37`,
+    title: `₩100,000 Gift Card`,
+  },
+  {
+    image: category4,
+    company: `BHC (Chicken)`,
+    price: `21.94`,
+    title: `Bburinkle Chicken + Bburinkle Cheese Ball + Coke 1.25L`,
+  },
+  {
+    image: category5,
+    company: `Plants (Delivery)`,
+    price: `54.84`,
+    title: `Sansevieria Mini H`,
+  },
+  {
+    image: category6,
+    company: `Starbucks`,
+    price: `18.05`,
+    title: `Perfect Dessert Set`,
+  },
+  {
+    image: category1,
+    company: `Emart`,
+    price: `84.37`,
+    title: `₩100,000 Gift Card`,
+  },
+  {
+    image: category2,
+    company: `BHC (Chicken)`,
+    price: `21.94`,
+    title: `Bburinkle Chicken + Bburinkle Cheese Ball + Coke 1.25L`,
+  },
+];
+
 export default function Home() {
   const { country } = useContext(AppContext) as AppContextInterface;
   const classes = useStyles();
@@ -44,56 +95,6 @@ export default function Home() {
       items: 2,
     },
   };
-  const Data = [
-    {
-      image: category1,
-      company: `Plants (Delivery)`,
-      price: `54.84`,
-      title: `Sansevieria Mini H`,
-    },
-    {
-      image: category2,
-      company: `Starbucks`,
-      price: `18.05`,
-      title: `Perfect Dessert Set`,
-    },
-    {
-      image: category3,
-      company: `Emart`,
-      price: `84.37`,
-      title: `₩100,000 Gift Card`,
-    },
-    {
-      image: category4,
-      company: `BHC (Chicken)`,
-      price: `21.94`,
-      title: `Bburinkle Chicken + Bburinkle Cheese Ball + Coke 1.25L`,
-    },
-    {
-      image: category5,
-      company: `Plants (Delivery)`,
-      price: `54.84`,
-      title: `Sansevieria Mini H`,
-    },
-    {
-      image: category6,
-      company: `Starbucks`,
-      price: `18.05`,
-      title: `Perfect Dessert Set`,
-    },
-    {
-      image: category1,
-      company: `Emart`,
-      price: `84.37`,
-      title: `₩100,000 Gift Card`,
-    },
-    {
-      image: category2,
-      company: `BHC (Chicken)`,
-      price: `21.94`,
-      title: `Bburinkle Chicken + Bburinkle Cheese Ball + Coke 1.25L`,
-    },
-  ];
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -109,7 +110,7 @@ export default function Home() {
     const resp = await getVouchers(code, country, `all`);
     setVoucherData(resp);
   };
-
+  console.log(VoucherData);
   useEffect(() => {
     getData();
   }, []);
@@ -125,76 +126,6 @@ export default function Home() {
             <div className={classes.singleCategoriesContainerHeaderImage2}>
               <Image alt={"image"} src={Pursegirl}></Image>
             </div> */}
-            <div className={classes.singleCategoriesContainerHeaderDetails}>
-              <Typography variant="h3">{id?.replaceAll(`_`, ` `)}</Typography>
-              <Carousel
-                responsive={responsive}
-                //   className={classes.stepCarousel}
-                autoPlay={false}
-                shouldResetAutoplay={false}
-                swipeable={true}
-                draggable={true}
-                showDots={false}
-                // ssr={true}
-              >
-                <div
-                  style={{
-                    display: `flex`,
-                    justifyContent: `center`,
-                    alignItems: `center`,
-                    flexDirection: `column`,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: `7rem`,
-                      height: `7rem`,
-                      display: `flex`,
-                      justifyContent: `center`,
-                      alignItems: `center`,
-                      color: `#7b7b7b`,
-                      backgroundColor: `#ebebeb`,
-                      borderRadius: `1.4rem`,
-                    }}
-                  >
-                    All
-                  </div>
-                  <Typography variant="body2">All Brands</Typography>
-                </div>
-                {Data.map((item: any, index: number) => (
-                  <div
-                    key={index}
-                    className={
-                      classes.singleCategoriesContainerHeaderCarouselItem
-                    }
-                  >
-                    <div
-                      className={
-                        classes.singleCategoriesContainerHeaderCarouselItemImage
-                      }
-                    >
-                      <Image alt={`image`} src={item?.image} />
-                    </div>
-                    <Typography variant="body2">{item?.title}</Typography>
-                  </div>
-                ))}
-
-                <div
-                  className={
-                    classes.singleCategoriesContainerHeaderCarouselItem
-                  }
-                >
-                  <div
-                    className={
-                      classes.singleCategoriesContainerHeaderCarouselItemImage
-                    }
-                  >
-                    {/* <Image alt={`image`} src={category1} /> */}
-                  </div>
-                  <Typography variant="body2">All Brands</Typography>
-                </div>
-              </Carousel>
-            </div>
           </div>
 
           <div className={classes.singleCategoriesContainerMain}>

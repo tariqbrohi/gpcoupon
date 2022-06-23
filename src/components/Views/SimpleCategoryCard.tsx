@@ -13,13 +13,7 @@ const SimpleCategoryCard = ({ data, img }: any) => {
       className={classes.imageDiv}
       onClick={() => router.push(`/categories/${data?.filterValueCode}`)}
     >
-      <Image
-        alt={`image`}
-        src={img}
-        className={classes.image}
-        width={100}
-        height={100}
-      />
+      <img alt={`image`} src={img} className={classes.image} width="100%" />
       <h3 className={classes.title}>
         {data?.filterValue.replaceAll(`&amp;`, `&`).replaceAll(`_`, ` `)}
         {` `}

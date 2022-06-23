@@ -6,31 +6,32 @@ import { BiCategory } from 'react-icons/bi';
 import { AiOutlineShop, AiFillHome } from 'react-icons/ai';
 import { HiOutlineHome } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
+import LoginIcon from '@mui/icons-material/Login';
 import { MdOutlineManageSearch } from 'react-icons/md';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const Mobile = () => {
   const classes = useStyles();
   const router = useRouter();
+  const [isUser, setisUser] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === `object`) {
+      const userId: any = localStorage.getItem(`userId`);
+
+      if (userId && userId?.length !== 2) {
+        setisUser(true);
+      }
+    }
+  }, []);
+
   return (
     <>
       <div className={classes.topBar}>
         <TopBarDialogMobile />
       </div>
       <div className={classes.navMain}>
-        <Input
-          className={classes.root}
-          disabled
-          onClick={() => {
-            router.push(`/searching`);
-          }}
-          placeholder="Search gifts or brands"
-          startAdornment={
-            <InputAdornment position="start">
-              <SearchOutlined />
-            </InputAdornment>
-          }
-        />
         <div className={classes.tags}>
           <Typography
             className={classes.headText}
@@ -52,7 +53,11 @@ const Mobile = () => {
         <div className={classes.bottomTab}>
           <HiOutlineHome onClick={() => router.push(`/`)} />
           <MdOutlineManageSearch onClick={() => router.push(`/categories`)} />
-          <CgProfile onClick={() => router.push(`/my-gift`)} />
+          {isUser ? (
+            <CgProfile onClick={() => router.push(`/my-gift`)} />
+          ) : (
+            <LoginIcon onClick={() => router.push(`/login`)} />
+          )}
         </div>
       </div>
     </>

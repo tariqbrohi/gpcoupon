@@ -24,6 +24,8 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   heading: {
     fontSize: `28px`,
+    textAlign: 'center',
+    margin: '0 auto',
     fontWeight: `600`,
   },
   arrowDiv: {

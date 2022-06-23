@@ -58,10 +58,6 @@ export default function SimpleDialogDemo() {
   const [localCountry, setLocalCountry] = useState(``);
 
   const SetCountryOnUseEffect = () => {
-    // const lang: any =
-    //   typeof window === `object` && localStorage.getItem(`gp_lang`);
-    // setLanguage(lang || `en`);
-
     const localCheck: any =
       typeof window === `object` && localStorage.getItem(`country`);
     if (localCheck?.length === 2) {
@@ -71,9 +67,8 @@ export default function SimpleDialogDemo() {
 
   useEffect(() => {
     setLocalCountry(country);
-    // SetCountryOnUseEffect();
+    SetCountryOnUseEffect();
   }, [country]);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -89,7 +84,6 @@ export default function SimpleDialogDemo() {
     //   // setLanguage(lang);
     //   localStorage.setItem(`gp_lang`, lang);
     // }
-
     setCountry(filterValueCode);
     setOpen(false);
     Router.reload();
@@ -125,34 +119,32 @@ export default function SimpleDialogDemo() {
   return (
     <div>
       <Typography
-        className={classes.modalHeadMobile}
-        variant="caption"
+        className={classes.modalHead}
+        variant={`caption`}
         onClick={handleClickOpen}
       >
-        To :{` `}
         {localCountry === `south_korea`
           ? `South Korea`
-          : localCountry === `usa`
-          ? `USA`
-          : `Canada`}
+          : localCountry === `canada`
+          ? `Canada`
+          : `USA`}
         <Image
           alt={`image`}
           src={
             localCountry === `south_korea`
               ? KoreaLogo
-              : localCountry === `usa`
-              ? UsaLogo
-              : CaLogo
+              : localCountry === `canada`
+              ? CaLogo
+              : UsaLogo
           }
           width="17px"
           height={`17px`}
+          style={{ marginLeft: `3px` }}
         />
         <ArrowDownwardOutlined />
       </Typography>
       <div className={classes.mobileBottom}>
-        <h2>
-          Find the perfect gift <br /> to South Korea
-        </h2>
+        <h2>Share the gift of GCoupon</h2>
         <Image alt={`image`} src={giftBox} width="166px" height="120px" />
       </div>
       <Drawer

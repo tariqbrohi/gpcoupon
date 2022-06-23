@@ -17,18 +17,21 @@ export const useStyles = makeStyles((theme: any) => ({
   topBar: {
     padding: `0.5rem 0`,
     width: `100%`,
-    backgroundColor: `#ffebf1`,
+    backgroundColor: `#E7E0FF`,
     '@media(max-width:770px)': {
       display: `none`,
     },
   },
   navMain: {
-    width: `80%`,
+    width: `100%`,
     margin: `0 auto`,
     display: `flex`,
+    paddingBottom: '30px',
     alignItems: `center`,
+    background: '#E7E0FF',
     justifyContent: `space-between`,
-    marginTop: `1rem`,
+    // marginTop: `1rem`,
+
     '@media(max-width:1030px)': {
       width: `100%`,
       padding: `0 15px`,
@@ -95,6 +98,7 @@ export const useStyles = makeStyles((theme: any) => ({
     display: `flex`,
     justifyContent: `space-between`,
     alignItems: `center`,
+    background: '#E7E0FF',
     paddingLeft: `10px`,
   },
   modalClose: {

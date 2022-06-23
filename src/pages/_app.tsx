@@ -19,7 +19,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   const [user, setUser] = useLocalStorage(`userId`, ``);
   const [userDetail, setUserDetail] = useState({});
-  const [country, setCountry] = useLocalStorage(`country`, ``);
+  const [country, setCountry] = useLocalStorage(`country`, `usa`);
   const [singleVoucher, setSingleVoucher] = useLocalStorage(
     `singleVoucher`,
     ``,

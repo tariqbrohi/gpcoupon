@@ -9,21 +9,23 @@ import Reviews from '@/components/Views/Reviews';
 import HowTo from '@/components/Views/HowTo';
 import useTranslation from 'next-translate/useTranslation';
 import GPoints from '@/components/Gpoint';
+import { useContext } from 'react';
+import AppContext from '@/providers/app-context';
 
 export default function Home() {
-  const { lang } = useTranslation();
+  const { country } = useContext(AppContext);
 
   return (
     <Layout>
       <div className="home-main">
-        {lang === 'ko' && <GPoints />}
         <Banner />
         {/* <BrandCarousal /> */}
+        {country === 'south_korea' && <GPoints />}
         <GiftSection />
         <Categories />
         <PopularGift />
         {/* <TopBrand /> */}
-        <HowTo />
+        {/* <HowTo /> */}
         <Reviews />
       </div>
     </Layout>

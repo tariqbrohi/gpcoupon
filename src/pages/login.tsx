@@ -48,7 +48,7 @@ export default function Login() {
         username,
         password,
       });
-      console.log(response.user);
+
       setUserDetail(response.user);
       // setBasicToken(response.token);
       // setAuthenticated(true);
