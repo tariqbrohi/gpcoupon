@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   leftWrapper: {
     height: `100%`,
-    backgroundColor: `#ffeaf0`,
+    backgroundColor: `#E7E0FF`,
     display: `flex`,
     alignItems: `center`,
     [theme.breakpoints.down(`sm`)]: {
@@ -74,14 +74,15 @@ export const useStyles = makeStyles((theme: any) => ({
     },
   },
   loginButton: {
-    color: `var(--primary)`,
-    border: `1px solid var(--primary)`,
+    color: `#E7E0FF`,
+    border: `1px solid #E7E0FF`,
     backgroundColor: `transparent`,
     borderRadius: `.7rem`,
     padding: `.7rem 1.3rem`,
     cursor: `pointer`,
     '&:hover': {
-      backgroundColor: `rgba(231,56,118,0.2)`,
+      backgroundColor: `#E7E0FF`,
+      color: `#fff`,
     },
   },
   rightMain: {
@@ -101,11 +102,11 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   rightMainLoginEmailButton: {
     color: `var(--white)`,
-    border: `1px solid var(--primary)`,
+    border: `1px solid #E7E0FF`,
     width: `100%`,
     fontSize: `1.3rem`,
     textTransform: `capitalize`,
-    backgroundColor: `var(--primary)`,
+    backgroundColor: `#E7E0FF`,
     borderRadius: `.7rem`,
     padding: `.7rem 1.3rem`,
     cursor: `pointer`,

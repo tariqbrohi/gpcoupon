@@ -16,19 +16,14 @@ import {
   Divider,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import NextImage from 'next/image';
 import { useStyles } from '../styles/pages/SignUpAndLoginAndSignupCompleted';
-import facebook from '../asset/facebook.svg';
-import google from '../asset/google.svg';
 import girl from '../asset/girl3x.png';
 import boy from '../asset/boy3x.png';
 import man from '../asset/man3x.png';
-import logo from '../asset/logo.png';
-import Layout from '@/components/layout/Layout';
-import SearchOutlined from '@mui/icons-material/SearchOutlined';
 import AppContext from '@/providers/app-context';
 import { AppContextInterface } from '@/annotations/types';
 import { postLogin } from '@/redux/actions/authActions';
+import Spacer from '@/components/Spacer';
 
 export default function Login() {
   const classes = useStyles();
@@ -68,28 +63,34 @@ export default function Login() {
     <section className={classes.signUpContainer}>
       <div className={classes.leftWrapper}>
         <div className={classes.imageWrapper}>
-          <Image alt={`image`} src={man}></Image>
+          {/* <Image alt={`image`} src={man}></Image>
           <Image alt={`image`} src={boy}></Image>
-          <Image alt={`image`} src={girl}></Image>
+          <Image alt={`image`} src={girl}></Image> */}
         </div>
       </div>
       <div className={classes.rightWrapper}>
         <div className={classes.rightHeader}>
           <div className={classes.headerLogo}>
-            <Image
+            <img
               alt={`image`}
+              width="100px"
               onClick={() => router.push(`/`)}
               style={{ cursor: `pointer` }}
-              src={logo}
-            ></Image>
+              src="/asset/GPoint_Black_logo.png"
+            />
           </div>
           <div className={classes.headerInnerRight}>
             <Typography variant="h6" component="span">
-              New to SodaGift?{` `}
+              New to GCoupon?{` `}
             </Typography>
-            <NextLink href="/signup">
-              <button className={classes.loginButton}>Signup</button>
-            </NextLink>
+            <button
+              className={classes.loginButton}
+              onClick={() =>
+                window.open(`https://gpointwallet.com/account/create`)
+              }
+            >
+              Signup
+            </button>
           </div>
         </div>
         <div className={classes.rightMain}>
@@ -112,7 +113,7 @@ export default function Login() {
             }}
             style={{ width: `100%` }}
           ></TextField>
-          <NextLink href="/">
+          {/* <NextLink href="/">
             <a
               style={{
                 width: `100%`,
@@ -123,7 +124,8 @@ export default function Login() {
             >
               Forgot Password?
             </a>
-          </NextLink>
+          </NextLink> */}
+          {/* <Spacer size={15} /> */}
           <LoadingButton
             loading={loading}
             variant="contained"
@@ -132,7 +134,7 @@ export default function Login() {
           >
             Login
           </LoadingButton>
-          <Divider style={{ width: `100%` }}>OR</Divider>
+          {/* <Divider style={{ width: `100%` }}>OR</Divider>
           <button className={classes.rightMainLoginGoogleButton}>
             <Image alt={`image`} src={google}></Image>
             <span>Continue With Google</span>
@@ -141,7 +143,7 @@ export default function Login() {
             <Image alt={`image`} src={facebook}></Image>
             <span>Continue With Facebook</span>
             {` `}
-          </button>
+          </button> */}
         </div>
       </div>
     </section>

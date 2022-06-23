@@ -182,7 +182,7 @@ const Desktop = () => {
                   <MenuItem
                     onClick={() => {
                       localStorage.clear();
-                      router.push(`/login`);
+                      router.push(`/`);
                     }}
                   >
                     Logout
@@ -204,7 +204,9 @@ const Desktop = () => {
                 <Button
                   className={classes.buttonContained}
                   variant="contained"
-                  onClick={() => window.open('https://gpointwallet.com')}
+                  onClick={() =>
+                    window.open('https://gpointwallet.com/account/create')
+                  }
                 >
                   Sign up
                 </Button>
