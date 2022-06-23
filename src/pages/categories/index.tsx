@@ -20,6 +20,7 @@ import brand4 from '../../asset/brand4.jpg';
 import brand5 from '../../asset/brand5.jpg';
 import brand6 from '../../asset/brand6.jpg';
 import { getCategories } from '@/redux/actions/authActions';
+import { Box } from '@mui/material';
 
 const mapCatToImg = {
   apparel_fashion_accessories: `/categories/Apparel.jpg`,
@@ -118,16 +119,25 @@ const Categories = () => {
       <div className={classes.container}>
         <div className={classes.main}>
           <h2 className={classes.heading}>Categories</h2>
-          <Grid container columns={12}>
-            {Categorydata?.map((data: any, index: number) => (
-              <Grid key={index} item xs={12} sm={4} md={3} lg={2}>
-                <SimpleCategoryCard
-                  data={data}
-                  img={mapCatToImg[data.filterValueCode]}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Grid container columns={12}>
+              {Categorydata?.map((data: any, index: number) => (
+                <Grid key={index} item xs={12} sm={4} md={3} lg={2}>
+                  <SimpleCategoryCard
+                    data={data}
+                    img={mapCatToImg[data.filterValueCode]}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
           {/* <h2 className={classes.heading}>Popular Brands</h2>
           <Grid container spacing={2} columns={12} className={classes.grid2}>
             {BrandData?.map((data: any, index: number) => (

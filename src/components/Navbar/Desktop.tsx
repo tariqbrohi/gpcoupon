@@ -183,6 +183,7 @@ const Desktop = () => {
                     onClick={() => {
                       localStorage.clear();
                       router.push(`/`);
+                      router.reload();
                     }}
                   >
                     Logout
