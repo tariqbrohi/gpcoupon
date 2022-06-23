@@ -14,6 +14,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { BsFacebook, BsInstagram, BsYoutube } from 'react-icons/bs';
+import Link from 'next/link';
 
 const DesktopFooter = () => {
   const classes = useStyles();
@@ -31,99 +32,20 @@ const DesktopFooter = () => {
 
   return (
     <div className={classes.container}>
-      <div className={`${classes.sec}`}>
-        <Select
-          value={Language}
-          onChange={handleChange}
-          displayEmpty
-          inputProps={{ 'aria-label': `Without label` }}
-        >
-          <MenuItem value={`english`} selected>
-            <LanguageIcon /> English
-          </MenuItem>
-          <MenuItem value={`한국어`}>
-            <LanguageIcon /> 한국어
-          </MenuItem>
-        </Select>
-      </div>
-
-      <div className={classes.mainAccordion}>
-        <Accordion
-          expanded={expanded === `panel1`}
-          className={classes.accordian}
-          onChange={accordionChange(`panel1`)}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {/* <Typography>SodaGift</Typography> */}
-            <p>SodaGift</p>
-          </AccordionSummary>
-          <AccordionDetails>
-            <p>About Us</p>
-            <p>Invite Friends</p>
-            <p>Blog</p>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          expanded={expanded === `panel2`}
-          className={classes.accordian}
-          onChange={accordionChange(`panel2`)}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {/* <Typography>Send Gifts to</Typography> */}
-            <p>Send Gifts to</p>
-          </AccordionSummary>
-          <AccordionDetails>
-            <p>South Korea</p>
-            <p>United States</p>
-            <p>Canada</p>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          expanded={expanded === `panel3`}
-          className={classes.accordian}
-          onChange={accordionChange(`panel3`)}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {/* <Typography>Support</Typography> */}
-            <p>Support</p>
-          </AccordionSummary>
-          <AccordionDetails>
-            <p>Help</p>
-            <p>How to use</p>
-            <p>support@sodagift.com</p>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          expanded={expanded === `panel4`}
-          className={classes.accordian}
-          onChange={accordionChange(`panel4`)}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            {/* <Typography>Follow us</Typography> */}
-            <p>Follow us</p>
-          </AccordionSummary>
-          <AccordionDetails>
-            <p>
-              <BsFacebook />
-              Facebook
-            </p>
-            <p>
-              <BsInstagram />
-              Instagram
-            </p>
-            <p>
-              <BsYoutube />
-              Youtube
-            </p>
-          </AccordionDetails>
-        </Accordion>
-      </div>
       <Divider />
       <div className={classes.lastsec}>
         <p className={classes.para}>
           © SodaCrew Global Inc. or its affiliates 2022
         </p>
-        <p className={classes.para}>Terms and Policy</p>
+        <p className={classes.para}>
+          <Link href="/termOfUse">
+            <a>Terms of Use</a>
+          </Link>
+          <span> and </span>
+          <Link href="/privacyPolicy">
+            <a>Privacy Policy</a>
+          </Link>
+        </p>
       </div>
     </div>
   );
