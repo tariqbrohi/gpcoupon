@@ -35,6 +35,7 @@ export const useStyles = makeStyles((theme: any) => ({
     '@media(max-width:1030px)': {
       width: `100%`,
       padding: `0 15px`,
+      paddingBottom: '30px',
     },
     '@media(max-width:770px)': {
       display: `none`,

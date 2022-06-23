@@ -13,7 +13,7 @@ import moment from 'moment';
 import Spacer from '@/components/Spacer';
 
 const MyGifts = () => {
-  const { user, setSingleVoucher } = useContext(
+  const { user, userDetail, setSingleVoucher } = useContext(
     AppContext,
   ) as AppContextInterface;
   const classes = useStyles();

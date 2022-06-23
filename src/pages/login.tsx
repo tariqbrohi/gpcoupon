@@ -47,7 +47,7 @@ export default function Login() {
       setUserDetail(response.user);
       // setBasicToken(response.token);
       // setAuthenticated(true);
-      setUser(response.user.userId);
+      setUser(response.user.id);
 
       setLoading(false);
       router.push('/');

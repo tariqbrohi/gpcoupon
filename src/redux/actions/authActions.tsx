@@ -99,6 +99,7 @@ export const postCharge = async (payload: any) => {
     });
 
     const response = await res.json();
+    console.log(response);
     if (response?.status === 500) {
       NotifyComponent(NotifyMethodEnum.failure, `Insufficient Balance!`);
       return response;

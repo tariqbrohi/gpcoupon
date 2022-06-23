@@ -9,4 +9,7 @@ module.exports = nextTranslate({
     GP_CLIENT_ID: process.env.GP_CLIENT_ID,
     GP_CLIENT_SECRET: process.env.GP_CLIENT_SECRET,
   },
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
 });
