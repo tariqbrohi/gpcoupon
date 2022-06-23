@@ -22,7 +22,7 @@ const DesktopFooter = () => {
           © SodaCrew Global Inc. or its affiliates 2022
         </p>
       </div>
-      <p>
+      <p className={classes.para}>
         <Link href="/termsOfUse">
           <a>Terms of Use</a>
         </Link>

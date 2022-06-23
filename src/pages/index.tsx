@@ -21,7 +21,7 @@ export default function Home() {
         <Banner />
         {/* <BrandCarousal /> */}
         {country === 'south_korea' && <GPoints />}
-        <GiftSection />
+        {/* <GiftSection /> */}
         <Categories />
         <PopularGift />
         {/* <TopBrand /> */}
