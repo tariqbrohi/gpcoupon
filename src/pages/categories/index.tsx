@@ -212,14 +212,14 @@ const Categories = () => {
               </Grid>
             ))}
           </Grid>
-          <h2 className={classes.heading}>Popular Brands</h2>
+          {/* <h2 className={classes.heading}>Popular Brands</h2>
           <Grid container spacing={2} columns={12} className={classes.grid2}>
             {BrandData?.map((data: any, index: number) => (
               <Grid key={index} item xs={12} sm={4} md={3} lg={3}>
                 <BrandCard data={data} />
               </Grid>
             ))}
-          </Grid>
+          </Grid> */}
         </div>
       </div>
     </Layout>
