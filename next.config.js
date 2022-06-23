@@ -1,6 +1,5 @@
 const nextTranslate = require('next-translate');
 
-
 module.exports = nextTranslate({
   reactStrictMode: true,
   env: {
@@ -9,8 +8,5 @@ module.exports = nextTranslate({
     REFRESH_TOKEN: process.env.REFRESH_TOKEN,
     GP_CLIENT_ID: process.env.GP_CLIENT_ID,
     GP_CLIENT_SECRET: process.env.GP_CLIENT_SECRET,
-  },
-  images: {
-    domains: ['res.cloudinary.com'],
   },
 });

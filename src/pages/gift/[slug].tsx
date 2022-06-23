@@ -125,16 +125,20 @@ const Item = () => {
                 </TabList>
               </Box>
               <TabPanel value="desc">
-                {Data?.map((para) => (
-                  <p className={classes.desc}>{para.para}</p>
+                {Data?.map((para, idx) => (
+                  <p className={classes.desc} key={idx}>
+                    {para.para}
+                  </p>
                 ))}
                 {/* <div className={classes.descImage}>
                   <Image src={ReedamImage} />
                 </div> */}
               </TabPanel>
               <TabPanel value="refund">
-                {Data2?.map((para) => (
-                  <p className={classes.desc}>{para.para}</p>
+                {Data2?.map((para, idx) => (
+                  <p className={classes.desc} key={idx}>
+                    {para.para}
+                  </p>
                 ))}
                 {/* <div className={classes.descImage}>
                   <Image src={ReedamImage} />

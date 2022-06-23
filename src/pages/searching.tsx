@@ -1,8 +1,8 @@
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Image from 'next/image';
-import Logo from '@/asset/logo.png';
-import NextLink from 'next/link';
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Image from "next/image";
+import Logo from "@/asset/logo.png";
+import NextLink from "next/link";
 import {
   Typography,
   Grid,
@@ -10,18 +10,18 @@ import {
   Input,
   InputAdornment,
   Chip,
-} from '@mui/material';
-import NextImage from 'next/image';
-import { useStyles } from '../styles/pages/Searching';
-import category from '../asset/categories_kr.png';
-import brand from '../asset/brands_kr.png';
-import Layout from '@/components/layout/Layout';
-import SearchOutlined from '@mui/icons-material/SearchOutlined';
-import { useState } from 'react';
+} from "@mui/material";
+import NextImage from "next/image";
+import { useStyles } from "../styles/pages/Searching";
+import category from "../asset/categories_kr.png";
+import brand from "../asset/brands_kr.png";
+import Layout from "@/components/layout/Layout";
+import SearchOutlined from "@mui/icons-material/SearchOutlined";
+import { useState } from "react";
 
-export default function Home() {
+export default function Searching() {
   const classes = useStyles();
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
   const router = useRouter();
   return (
     <div className={classes.searchingcontainer}>
@@ -31,14 +31,14 @@ export default function Home() {
           <input
             className={classes.searchInput}
             placeholder="Search gifts or brands"
-            onChange={(e) => { setName(e.target.value) }}
-            onKeyDown={
-              (e) => {
-                if (e.code === "Enter" && name !== "") {
-                  router.push(`/search/${name}`)
-                }
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.code === "Enter" && name !== "") {
+                router.push(`/search/${name}`);
               }
-            }
+            }}
           ></input>
         </div>
 
@@ -83,9 +83,9 @@ export default function Home() {
                 label="Small"
                 size="medium"
                 variant="outlined"
-              // onClick={() => {}}
+                // onClick={() => {}}
               />
-            ),
+            )
           )}
         </div>
       </div>
