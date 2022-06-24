@@ -36,31 +36,31 @@ export default function GPoints() {
         setLoading(false);
       });
   }, []);
-  console.log(data);
-  if (loading && country !== 'south_korea') return <></>;
 
+  if (loading || country !== 'south_korea') return <></>;
+  console.log(data, country, loading, forexData);
   return (
     <GCardWrapper title="GPoints Coupon">
       {data?.map((item: any) => (
         <Card
-          key={item.id}
+          key={item?.id}
           sx={{ display: 'flex', m: 1.5, cursor: 'pointer' }}
-          onClick={() => Router.push(`/coupon/${item.slug}`)}
+          onClick={() => Router.push(`/coupon/${item?.slug}`)}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ width: '155px' }}>
               <Typography component="div" variant="h5">
-                {item.name}
+                {item?.name}
               </Typography>
               <Typography component="div" variant="h5">
-                {convert(item.amount, forexData || 1, 1)}
+                {convert(item?.amount, forexData || 1, 1)}
               </Typography>
             </CardContent>
           </Box>
           <CardMedia
             component="img"
             sx={{ width: '200px' }}
-            image={item.imageUrl}
+            image={item?.imageUrl}
           />
         </Card>
       ))}
