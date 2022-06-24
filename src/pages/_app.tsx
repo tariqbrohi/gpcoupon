@@ -40,7 +40,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <AppContext.Provider
       value={{
         singleVoucher,
-        userDetail: JSON.parse(userDetail || `{}`),
+        // userDetail: JSON.parse(userDetail || `{}`),
         setUserDetail: handleSetUserDetail,
         setSingleVoucher,
         name,
