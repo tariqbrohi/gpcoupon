@@ -27,39 +27,6 @@ const responsive = {
   },
 };
 
-const options = [
-  {
-    name: 'Couples',
-    imageUrl:
-      'https://images.pexels.com/photos/6030165/pexels-photo-6030165.jpeg?auto=compress&cs=tinysrgb&w=800',
-    filterValueCode: 'couples',
-  },
-  {
-    name: 'Kids',
-    imageUrl:
-      'https://images.pexels.com/photos/7099944/pexels-photo-7099944.jpeg?auto=compress&cs=tinysrgb&w=800',
-    filterValueCode: 'kids',
-  },
-  {
-    name: 'Men',
-    imageUrl:
-      'https://images.pexels.com/photos/5970863/pexels-photo-5970863.jpeg?auto=compress&cs=tinysrgb&w=800',
-    filterValueCode: 'men',
-  },
-  {
-    name: 'Parents',
-    imageUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj8VwY5uMlEmd9LS5oGKVOQxwrI3r8IvBbPXfqjUvyp5GY4r2xJ7KdSJC93BQbFSS31Vo&usqp=CAU',
-    filterValueCode: 'parents',
-  },
-  {
-    name: 'Women',
-    imageUrl:
-      'https://nypost.com/wp-content/uploads/sites/2/2021/08/best-gift-ideas-women.jpg?quality=75&strip=all',
-    filterValueCode: 'women',
-  },
-];
-
 const PopularGift = (props: any) => {
   const classes = useStyles();
   const [Data, setData] = React.useState([]);
@@ -87,7 +54,7 @@ const PopularGift = (props: any) => {
           });
         }}
       >
-        <div key={key} className={classes.card}>
+        <div className={classes.card}>
           <div style={{ borderRadius: `16px` }} className={classes.image}>
             <img
               alt={`image`}
@@ -124,9 +91,6 @@ const PopularGift = (props: any) => {
         {Data?.map((data: any, index: number) => (
           <Item key={index} item={data} />
         ))}
-        {/* {options.map((o) => (
-          <Item key={o.name} item={o} />
-        ))} */}
       </Carousel>
     </div>
   );

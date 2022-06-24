@@ -37,11 +37,11 @@ export default function GPoints() {
       {data?.map((item: any) => (
         <Card
           key={item.id}
-          sx={{ display: 'flex', mx: 1.5, cursor: 'pointer' }}
+          sx={{ display: 'flex', m: 1.5, cursor: 'pointer' }}
           onClick={() => Router.push(`/coupon/${item.slug}`)}
         >
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <CardContent sx={{ flex: '1 0 auto' }}>
+            <CardContent sx={{ width: '155px' }}>
               <Typography component="div" variant="h5">
                 {item.name}
               </Typography>
@@ -52,7 +52,7 @@ export default function GPoints() {
           </Box>
           <CardMedia
             component="img"
-            sx={{ width: 151 }}
+            sx={{ width: '200px' }}
             image={item.imageUrl}
           />
         </Card>

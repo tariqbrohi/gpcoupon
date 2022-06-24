@@ -20,7 +20,7 @@ export default async function handler(
 
   try {
     const { brand, country } = req.query as any;
-    console.log(brand, country, ' here ');
+
     const items = await prisma.item.findMany({
       where: {
         brand: brand as string,
