@@ -34,7 +34,7 @@ export default function Home() {
       <div className="home-main">
         <Banner />
         {/* <BrandCarousal /> */}
-        <GPoints />
+        {/* <GPoints /> */}
         {/* <GiftSection /> */}
         <Categories />
         <PopularGift />
