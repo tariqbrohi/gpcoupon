@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Layout from '@/components/layout/AdminLayout';
@@ -18,15 +18,16 @@ import Router from 'next/router';
 import { ROUTES } from '@/ROUTES';
 import axios from 'axios';
 import WarningPopup from '@/components/WarningPopup';
+import AppContext from '@/providers/app-context';
 
 export default withPageAuthRequired(function Brands() {
-  const { lang } = useTranslation();
+  const { country } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState('');
   const [{ data, error }] = useAxios({
     method: 'get',
-    url: `/api/brands?country=${lang}`,
+    url: `/api/brands`,
   });
 
   const handleDelete = (id: string) => () => {

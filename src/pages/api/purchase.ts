@@ -24,8 +24,18 @@ export default async function handler(
   }
 
   try {
-    const { name, email, itemId, code, quantity, meta, giver, giverEmail } =
-      req.body;
+    const {
+      name,
+      email,
+      itemId,
+      code,
+      quantity,
+      meta,
+      giver,
+      giverEmail,
+      user,
+      amount,
+    } = req.body;
 
     const item = await prisma.item.findUnique({
       where: {
@@ -66,6 +76,8 @@ export default async function handler(
     const data: any = {
       item: item as unknown as Prisma.JsonObject,
       quantity,
+      user,
+      amount,
     };
 
     if (code) {

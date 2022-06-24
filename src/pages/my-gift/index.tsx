@@ -11,6 +11,8 @@ import AppContext from '@/providers/app-context';
 import { AppContextInterface } from '@/annotations/types';
 import moment from 'moment';
 import Spacer from '@/components/Spacer';
+import currencyFormat from '@/lib/currency-format';
+import getCurrencySymbol from '@/lib/get-currency-symbol';
 
 const MyGifts = () => {
   const { user, userDetail, setSingleVoucher } = useContext(
@@ -72,12 +74,22 @@ const MyGifts = () => {
                     {data?.item?.name}
                   </h4>
                   <h4 className={classes.price}>
-                    G {data?.amount} / quantity {data?.quantity}
+                    {data?.item?.brand === 'gpoint'
+                      ? `${getCurrencySymbol('ko')} ${currencyFormat(
+                          data?.amount || 0,
+                        )} / quantity ${data?.quantity}`
+                      : `G ${data?.amount} / quantity ${data?.quantity}`}
                   </h4>
                   <Spacer size={15} />
                   <Typography fontSize={18}>
-                    <b>Total</b> G
-                    {(parseFloat(data?.amount) * data.quantity).toFixed(2)}
+                    <b>Total </b>
+                    {data?.item?.brand === 'gpoint'
+                      ? `${getCurrencySymbol('ko')}${currencyFormat(
+                          (data?.amount || 0) * data.quantity,
+                        )}`
+                      : `G${(parseFloat(data?.amount) * data.quantity).toFixed(
+                          2,
+                        )}`}
                   </Typography>
                 </div>
               </div>

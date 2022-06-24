@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Layout from '@/components/layout/AdminLayout';
@@ -18,11 +18,13 @@ import { ROUTES } from '@/ROUTES';
 import { Countries } from '@/constants';
 import axios from 'axios';
 import parseErrorMessage from '@/lib/parse-error-message';
+import AppContext from '@/providers/app-context';
 
 export default withPageAuthRequired(function Brand() {
   const { query } = useRouter();
   const { lang } = useTranslation();
   const [name, setName] = React.useState('');
+  // const {} = useContext(AppContext)
   const [country, setCountry] = useState('');
   const [slug, setSlug] = useState('');
   const [description, setDescription] = useState('');

@@ -176,10 +176,14 @@ export const Categories = [
 export const Countries = [
   {
     text: 'United States',
-    key: 'en',
+    key: 'usa',
   },
   {
     text: 'South Korea',
-    key: 'ko',
+    key: 'south_korea',
+  },
+  {
+    text: 'Canada',
+    key: 'canada',
   },
 ];

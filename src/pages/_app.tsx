@@ -18,7 +18,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   const [user, setUser] = useLocalStorage(`userId`, ``);
-  const [userDetail, setUserDetail] = useState({});
+  const [userDetail, setUserDetail] = useLocalStorage(`userDetail`, ``);
   const [country, setCountry] = useLocalStorage(`country`, `usa`);
   const [singleVoucher, setSingleVoucher] = useLocalStorage(
     `singleVoucher`,
@@ -32,13 +32,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   // const [name, setName] = useState('name');
 
   // console.log('country App', country)
+  const handleSetUserDetail = (detail: Record<string, any>) => {
+    setUserDetail(JSON.stringify(detail));
+  };
 
   return (
     <AppContext.Provider
       value={{
         singleVoucher,
-        userDetail,
-        setUserDetail,
+        userDetail: JSON.parse(userDetail || `{}`),
+        setUserDetail: handleSetUserDetail,
         setSingleVoucher,
         name,
         setName,

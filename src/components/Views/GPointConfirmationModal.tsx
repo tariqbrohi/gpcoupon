@@ -18,14 +18,13 @@ import { omit } from 'lodash';
 const GPointConfirmationModal = (props: any) => {
   const { open, setOpen, qty, currency, item, affiliate = true } = props;
   const { name, amount, id, brand, imageUrl } = item;
-  const { userDetail } = useContext(AppContext) as AppContextInterface;
+  const { userDetail, user } = useContext(AppContext) as AppContextInterface;
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [recipientName, setName] = useState('');
   const router = useRouter();
   const [code, setCode] = useState('');
-  const { user } = useContext(AppContext) as AppContextInterface;
 
   useEffect(() => {
     setCode(`${Math.floor(100000 + Math.random() * 900000)}`);
@@ -43,6 +42,8 @@ const GPointConfirmationModal = (props: any) => {
           quantity: +qty,
           email,
           giver: userDetail.username,
+          amount: amount * currency,
+          user: userDetail.id,
           giverEmail: userDetail?.profile?.contact?.email,
           meta: {
             currency: 'KRW',
@@ -51,7 +52,7 @@ const GPointConfirmationModal = (props: any) => {
         })
         .then(({ data }) => {
           alert(
-            `주문을 처리하는데 최대 하루정도 소요가 됩니다. Order ID: ${currency}`,
+            `주문을 처리하는데 최대 하루정도 소요가 됩니다. Order ID: ${data}`,
           );
           Router.push('/');
         })

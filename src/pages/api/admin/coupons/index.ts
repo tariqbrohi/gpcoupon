@@ -80,6 +80,7 @@ export default withApiAuthRequired(async function handler(
       res.send(items);
     }
   } catch (err: any) {
+    console.log(err);
     res.status(err?.statusCode || 500).send({
       errors: [
         {

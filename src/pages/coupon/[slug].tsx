@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import Image from 'next/image';
 
@@ -17,6 +17,7 @@ import ReedamImage from '../../asset/reedam.png';
 import useAxios from 'axios-hooks';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
+import AppContext from '@/providers/app-context';
 
 let Data = [
   {
@@ -63,10 +64,10 @@ const Item = () => {
   const {
     query: { slug },
   } = useRouter();
-  const { lang } = useTranslation();
+  const { country } = useContext(AppContext);
   const classes = useStyles();
   const [tab, setTab] = React.useState('desc');
-  const [{ data }] = useAxios(`/api/items/${slug}?country=${lang}`);
+  const [{ data }] = useAxios(`/api/items/${slug}?country=${country}`);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTab(newValue);
@@ -74,77 +75,85 @@ const Item = () => {
 
   return (
     <Layout>
-      <div className={classes.container}>
-        <div className={classes.main}>
-          <BreadCrumbs />
-          <Grid container spacing={2} columns={12} className={classes.sec1}>
-            <Grid item xs={6}>
-              <div className={classes.imageDiv}>
-                <Image src={ProductImage} />
-              </div>
+      {data && (
+        <div className={classes.container}>
+          <div className={classes.main}>
+            <BreadCrumbs />
+            <Grid container spacing={2} columns={12} className={classes.sec1}>
+              <Grid item xs={6}>
+                <div className={classes.imageDiv}>
+                  <img
+                    src={data?.imageUrl}
+                    width="100%"
+                    style={{ borderRadius: '30px' }}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <GGiftDetails {...data} />
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <GGiftDetails {...data} />
-            </Grid>
-          </Grid>
-          <Box
-            sx={{ width: '100%', fontWeight: 'bold' }}
-            className={classes.box}
-          >
-            <TabContext value={tab}>
-              <Box
-                sx={{
-                  borderBottom: 1,
-                  borderColor: 'divider',
-                  marginTop: '3rem',
-                }}
-              >
-                <TabList
-                  onChange={handleChange}
-                  aria-label="lab API tabs example"
+            <Box
+              sx={{ width: '100%', fontWeight: 'bold' }}
+              className={classes.box}
+            >
+              <TabContext value={tab}>
+                <Box
+                  sx={{
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                    marginTop: '3rem',
+                  }}
                 >
-                  <Tab
-                    label="Description"
-                    value="desc"
-                    className={
-                      tab === 'desc' ? classes.tabHead : classes.tabHeadUnactive
-                    }
-                  />
-                  <Tab
-                    label="Refund & Policies"
-                    value="refund"
-                    className={
-                      tab === 'refund'
-                        ? classes.tabHead
-                        : classes.tabHeadUnactive
-                    }
-                  />
-                </TabList>
-              </Box>
-              <TabPanel value="desc">
-                {Data?.map((para, idx) => (
-                  <p className={classes.desc} key={idx}>
-                    {para.para}
-                  </p>
-                ))}
-                {/* <div className={classes.descImage}>
+                  <TabList
+                    onChange={handleChange}
+                    aria-label="lab API tabs example"
+                  >
+                    <Tab
+                      label="Description"
+                      value="desc"
+                      className={
+                        tab === 'desc'
+                          ? classes.tabHead
+                          : classes.tabHeadUnactive
+                      }
+                    />
+                    <Tab
+                      label="Refund & Policies"
+                      value="refund"
+                      className={
+                        tab === 'refund'
+                          ? classes.tabHead
+                          : classes.tabHeadUnactive
+                      }
+                    />
+                  </TabList>
+                </Box>
+                <TabPanel value="desc">
+                  {Data?.map((para, idx) => (
+                    <p className={classes.desc} key={idx}>
+                      {para.para}
+                    </p>
+                  ))}
+                  {/* <div className={classes.descImage}>
                   <Image src={ReedamImage} />
                 </div> */}
-              </TabPanel>
-              <TabPanel value="refund">
-                {Data2?.map((para, idx) => (
-                  <p className={classes.desc} key={idx}>
-                    {para.para}
-                  </p>
-                ))}
-                {/* <div className={classes.descImage}>
+                </TabPanel>
+                <TabPanel value="refund">
+                  {Data2?.map((para, idx) => (
+                    <p className={classes.desc} key={idx}>
+                      {para.para}
+                    </p>
+                  ))}
+                  {/* <div className={classes.descImage}>
                   <Image src={ReedamImage} />
                 </div> */}
-              </TabPanel>
-            </TabContext>
-          </Box>
+                </TabPanel>
+              </TabContext>
+            </Box>
+          </div>
         </div>
-      </div>
+      )}
     </Layout>
   );
 };
