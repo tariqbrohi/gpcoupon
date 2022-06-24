@@ -85,7 +85,7 @@ const MyGifts = () => {
                     <b>Total </b>
                     {data?.item?.brand === 'gpoint'
                       ? `${getCurrencySymbol('ko')}${currencyFormat(
-                          (data?.amount || 0) * data.quantity,
+                          `${(data?.amount || 0) * data.quantity}`,
                         )}`
                       : `G${(parseFloat(data?.amount) * data.quantity).toFixed(
                           2,
