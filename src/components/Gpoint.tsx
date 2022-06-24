@@ -23,6 +23,7 @@ export default function GPoints() {
     method: 'post',
     url: '/api/forex',
   });
+  console.log(`sending to ~~~~ /api/brands/gpoint/items?country=${country}`);
   const [{ data, loading, error }] = useAxios({
     method: 'get',
     url: `/api/brands/gpoint/items?country=${country}`,
