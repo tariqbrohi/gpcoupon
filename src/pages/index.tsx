@@ -16,9 +16,9 @@ import dynamic from 'next/dynamic';
 const Banner = dynamic(() => import('@/components/Views/Banner'), {
   ssr: false,
 });
-const GPoints = dynamic(() => import('../components/Gpoint'), {
-  ssr: false,
-});
+// const GPoints = dynamic(() => import('../components/Gpoint'), {
+//   ssr: false,
+// });
 const Categories = dynamic(() => import('@/components/Views/Categories'), {
   ssr: false,
 });
