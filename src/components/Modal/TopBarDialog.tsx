@@ -42,12 +42,6 @@ const emails = [
   },
 ];
 
-const mapCountryToLocale: Record<string, any> = {
-  usa: `en`,
-  south_korea: `ko`,
-  canada: `en`,
-};
-
 export interface SimpleDialogProps {
   open: boolean;
   onClose: (value: string) => void;

@@ -32,7 +32,7 @@ export default function GPoints() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading && country === 'south_korea') return <></>;
+  if (loading && country !== 'south_korea') return <></>;
 
   return (
     <GCardWrapper title="GPoints Coupon">
