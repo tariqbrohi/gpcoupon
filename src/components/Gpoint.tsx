@@ -48,11 +48,11 @@ export default function GPoints() {
               </Typography>
             </CardContent>
           </Box>
-          {/* <CardMedia
+          <CardMedia
             component="img"
             sx={{ width: '200px' }}
             image={item?.imageUrl}
-          /> */}
+          />
         </Card>
       ))}
     </GCardWrapper>
