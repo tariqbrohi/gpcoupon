@@ -35,11 +35,11 @@ const PopularGift = (props: any) => {
 
   useEffect(() => {
     (async () => {
-      console.log(country);
       const data = await getVouchers(`all`, country, 20);
       setData(data);
     })();
-  }, [country]);
+  }, []);
+  console.log(data, ' from popular');
   return (
     <div className={classes.carousaldiv}>
       <h2>🎁 Most Popular Gifts 🎁</h2>
@@ -89,9 +89,6 @@ const PopularGift = (props: any) => {
           </div>
         ))}
       </Carousel>
-      {/* {Data?.length !== 0 && (
-        
-      )} */}
     </div>
   );
 };
