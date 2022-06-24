@@ -66,10 +66,10 @@ const MyGifts = () => {
                 <div className={classes.info}>
                   <h4
                     className={classes.title}
-                    onClick={() => {
-                      setSingleVoucher(data.item);
-                      router.push(`/item/${data?.item?.name}`);
-                    }}
+                    // onClick={() => {
+                    //   setSingleVoucher(data.item);
+                    //   router.push(`/item/${data?.item?.name}`);
+                    // }}
                   >
                     {data?.item?.name}
                   </h4>
