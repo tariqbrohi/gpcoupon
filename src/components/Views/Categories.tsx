@@ -32,13 +32,17 @@ const Categories = () => {
             alignItems: 'flex-start',
           }}
         >
-          {Categorydata?.slice(0, 16)?.map((data: any, index: number) => (
-            <SimpleCategoryCard
-              key={index}
-              data={data}
-              img={mapCatToImg[data.filterValueCode]}
-            />
-          ))}
+          {Categories?.length !== 0 && (
+            <>
+              {Categorydata?.slice(0, 16)?.map((data: any, index: number) => (
+                <SimpleCategoryCard
+                  key={index}
+                  data={data}
+                  img={mapCatToImg[data.filterValueCode]}
+                />
+              ))}
+            </>
+          )}
         </Box>
       </div>
     </div>

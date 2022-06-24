@@ -1,7 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-// import Carousel from 'react-material-ui-carousel';
-import Image from 'next/image';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import Carousel from 'react-multi-carousel';
 
 import { useStyles } from '../../styles/components/PopularGiftStyle';
@@ -41,57 +39,50 @@ const PopularGift = (props: any) => {
       setData(data);
     })();
   }, [country]);
-  // console.log(Data);
-  function Item({ item, key }: any) {
-    return (
-      <div
-        className={classes.imageDiv}
-        onClick={() => {
-          // localStorage.setItem(`voucher`, JSON.stringify(item));
-          setSingleVoucher(item);
-          Router.push({
-            pathname: `/item/${item.name}`,
-          });
-        }}
-      >
-        <div className={classes.card}>
-          <div style={{ borderRadius: `16px` }} className={classes.image}>
-            <img
-              alt={`image`}
-              src={item.imageUrl}
-              width={`100%`}
-              height="150px"
-            />
-          </div>
-          {/* <p className={classes.company}>{item.for}</p> */}
-          <p className={classes.title}>{item.name}</p>
-          {/* <p className={classes.price}>
-            G {item?.valueDenominations?.split(`,`)?.[0]}
-          </p> */}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={classes.carousaldiv}>
       <h2>🎁 Most Popular Gifts 🎁</h2>
-      <Carousel
-        swipeable={true}
-        draggable={true}
-        autoPlay={false}
-        shouldResetAutoplay={false}
-        showDots={false}
-        responsive={responsive}
-        infinite={true}
-        removeArrowOnDeviceType={[`mobile`]}
-        deviceType={props.deviceType}
-        className={classes.carousal}
-      >
-        {Data?.map((data: any, index: number) => (
-          <Item key={index} item={data} />
-        ))}
-      </Carousel>
+      {Data?.length !== 0 && (
+        <Carousel
+          swipeable={true}
+          draggable={true}
+          autoPlay={false}
+          shouldResetAutoplay={false}
+          showDots={false}
+          responsive={responsive}
+          infinite={true}
+          removeArrowOnDeviceType={[`mobile`]}
+          deviceType={props.deviceType}
+          className={classes.carousal}
+        >
+          {Data?.map((item: any, index: number) => (
+            <div
+              key={index}
+              className={classes.imageDiv}
+              onClick={() => {
+                setSingleVoucher(item);
+                Router.push({
+                  pathname: `/item/${item.name}`,
+                });
+              }}
+            >
+              <div className={classes.card}>
+                <div style={{ borderRadius: `16px` }} className={classes.image}>
+                  <img
+                    alt={`image`}
+                    src={item.imageUrl}
+                    width={`100%`}
+                    height="150px"
+                  />
+                </div>
+                <p className={classes.title}>{item.name}</p>
+              </div>
+            </div>
+            // <Item key={index} item={data} />
+          ))}
+        </Carousel>
+      )}
     </div>
   );
 };
