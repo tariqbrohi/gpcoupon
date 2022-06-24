@@ -32,6 +32,8 @@ export default function GPoints() {
       .finally(() => setLoading(false));
   }, []);
 
+  if (loading) return <></>;
+
   return (
     <GCardWrapper title="GPoints Coupon">
       {data?.map((item: any) => (
@@ -46,7 +48,7 @@ export default function GPoints() {
                 {item.name}
               </Typography>
               <Typography component="div" variant="h5">
-                {convert(item.amount, forexData, 1)}
+                {convert(item.amount, forexData || 1, 1)}
               </Typography>
             </CardContent>
           </Box>

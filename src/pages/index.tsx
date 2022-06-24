@@ -34,7 +34,7 @@ export default function Home() {
       <div className="home-main">
         <Banner />
         {/* <BrandCarousal /> */}
-        {country === 'south_korea' && <GPoints />}
+        <GPoints />
         {/* <GiftSection /> */}
         <Categories />
         <PopularGift />
