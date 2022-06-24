@@ -16,9 +16,9 @@ import convert from '@/lib/forex';
 import AppContext from '@/providers/app-context';
 
 export default function GPoints() {
+  const { country } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>([]);
-  const { country } = useContext(AppContext);
   const [{ data: forexData }] = useAxios({
     method: 'post',
     url: '/api/forex',
@@ -32,7 +32,7 @@ export default function GPoints() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <></>;
+  if (loading || country !== 'south_korea') return <></>;
 
   return (
     <GCardWrapper title="GPoints Coupon">
