@@ -1,5 +1,5 @@
 import useAxios from 'axios-hooks';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Router from 'next/router';
 import { ROUTES } from '../ROUTES';
 import axios from 'axios';
@@ -11,15 +11,14 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import Spacer from './Spacer';
-import useTranslation from 'next-translate/useTranslation';
 import GCardWrapper from './GCardWrapper';
 import convert from '@/lib/forex';
+import AppContext from '@/providers/app-context';
 
 export default function GPoints() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>([]);
-  const { lang } = useTranslation();
+  const { country } = useContext(AppContext);
   const [{ data: forexData }] = useAxios({
     method: 'post',
     url: '/api/forex',
@@ -27,7 +26,7 @@ export default function GPoints() {
 
   useEffect(() => {
     axios
-      .get(`/api/brands/gpoint/items?country=${lang}`)
+      .get(`/api/brands/gpoint/items?country=${country}`)
       .then(({ data }) => setData(data))
       .catch(() => {})
       .finally(() => setLoading(false));

@@ -60,12 +60,14 @@ model Order {
   receiverName            String
   receiverEmail           String
   code                    String
+  user                    String
   quantity                Int
   senderName              String?
   senderEmail             String?
   status                  OrderStatus       @default(processing)           
   meta                    Json?
   reason                  String?
+  amount                  Float
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @default(now())
 }
@@ -91,8 +93,8 @@ enum State {
 }
 
 enum Country {
-  en
-  ko
+  usa
+  south_korea
 }
 
 enum Role {

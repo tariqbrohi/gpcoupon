@@ -22,7 +22,11 @@ export default async function handler(
   try {
     const { country, category } = req.query as any;
 
-    const where: any = { country };
+    const where: any = {};
+
+    if (country) {
+      where.country = country;
+    }
 
     if (category?.toLowerCase() !== 'all') {
       where.category = category;

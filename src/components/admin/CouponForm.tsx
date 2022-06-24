@@ -99,6 +99,10 @@ export default function CouponForm({
       data.discountRate = +state.discountRate;
     }
 
+    if (!state.country) {
+      return alert('Country is required');
+    }
+
     try {
       if (image) {
         const res = await axios.get(`/api/admin/get-signed-url`);
