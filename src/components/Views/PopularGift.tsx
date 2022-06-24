@@ -39,7 +39,7 @@ const PopularGift = (props: any) => {
       setData(data);
     })();
   }, []);
-  console.log(data, ' from popular');
+  console.log(Data, ' from popular');
   return (
     <div className={classes.carousaldiv}>
       <h2>🎁 Most Popular Gifts 🎁</h2>
