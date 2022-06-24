@@ -17,28 +17,19 @@ import AppContext from '@/providers/app-context';
 
 export default function GPoints() {
   const { country } = useContext(AppContext);
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<any>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [data, setData] = useState<any>([]);
   const [{ data: forexData }] = useAxios({
     method: 'post',
     url: '/api/forex',
   });
-
-  useEffect(() => {
-    axios
-      .get(`/api/brands/gpoint/items?country=${country}`)
-      .then(({ data }) => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, []);
-
+  const [{ data, loading, error }] = useAxios({
+    method: 'get',
+    url: `/api/brands/gpoint/items?country=${country}`,
+  });
+  console.log(data, country, loading, forexData, error);
   if (loading || country !== 'south_korea') return <></>;
-  console.log(data, country, loading, forexData);
+
   return (
     <GCardWrapper title="GPoints Coupon">
       {data?.map((item: any) => (
