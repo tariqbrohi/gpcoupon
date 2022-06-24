@@ -1,19 +1,20 @@
 import Layout from '@/components/layout/Layout';
 import SimpleCard from '@/components/Views/SimpleCard';
+import AppContext from '@/providers/app-context';
 import { Box, Container, Typography } from '@mui/material';
 import useAxios from 'axios-hooks';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext } from 'react';
 
 export default function Affiliate() {
   const {
     query: { slug },
   } = useRouter();
-  const { lang } = useTranslation();
-  const [{ data }] = useAxios({
+  const { country } = useContext(AppContext);
+  const [{ data = [] }] = useAxios({
     method: 'get',
-    url: `/api/brands/${slug}/items?country=${lang}`,
+    url: `/api/brands/${slug}/items?country=${country}`,
   });
   console.log(data);
 

@@ -110,7 +110,7 @@ export default function Home() {
     const resp = await getVouchers(code, country, `all`);
     setVoucherData(resp);
   };
-  console.log(VoucherData);
+
   useEffect(() => {
     getData();
   }, []);

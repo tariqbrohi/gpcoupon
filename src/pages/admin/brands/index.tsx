@@ -21,7 +21,6 @@ import WarningPopup from '@/components/WarningPopup';
 import AppContext from '@/providers/app-context';
 
 export default withPageAuthRequired(function Brands() {
-  const { country } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState('');

@@ -9,8 +9,6 @@ import Reviews from '@/components/Views/Reviews';
 // import HowTo from '@/components/Views/HowTo';
 // import useTranslation from 'next-translate/useTranslation';
 // import GPoints from '@/components/Gpoint';
-import { useContext } from 'react';
-import AppContext from '@/providers/app-context';
 import dynamic from 'next/dynamic';
 
 const Banner = dynamic(() => import('@/components/Views/Banner'), {
@@ -27,8 +25,6 @@ const PopularGift = dynamic(() => import('@/components/Views/PopularGift'), {
 });
 
 export default function Home() {
-  const { country } = useContext(AppContext);
-
   return (
     <Layout>
       <div className="home-main">

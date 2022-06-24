@@ -26,12 +26,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   );
   const [name, setName] = useLocalStorage(`name`, ``);
 
-  // const [user, setUser] = useState('isAuthenticated');
-  // const [country, setCountry] = useState('country');
-  // const [singleVoucher, setSingleVoucher] = useState('singleVoucher');
-  // const [name, setName] = useState('name');
-
-  // console.log('country App', country)
   const handleSetUserDetail = (detail: Record<string, any>) => {
     setUserDetail(JSON.stringify(detail));
   };
