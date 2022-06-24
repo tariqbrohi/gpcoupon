@@ -32,7 +32,7 @@ const Categories = () => {
             alignItems: 'flex-start',
           }}
         >
-          {Categories?.length !== 0 && (
+          {Categorydata?.length !== 0 && (
             <>
               {Categorydata?.slice(0, 16)?.map((data: any, index: number) => (
                 <SimpleCategoryCard
