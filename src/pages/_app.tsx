@@ -11,14 +11,14 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import { useLocalStorage } from '@/providers/useLocalStorage';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    Object.keys(lightTheme).forEach((key) => {
-      document.body.style.setProperty(`--${key}`, lightTheme[key]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   Object.keys(lightTheme).forEach((key) => {
+  //     document.body.style.setProperty(`--${key}`, lightTheme[key]);
+  //   });
+  // }, []);
 
   const [user, setUser] = useLocalStorage(`userId`, ``);
-  const [userDetail, setUserDetail] = useLocalStorage(`userDetail`, ``);
+  const [userDetail, setUserDetail] = useLocalStorage(`userDetail`, `{}`);
   const [country, setCountry] = useLocalStorage(`country`, `usa`);
   const [singleVoucher, setSingleVoucher] = useLocalStorage(
     `singleVoucher`,
@@ -40,7 +40,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <AppContext.Provider
       value={{
         singleVoucher,
-        // userDetail: JSON.parse(userDetail || `{}`),
+        userDetail: JSON.parse(userDetail || `{}`),
         setUserDetail: handleSetUserDetail,
         setSingleVoucher,
         name,
