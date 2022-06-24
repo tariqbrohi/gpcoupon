@@ -94,6 +94,7 @@ enum State {
 
 enum Country {
   usa
+  canada
   south_korea
 }
 

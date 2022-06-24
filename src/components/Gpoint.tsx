@@ -27,11 +27,16 @@ export default function GPoints() {
   useEffect(() => {
     axios
       .get(`/api/brands/gpoint/items?country=${country}`)
-      .then(({ data }) => setData(data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .then(({ data }) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }, []);
-
+  console.log(data);
   if (loading && country !== 'south_korea') return <></>;
 
   return (
