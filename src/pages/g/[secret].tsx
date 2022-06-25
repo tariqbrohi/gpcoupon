@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import currencyFormat from '../../lib/currency-format';
 import Used from '@/components/Stamp/Used';
 import QRCode from 'react-qr-code';
+import { encode, decode } from 'js-base64';
 
 const Wrapper = styled('div')`
   border: 3px solid;
@@ -33,12 +34,12 @@ export default function RedeemGPoint() {
 
   useEffect(() => {
     try {
-      const [orderId, code] = atob(secret as string).split(':');
-      console.log(orderId, code);
+      const [orderId, code] = decode(secret as string).split(':');
+      console.log(orderId, code, decode(secret as string));
+
       axios
         .get(`/api/orders/${orderId}/coupons`)
         .then(({ data }) => {
-          console.log(data);
           setCode(code);
           setCoupons(data);
         })

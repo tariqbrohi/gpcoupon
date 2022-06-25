@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { OrderStatus, PrismaClient } from '@prisma/client';
 import moment from 'moment';
+import { encode } from 'js-base64';
 import { sendCoupon } from '../../../../lib/send-email';
 
 const prisma = new PrismaClient();
@@ -63,13 +64,15 @@ export default withApiAuthRequired(async function handler(
       }),
     ]);
 
+    console.log(`order id = ${order.id}`);
+
     console.log(`sending - `, {
       to: order.receiverEmail,
       dynamicTemplateData: {
         giver: order.senderName,
-        link: `${process.env.GPOINT_WALLET_URI}/g/${Buffer.from(
+        link: `${process.env.GPOINT_WALLET_URI}/g/${encode(
           `${order.id}:${order.code}`,
-        ).toString('base64')}`,
+        )}`,
         // message: "",
       },
     });
@@ -78,9 +81,9 @@ export default withApiAuthRequired(async function handler(
       to: order.receiverEmail,
       dynamicTemplateData: {
         giver: order.senderName,
-        link: `https://coupon.gpointwallet.com/g/${Buffer.from(
+        link: `https://coupon.gpointwallet.com/g/${encode(
           `${order.id}:${order.code}`,
-        ).toString('base64')}`,
+        )}`,
         // message: "",
       },
     });

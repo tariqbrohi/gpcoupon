@@ -38,7 +38,7 @@ export default async function handler(
         id,
       },
     });
-
+    console.log(coupon, ' why not');
     if (!coupon) {
       return res.status(403).send({
         errors: [
