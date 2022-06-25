@@ -15,7 +15,7 @@ export default async function handler(
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    origin: process.env.GPOINT_WALLET_WEB_URI,
+    origin: process.env.GPOINT_API_URI,
   });
 
   const method = req.method?.toLowerCase();
@@ -30,8 +30,19 @@ export default async function handler(
   }
 
   try {
-    const { id, code } = req.body;
+    const { id, t } = req.body;
     const now = moment().unix();
+    console.log(`t = ${t}`);
+
+    if (t !== 'thisisfortemporaryshit') {
+      return res.status(403).send({
+        errors: [
+          {
+            message: 'Invalid id or code.',
+          },
+        ],
+      });
+    }
 
     const coupon = await prisma.coupon.findUnique({
       where: {
