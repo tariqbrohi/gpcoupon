@@ -11,7 +11,7 @@ export default async function handler(
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: process.env.GPOINT_WALLET_URI,
+    origin: process.env.GPOINT_WALLET_WEB_URI,
   });
 
   const method = req.method?.toLowerCase();
