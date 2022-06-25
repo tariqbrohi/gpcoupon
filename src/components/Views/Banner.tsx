@@ -1,8 +1,6 @@
-import Image from 'next/image';
-import BannerImage from '@/asset/banner1.png';
-
 import { useStyles } from '../../styles/components/bannerStyles';
 import { Button, Typography } from '@mui/material';
+import Router from 'next/router';
 
 const Banner = () => {
   const classes = useStyles();
@@ -14,7 +12,11 @@ const Banner = () => {
           Pay for your purchases instantly or share the gift of GCoupon with
           your friends and family, from anywhere in the world.
         </Typography>
-        <Button className={classes.buttonContained} variant="contained">
+        <Button
+          className={classes.buttonContained}
+          variant="contained"
+          onClick={() => Router.push('/categories')}
+        >
           Send GCoupon Now
         </Button>
       </div>
