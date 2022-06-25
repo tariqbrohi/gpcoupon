@@ -15,6 +15,7 @@ export default function GCardWrapper({ children, title }: any) {
           display: 'flex',
           flexWrap: 'wrap',
           alignItems: 'flex-start',
+          justifyContent: 'center',
         }}
       >
         {children}
