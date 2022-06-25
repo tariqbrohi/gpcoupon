@@ -43,52 +43,54 @@ const PopularGift = (props: any) => {
   return (
     <div className={classes.carousaldiv}>
       <h2>🎁 Most Popular Gifts 🎁</h2>
-      <Carousel
-        swipeable={false}
-        draggable={false}
-        autoPlay={false}
-        showDots={true}
-        responsive={responsive}
-        infinite={true}
-        removeArrowOnDeviceType={[`mobile`]}
-        deviceType={props.deviceType}
-        className={classes.carousal}
-        // swipeable={true}
-        // draggable={true}
-        // autoPlay={false}
-        // shouldResetAutoplay={false}
-        // showDots={false}
-        // responsive={responsive}
-        // infinite={true}
-        // removeArrowOnDeviceType={[`mobile`]}
-        // deviceType={props.deviceType}
-        // className={classes.carousal}
-      >
-        {Data?.map((item: any, index: number) => (
-          <div
-            key={index}
-            className={classes.imageDiv}
-            onClick={() => {
-              setSingleVoucher(item);
-              Router.push({
-                pathname: `/item/${item?.name}`,
-              });
-            }}
-          >
-            <div className={classes.card}>
-              <div style={{ borderRadius: `16px` }} className={classes.image}>
-                <img
-                  alt={`image`}
-                  src={item?.imageUrl}
-                  width={`100%`}
-                  height="150px"
-                />
+      {Array.isArray(Data) && (
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          autoPlay={false}
+          showDots={true}
+          responsive={responsive}
+          infinite={true}
+          removeArrowOnDeviceType={[`mobile`]}
+          deviceType={props.deviceType}
+          className={classes.carousal}
+          // swipeable={true}
+          // draggable={true}
+          // autoPlay={false}
+          // shouldResetAutoplay={false}
+          // showDots={false}
+          // responsive={responsive}
+          // infinite={true}
+          // removeArrowOnDeviceType={[`mobile`]}
+          // deviceType={props.deviceType}
+          // className={classes.carousal}
+        >
+          {Data?.map((item: any, index: number) => (
+            <div
+              key={index}
+              className={classes.imageDiv}
+              onClick={() => {
+                setSingleVoucher(item);
+                Router.push({
+                  pathname: `/item/${item?.name}`,
+                });
+              }}
+            >
+              <div className={classes.card}>
+                <div style={{ borderRadius: `16px` }} className={classes.image}>
+                  <img
+                    alt={`image`}
+                    src={item?.imageUrl}
+                    width={`100%`}
+                    height="150px"
+                  />
+                </div>
+                <p className={classes.title}>{item?.name}</p>
               </div>
-              <p className={classes.title}>{item?.name}</p>
             </div>
-          </div>
-        ))}
-      </Carousel>
+          ))}
+        </Carousel>
+      )}
     </div>
   );
 };
