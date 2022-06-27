@@ -46,8 +46,9 @@ const Item = (props: any) => {
                     alt={`image`}
                     // src={ProductImage}
                     src={data?.imageUrl || ``}
-                    width={`100%`}
-                    height={`100%`}
+                    width={`350px`}
+                    height={`238px`}
+                    objectFit="contain"
                   />
                 )}
               </div>
