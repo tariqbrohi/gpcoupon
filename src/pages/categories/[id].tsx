@@ -114,7 +114,7 @@ export default function Home() {
   useEffect(() => {
     getData();
   }, []);
-
+  console.log(VoucherData, ' VoucherData');
   return (
     <Layout>
       <div className={classes.layoutWrapper}>
@@ -129,7 +129,7 @@ export default function Home() {
           </div>
 
           <div className={classes.singleCategoriesContainerMain}>
-            <div className={classes.singleCategoriesContainerMainHeader}>
+            {/* <div className={classes.singleCategoriesContainerMainHeader}>
               <Typography variant="h6">Result {VoucherData?.length}</Typography>
               <Button
                 id="basic-button"
@@ -156,7 +156,7 @@ export default function Home() {
                 <MenuItem onClick={handleClose}>Price: Low to High</MenuItem>
                 <MenuItem onClick={handleClose}>Price: High to Low</MenuItem>
               </Menu>
-            </div>
+            </div> */}
             <div className={classes.root}>
               <div className={classes.productsContainer}>
                 {VoucherData?.map((item: any, index: number) => (
