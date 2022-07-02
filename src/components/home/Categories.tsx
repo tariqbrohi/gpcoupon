@@ -1,7 +1,9 @@
 import Carousel from 'react-multi-carousel';
 import React from 'react';
+import Router from 'next/router';
 import styled from 'styled-components';
 import { Heading, Margin, Paragraph, Skeleton, Spacer } from '@growth-ui/react';
+import { ROUTES } from '@/ROUTES';
 import { useGetCategoriesQuery } from '@/services';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -47,6 +49,10 @@ const Wrapper = styled.section`
 export default function Categories() {
   const { data, loading } = useGetCategoriesQuery();
 
+  const handleRoute = (route: string) => () => {
+    Router.push(`${ROUTES.categories}/${route}`);
+  };
+
   return (
     <Wrapper>
       <Heading as="h2">Categories</Heading>
@@ -68,7 +74,11 @@ export default function Categories() {
           ))}
         {data?.map((cat, idx) => (
           <Margin all={0.5} key={idx}>
-            <Image imageUrl={cat.image.medium} />
+            <Image
+              imageUrl={cat.image.medium}
+              style={{ cursor: 'pointer' }}
+              onClick={handleRoute(cat.slug)}
+            />
             <Spacer size={5} />
             <Paragraph fontSize="xs" style={{ fontWeight: 600 }}>
               {cat?.name}

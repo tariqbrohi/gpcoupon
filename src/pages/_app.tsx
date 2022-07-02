@@ -42,7 +42,13 @@ function MyApp({ Component, pageProps, cookies }: AppContext & AppProps) {
     <Context.Provider
       value={{
         singleVoucher,
-        userDetail: JSON.parse(userDetail || `{}`),
+        userDetail: (() => {
+          try {
+            return JSON.parse(userDetail || `{}`);
+          } catch {
+            return {};
+          }
+        })(),
         setUserDetail: handleSetUserDetail,
         setSingleVoucher,
         name,
