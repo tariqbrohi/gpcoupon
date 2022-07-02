@@ -7,9 +7,9 @@ import { Box } from '@mui/system';
 const HowToUse = () => {
   return (
     <>
-      <Heading as="h1" textAlign="center" style={{ fontWeight: 'bolder' }}>
+      {/* <Heading as="h1" textAlign="center" style={{ fontWeight: 'bolder' }}>
         How To Use
-      </Heading>
+      </Heading> */}
       <Spacer size={50} />
       <Grid.Row>
         <Grid.Col flex="1">

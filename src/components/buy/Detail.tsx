@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useSearchItemsQuery } from '@/services';
 import {
   Button,
+  Chip,
   Grid,
   Heading,
   Image,
@@ -45,7 +46,7 @@ export default function Detail() {
   };
 
   const item = data?.find((item) => item.amount === +amount);
-  console.log(item);
+
   return (
     <>
       <Grid.Row wrap="wrap">
@@ -64,7 +65,14 @@ export default function Detail() {
           {item && (
             <>
               <Heading>{item?.name}</Heading>
-              <Heading as="h2">{`G${item?.amount.toFixed(2)}`}</Heading>
+              <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
+                <Heading as="h2" style={{ width: 'fit-content' }}>
+                  {`G${item?.amount.toFixed(2)}`}
+                </Heading>
+                {item?.discount && (
+                  <Chip color="yellow-500" text={`${item.discount}%`} />
+                )}
+              </Grid.Row>
             </>
           )}
           <Snackbar
