@@ -1,5 +1,5 @@
 export const size = {
-  maxWidth: 700,
+  maxWidth: 1180,
   headerMaxWidth: 1180,
 };
 

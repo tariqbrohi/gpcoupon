@@ -16,11 +16,11 @@ export default errorHandler(async function handler(req, res) {
     const [items, xoxoItems] = await Promise.all([
       prisma.item.findMany({
         where: {
-          category: slug,
+          category: slug === 'all' ? '' : slug,
           country,
         },
       }),
-      xoxoday.getItems({ catSlug: slug, country }),
+      xoxoday.getItems({ catSlug: slug === 'all' ? '' : slug, country }),
     ]);
 
     res.send([

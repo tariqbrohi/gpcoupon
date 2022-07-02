@@ -72,6 +72,19 @@ export default function Categories() {
               <Skeleton width="100px" height="1em" />
             </Margin>
           ))}
+        {data && (
+          <Margin all={0.5}>
+            <Image
+              imageUrl="/images/all.jpg"
+              style={{ cursor: 'pointer' }}
+              onClick={handleRoute('all')}
+            />
+            <Spacer size={5} />
+            <Paragraph fontSize="xs" style={{ fontWeight: 600 }}>
+              All
+            </Paragraph>
+          </Margin>
+        )}
         {data?.map((cat, idx) => (
           <Margin all={0.5} key={idx}>
             <Image

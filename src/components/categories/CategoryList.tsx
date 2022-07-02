@@ -36,6 +36,21 @@ export default function CategoryList() {
               <Skeleton width="100px" height="0.5em" />
             </Column>
           ))}
+        {data && (
+          <Column>
+            <ProgressiveImage
+              rounded
+              placeholder="/images/sm/all.jpg"
+              src="/images/all.jpg"
+              style={{ flex: 1, cursor: 'pointer' }}
+              onClick={handleRoute('all')}
+            />
+            <Spacer size={5} />
+            <Paragraph color="black" fontSize="xs" style={{ fontWeight: 600 }}>
+              All
+            </Paragraph>
+          </Column>
+        )}
         {data?.map((cat) => (
           <Column key={cat.slug}>
             <ProgressiveImage

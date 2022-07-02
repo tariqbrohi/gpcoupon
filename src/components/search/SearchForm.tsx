@@ -26,8 +26,6 @@ export default function SearchForm({ search }: Props) {
     });
   };
 
-  const handleCancel = () => setQ('');
-
   return (
     <Grid.Row verticalAlign="middle">
       <Grid.Col only={['mobile', 'minimobile']}>
@@ -55,7 +53,7 @@ export default function SearchForm({ search }: Props) {
         <Paragraph
           fontSize="sm"
           style={{ fontWeight: 600 }}
-          onClick={handleCancel}
+          onClick={() => Router.back()}
         >
           Cancel
         </Paragraph>
