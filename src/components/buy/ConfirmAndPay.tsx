@@ -109,7 +109,7 @@ export default function ConfirmAndPay({
   };
 
   return (
-    <Modal {...modalProps} style={{ width: '400px' }}>
+    <Modal {...modalProps} style={{ width: '360px' }}>
       <Modal.Content>
         {!success && (
           <>

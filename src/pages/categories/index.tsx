@@ -21,7 +21,7 @@ export default function Categories() {
           <CategoryList />
         </AppContainer>
       </AppMain>
-      <AppFooter />
+      {/* <AppFooter /> */}
       <AppNav />
     </>
   );
