@@ -56,7 +56,13 @@ export default function ItemList({ items, loading }: Props) {
             ) : null}
             <Image
               src={item.image.medium}
-              style={{ flex: 1, borderRadius: '10px', cursor: 'pointer' }}
+              style={{
+                flex: 1,
+                height: 'auto',
+                maxHeight: '237px',
+                borderRadius: '10px',
+                cursor: 'pointer',
+              }}
               onClick={() =>
                 Router.push(
                   `${ROUTES.buy}/${nameToSlug(item.name)}-${item.amount}`,
