@@ -42,7 +42,7 @@ export default function CategoryList() {
               rounded
               placeholder="/images/sm/all.jpg"
               src="/images/all.jpg"
-              style={{ flex: 1, cursor: 'pointer' }}
+              style={{ flex: 1, height: 'auto', cursor: 'pointer' }}
               onClick={handleRoute('all')}
             />
             <Spacer size={5} />
@@ -60,7 +60,6 @@ export default function CategoryList() {
               style={{
                 flex: 1,
                 height: 'auto',
-                maxHeight: '270px',
                 cursor: 'pointer',
               }}
               onClick={handleRoute(cat.slug)}
