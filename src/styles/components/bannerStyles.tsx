@@ -3,11 +3,11 @@ import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles((theme: any) => ({
   main: {
     display: `flex`,
-    backgroundColor: `#f6f0fb`,
+    backgroundColor: `#E7E0FF`,
     width: `100%`,
     alignItems: `center`,
+    overflow: 'hidden',
     justifyContent: `space-evenly`,
-    marginTop: `1rem`,
     '@media(max-width:770px)': {
       padding: `0 20px`,
       display: `none`,
@@ -29,7 +29,7 @@ export const useStyles = makeStyles((theme: any) => ({
     marginTop: `6px`,
   },
   buttonContained: {
-    background: `var(--secondary)`,
+    background: `#6529FF`,
     marginTop: `2rem`,
     width: `100%`,
     borderRadius: `12px`,

@@ -1,28 +1,39 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const method = req.method?.toLowerCase();
 
-  if (method !== "get") {
+  if (method !== 'get') {
     return res.status(404).send({
       errors: [
         {
-          message: "NotFound",
+          message: 'NotFound',
         },
       ],
     });
   }
 
   try {
-    const { country } = req.query as any;
+    const { country, category } = req.query as any;
 
+    const where: any = {};
+
+    if (country) {
+      where.country = country;
+    }
+
+    if (category?.toLowerCase() !== 'all') {
+      where.category = category;
+    }
+    console.log(where);
     const brands = await prisma.brand.findMany({
-      where: {
-        country,
-      },
+      where,
     });
 
     return res.send(brands);
@@ -31,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).send({
       errors: [
         {
-          message: "Opps Something went wrong",
+          message: 'Opps Something went wrong',
         },
       ],
     });

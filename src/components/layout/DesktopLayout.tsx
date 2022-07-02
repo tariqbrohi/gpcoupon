@@ -7,7 +7,7 @@ const DesktopLayout = ({ child }: any) => {
     <div>
       <Navbar />
       {child}
-      <Download />
+      {/* <Download /> */}
       <Footer />
     </div>
   );

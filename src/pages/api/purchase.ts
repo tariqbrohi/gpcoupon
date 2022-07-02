@@ -1,27 +1,41 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { Prisma, PrismaClient } from "@prisma/client";
-import isEmail from "validator/lib/isEmail";
-import { sendOrderProcessingEmail } from "../../lib/send-email";
-import currencyFormat from "../../lib/currency-format";
-import getCurrencySymbol from "../../lib/get-currency-symbol";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { Prisma, PrismaClient } from '@prisma/client';
+import isEmail from 'validator/lib/isEmail';
+import { sendOrderProcessingEmail } from '../../lib/send-email';
+import currencyFormat from '../../lib/currency-format';
+import getCurrencySymbol from '../../lib/get-currency-symbol';
 
 const prisma = new PrismaClient();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const method = req.method?.toLowerCase();
 
-  if (method !== "post") {
+  if (method !== 'post') {
     return res.status(404).send({
       errors: [
         {
-          message: "NotFound",
+          message: 'NotFound',
         },
       ],
     });
   }
 
   try {
-    const { name, email, itemId, code, quantity, giver, giverEmail } = req.body;
+    const {
+      name,
+      email,
+      itemId,
+      code,
+      quantity,
+      meta,
+      giver,
+      giverEmail,
+      user,
+      amount,
+    } = req.body;
 
     const item = await prisma.item.findUnique({
       where: {
@@ -33,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).send({
         errors: [
           {
-            message: "Item not found",
+            message: 'Item not found',
           },
         ],
       });
@@ -43,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).send({
         errors: [
           {
-            message: "Quantity must be greater than 1.",
+            message: 'Quantity must be greater than 1.',
           },
         ],
       });
@@ -53,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).send({
         errors: [
           {
-            message: "Invalid email",
+            message: 'Invalid email',
           },
         ],
       });
@@ -62,6 +76,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const data: any = {
       item: item as unknown as Prisma.JsonObject,
       quantity,
+      user,
+      amount,
     };
 
     if (code) {
@@ -75,15 +91,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data.senderEmail = giverEmail;
     }
 
+    if (meta) {
+      data.meta = meta;
+    }
+
     const order = await prisma.order.create({
       data,
     });
-    console.log(" sending ", {
+
+    console.log(' sending ', {
       to: giverEmail,
       dynamicTemplateData: {
         orderId: order.id,
         name: giver,
-        totalPrice: `${getCurrencySymbol("ko")} ${currencyFormat(`${item.amount * +quantity}`)}`,
+        totalPrice: `${getCurrencySymbol('ko')} ${currencyFormat(
+          `${item.amount * +quantity}`,
+        )}`,
         coupon: `${item.name} x ${quantity}`,
       },
     });
@@ -92,7 +115,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       dynamicTemplateData: {
         orderId: order.id,
         name: giver,
-        totalPrice: `${getCurrencySymbol("ko")} ${currencyFormat(`${item.amount * +quantity}`)}`,
+        totalPrice: `${getCurrencySymbol('ko')} ${currencyFormat(
+          `${item.amount * +quantity}`,
+        )}`,
         coupon: `${item.name} x ${quantity}`,
       },
     });
@@ -103,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).send({
       errors: [
         {
-          message: "Opps, something went wrong",
+          message: 'Opps, something went wrong',
         },
       ],
     });

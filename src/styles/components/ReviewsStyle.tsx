@@ -44,7 +44,8 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   card: {
     width: `90%`,
-    height: `auto`,
+    // height: `auto`,
+    height: '280px',
     paddingBottom: `50px`,
     boxShadow: `0px 0px 5px #c1c1c1`,
     margin: 20,

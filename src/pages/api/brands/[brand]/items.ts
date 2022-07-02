@@ -28,7 +28,7 @@ export default async function handler(
       },
     });
 
-    res.send(items);
+    res.send(items || []);
   } catch (err: any) {
     console.log(err);
     res.send([]);

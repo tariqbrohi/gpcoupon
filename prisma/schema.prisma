@@ -12,7 +12,8 @@ model Brand {
   name                    String            
   description             String?     
   logo                    String
-  country                 Country
+  category                String
+  country                 String
   slug                    String            @unique
   descriptiveImage        String
   createdAt               DateTime          @default(now())
@@ -22,16 +23,18 @@ model Brand {
 model Item {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   name                    String
+  bizAccountId            String?
   type                    String?
   extendedName            String
   provider                String?
   summary                 String?
-  country                 Country
+  country                 String
   description             String
   remark                  String?
   amount                  Float
   display                 Boolean
   discountRate            Int?
+  discountRateType        String?
   notes                   Note[]
   expiresIn               Int
   imageUrl                String
@@ -57,11 +60,14 @@ model Order {
   receiverName            String
   receiverEmail           String
   code                    String
+  user                    String
   quantity                Int
   senderName              String?
   senderEmail             String?
   status                  OrderStatus       @default(processing)           
+  meta                    Json?
   reason                  String?
+  amount                  Float
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @default(now())
 }
@@ -87,8 +93,9 @@ enum State {
 }
 
 enum Country {
-  en
-  ko
+  usa
+  canada
+  south_korea
 }
 
 enum Role {

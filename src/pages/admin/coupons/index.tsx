@@ -50,6 +50,7 @@ export default withPageAuthRequired(function Coupons() {
               <TableCell>Name</TableCell>
               <TableCell>Extended Name</TableCell>
               <TableCell>Slug</TableCell>
+              <TableCell>Country</TableCell>
               <TableCell>Brand</TableCell>
               <TableCell>Category</TableCell>
               <TableCell>Img</TableCell>
@@ -65,6 +66,7 @@ export default withPageAuthRequired(function Coupons() {
                 imageUrl,
                 brand,
                 category,
+                country,
                 extendedName,
               }: any) => (
                 <TableRow
@@ -88,6 +90,7 @@ export default withPageAuthRequired(function Coupons() {
                   </TableCell>
                   <TableCell>{extendedName}</TableCell>
                   <TableCell>{slug}</TableCell>
+                  <TableCell>{country}</TableCell>
                   <TableCell>{brand}</TableCell>
                   <TableCell>{category}</TableCell>
                   <TableCell>

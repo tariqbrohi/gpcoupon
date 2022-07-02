@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Layout from '@/components/layout/AdminLayout';
@@ -18,14 +18,17 @@ import { ROUTES } from '@/ROUTES';
 import { Countries } from '@/constants';
 import axios from 'axios';
 import parseErrorMessage from '@/lib/parse-error-message';
+import AppContext from '@/providers/app-context';
 
 export default withPageAuthRequired(function Brand() {
   const { query } = useRouter();
   const { lang } = useTranslation();
   const [name, setName] = React.useState('');
+  // const {} = useContext(AppContext)
   const [country, setCountry] = useState('');
   const [slug, setSlug] = useState('');
   const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
   const [logo, setLogo] = useState<any>();
   const [descriptiveImage, setDescriptiveImage] = useState<any>();
   const [submitting, setSubmitting] = useState(false);
@@ -36,11 +39,20 @@ export default withPageAuthRequired(function Brand() {
 
   useEffect(() => {
     if (data) {
-      const { name, slug, description, country, descriptiveImage, logo } = data;
+      const {
+        name,
+        category,
+        slug,
+        description,
+        country,
+        descriptiveImage,
+        logo,
+      } = data;
       setName(name);
       setSlug(slug);
       setCountry(country);
       setDescription(description);
+      setCategory(category);
       setLogo(logo);
       setDescriptiveImage(descriptiveImage);
     }
@@ -53,7 +65,8 @@ export default withPageAuthRequired(function Brand() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (submitting || !country || !name || !description || !slug) return;
+    if (submitting || !category || !country || !name || !description || !slug)
+      return;
 
     setSubmitting(true);
 
@@ -62,6 +75,7 @@ export default withPageAuthRequired(function Brand() {
       description,
       country,
       slug,
+      category,
     };
 
     try {

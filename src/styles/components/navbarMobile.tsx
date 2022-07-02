@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme: any) => ({
     padding: `1.2rem 0`,
     width: `100%`,
     display: `none`,
-    backgroundColor: `#ffebf1`,
+    backgroundColor: `#E7E0FF`,
     '@media(max-width:770px)': {
       display: `block`,
     },

@@ -5,6 +5,7 @@ import { useStyles } from '../../styles/components/EgiftDetailsStyle';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Chip, Divider } from '@mui/material';
+import GPointConfirmationModal from './GPointConfirmationModal';
 import Logo from '../../asset/starbucks.jpg';
 import { useRouter } from 'next/router';
 
@@ -17,9 +18,11 @@ import { LoadingButton } from '@mui/lab';
 
 import { NotifyMethodEnum } from '@/annotations/enums/notify-method.enum';
 import NotifyComponent from '@/components/shared/notify';
+import { pick } from 'lodash';
 
 const EgiftDetails = ({ data }: any) => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
   const [counter, setcounter] = useState(1);
   const router = useRouter();
   const [selectedChip, setselectedChip] = useState(0);
@@ -52,6 +55,8 @@ const EgiftDetails = ({ data }: any) => {
 
   console.log(`selectedChip`, selectedChip);
 
+  if (!data) return null;
+
   return (
     <div className={classes.container}>
       <p className={classes.tag}>eGift</p>
@@ -59,7 +64,7 @@ const EgiftDetails = ({ data }: any) => {
       <h2 className={classes.info}>
         {Parse(`${data?.description?.slice(0, 150)}...` || ``)}
       </h2>
-      <h2 className={classes.price}>US$ {counter * selectedChip}</h2>
+      <h2 className={classes.price}>G {selectedChip}</h2>
       <p className={classes.para}>
         • Expires in {Parse(data?.expiryAndValidity || ``)}
       </p>
@@ -71,7 +76,7 @@ const EgiftDetails = ({ data }: any) => {
           ?.map((chip: any, index: number) => (
             <Chip
               key={index}
-              label={` ${counter * chip} `}
+              label={` ${chip} `}
               className={classes.chip}
               variant={selectedChip === Number(chip) ? `filled` : `outlined`}
               onClick={() => setselectedChip(Number(chip))}
@@ -90,8 +95,12 @@ const EgiftDetails = ({ data }: any) => {
           />
           <p className={classes.counter}>{counter}</p>
           <AddIcon
-            className={`${classes.active}`}
-            onClick={() => setcounter(counter + 1)}
+            className={`${counter === 5 ? classes.unactive : classes.active}`}
+            onClick={() => {
+              if (counter < 5) {
+                setcounter(counter + 1);
+              }
+            }}
           />
         </div>
 
@@ -105,19 +114,35 @@ const EgiftDetails = ({ data }: any) => {
         <LoadingButton
           loading={loading}
           className={classes.buttonContained}
-          onClick={() => sendGift()}
+          onClick={() => {
+            setOpen(true);
+          }}
           variant="contained"
         >
           Send Gift
         </LoadingButton>
       </div>
       <Divider />
-      <div className={classes.companyDiv}>
-        <Image alt={`image`} src={Logo} />
-        <p className={classes.name}>Starbucks</p>
-      </div>
+      <GPointConfirmationModal
+        item={{
+          id: data.productId,
+          name: data.name,
+          imageUrl: data.imageUrl,
+          amount: selectedChip,
+        }}
+        qty={counter}
+        affiliate={false}
+        open={open}
+        setOpen={setOpen}
+      />
     </div>
   );
 };
-
+// 'productId',
+//           'name',
+//           'currencyCode',
+//           'currencyName',
+//           'countryCode',
+//           'exchangeRateRule',
+//           'deliveryType',
 export default EgiftDetails;

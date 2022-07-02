@@ -9,6 +9,7 @@ export const useStyles = makeStyles((theme: any) => ({
     maxWidth: `160px !important`,
     minWidth: `160px !important`,
     marginBottom: `2rem`,
+    padding: `0 10px`,
   },
   image: {
     borderRadius: `12px`,

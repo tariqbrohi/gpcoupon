@@ -1,4 +1,5 @@
-export const base_url = `http://localhost:8080`;
+export const base_url =
+  process.env.NEXT_PUBLIC_API_URI || `http://localhost:8081`;
 // export const base_url = `http://192.168.100.252:8080`;
 // export const attachToken = async () => {
 //   const jwt = localStorage.getItem("token");

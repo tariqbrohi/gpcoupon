@@ -7,8 +7,36 @@ import Card from '@mui/material/Card';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 
 import { useStyles } from '../../styles/components/ReviewsStyle';
+import Spacer from '../Spacer';
 
-const CardItem = () => {
+const reviews = [
+  {
+    body: "Just started using this website and I've already found a lot of awesome coupons. Definitely looking forward to coming back every so often to see what else is new. 5/5",
+    author: 'Jacob Siegel',
+  },
+  {
+    body: "I think this coupon is worth five stars. That's the Amazing Coupon for me ! It's a thing of value. I highly recommend it.",
+    author: 'Chloe Lee',
+  },
+  {
+    body: 'Great choice for last minute gifts, definitely recommend!',
+    author: 'Misael Calvillo',
+  },
+  {
+    body: "I highly recommend GCoupon if you're a smart shopper The fact that I can redeem my coupon whenever is the gift that keeps on giving!",
+    author: 'Evandro DaSilva',
+  },
+  {
+    body: 'So many coupons to pick from! definitely makes it easy when gifting for special occasions, not to mention super fast! I come here every time lol. 5 stars',
+    author: 'Ana C.',
+  },
+  {
+    body: '5 Stars The perfect gift for my boyfriend! Super easy to reload. Love it <3',
+    author: 'My Le',
+  },
+];
+
+const CardItem = ({ body, author }: any) => {
   const classes = useStyles();
 
   return (
@@ -23,9 +51,9 @@ const CardItem = () => {
           }}
         >
           {/* <div style={{ margin: 30, width: 10 }} > */}
-          <AccountCircleRoundedIcon
+          {/* <AccountCircleRoundedIcon
             style={{ fontSize: 40, margin: 20, marginRight: 5, color: `grey` }}
-          />
+          /> */}
           {/* </div> */}
           <div
             style={{
@@ -34,16 +62,14 @@ const CardItem = () => {
               alignSelf: `center`,
             }}
           >
-            <h4>Yasir Ahmed</h4>
-            <p style={{ fontSize: 14 }}>Country here</p>
+            <h4>{author}</h4>
+            {/* <p style={{ fontSize: 14 }}>Country here</p> */}
           </div>
         </div>
+
+        <Spacer size={20} />
         <div style={{ marginLeft: 35, marginRight: 35 }}>
-          <p style={{ textAlign: `center` }}>
-            &quot;I was so happy to come across your website. I have sent
-            several gifts already to my my family and friends back home. I am
-            looking forward to keep using your service.&quot;
-          </p>
+          <p style={{ textAlign: `center` }}>&quot;{body}&quot;</p>
           <p style={{ textAlign: `center`, padding: 20, fontSize: 12 }}>
             ⭐⭐⭐⭐⭐️
           </p>
@@ -60,14 +86,6 @@ const Reviews = (props: any) => {
   const handleChange = (cur: number, prev: number) => {
     setIndex(cur);
   };
-
-  function Item({ item }: any) {
-    return (
-      <div className={classes.itemDiv}>
-        <CardItem />
-      </div>
-    );
-  }
 
   const responsive = {
     desktop: {
@@ -100,11 +118,11 @@ const Reviews = (props: any) => {
         deviceType={props.deviceType}
         className={classes.carousal}
       >
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
+        {reviews.map((review) => (
+          <div className={classes.itemDiv} key={review.author}>
+            <CardItem {...review} />
+          </div>
+        ))}
       </Carousel>
     </div>
   );

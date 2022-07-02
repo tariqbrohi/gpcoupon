@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import setLanguage from 'next-translate/setLanguage';
+// import setLanguage from 'next-translate/setLanguage';
 
 import Image from 'next/image';
 import KoreaLogo from '@/asset/korea.png';
@@ -13,15 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import PersonIcon from '@mui/icons-material/Person';
 import ArrowDownwardOutlined from '@mui/icons-material/KeyboardArrowDown';
-import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
-import { blue } from '@mui/material/colors';
 import CloseIcon from '@mui/icons-material/Close';
 
 import AppContext from '@/providers/app-context';
 import { AppContextInterface } from '@/annotations/types';
+import Router from 'next/router';
 
 const emails = [
   {
@@ -44,12 +42,6 @@ const emails = [
   },
 ];
 
-const mapCountryToLocale: Record<string, any> = {
-  usa: 'en',
-  south_korea: 'ko',
-  canada: 'en',
-};
-
 export interface SimpleDialogProps {
   open: boolean;
   onClose: (value: string) => void;
@@ -60,11 +52,9 @@ export default function SimpleDialogDemo() {
   const { setCountry, country } = useContext(AppContext) as AppContextInterface;
 
   const [localCountry, setLocalCountry] = useState(``);
+  const [open, setOpen] = React.useState(false);
 
   const SetCountryOnUseEffect = () => {
-    const lang = localStorage.getItem('gp_lang');
-    setLanguage(lang || 'en');
-
     const localCheck: any =
       typeof window === `object` && localStorage.getItem(`country`);
     if (localCheck?.length === 2) {
@@ -77,22 +67,21 @@ export default function SimpleDialogDemo() {
     SetCountryOnUseEffect();
   }, [country]);
 
-  const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleChangeLanguage = (filterValueCode: string) => () => {
-    const lang = mapCountryToLocale[filterValueCode];
+    // const lang = mapCountryToLocale[filterValueCode];
 
-    if (lang !== 'us') {
-      setLanguage(lang);
-      localStorage.setItem('gp_lang', lang);
-    }
+    // if (lang !== `us`) {
+    //   // setLanguage(lang);
+    //   localStorage.setItem(`gp_lang`, lang);
+    // }
 
     setCountry(filterValueCode);
     setOpen(false);
+    Router.reload();
   };
 
   return (
@@ -104,17 +93,17 @@ export default function SimpleDialogDemo() {
       >
         {localCountry === `south_korea`
           ? `South Korea`
-          : localCountry === `usa`
-          ? `USA`
-          : `Canada`}
+          : localCountry === `canada`
+          ? `Canada`
+          : `USA`}
         <Image
           alt={`image`}
           src={
             localCountry === `south_korea`
               ? KoreaLogo
-              : localCountry === `usa`
-              ? UsaLogo
-              : CaLogo
+              : localCountry === `canada`
+              ? CaLogo
+              : UsaLogo
           }
           width="17px"
           height={`17px`}

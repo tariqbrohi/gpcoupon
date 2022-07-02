@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import { PrismaClient } from '@prisma/client';
+import { pick } from 'lodash';
 
 const prisma = new PrismaClient();
 
@@ -24,6 +25,12 @@ export default withApiAuthRequired(async function handler(
     if (method === 'post') {
       const { user } = getSession(req, res) || {};
 
+      const brand = await prisma.brand.findUnique({
+        where: {
+          slug: req.body.brand,
+        },
+      });
+
       const item = await prisma.item.create({
         data: {
           ...req.body,
@@ -31,7 +38,9 @@ export default withApiAuthRequired(async function handler(
           createdBy: user?.sub,
           state: 'AVAILABLE',
           type: 'GIFT_CARD',
-
+          meta: {
+            brand: pick(brand, ['logo', 'name']),
+          },
           notes: [
             {
               text: 'Send via Link share / Email',
@@ -44,7 +53,7 @@ export default withApiAuthRequired(async function handler(
     }
 
     if (method === 'get') {
-      const { brand, category, name, country = 'en' } = req.query as any;
+      const { brand, category, name, country } = req.query as any;
 
       const params: any = {};
 
@@ -60,16 +69,18 @@ export default withApiAuthRequired(async function handler(
         params.name = name;
       }
 
+      if (country) {
+        params.country = country;
+      }
+
       const items = await prisma.item.findMany({
-        where: {
-          country,
-          ...params,
-        },
+        where: params,
       });
 
       res.send(items);
     }
   } catch (err: any) {
+    console.log(err);
     res.status(err?.statusCode || 500).send({
       errors: [
         {
