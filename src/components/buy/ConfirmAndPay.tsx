@@ -28,6 +28,7 @@ export default function ConfirmAndPay({
   image,
   name,
   amount,
+  discount,
   qty,
   ...modalProps
 }: Props & ModalProps) {
@@ -84,6 +85,7 @@ export default function ConfirmAndPay({
       postCharge({
         amount,
         quantity: qty,
+        margin: discount,
         userId: userDetail.id,
         token,
         products: {
