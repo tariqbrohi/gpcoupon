@@ -1,12 +1,26 @@
 import HeaderLanguageSelector from '@/components/header/HeaderLanguageSelector';
 import HeaderNavBar from '@/components/header/HeaderNavBar';
 import Link from 'next/link';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Search from '@/modules/components/Search';
 import styled from 'styled-components';
 import { Button, Grid, Spacer, StyledGridRow } from '@growth-ui/react';
 import { color } from '@/modules/brandingTheme';
+import { FaUserCircle } from 'react-icons/fa';
 import { ROUTES } from '@/ROUTES';
+import { useRouter } from 'next/router';
+import { useStyles } from '../styles/components/navbarStyles';
+import {
+  Typography,
+  Input,
+  InputAdornment,
+  Divider,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Box,
+} from '@mui/material';
 
 const Header = styled('header')<Props>`
   position: fixed;
@@ -44,7 +58,34 @@ export default function AppHeader({
 }: Props) {
   const ref = useRef<HTMLHeadElement>(null);
 
+  const [isUser, setisUser] = useState(false);
+  const [userName, setUserName] = useState(``);
+  const classes = useStyles();
+  const router = useRouter();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
   useEffect(() => {
+    if (typeof window === `object`) {
+      const userId: any = localStorage.getItem(`userId`);
+
+      if (userId && userId?.length !== 2) {
+        setisUser(true);
+      }
+
+      const username: any = localStorage.getItem(`userName`);
+
+      if (username !== ``) {
+        setUserName(username);
+      }
+    }
+
     if (bgTransition) {
       const elem = ref.current!;
 
@@ -91,13 +132,79 @@ export default function AppHeader({
         <Grid.Col>
           <Grid.Row verticalAlign="middle">
             <Spacer size={20} />
-            <Link href={ROUTES.login}>
-              <a>Login</a>
-            </Link>
-            <Spacer size={20} />
-            <Button onClick={() => window.open('https://gpointwallet.com')}>
-              Signup
-            </Button>
+            {isUser ? (
+              <>
+                <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+                  <Avatar sx={{ width: 32, height: 32 }}>
+                    <FaUserCircle />
+                  </Avatar>
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  id="account-menu"
+                  open={open}
+                  onClose={handleClose}
+                  onClick={handleClose}
+                  className={classes.menubar}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: `visible`,
+                      filter: `drop-shadow(0px 2px 8px rgba(0,0,0,0.32))`,
+                      mt: 1.5,
+                      '& .MuiAvatar-root': {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      '&:before': {
+                        content: `""`,
+                        display: `block`,
+                        position: `absolute`,
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: `background.paper`,
+                        transform: `translateY(-50%) rotate(45deg)`,
+                        zIndex: 0,
+                      },
+                    },
+                  }}
+                  transformOrigin={{ horizontal: `right`, vertical: `top` }}
+                  anchorOrigin={{ horizontal: `right`, vertical: `bottom` }}
+                >
+                  <MenuItem>
+                    <Avatar sx={{ width: 28, height: 28 }} /> {userName}
+                  </MenuItem>
+                  <MenuItem onClick={() => router.push(`/my-gift`)}>
+                    My gifts
+                  </MenuItem>
+                  <Divider />
+
+                  <MenuItem
+                    onClick={() => {
+                      localStorage.clear();
+                      router.push(`/`);
+                      router.reload();
+                    }}
+                  >
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <>
+                <Link href={ROUTES.login}>
+                  <a>Login</a>
+                </Link>
+                <Spacer size={20} />
+                <Button onClick={() => window.open('https://gpointwallet.com')}>
+                  Signup
+                </Button>
+              </>
+            )}
           </Grid.Row>
         </Grid.Col>
       </Grid.Row>

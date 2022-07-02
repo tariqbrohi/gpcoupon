@@ -98,23 +98,27 @@ class Xoxoday {
       });
     }
 
-    const { data } = await this.request.post('/', {
-      query: 'plumProAPI.mutation.getVouchers',
-      tag: 'plumProAPI',
-      variables: {
-        data: {
-          page: 1,
-          limit: 0,
-          includeProducts: '',
-          excludeProducts: '',
-          filters,
+    try {
+      const { data } = await this.request.post('/', {
+        query: 'plumProAPI.mutation.getVouchers',
+        tag: 'plumProAPI',
+        variables: {
+          data: {
+            page: 1,
+            limit: 0,
+            includeProducts: '',
+            excludeProducts: '',
+            filters,
+          },
         },
-      },
-    });
+      });
 
-    const vouchers = data?.data?.getVouchers?.data || [];
+      const vouchers = data?.data?.getVouchers?.data || [];
 
-    return normalizeItems(vouchers);
+      return normalizeItems(vouchers);
+    } catch {
+      return [];
+    }
   }
 }
 

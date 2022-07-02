@@ -55,6 +55,8 @@ const EgiftDetails = ({ data }: any) => {
 
   console.log(`selectedChip`, selectedChip);
 
+  if (!data) return null;
+
   return (
     <div className={classes.container}>
       <p className={classes.tag}>eGift</p>

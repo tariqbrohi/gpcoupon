@@ -24,8 +24,10 @@ import AppContext from '@/providers/app-context';
 import { AppContextInterface } from '@/annotations/types';
 import { postLogin } from '@/redux/actions/authActions';
 import Spacer from '@/components/Spacer';
+import dynamic from 'next/dynamic';
+import React from 'react';
 
-export default function Login() {
+function Login() {
   const classes = useStyles();
   const router = useRouter();
   const { setAuthenticated, setUser, setUserDetail } = useContext(
@@ -149,3 +151,7 @@ export default function Login() {
     </section>
   );
 }
+
+export default dynamic(Promise.resolve(Login), {
+  ssr: false,
+});

@@ -59,15 +59,15 @@ export default function Categories() {
         responsive={responsive}
       >
         {loading &&
-          new Array(10).fill(0).map(() => (
-            <Margin all={0.5}>
+          new Array(10).fill(0).map((_, idx) => (
+            <Margin all={0.5} key={idx}>
               <Skeleton width="100%" style={{ paddingBottom: '90%' }} />
               <Spacer size={5} />
               <Skeleton width="100px" height="1em" />
             </Margin>
           ))}
-        {data?.map((cat) => (
-          <Margin all={0.5}>
+        {data?.map((cat, idx) => (
+          <Margin all={0.5} key={idx}>
             <Image imageUrl={cat.image.medium} />
             <Spacer size={5} />
             <Paragraph fontSize="xs" style={{ fontWeight: 600 }}>

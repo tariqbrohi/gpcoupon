@@ -1,5 +1,6 @@
 import { NotifyMethodEnum } from '@/annotations/enums/notify-method.enum';
 import NotifyComponent from '@/components/shared/notify';
+import { mapCountry } from '@/lib/map-country';
 import { Alert } from '@mui/material';
 import { request, base_url } from '../../utils/Request';
 
@@ -135,6 +136,10 @@ export const getGiftOrders = async (userId: any) => {
 
 export const getSearchedProducts = async (name: any, country: any) => {
   try {
+    console.log({
+      name,
+      country: mapCountry(country),
+    });
     const res: any = await fetch(`${base_url}/vouchers/search`, {
       method: `POST`,
       headers: {
@@ -142,7 +147,7 @@ export const getSearchedProducts = async (name: any, country: any) => {
       },
       body: JSON.stringify({
         name,
-        country,
+        country: mapCountry(country),
       }),
     });
 
@@ -151,7 +156,6 @@ export const getSearchedProducts = async (name: any, country: any) => {
       if (response?.message) {
         NotifyComponent(NotifyMethodEnum.failure, response?.message?.error);
       } else {
-        console.log(`response`, response);
         return response?.data?.getVouchers?.data;
       }
     }

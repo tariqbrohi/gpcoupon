@@ -1,32 +1,60 @@
 import AppContext from '@/modules/components/AppContext';
-import { Grid, Icon, List, Paragraph, Spacer } from '@growth-ui/react';
 import React, { useContext } from 'react';
+import { Grid, Icon, List, Paragraph, Spacer } from '@growth-ui/react';
+import { useSearchItemsLazyQuery } from '@/services';
 
-export default function SearchHistory() {
-  const { searchHistories, setSearchHistories } = useContext(AppContext);
+type Props = {
+  search: ReturnType<typeof useSearchItemsLazyQuery>[0];
+};
+
+export default function SearchHistory({ search }: Props) {
+  const { country, searchHistories, setSearchHistories } =
+    useContext(AppContext);
 
   const clearAll = () => setSearchHistories([]);
 
+  const handleClickTransh = (pos: number) => () => {
+    setSearchHistories(searchHistories.filter((_, i) => i !== pos));
+  };
+
+  const handleClickItem = (q: string) => () => {
+    search({
+      data: {
+        country,
+        q,
+      },
+    });
+  };
+
   return (
     <>
-      <Grid.Row horizontalAlign="space-between">
+      <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
         <Grid.Col>
           <Paragraph style={{ fontWeight: 600 }}>Recent Searches</Paragraph>
         </Grid.Col>
         <Grid.Col>
-          <Paragraph onClick={clearAll}>Clear All</Paragraph>
+          <Paragraph
+            fontSize="sm"
+            style={{ cursor: 'pointer' }}
+            onClick={clearAll}
+          >
+            Clear All
+          </Paragraph>
         </Grid.Col>
       </Grid.Row>
       <Spacer size={20} />
-      <List selection>
-        {searchHistories.map((history) => (
+      <List selection padded>
+        {searchHistories.map((history, idx) => (
           <List.Item key={history}>
             <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
-              <div>
-                <Icon name="inbox" />
-                <Spacer inline axis="horizontal" size={8} />
+              <Grid.Col flex="1" onClick={handleClickItem(history)}>
                 {history}
-              </div>
+              </Grid.Col>
+              <Icon
+                name="trash"
+                width="18px"
+                onClick={handleClickTransh(idx)}
+              />
             </Grid.Row>
           </List.Item>
         ))}

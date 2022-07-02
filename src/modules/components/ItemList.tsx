@@ -1,7 +1,10 @@
 import Grid from '@/modules/components/Grid';
 import React from 'react';
+import Router from 'next/router';
 import styled from 'styled-components';
 import { Item } from '@/services/types';
+import { nameToSlug } from '@/lib/slugs';
+import { ROUTES } from '@/ROUTES';
 
 import {
   Chip,
@@ -54,6 +57,11 @@ export default function ItemList({ items, loading }: Props) {
             <Image
               src={item.image.medium}
               style={{ flex: 1, borderRadius: '10px', cursor: 'pointer' }}
+              onClick={() =>
+                Router.push(
+                  `${ROUTES.buy}/${nameToSlug(item.name)}-${item.amount}`,
+                )
+              }
             />
             <Spacer size={5} />
             <Title>{item.name}</Title>

@@ -32,15 +32,12 @@ export const slugs: Record<string, any> = {
   other: [
     'gold_jewelry',
     'wellness_sports',
-    'mobile_recharge',
-    'perks_offers',
     'reading_learning',
     'remote_work',
     'subscriptions',
     'baby_kids',
     'cash_prepaid_card',
     'automobiles_accessories',
-    'in_house_benefits',
   ],
 };
 
@@ -55,10 +52,10 @@ export const categories: Record<string, any> = {
   'Home &amp; Living': 'Home & Living',
 };
 
-export const countries: Record<string, any> = {
-  us: 'usa',
-  kr: 'korea',
-  ca: 'canada',
+export const countries: Record<string, string> = {
+  US: 'usa',
+  KR: 'korea',
+  CA: 'canada',
 };
 
 export const normalizeItems = (items: Record<string, any>[]) => {

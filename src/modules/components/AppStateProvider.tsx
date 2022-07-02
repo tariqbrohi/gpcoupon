@@ -1,28 +1,33 @@
 import AppContext from './AppContext';
-import ls from '@/lib/local-storage';
+import Cookies from 'js-cookie';
 import React, { ReactNode, useEffect, useState } from 'react';
 
 export default function AppStateProvider({
   children,
+  cookies = {},
 }: {
   children: ReactNode;
+  cookies: Record<string, string>;
 }) {
-  const [country, setCountry] = useState('us');
+  const [country, setCountry] = useState(cookies['country'] || 'us');
   const [searchHistories, setSearchHistories] = useState<string[]>([]);
 
   useEffect(() => {
-    setCountry(ls.get('country') || 'us');
-    setSearchHistories(ls.get('searchHistories') || []);
+    const { searchHistories } = cookies;
+
+    try {
+      setSearchHistories(JSON.parse(searchHistories));
+    } catch {}
   }, []);
 
   const handleCountryChange = (country: string) => {
     setCountry(country);
-    ls.set('country', country);
+    Cookies.set('country', country);
   };
 
   const handleSearchHistories = (histories: string[]) => {
     setSearchHistories(histories);
-    ls.set('searchHistories', histories);
+    Cookies.set('searchHistories', JSON.stringify(histories));
   };
 
   return (

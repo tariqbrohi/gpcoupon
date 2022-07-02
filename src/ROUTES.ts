@@ -5,6 +5,8 @@ export const ROUTES = {
   brands: '/brands',
   categories: '/categories',
   affiliates: '/affiliates',
+  buy: '/buy',
+  legal: '/privacyPolicy',
   admin: {
     brands: '/admin/brands',
     dashboard: '/admin/dashboard',

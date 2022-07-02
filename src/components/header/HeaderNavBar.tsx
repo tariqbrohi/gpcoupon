@@ -10,11 +10,11 @@ export default function HeaderNavBar() {
   return (
     <Nav>
       <List horizontal>
-        <List.Item>
+        {/* <List.Item>
           <Link href={ROUTES.affiliates}>
             <a>Affiliates</a>
           </Link>
-        </List.Item>
+        </List.Item> */}
         <List.Item>
           <Link href={ROUTES.categories}>
             <a>Categories</a>

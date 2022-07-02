@@ -1,5 +1,6 @@
 import AppContext from '@/modules/components/AppContext';
 import React, { useContext, useState } from 'react';
+import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
 import styled from 'styled-components';
 import {
@@ -47,6 +48,7 @@ export default function LanguageSelector() {
   const handleCountryChange = (country: string) => () => {
     setCountry(country);
     handleClose();
+    Router.reload();
   };
 
   return (

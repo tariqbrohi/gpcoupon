@@ -78,7 +78,7 @@ export default function HowToUse() {
     <section>
       <Wrapper>
         {features.map(({ imageUrl, title, description }) => (
-          <Feature>
+          <Feature key={title}>
             <Image size="small" src={imageUrl} />
             <Title>{title}</Title>
             <Description>{description}</Description>

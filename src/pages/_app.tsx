@@ -1,18 +1,24 @@
-import { AppProps } from 'next/app';
-import { useEffect, useState } from 'react';
-import { lightTheme } from '../theme';
-import { ThemeProvider } from '@mui/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { theme } from '../theme';
-import AppContext from '../providers/app-context';
-import '../styles/global.css';
-import 'react-multi-carousel/lib/styles.css';
-import { UserProvider } from '@auth0/nextjs-auth0';
-import { useLocalStorage } from '@/providers/useLocalStorage';
 import AppStateProvider from '@/modules/components/AppStateProvider';
+import Context from '../providers/app-context';
+import CssBaseline from '@mui/material/CssBaseline';
 import GrowthThemeProvider from '@/modules/components/ThemeProvider';
+import { AppContext, AppInitialProps } from 'next/app';
+import { lightTheme } from '../theme';
+import { parseCookies } from '@/lib/parse-cookies';
+import { theme } from '../theme';
+import { ThemeProvider } from '@mui/styles';
+import { useEffect, useState } from 'react';
+import { useLocalStorage } from '@/providers/useLocalStorage';
+import { UserProvider } from '@auth0/nextjs-auth0';
+import '../styles/global.css';
+import TempContext from '../providers/app-context';
+import 'react-multi-carousel/lib/styles.css';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+type AppProps = AppInitialProps & {
+  cookies: Record<string, string>;
+};
+
+function MyApp({ Component, pageProps, cookies }: AppContext & AppProps) {
   useEffect(() => {
     Object.keys(lightTheme).forEach((key) => {
       document.body.style.setProperty(`--${key}`, lightTheme[key]);
@@ -33,7 +39,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <AppContext.Provider
+    <Context.Provider
       value={{
         singleVoucher,
         userDetail: JSON.parse(userDetail || `{}`),
@@ -44,7 +50,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         user,
         setUser,
         country,
-        setCountry,
       }}
     >
       <ThemeProvider theme={theme}>
@@ -52,12 +57,22 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <UserProvider>
           <GrowthThemeProvider>
             {/* <Component {...pageProps} /> */}
-            <AppStateProvider>
+            <AppStateProvider cookies={cookies}>
               <Component {...pageProps} />
             </AppStateProvider>
           </GrowthThemeProvider>
         </UserProvider>
       </ThemeProvider>
-    </AppContext.Provider>
+    </Context.Provider>
   );
 }
+
+MyApp.getInitialProps = async ({ ctx: { req } }: AppContext) => {
+  const cookies = parseCookies(req);
+
+  return {
+    cookies,
+  };
+};
+
+export default MyApp;

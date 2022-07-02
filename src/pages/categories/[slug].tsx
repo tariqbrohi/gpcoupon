@@ -1,6 +1,7 @@
 import AppContainer from '@/layouts/AppContainer';
 import AppHeader from '@/layouts/AppHeader';
 import AppMain from '@/layouts/AppMain';
+import AppNav from '@/layouts/AppNav';
 import Head from '@/modules/components/Head';
 import ItemList from '@/components/categories/ItemList';
 import React from 'react';
@@ -15,6 +16,7 @@ export default function Category() {
           <ItemList />
         </AppContainer>
       </AppMain>
+      <AppNav />
     </>
   );
 }
