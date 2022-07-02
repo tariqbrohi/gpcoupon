@@ -8,6 +8,7 @@ import Head from '@/modules/components/Head';
 import Hero from '@/components/home/Hero';
 import HomeContent from '@/components/home/HomeContent';
 import HowToUse from '@/components/home/HowToUse';
+import TempHowToUse from '@/components/HowToUse';
 import Layout from '@/components/layout/Layout';
 import Reviews from '@/components/Views/Reviews';
 import Section from '@/components/home/Section';
@@ -48,6 +49,9 @@ export default function Home() {
             <Spacer size={50} />
             <Categories />
             <HowToUse />
+            <Spacer size={30} />
+            <TempHowToUse />
+            <Spacer size={100} />
           </Section>
         </AppContainer>
       </AppMain>
