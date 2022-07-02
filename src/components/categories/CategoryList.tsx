@@ -57,7 +57,12 @@ export default function CategoryList() {
               rounded
               placeholder={cat.image.small}
               src={cat.image.medium}
-              style={{ flex: 1, cursor: 'pointer' }}
+              style={{
+                flex: 1,
+                height: 'auto',
+                maxHeight: '270px',
+                cursor: 'pointer',
+              }}
               onClick={handleRoute(cat.slug)}
             />
             <Spacer size={5} />
