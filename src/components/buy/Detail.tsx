@@ -16,6 +16,7 @@ import {
   Heading,
   Image,
   Menu,
+  Skeleton,
   Snackbar,
   Spacer,
 } from '@growth-ui/react';
@@ -49,11 +50,23 @@ export default function Detail() {
     <>
       <Grid.Row wrap="wrap">
         <Grid.Col padded width={8} mobile={16} minimobile={16}>
+          {loading && <Skeleton width="100%" height="100%" />}
           <Image rounded src={item?.image.medium!} />
         </Grid.Col>
         <Grid.Col padded width={8} mobile={16} minimobile={16}>
-          <Heading>{item?.name}</Heading>
-          <Heading as="h2">G{item?.amount.toFixed(2)}</Heading>
+          {loading && (
+            <>
+              <Skeleton height="32px" width="100%" />
+              <Spacer size={10} />
+              <Skeleton height="25px" width="70px" />
+            </>
+          )}
+          {item && (
+            <>
+              <Heading>{item?.name}</Heading>
+              <Heading as="h2">{`G${item?.amount.toFixed(2)}`}</Heading>
+            </>
+          )}
           <Snackbar
             fluid
             info

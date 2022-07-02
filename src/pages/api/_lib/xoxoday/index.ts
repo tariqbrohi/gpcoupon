@@ -78,7 +78,7 @@ class Xoxoday {
     const filters: Record<string, any>[] = [
       {
         key: 'country',
-        value: countries[country],
+        value: countries(country),
       },
     ];
 

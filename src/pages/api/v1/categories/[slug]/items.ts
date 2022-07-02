@@ -22,7 +22,7 @@ export default errorHandler(async function handler(req, res) {
       }),
       xoxoday.getItems({ catSlug: slug, country }),
     ]);
-    console.log(items);
+
     res.send([
       ...items.map(
         ({

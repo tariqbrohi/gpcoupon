@@ -42,7 +42,7 @@ export const getVouchers = async (
         'Content-Type': `application/json`,
       },
       body: JSON.stringify({
-        country,
+        country: mapCountry(country),
         code,
         limit,
       }),
