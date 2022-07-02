@@ -24,27 +24,27 @@ export default errorHandler(async function handler(req, res) {
     ]);
 
     res.send([
-      ...items.map(
-        ({
-          id,
-          name,
-          amount,
-          discountRate,
-          description,
-          expiresIn,
-          imageUrl,
-        }) => ({
-          id,
-          name,
-          amount,
-          discount: discountRate,
-          description,
-          expiry: expiresIn,
-          image: {
-            medium: imageUrl,
-          },
-        }),
-      ),
+      // ...items.map(
+      //   ({
+      //     id,
+      //     name,
+      //     amount,
+      //     discountRate,
+      //     description,
+      //     expiresIn,
+      //     imageUrl,
+      //   }) => ({
+      //     id,
+      //     name,
+      //     amount,
+      //     discount: discountRate,
+      //     description,
+      //     expiry: expiresIn,
+      //     image: {
+      //       medium: imageUrl,
+      //     },
+      //   }),
+      // ),
       ...xoxoItems,
     ]);
 

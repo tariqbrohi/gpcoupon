@@ -2,7 +2,7 @@ import AppContext from '@/providers/app-context';
 import Completed from './Completed';
 import Grid from '@/modules/components/Grid';
 import Link from 'next/link';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Item } from '@/services/types';
 import { postCharge } from '@/redux/actions/authActions';
 import { ROUTES } from '@/ROUTES';
@@ -12,9 +12,12 @@ import {
   Input,
   Modal,
   ModalProps,
+  Grid as GuiGrid,
   Paragraph,
   Spacer,
 } from '@growth-ui/react';
+import Router from 'next/router';
+import parseErrorMessage from '@/lib/parse-error-message';
 
 type Props = Item & {
   qty: number;
@@ -31,8 +34,13 @@ export default function ConfirmAndPay({
   const [email, setEmail] = useState('');
   const [recipientName, setRecipientName] = useState('');
   const { userDetail } = useContext(AppContext);
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [code, setCode] = useState('');
+
+  useEffect(() => {
+    setCode(`${Math.floor(100000 + Math.random() * 900000)}`);
+  }, []);
 
   const handleCheckout = () => {
     const token = typeof window === `object` && localStorage.getItem(`token`);
@@ -43,30 +51,61 @@ export default function ConfirmAndPay({
 
     setSubmitting(true);
 
-    postCharge({
-      amount,
-      quantity: qty,
-      userId: userDetail.id,
-      token,
-      products: {
-        id,
-        imageUrl: image.medium,
-        name,
+    if (name.includes('GPoint')) {
+      postCharge({
         amount,
-      },
-      giver: userDetail.username,
-      giverEmail: userDetail?.profile?.contact?.email,
-      name: recipientName,
-      email,
-    })
-      .then(() => {
-        setSuccess(true);
-        setSubmitting(false);
+        quantity: qty,
+        code,
+        userId: userDetail.id,
+        affiliate: true,
+        token,
+        products: {
+          id,
+          imageUrl: image.medium,
+          name,
+          amount,
+        },
+        giver: userDetail.username,
+        giverEmail: userDetail?.profile?.contact?.email,
+        name: recipientName,
+        email,
       })
-      .catch((err) => {
-        alert(err?.message);
-        setSubmitting(false);
-      });
+        .then(({ data }) => {
+          alert(
+            `주문을 처리하는데 최대 하루정도 소요가 됩니다. Order ID: ${data}`,
+          );
+          Router.push('/');
+        })
+        .catch((err) => {
+          alert(parseErrorMessage(err));
+        })
+        .finally(() => setSubmitting(false));
+    } else {
+      postCharge({
+        amount,
+        quantity: qty,
+        userId: userDetail.id,
+        token,
+        products: {
+          id,
+          imageUrl: image.medium,
+          name,
+          amount,
+        },
+        giver: userDetail.username,
+        giverEmail: userDetail?.profile?.contact?.email,
+        name: recipientName,
+        email,
+      })
+        .then(() => {
+          setSuccess(true);
+          setSubmitting(false);
+        })
+        .catch((err) => {
+          alert(err?.message);
+          setSubmitting(false);
+        });
+    }
   };
 
   return (
@@ -112,9 +151,37 @@ export default function ConfirmAndPay({
               onChange={(e) => setEmail(e.target.value)}
             />
             <Spacer size={20} />
+            {name.includes('GPoint') && (
+              <div>
+                <GuiGrid.Row horizontalAlign="space-between">
+                  <Paragraph>은행명</Paragraph>
+                  <Paragraph>국민은행</Paragraph>
+                </GuiGrid.Row>
+
+                <GuiGrid.Row horizontalAlign="space-between">
+                  <Paragraph>예금주</Paragraph>
+                  <Paragraph>지포인트코리아</Paragraph>
+                </GuiGrid.Row>
+
+                <GuiGrid.Row horizontalAlign="space-between">
+                  <Paragraph>계좌번호</Paragraph>
+                  <Paragraph>358801 04 221486</Paragraph>
+                </GuiGrid.Row>
+
+                <GuiGrid.Row horizontalAlign="space-between">
+                  <Paragraph>인증번호</Paragraph>
+                  <Paragraph>{code}</Paragraph>
+                </GuiGrid.Row>
+                <br />
+                <Paragraph fontWeight={600}>
+                  입금 시 위에 표기된 인증번호를 입력하셔야 확인됩니다.
+                </Paragraph>
+              </div>
+            )}
+            <Spacer size={30} />
             <Paragraph fontSize="xs">
               By clicking the button below, I confirm my order and agree to the
-              <Link href={ROUTES.legal}>
+              <Link href={ROUTES.privacy}>
                 <a style={{ color: '#2b78ff' }}> privacy policy of GCoupon</a>
               </Link>
               . I also acknowledge that as stated in the{' '}

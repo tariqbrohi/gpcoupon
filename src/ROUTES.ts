@@ -6,7 +6,8 @@ export const ROUTES = {
   categories: '/categories',
   affiliates: '/affiliates',
   buy: '/buy',
-  legal: '/privacyPolicy',
+  privacy: '/privacyPolicy',
+  legal: '/termsOfUse',
   admin: {
     brands: '/admin/brands',
     dashboard: '/admin/dashboard',

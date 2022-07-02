@@ -44,7 +44,43 @@ export default function Detail() {
     setActiveMenu(menu);
   };
 
-  const item = data?.find((item) => item.amount === +amount);
+  let item = data?.find((item) => item.amount === +amount);
+
+  if (name === 'gpoint') {
+    console.log(name, amount);
+    item = {
+      discount: 0,
+      description: `1. Visit the GPoint Wallet website. 
+
+2. Click the redeem menu.
+
+3. Use the Coupon number and code to redeem your coupon.`,
+      expiry: '',
+      termsAndConditionsInstructions: 'No refund',
+      redemptionInstructions: 'No refund',
+      amount: +amount,
+      name: `GPoint ${amount}`,
+      image: {
+        small: '',
+        medium:
+          amount === '20'
+            ? 'http://res.cloudinary.com/dkpoiebus/image/upload/v1656105820/public/ovzddmxixthulwt4tnxt.png'
+            : amount === '50'
+            ? 'http://res.cloudinary.com/dkpoiebus/image/upload/v1656105890/public/wwvmya8r9fgwnqvz05hz.png'
+            : amount === '100'
+            ? 'http://res.cloudinary.com/dkpoiebus/image/upload/v1656105928/public/rbyj6m874pfxoqgddfqw.png'
+            : 'http://res.cloudinary.com/dkpoiebus/image/upload/v1656105960/public/mc1qgc5jpnb0midv0gnw.png',
+      },
+      id:
+        amount === '20'
+          ? '62b62b5f98d36e59c1df838a'
+          : amount === '50'
+          ? '62b62ba4f04a297f0551a092'
+          : amount === '100'
+          ? '62b62bc8f04a297f0551a094'
+          : '62b62be8f04a297f0551a095',
+    };
+  }
 
   return (
     <>
