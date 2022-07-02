@@ -9,6 +9,8 @@ import '../styles/global.css';
 import 'react-multi-carousel/lib/styles.css';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { useLocalStorage } from '@/providers/useLocalStorage';
+import AppStateProvider from '@/modules/components/AppStateProvider';
+import GrowthThemeProvider from '@/modules/components/ThemeProvider';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
@@ -48,8 +50,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <UserProvider>
-          {/* <Component {...pageProps} /> */}
-          <Component {...pageProps} />
+          <GrowthThemeProvider>
+            {/* <Component {...pageProps} /> */}
+            <AppStateProvider>
+              <Component {...pageProps} />
+            </AppStateProvider>
+          </GrowthThemeProvider>
         </UserProvider>
       </ThemeProvider>
     </AppContext.Provider>
