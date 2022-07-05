@@ -57,9 +57,7 @@ export default function ItemList({ items, loading }: Props) {
             <Image
               src={item.image.medium}
               style={{
-                flex: 1,
-                height: 'auto',
-                maxHeight: '237px',
+                width: '100%',
                 borderRadius: '10px',
                 cursor: 'pointer',
               }}

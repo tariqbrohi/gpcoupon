@@ -43,9 +43,7 @@ export default function CategoryList() {
               placeholder="/images/sm/all.jpg"
               src="/images/all.jpg"
               style={{
-                flex: 1,
-                height: 'auto',
-                maxHeight: '237px',
+                width: '100%',
                 cursor: 'pointer',
               }}
               onClick={handleRoute('all')}
@@ -63,9 +61,7 @@ export default function CategoryList() {
               placeholder={cat.image.small}
               src={cat.image.medium}
               style={{
-                flex: 1,
-                height: 'auto',
-                maxHeight: '237px',
+                width: '100%',
                 cursor: 'pointer',
               }}
               onClick={handleRoute(cat.slug)}
