@@ -1,6 +1,13 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import styled from 'styled-components';
-import { Heading, Paragraph, StyledHeading } from '@growth-ui/react';
+import {
+  Heading,
+  Paragraph,
+  StyledHeading,
+  Image,
+  Spacer,
+} from '@growth-ui/react';
 
 const TextWrapper = styled.div`
   width: 320px;
@@ -39,29 +46,90 @@ const Container = styled.div`
   }
 `;
 
+const Row = styled.div`
+  display: flex;
+  ${({ theme }) => theme.gui.media.mobile} {
+    max-width: 180px;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+`;
+const Column = styled.div`
+  flex: 50%;
+`;
+const Texts = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-inline: 50px;
+  font-size: 14px;
+  ${({ theme }) => theme.gui.media.mobile} {
+    flex-direction: column;
+    padding-inline: 0;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
+    line-height: 1.5;
+  }
+`;
+
 export default function Hero() {
   return (
+    // <Container>
+    //   <div>
+    //     <TextWrapper>
+    //       <Heading>
+    //         Celebrate special moments and earn real cash back on every purchase,
+    //         anywhere around the world.
+    //       </Heading>
+    //       <Paragraph color="gray-700">
+    //         Browse a huge selection of popular brands or shop local with GPoint
+    //         Affiliate brands. Buy a GCoupon and earn cash back rewards every
+    //         time you shop.
+    //       </Paragraph>
+    //     </TextWrapper>
+    //     <img
+    //       width="450px"
+    //       src="/images/Coupon_Landing_Page_Main_Banner_V2.svg"
+    //       style={{
+    //         transform: 'translateX(50px) rotate(15deg)',
+    //       }}
+    //     />
+    //   </div>
+    // </Container>
     <Container>
-      <div>
-        <TextWrapper>
-          <Heading>
-            Celebrate special moments and earn real cash back on every purchase,
-            anywhere around the world.
-          </Heading>
-          <Paragraph color="gray-700">
-            Browse a huge selection of popular brands or shop local with GPoint
-            Affiliate brands. Buy a GCoupon and earn cash back rewards every
-            time you shop.
-          </Paragraph>
-        </TextWrapper>
-        <img
-          width="450px"
-          src="https://s3-alpha-sig.figma.com/img/d859/11ac/3fe795289d44c7e23dfc3873ef4f5a08?Expires=1656892800&Signature=WIbo4fsN3Fv3bcBjZ9uYP398-eWbL7OTVYNwrVwpHEIcrR0fJ6hL-DiOQ8kzRxIKMH8w2V0D1OsG3BwkBoEJMxbo3TP9IdS7RN3Ugc~6XIgtJ8XlHdqxC~Q2HYQpriysL9t0XpXQYiDVlxSItg7n~DqhglyXpa8FKYO2S2yt3vTAmzUiAbSUVWZWrqogdnxHFVlwj7sWIZZwlK2IqCOo2E0W8KtLOSKVZNlvh5u5Mie~jHaltoyaUp7FVasA3WKo6wt9k58RWiy9uQDC9tB6GRQyotq~fUFFo1Ht-90S9rCC~k-Bo9WVYNj09SsurH8Gb0z0~rSUTPllgT6HrDwaKQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA"
-          style={{
-            transform: 'translateX(50px) rotate(15deg)',
-          }}
-        />
-      </div>
+      <Row>
+        <Column>
+          <Texts>
+            <h2>
+              Celebrate special moments and earn real cash back on every
+              purchase, anywhere around the world.
+            </h2>
+            <Spacer size={20} />
+            <p>
+              Browse a huge selection of popular brands or shop local with
+              GPoint Affiliate brands. Buy a GCoupon and earn cash back rewards
+              every time you shop.
+            </p>
+          </Texts>
+        </Column>
+        <Column>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            <Image
+              src="/images/Coupon_Landing_Page_Main_Banner_V2.svg"
+              size="large"
+              style={{ alignSelf: 'end' }}
+            />
+          </div>
+        </Column>
+      </Row>
     </Container>
   );
 }
