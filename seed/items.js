@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const items = require('./items-us.json');
 const brands = require('./brands.json');
 const prisma = new PrismaClient();
-
+// mongodb+srv://admin:wyzpOZr6aAuaRlCI@cluster0.ss7da.mongodb.net/test?retryWrites=true&w=majority
 (async () => {
   const arr = [];
   for await (const item of items) {

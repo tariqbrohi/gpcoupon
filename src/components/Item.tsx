@@ -33,7 +33,7 @@ export default function Item({
       <Spacer size={15} />
       <p>{extendedName}</p>
       <Spacer size={15} />
-      {amount && (
+      {/* {amount && (
         <p style={{ fontWeight: 600 }}>
           {getCurrencySymbol(country)}
           {currencyFormat(amount)}
@@ -44,7 +44,7 @@ export default function Item({
           {getCurrencySymbol()}
           {currencyFormat(gpoint)}
         </p>
-      )}
+      )} */}
     </div>
   );
 }

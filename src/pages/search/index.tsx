@@ -18,7 +18,7 @@ export default function SearchPage() {
 
           <Spacer size={30} />
 
-          <ItemList loading={loading} items={data} />
+          {/* <ItemList loading={loading} items={data} /> */}
           <Spacer size={40} />
           <SearchHistory search={search} />
         </Padding>
