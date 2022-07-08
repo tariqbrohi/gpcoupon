@@ -123,7 +123,7 @@ export default function Hero() {
             }}
           >
             <Image
-              src="/images/Coupon_Landing_Page_Main_Banner_V2.svg"
+              src="/images/mainpageBanner.jpg"
               size="large"
               style={{ alignSelf: 'end' }}
             />
