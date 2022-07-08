@@ -87,7 +87,7 @@ export default class GPointWallet {
   async charge(input: ChargeInput) {
     try {
       const { data } = await this.request.post('/v2/charge', input);
-      console.log(data);
+
       return data;
     } catch (err) {
       console.log(err);

@@ -18,6 +18,17 @@ const Column = styled.div`
   height: 100%;
 `;
 
+const ImageWraper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  border-radius: 10px;
+`;
+
 export default function CategoryList() {
   const { data, loading } = useGetCategoriesQuery();
 
@@ -38,18 +49,24 @@ export default function CategoryList() {
           ))}
         {data?.map((cat) => (
           <Column key={cat.slug}>
-            <ProgressiveImage
-              rounded
-              placeholder={cat.imageUrls.small}
-              src={cat.imageUrls.medium}
-              style={{
-                width: '100%',
-                cursor: 'pointer',
-              }}
-              onClick={handleRoute(cat.slug)}
-            />
+            <ImageWraper>
+              <ProgressiveImage
+                rounded
+                placeholder={cat.imageUrls.small}
+                src={cat.imageUrls.medium}
+                style={{
+                  width: '100%',
+                  cursor: 'pointer',
+                }}
+                onClick={handleRoute(cat.slug)}
+              />
+            </ImageWraper>
             <Spacer size={5} />
-            <Paragraph color="black" fontSize="xs" style={{ fontWeight: 600 }}>
+            <Paragraph
+              color="black"
+              fontSize="xs"
+              style={{ fontWeight: 600, marginTop: 'auto', minHeight: '30px' }}
+            >
               {cat?.name}
             </Paragraph>
           </Column>

@@ -21,15 +21,28 @@ export default withApiAuthRequired(
         itemId,
         quantity,
         message,
+        slug,
       } = req.body;
-
       const sender = getSession(req, res)?.user;
+      const timestamp = moment().unix();
 
-      const item = await xoxoday.vouchers.findOne({ amount: +amount, itemId });
+      const [dbItem, xoxoItem] = await Promise.all([
+        prisma.item.findFirst({
+          where: {
+            slug,
+          },
+        }),
+        xoxoday.vouchers.findOne({ amount: +amount, itemId }),
+      ]);
 
-      if (!item) throw new NotFoundError('Item not found');
+      if (!dbItem && !xoxoItem) throw new NotFoundError('Item not found');
 
-      const currency = item.currency === 'USD' ? 'GPT' : item.currency;
+      const currency = (
+        dbItem?.currency || xoxoItem?.currency === 'USD'
+          ? 'GPT'
+          : xoxoItem?.currency
+      )!;
+      const discountRate = xoxoItem?.discountRate || dbItem?.discountRate || 0;
 
       // gpointwallet
       const session = await gpointwallet.getSession(username, password);
@@ -37,66 +50,77 @@ export default withApiAuthRequired(
         userId: session?.user.id,
         amount,
         currency,
-        margin: item.discountRate || 0,
+        margin: discountRate,
         t: session?.token,
       });
       //
 
-      const order = await xoxoday.orders.place({
-        productId: itemId,
-        quantity,
-        denomination: +amount,
-        // todo
-        // remove this and implement custom email
-        notifyAdminEmail: 1,
-        notifyReceiverEmail: 1,
-        email: recipient.email,
-      });
+      let orderId = '';
 
-      if (!order) throw new InternalServerError();
+      if ((dbItem && xoxoItem) || xoxoItem) {
+        const order = await xoxoday.orders.place({
+          productId: itemId,
+          quantity,
+          denomination: +amount,
+          // todo
+          // remove this and implement custom email
+          notifyAdminEmail: 1,
+          notifyReceiverEmail: 1,
+          email: recipient.email,
+        });
 
-      const timestamp = moment().unix();
+        if (!order) {
+          // todo
+          // slack notify with gpointwallet transaction id and etc...
+          throw new InternalServerError();
+        }
 
-      const { id } = await prisma.order.create({
-        data: {
-          // status: order.orderStatus as any,
-          status: 'approved',
-          senderId: sender?.sub,
-          recipient: {
-            set: recipient,
-          },
-          message,
-          item: {
-            connect: {
-              id: '62c77275a173181b651f80c1',
+        orderId = `${order.orderId}`;
+      }
+
+      if (dbItem) {
+        const { id } = await prisma.order.create({
+          data: {
+            // status: order.orderStatus as any,
+            status: 'approved',
+            senderId: sender?.sub,
+            recipient: {
+              set: recipient,
             },
-          },
-          metadata: {
-            xoxoday: 'order',
-            gpointwallet: charge,
-          },
-          payment: {
-            set: {
-              paymentVendor: 'GPOINT',
-              discountRate: item.discountRate || 0,
-              totalAmount: amount * quantity,
-              exchange: {
-                exchangeRate: charge.exRate,
-                source: currency,
-                target: 'GPT',
-              },
-              price: {
-                amount,
-                currency,
+            message,
+            item: {
+              connect: {
+                id: dbItem.id,
               },
             },
+            metadata: {
+              gpointwallet: charge,
+            },
+            payment: {
+              set: {
+                paymentVendor: 'GPOINT',
+                discountRate,
+                totalAmount: amount * quantity,
+                exchange: {
+                  exchangeRate: charge.exRate || 1,
+                  source: currency,
+                  target: 'GPT',
+                },
+                price: {
+                  amount,
+                  currency,
+                },
+              },
+            },
+            createdAt: timestamp,
+            updatedAt: timestamp,
           },
-          createdAt: timestamp,
-          updatedAt: timestamp,
-        },
-      });
+        });
 
-      res.send(id);
+        orderId = `${id}-${orderId}`;
+      }
+
+      res.send(orderId);
     }
   }),
 );

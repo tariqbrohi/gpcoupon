@@ -1,18 +1,28 @@
 import Context, { State } from './Context';
 import isEmail from 'validator/lib/isEmail';
+import parseErrorMessage from '@/lib/parse-error-message';
 import React, { SyntheticEvent, useContext } from 'react';
 import ThemeButton from '@/modules/components/ThemeButton';
-import { Button, Input, Modal, ModalProps, Spacer } from '@growth-ui/react';
+import {
+  Button,
+  Input,
+  Modal,
+  ModalProps,
+  Snackbar,
+  Spacer,
+} from '@growth-ui/react';
 import { isEmpty } from 'lodash';
 import { useOrderMutation } from '@/services';
 import { useState } from 'react';
+import Router from 'next/router';
 
 export default function Checkout(props: ModalProps) {
-  const { state } = useContext(Context);
+  const { state, setState } = useContext(Context);
   const [errors, setErrors] = useState<Partial<State>>({});
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [order, { loading, error }] = useOrderMutation();
+  const [submittng, setSubmitting] = useState(false);
+  const [order, { loading }] = useOrderMutation();
 
   const validate = () => {
     const errors: Partial<State> = {};
@@ -35,26 +45,48 @@ export default function Checkout(props: ModalProps) {
   const handleCheckout = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (!validate()) return;
+    const { item, slug, qty, message, name, email } = state;
+
+    if (!validate() || !item) return;
+
+    setSubmitting(true);
 
     order({
       data: {
-        itemId: 27317,
+        itemId: item.id as any,
         username,
         password,
-        amount: 5,
-        message: state.message,
-        quantity: 1,
+        slug: slug,
+        amount: item?.amount,
+        message: message,
+        quantity: +qty,
         recipient: {
-          name: state.name,
-          email: state.email,
+          name: name,
+          email: email,
         },
       },
-    }).catch(() => {});
+    })
+      .then(({ data: id }) => {
+        alert(`Order # ${id}`);
+        setState({
+          ...state,
+          name: '',
+          email: '',
+        });
+        setSubmitting(false);
+        Router.push('/');
+      })
+      .catch((err) => {
+        alert(parseErrorMessage(err));
+        setSubmitting(false);
+      });
   };
-  console.log(errors);
+
   return (
     <>
+      {errors.email && (
+        <Snackbar autoHideDuration={3000} message={errors.email} />
+      )}
       <Modal {...props}>
         <Modal.Content>
           <Modal
@@ -78,7 +110,7 @@ export default function Checkout(props: ModalProps) {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <Spacer size={20} />
-                <Button fluid secondary loading={loading} type="submit">
+                <Button fluid secondary loading={submittng} type="submit">
                   Login and pay
                 </Button>
               </form>

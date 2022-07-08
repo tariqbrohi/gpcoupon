@@ -22,7 +22,7 @@ const Container = styled.div`
 export default function HomeContent() {
   return (
     <Container>
-      <Search />
+      {/* <Search /> */}
       <Spacer size={15} />
       <Grid.Row>
         <Link href={ROUTES.categories}>

@@ -1,30 +1,22 @@
 import Checkout from './Checkout';
 import Container from './Container';
-import React, { useState } from 'react';
+import Context from './Context';
+import React, { useContext } from 'react';
 import ThemeButton from '@/modules/components/ThemeButton';
 import Typography from '@/modules/components/Typography';
-import { color } from '@/modules/brandingTheme';
-import { useGetItemQuery } from '@/services';
-import { useRouter } from 'next/router';
 import {
-  Button,
   Chip,
   Grid,
   ProgressiveImage,
   Skeleton,
   Spacer,
 } from '@growth-ui/react';
+import currencyFormat from '@/lib/currency-format';
 
 export default function PaymentInfo() {
   const {
-    query: { slug, qty = 1 },
-  } = useRouter();
-  const { data: item, loading } = useGetItemQuery({
-    data: {
-      slug: slug as string,
-    },
-  });
-  const [open, setOpen] = useState(false);
+    state: { loading, item, qty },
+  } = useContext(Context);
 
   return (
     <Container>
@@ -49,17 +41,17 @@ export default function PaymentInfo() {
           )}
           <Spacer size={5} />
           {loading && <Skeleton width={46} height={22} />}
-          {item?.discountRate && (
+          {item?.discountRate ? (
             <Chip
               style={{ background: '#ffeec1', color: '#e16a00' }}
               text={`${item.discountRate}%`}
             />
-          )}
+          ) : null}
           <Spacer size={15} />
           {loading && <Skeleton width={100} height={18} />}
           {item && (
             <Typography>
-              G{item.amount.toFixed(2)}/Qty: {qty}
+              {currencyFormat(item.amount * +qty, item.currency)} / Qty: {qty}
             </Typography>
           )}
         </Grid.Col>
@@ -75,7 +67,7 @@ export default function PaymentInfo() {
               Total pay
             </Typography>
             <Typography fontWeight={600} fontSize={16}>
-              G{(item.amount * +qty).toFixed(2)}
+              {currencyFormat(item.amount * +qty, item.currency)}
             </Typography>
           </>
         )}

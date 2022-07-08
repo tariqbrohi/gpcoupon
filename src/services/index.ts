@@ -140,11 +140,13 @@ export const useOrderMutation = () => {
       'quantity',
       'recipient',
       'amount',
+      'slug',
     ],
   );
 };
 export type OrderMutationVariables = {
   itemId: number;
+  slug: string;
   message?: string;
   username: string;
   password: string;
