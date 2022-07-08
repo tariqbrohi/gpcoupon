@@ -73,7 +73,7 @@ export default function RedeemGPoint() {
           <Brand>{c.item.brand === 'gpoint' && 'GPOINT'}</Brand>
           <Spacer size={40} />
           <Typography fontSize={24} textAlign="center">
-            <b>G{currencyFormat(`${c.item.amount}`)}</b>&nbsp;&nbsp; eGift
+            {/* <b>G{currencyFormat(`${c.item.amount}`)}</b>&nbsp;&nbsp; eGift */}
           </Typography>
           <Spacer size={10} />
           <Divider />
