@@ -1,5 +1,6 @@
 export const ROUTES = {
-  login: '/login',
+  login: '/api/auth/login',
+  logout: '/api/auth/logout',
   item: '/item',
   search: '/search',
   brands: '/brands',
@@ -8,6 +9,7 @@ export const ROUTES = {
   buy: '/buy',
   privacy: '/privacyPolicy',
   legal: '/termsOfUse',
+  confirmAndPay: '/confirm-and-pay',
   admin: {
     brands: '/admin/brands',
     dashboard: '/admin/dashboard',

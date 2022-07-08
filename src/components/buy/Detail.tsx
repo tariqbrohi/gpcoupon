@@ -1,15 +1,8 @@
-import AppContainer from '@/layouts/AppContainer';
-import AppContext from '@/modules/components/AppContext';
-import AppFooter from '@/layouts/AppFooter';
-import AppHeader from '@/layouts/AppHeader';
-import AppMain from '@/layouts/AppMain';
-import AppNav from '@/layouts/AppNav';
 import ConfirmAndPay from './ConfirmAndPay';
-import Head from '@/modules/components/Head';
-import React, { useContext, useState } from 'react';
-import { slugToNameAndAmount } from '@/lib/slugs';
-import { useRouter } from 'next/router';
-import { useSearchItemsQuery } from '@/services';
+import React, { useState } from 'react';
+import Router, { useRouter } from 'next/router';
+import { ROUTES } from '@/ROUTES';
+import { useGetItemQuery } from '@/services';
 import {
   Button,
   Chip,
@@ -21,17 +14,16 @@ import {
   Snackbar,
   Spacer,
 } from '@growth-ui/react';
+import currencyFormat from '@/lib/currency-format';
 
 export default function Detail() {
-  const { country } = useContext(AppContext);
   const {
     query: { slug },
   } = useRouter();
-  const { name, amount = 0 } = slugToNameAndAmount(slug as string);
-  const { data, loading } = useSearchItemsQuery({
+
+  const { data: item, loading } = useGetItemQuery({
     data: {
-      country,
-      q: name,
+      slug: slug as string,
     },
   });
   const [qty, setQty] = useState(1);
@@ -41,18 +33,47 @@ export default function Detail() {
     setQty(qty);
   };
 
+  const handleRoute = () => {};
+
   const handleMenuItemClick = (menu: string) => () => {
     setActiveMenu(menu);
   };
 
-  const item = data?.find((item) => item.amount === +amount);
+  const renderMenu = () => {
+    switch (activeMenu) {
+      case 'description':
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: item?.redemptionInstructions || '',
+            }}
+          ></div>
+        );
+      case 'termsAndConditionsInstructions':
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: item?.termsAndConditionsInstructions || '',
+            }}
+          ></div>
+        );
+      case 'expiryAndValidity':
+        return (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: (item?.metadata as any)?.expiryAndValidity || '',
+            }}
+          ></div>
+        );
+    }
+  };
 
   return (
     <>
       <Grid.Row wrap="wrap">
         <Grid.Col padded width={8} mobile={16} minimobile={16}>
           {loading && <Skeleton width="100%" height="100%" />}
-          <Image rounded src={item?.image.medium!} />
+          <Image rounded src={item?.imageUrls?.medium || ''} />
         </Grid.Col>
         <Grid.Col padded width={8} mobile={16} minimobile={16}>
           {loading && (
@@ -64,14 +85,22 @@ export default function Detail() {
           )}
           {item && (
             <>
-              <Heading>{item?.name}</Heading>
+              <Chip
+                style={{ background: '#ffeec1', color: '#e16a00' }}
+                text="eGift"
+              />
+              <Spacer size={10} />
+              <Heading>{item.name}</Heading>
               <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
-                  {`G${item?.amount.toFixed(2)}`}
+                  {currencyFormat(item.amount, item.currency)}
                 </Heading>
-                {item?.discount && (
-                  <Chip color="yellow-500" text={`${item.discount}%`} />
-                )}
+                {item.discountRate ? (
+                  <Chip
+                    style={{ background: '#ffeec1', color: '#e16a00' }}
+                    text={`${item.discountRate}%`}
+                  />
+                ) : null}
               </Grid.Row>
             </>
           )}
@@ -100,17 +129,16 @@ export default function Detail() {
               </Button>
             </Button.Group>
             <Grid.Col flex="1">
-              {item && (
-                <ConfirmAndPay
-                  {...item}
-                  qty={qty}
-                  trigger={
-                    <Button fluid rounded secondary>
-                      Purchase
-                    </Button>
-                  }
-                />
-              )}
+              <Button
+                fluid
+                rounded
+                secondary
+                onClick={() =>
+                  Router.push(`${ROUTES.confirmAndPay}/${slug}?qty=${qty}`)
+                }
+              >
+                Purchase
+              </Button>
             </Grid.Col>
           </Grid.Row>
         </Grid.Col>
@@ -124,19 +152,22 @@ export default function Detail() {
           Description
         </Menu.Item>
         <Menu.Item
-          active={activeMenu === 'refund-and-policies'}
+          active={activeMenu === 'termsAndConditionsInstructions'}
           name="content"
-          onClick={handleMenuItemClick('refund-and-policies')}
+          onClick={handleMenuItemClick('termsAndConditionsInstructions')}
         >
           Refund & Policies
         </Menu.Item>
+        <Menu.Item
+          active={activeMenu === 'expiryAndValidity'}
+          name="content"
+          onClick={handleMenuItemClick('expiryAndValidity')}
+        >
+          Expiry & Validity
+        </Menu.Item>
       </Menu>
       <Spacer size={20} />
-      <div>
-        {activeMenu === 'description'
-          ? item?.description
-          : item?.termsAndConditionsInstructions}
-      </div>
+      <div>{renderMenu()}</div>
     </>
   );
 }

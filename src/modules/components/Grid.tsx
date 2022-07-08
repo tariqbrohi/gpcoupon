@@ -4,10 +4,11 @@ import styled from 'styled-components';
 export const StyledGrid = styled.div<GridProps>`
   display: grid;
   grid-template-columns: repeat(${({ repeat = 4 }) => repeat}, 1fr);
-  grid-gap: 20px;
+  grid-gap: 25px;
 
   ${({ theme }) => theme.gui.media.mobile} {
     grid-template-columns: repeat(${({ mobile = 2 }) => mobile}, 1fr);
+    grid-gap: 15px;
   }
 `;
 

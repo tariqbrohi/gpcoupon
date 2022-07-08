@@ -18,6 +18,17 @@ const Column = styled.div`
   height: 100%;
 `;
 
+const ImageWraper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  border-radius: 10px;
+`;
+
 export default function CategoryList() {
   const { data, loading } = useGetCategoriesQuery();
 
@@ -36,42 +47,26 @@ export default function CategoryList() {
               <Skeleton width="100px" height="0.5em" />
             </Column>
           ))}
-        {data && (
-          <Column>
-            <ProgressiveImage
-              rounded
-              placeholder="/images/sm/all.jpg"
-              src="/images/all.jpg"
-              style={{
-                flex: 1,
-                height: 'auto',
-                maxHeight: '237px',
-                cursor: 'pointer',
-              }}
-              onClick={handleRoute('all')}
-            />
-            <Spacer size={5} />
-            <Paragraph color="black" fontSize="xs" style={{ fontWeight: 600 }}>
-              All
-            </Paragraph>
-          </Column>
-        )}
         {data?.map((cat) => (
           <Column key={cat.slug}>
-            <ProgressiveImage
-              rounded
-              placeholder={cat.image.small}
-              src={cat.image.medium}
-              style={{
-                flex: 1,
-                height: 'auto',
-                maxHeight: '237px',
-                cursor: 'pointer',
-              }}
-              onClick={handleRoute(cat.slug)}
-            />
+            <ImageWraper>
+              <ProgressiveImage
+                rounded
+                placeholder={cat.imageUrls.small}
+                src={cat.imageUrls.medium}
+                style={{
+                  width: '100%',
+                  cursor: 'pointer',
+                }}
+                onClick={handleRoute(cat.slug)}
+              />
+            </ImageWraper>
             <Spacer size={5} />
-            <Paragraph color="black" fontSize="xs" style={{ fontWeight: 600 }}>
+            <Paragraph
+              color="black"
+              fontSize="xs"
+              style={{ fontWeight: 600, marginTop: 'auto', minHeight: '30px' }}
+            >
               {cat?.name}
             </Paragraph>
           </Column>

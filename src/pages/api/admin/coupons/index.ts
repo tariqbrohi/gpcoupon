@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import { PrismaClient } from '@prisma/client';
 import { pick } from 'lodash';
+import { NotFoundError } from '@/lib/errors';
 
 const prisma = new PrismaClient();
 
@@ -9,50 +10,47 @@ export default withApiAuthRequired(async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const method = req.method?.toLowerCase();
-
-  if (method !== 'post' && method !== 'get') {
-    return res.status(404).send({
-      errors: [
-        {
-          message: 'NotFound',
-        },
-      ],
-    });
+  if (req.method !== 'post' && req.method !== 'get') {
+    throw new NotFoundError();
   }
 
   try {
-    if (method === 'post') {
+    if (req.method === 'post') {
       const { user } = getSession(req, res) || {};
+
+      const timestamp = +(new Date().valueOf() / 1000).toFixed(0);
+
+      const { brand: brandId } = req.body;
 
       const brand = await prisma.brand.findUnique({
         where: {
-          slug: req.body.brand,
+          id: brandId,
         },
       });
 
       const item = await prisma.item.create({
         data: {
           ...req.body,
-          display: true,
-          createdBy: user?.sub,
-          state: 'AVAILABLE',
-          type: 'GIFT_CARD',
-          meta: {
-            brand: pick(brand, ['logo', 'name']),
-          },
+          status: 'AVAILABLE',
+          brand,
+          redemptionInstructions: '',
           notes: [
             {
               text: 'Send via Link share / Email',
             },
           ],
+          metadata: {
+            createdBy: user?.sub,
+          },
+          createdAt: timestamp,
+          updatedAt: timestamp,
         },
       });
 
       res.send(item);
     }
 
-    if (method === 'get') {
+    if (req.method === 'get') {
       const { brand, category, name, country } = req.query as any;
 
       const params: any = {};

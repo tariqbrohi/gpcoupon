@@ -4,16 +4,17 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import { Heading, Margin, Paragraph, Skeleton, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
+import { size } from '@/modules/brandingTheme';
 import { useGetCategoriesQuery } from '@/services';
 import 'react-multi-carousel/lib/styles.css';
 
 const responsive = {
   desktop: {
-    breakpoint: { max: 4000, min: 768 },
-    items: 4,
+    breakpoint: { max: 4000, min: size.maxWidth },
+    items: 6,
   },
   tablet: {
-    breakpoint: { max: 768, min: 0 },
+    breakpoint: { max: size.maxWidth, min: 0 },
     items: 4,
   },
 };
@@ -48,7 +49,7 @@ const Wrapper = styled.section`
 
 export default function Categories() {
   const { data, loading } = useGetCategoriesQuery();
-
+  console.log(data);
   const handleRoute = (route: string) => () => {
     Router.push(`${ROUTES.categories}/${route}`);
   };
@@ -72,29 +73,17 @@ export default function Categories() {
               <Skeleton width="100px" height="1em" />
             </Margin>
           ))}
-        {data && (
-          <Margin all={0.5}>
-            <Image
-              imageUrl="/images/all.jpg"
-              style={{ cursor: 'pointer' }}
-              onClick={handleRoute('all')}
-            />
-            <Spacer size={5} />
-            <Paragraph fontSize="xs" style={{ fontWeight: 600 }}>
-              All
-            </Paragraph>
-          </Margin>
-        )}
+
         {data?.map((cat, idx) => (
           <Margin all={0.5} key={idx}>
             <Image
-              imageUrl={cat.image.medium}
+              imageUrl={cat.imageUrls.medium}
               style={{ cursor: 'pointer' }}
               onClick={handleRoute(cat.slug)}
             />
             <Spacer size={5} />
             <Paragraph fontSize="xs" style={{ fontWeight: 600 }}>
-              {cat?.name}
+              {cat.name}
             </Paragraph>
           </Margin>
         ))}

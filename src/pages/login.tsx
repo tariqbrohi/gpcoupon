@@ -26,8 +26,11 @@ import { postLogin } from '@/redux/actions/authActions';
 import Spacer from '@/components/Spacer';
 import dynamic from 'next/dynamic';
 import React from 'react';
+import { useLoginMutation } from '@/services';
+import parseErrorMessage from '@/lib/parse-error-message';
 
 function Login() {
+  const [login, { loading }] = useLoginMutation();
   const classes = useStyles();
   const router = useRouter();
   const { setAuthenticated, setUser, setUserDetail } = useContext(
@@ -36,39 +39,31 @@ function Login() {
 
   const [username, setUsername] = useState(``);
   const [password, setPassword] = useState(``);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const loginUser = async () => {
-    try {
-      setLoading(true);
-      const response: any = await postLogin({
+    login({
+      data: {
         username,
         password,
+      },
+    })
+      .then(({ data: user }) => {
+        console.log(user);
+        setUserDetail(user);
+        setUser(user.id);
+        router.push('/');
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(parseErrorMessage(err));
       });
-
-      setUserDetail(response.user);
-      // setBasicToken(response.token);
-      // setAuthenticated(true);
-      setUser(response.user.id);
-
-      setLoading(false);
-      router.push('/');
-    } catch (error) {
-      console.log(error);
-      // user sweetalert or somthing else
-      setLoading(false);
-      // alert(JSON.stringify(error));
-    }
   };
 
   return (
     <section className={classes.signUpContainer}>
       <div className={classes.leftWrapper}>
-        <div className={classes.imageWrapper}>
-          {/* <Image alt={`image`} src={man}></Image>
-          <Image alt={`image`} src={boy}></Image>
-          <Image alt={`image`} src={girl}></Image> */}
-        </div>
+        <div className={classes.imageWrapper}></div>
       </div>
       <div className={classes.rightWrapper}>
         <div className={classes.rightHeader}>
@@ -115,19 +110,6 @@ function Login() {
             }}
             style={{ width: `100%` }}
           ></TextField>
-          {/* <NextLink href="/">
-            <a
-              style={{
-                width: `100%`,
-                textAlign: `left`,
-                color: `#2eafff`,
-                marginTop: `-1rem`,
-              }}
-            >
-              Forgot Password?
-            </a>
-          </NextLink> */}
-          {/* <Spacer size={15} /> */}
           <LoadingButton
             loading={loading}
             variant="contained"
@@ -136,16 +118,6 @@ function Login() {
           >
             Login
           </LoadingButton>
-          {/* <Divider style={{ width: `100%` }}>OR</Divider>
-          <button className={classes.rightMainLoginGoogleButton}>
-            <Image alt={`image`} src={google}></Image>
-            <span>Continue With Google</span>
-          </button>
-          <button className={classes.rightMainLoginFacebookButton}>
-            <Image alt={`image`} src={facebook}></Image>
-            <span>Continue With Facebook</span>
-            {` `}
-          </button> */}
         </div>
       </div>
     </section>

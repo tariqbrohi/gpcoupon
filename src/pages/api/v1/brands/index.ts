@@ -1,5 +1,5 @@
 import errorHandler from '@/pages/api/_middlewares/error-handler';
-import xoxoday from '@/pages/api/_lib/xoxoday';
+import prisma from '@/prisma';
 import { NotFoundError } from '@/lib/errors';
 
 export default errorHandler(async function handler(req, res) {
@@ -9,11 +9,7 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const { q, country } = req.query as any;
+  const brands = await prisma.brand.findMany({});
 
-  if (q) {
-    const cats = await xoxoday.getItems({ country, q });
-
-    return res.send(cats);
-  }
+  res.send(brands);
 });

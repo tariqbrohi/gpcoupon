@@ -5,34 +5,57 @@ import TextField from '@mui/material/TextField';
 import parseErrorMessage from '@/lib/parse-error-message';
 import Router from 'next/router';
 import { ROUTES } from '@/ROUTES';
+import stringSimilarity from 'string-similarity';
+import { countryOptions, Select, Spacer, Input } from '@growth-ui/react';
 import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select,
+  // Select,
   SelectChangeEvent,
 } from '@mui/material';
-import { Categories, Countries } from '@/constants';
 import { LoadingButton } from '@mui/lab';
+import { useGetCategoriesQuery } from '@/services';
 
 export default function CreateBrandForm() {
+  const { data, loading } = useGetCategoriesQuery();
   const [name, setName] = React.useState('');
-  const [country, setCountry] = useState('');
+  const [id, setId] = React.useState('');
+  const [countries, setCountries] = useState([]);
   const [slug, setSlug] = useState('');
-  const [category, setCategory] = useState('');
+  const [categories, setCategories] = useState([]);
   const [description, setDescription] = useState('');
   const [logo, setLogo] = useState<any>();
   const [descriptiveImage, setDescriptiveImage] = useState<any>();
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setCountry(event.target.value as string);
+    // setCounties([...countries, event.target.value as string]);
+    console.log(event);
+  };
+
+  const customSearchFunction = (searchQuery: any, item: any) => {
+    const string = item.text;
+
+    const similarity = stringSimilarity.compareTwoStrings(string, searchQuery);
+
+    if (similarity > 0.3) return true;
+
+    return false;
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (submitting || !category || !country || !name || !description || !slug)
+    if (
+      submitting ||
+      categories.length === 0 ||
+      countries.length === 0 ||
+      !name ||
+      !description ||
+      !slug ||
+      !id
+    )
       return;
 
     setSubmitting(true);
@@ -40,9 +63,10 @@ export default function CreateBrandForm() {
     const params: any = {
       name,
       description,
-      country,
+      countries,
       slug,
-      category,
+      id,
+      categories,
     };
 
     try {
@@ -62,7 +86,7 @@ export default function CreateBrandForm() {
         },
       });
 
-      params.logo = url || secure_url;
+      params.thumbnailUrl = url || secure_url;
 
       res = await axios.get(`/api/admin/get-signed-url`);
 
@@ -78,7 +102,7 @@ export default function CreateBrandForm() {
         },
       });
 
-      params.descriptiveImage = res.data.url || res.data.secure_url;
+      params.backgroundUrl = res.data.url || res.data.secure_url;
     } catch (err) {
       setSubmitting(false);
       return alert('Opps something went wrong while uploading image.');
@@ -131,30 +155,53 @@ export default function CreateBrandForm() {
           placeholder="Introduce Brand"
           onChange={(e) => setDescription(e.target.value)}
         />
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Category</InputLabel>
+        <Spacer size={30} />
+        <Input
+          fluid
+          label="Business ID"
+          value={id}
+          onChange={(e) => {
+            setId(e.target.value);
+          }}
+        />
+        <Spacer size={30} />
+        <Select
+          value={categories}
+          label="categories"
+          multiple
+          onChange={(e: any, data) => {
+            setCategories(data.newValues);
+          }}
+          options={data?.map(({ id, name, slug }) => ({
+            key: id,
+            text: name,
+            value: id,
+          }))}
+        />
+        <Spacer size={30} />
+        <Select
+          clearable
+          value={countries}
+          onChange={(e: any, data) => {
+            setCountries(data.newValues);
+          }}
+          search={customSearchFunction}
+          multiple
+          label="Countries"
+          options={countryOptions.map((option) => ({
+            key: option.iso,
+            text: `${option.flag} ${option.name}`,
+            value: option.iso,
+          }))}
+        />
+        {/* <FormControl>
+          <InputLabel id="demo-simple-select-label">countries</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            name="category"
-            value={category}
-            label="Category"
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            {Categories.map(({ key, text }) => (
-              <MenuItem value={key} key={key}>
-                {text}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Country</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={country}
-            label="Country"
+            value={countries}
+            label="countries"
+            multiple
             onChange={handleChange}
           >
             {Countries.map(({ key, text }) => (
@@ -163,7 +210,7 @@ export default function CreateBrandForm() {
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </FormControl> */}
       </div>
       <div>
         <label>Brand logo: </label>

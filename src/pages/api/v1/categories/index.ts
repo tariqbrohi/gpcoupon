@@ -1,5 +1,5 @@
 import errorHandler from '@/pages/api/_middlewares/error-handler';
-import xoxoday from '@/pages/api/_lib/xoxoday';
+import prisma from '@/prisma';
 import { NotFoundError } from '@/lib/errors';
 
 export default errorHandler(async function handler(req, res) {
@@ -9,11 +9,7 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const { g } = req.query as any;
+  const categories = await prisma.category.findMany({});
 
-  if (!g) {
-    const cats = await xoxoday.getCategories();
-
-    return res.send(cats);
-  }
+  res.send(categories);
 });
