@@ -10,7 +10,7 @@ const Container = styled.div`
   ${({ theme }) => theme.gui.media.mobile} {
     max-width: 100%;
     margin: 0;
-    padding: 0 16px;
+    padding: 0 8px;
   }
 `;
 

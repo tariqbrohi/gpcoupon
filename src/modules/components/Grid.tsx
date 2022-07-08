@@ -8,6 +8,7 @@ export const StyledGrid = styled.div<GridProps>`
 
   ${({ theme }) => theme.gui.media.mobile} {
     grid-template-columns: repeat(${({ mobile = 2 }) => mobile}, 1fr);
+    grid-gap: 15px;
   }
 `;
 

@@ -9,5 +9,6 @@ export default styled.div`
 
   ${({ theme }) => theme.gui.media.mobile} {
     border: none;
+    padding: 0 6px;
   }
 `;
