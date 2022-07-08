@@ -8,14 +8,16 @@ import PaymentInfo from '@/components/confirm-and-payment/PaymentInfo';
 import Provider from '@/components/confirm-and-payment/Provider';
 import Recipient from '@/components/confirm-and-payment/Recipient';
 import { Spacer } from '@growth-ui/react';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function ConfirmAndPay() {
+export default withPageAuthRequired(function ConfirmAndPay() {
   return (
     <>
       <Head />
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
+          <Spacer size={50} />
           <Grid repeat={2} mobile={1}>
             <Provider>
               <Recipient />
@@ -28,4 +30,4 @@ export default function ConfirmAndPay() {
       <AppNav />
     </>
   );
-}
+});

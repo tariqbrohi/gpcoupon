@@ -21,6 +21,10 @@ const prisma = new PrismaClient();
 
     const brand = brands.find((brand) => name.includes(brand.name));
 
+    if (name === 'H&M USA') {
+      console.log(brand, name);
+    }
+
     const cats = categories.split(',');
 
     const dbCats = await prisma.category.findMany({
@@ -38,7 +42,7 @@ const prisma = new PrismaClient();
     if (brand) {
       const dbBrand = await prisma.brand.findUnique({
         where: {
-          slug: brand.slug,
+          slug: brand.name === 'H&M' ? 'h-m' : brand.slug,
         },
       });
 
@@ -49,7 +53,7 @@ const prisma = new PrismaClient();
             .replaceAll('& ', '')
             .replaceAll(' ', '-')
             .replaceAll('.', '')
-            .replaceAll("'", '')}-us-${val}`,
+            .replaceAll("'", '')}-us-${productId}-${val}`,
           name,
           imageUrls: {
             small: imageUrl,

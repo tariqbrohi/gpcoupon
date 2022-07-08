@@ -1,13 +1,5 @@
 import { BaseOptions as QueryBaseOptions, useQuery } from './useQuery';
-import {
-  Brand,
-  Category,
-  Country,
-  Currency,
-  Item,
-  ItemType,
-  User,
-} from '@prisma/client';
+import { Brand, Category, Country, Item, ItemType } from '@prisma/client';
 import { useLazyQuery } from './useLazyQuery';
 import { useMutation } from './useMutation';
 
@@ -133,23 +125,6 @@ export type SearchItemsQueryVariables = {
 export type SearchItemsQueryResult = Item[];
 
 /**
- * Login
- */
-export const useLoginMutation = () => {
-  return useMutation<LoginMutationVariables, LoginMutationResult>(
-    '/api/login',
-    'post',
-    [],
-    ['username', 'password'],
-  );
-};
-export type LoginMutationVariables = {
-  username: string;
-  password: string;
-};
-export type LoginMutationResult = User;
-
-/**
  * Order
  */
 export const useOrderMutation = () => {
@@ -157,25 +132,30 @@ export const useOrderMutation = () => {
     '/api/v1/order',
     'post',
     [],
-    ['username', 'password'],
+    [
+      'username',
+      'password',
+      'itemId',
+      'message',
+      'quantity',
+      'recipient',
+      'amount',
+    ],
   );
 };
 export type OrderMutationVariables = {
-  itemId: string;
+  itemId: number;
   message?: string;
+  username: string;
+  password: string;
+  amount: number;
   quantity: number;
   recipient: {
     name: string;
     email: string;
   };
-  payment: {
-    amount: number;
-    currency: string;
-    method: string;
-    vendor: string;
-  };
 };
-export type OrderMutationResult = User;
+export type OrderMutationResult = string;
 
 /**
  * CreateItem
@@ -206,7 +186,7 @@ export const useCreateItemMutation = () => {
 export type CreateItemMutationVariables = {
   name: string;
   extendedName: string;
-  currency: Currency;
+  currency: string;
   expiresIn: number;
   amount: number;
   disCountRate?: number;

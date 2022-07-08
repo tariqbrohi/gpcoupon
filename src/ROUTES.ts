@@ -1,5 +1,6 @@
 export const ROUTES = {
-  login: '/login',
+  login: '/api/auth/login',
+  logout: '/api/auth/logout',
   item: '/item',
   search: '/search',
   brands: '/brands',

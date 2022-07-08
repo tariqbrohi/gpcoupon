@@ -7,21 +7,6 @@ generator client {
   provider        = "prisma-client-js"
 }
 
-model User {
-  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
-  username                String
-  email                   String            @unique
-  profileUrl              String?
-  provider                String
-  providerId              String
-  orders                  Order[]
-  createdAt               Int
-  updatedAt               Int
-  deletedAt               Int?
-
-  @@unique([provider, providerId])
-}
-
 model Category {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   name                    String            @unique
@@ -68,7 +53,7 @@ model Item {
   extendedName                    String?
   status                          Status
   imageUrls                       Image
-  currency                        Currency
+  currency                        String
   expiresIn                       Int?
   discountRate                    Float?
   amount                          Float
@@ -97,8 +82,7 @@ model Item {
 model Order {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   status                  OrderStatus
-  senderId                String            @db.ObjectId
-  sender                  User              @relation(fields: [senderId], references: [id])
+  senderId                String            
   recipient               Recipient
   message                 String?
   itemId                  String            @db.ObjectId
@@ -114,6 +98,8 @@ model Order {
 model Gift {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   code                    String
+  pin                     String
+  amount                  Float?
   orderId                 String            @db.ObjectId
   order                   Order             @relation(fields: [orderId], references: [id])
   status                  GiftStatus
@@ -130,13 +116,12 @@ type Image {
 
 type Price {
   amount                  Float
-  currency                Currency
+  currency                String
 }
 
 type Recipient {
   email                   String
-  firstName               String
-  lastName                String
+  name                    String
 }
 
 type Payment {
@@ -178,14 +163,10 @@ enum Role {
 }
 
 enum OrderStatus {
+  complete
   approved
   denied
   processing
-}
-
-enum Currency {
-  GPT
-  KRW
 }
 
 enum Country {

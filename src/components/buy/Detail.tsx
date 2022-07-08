@@ -14,11 +14,13 @@ import {
   Snackbar,
   Spacer,
 } from '@growth-ui/react';
+import currencyFormat from '@/lib/currency-format';
 
 export default function Detail() {
   const {
     query: { slug },
   } = useRouter();
+
   const { data: item, loading } = useGetItemQuery({
     data: {
       slug: slug as string,
@@ -91,14 +93,14 @@ export default function Detail() {
               <Heading>{item.name}</Heading>
               <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
-                  {`G${item.amount.toFixed(2)}`}
+                  {currencyFormat(item.amount, item.currency)}
                 </Heading>
-                {item.discountRate && (
+                {item.discountRate ? (
                   <Chip
                     style={{ background: '#ffeec1', color: '#e16a00' }}
                     text={`${item.discountRate}%`}
                   />
-                )}
+                ) : null}
               </Grid.Row>
             </>
           )}
@@ -131,7 +133,9 @@ export default function Detail() {
                 fluid
                 rounded
                 secondary
-                onClick={() => Router.push(`${ROUTES.confirmAndPay}/${slug}`)}
+                onClick={() =>
+                  Router.push(`${ROUTES.confirmAndPay}/${slug}?qty=${qty}`)
+                }
               >
                 Purchase
               </Button>

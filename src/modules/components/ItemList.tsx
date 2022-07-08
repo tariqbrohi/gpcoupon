@@ -1,9 +1,9 @@
+import currencyFormat from '@/lib/currency-format';
 import Grid from '@/modules/components/Grid';
 import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { Item } from '@prisma/client';
-import { nameToSlug } from '@/lib/slugs';
 import { ROUTES } from '@/ROUTES';
 
 import {
@@ -39,6 +39,10 @@ const ImageWraper = styled.div`
 `;
 
 export default function ItemList({ items, loading }: Props) {
+  const handleRoute = (slug: string) => () => {
+    Router.push(`${ROUTES.buy}/${slug}`);
+  };
+
   return (
     <>
       <Title color="black">Total {items?.length}</Title>
@@ -73,17 +77,13 @@ export default function ItemList({ items, loading }: Props) {
                   width: '100%',
                   borderRadius: '10px',
                 }}
-                onClick={() =>
-                  Router.push(
-                    `${ROUTES.buy}/${nameToSlug(item.name)}-${item.amount}`,
-                  )
-                }
+                onClick={handleRoute(item.slug)}
               />
             </ImageWraper>
             <Spacer size={5} />
             <MinHeight min="60px" style={{ marginTop: 'auto' }}>
               <Title>{item.name}</Title>
-              <Amount>G{item.amount.toFixed(2)}</Amount>
+              <Amount>{currencyFormat(item.amount, item.currency)}</Amount>
             </MinHeight>
           </GuiGrid.Col>
         ))}

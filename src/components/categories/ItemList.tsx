@@ -9,7 +9,6 @@ export default function ItemList() {
     query: { slug },
   } = useRouter();
   const { country } = useContext(AppContext);
-
   const { data, loading } = useGetCategoryItemsQuery({
     data: {
       slug,

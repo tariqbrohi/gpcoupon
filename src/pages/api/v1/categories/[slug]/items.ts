@@ -13,7 +13,7 @@ export default errorHandler(async function handler(req, res) {
   const {
     country,
     slug,
-    take = 20,
+    take = 500,
     skip = 0,
     sortBy = 'sales,desc',
   } = req.query as any;
@@ -42,29 +42,41 @@ export default errorHandler(async function handler(req, res) {
     }
 
     // todo
-    // check with xoxoday for any updates in data.
+    // save every countries
+    let items;
 
-    const items = await prisma.item.findMany({
-      take,
-      skip,
-      where: {
+    if (country !== 'US') {
+      items = await xoxoday.vouchers.findMany({
         country,
-        categories: {
-          every: {
-            id: category?.id,
+        category: slug,
+      });
+    }
+    // todo
+    // check with xoxoday for any updates in data.
+    else {
+      items = await prisma.item.findMany({
+        take,
+        skip,
+        where: {
+          country,
+          categories: {
+            some: {
+              id: category?.id,
+            },
           },
         },
-      },
-      orderBy,
-      select: {
-        amount: true,
-        name: true,
-        extendedName: true,
-        imageUrls: true,
-        discountRate: true,
-        // slug: true,
-      },
-    });
+        orderBy,
+        select: {
+          amount: true,
+          name: true,
+          extendedName: true,
+          imageUrls: true,
+          discountRate: true,
+          currency: true,
+          slug: true,
+        },
+      });
+    }
 
     category.items = items;
 

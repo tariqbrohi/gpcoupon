@@ -1,6 +1,8 @@
 import errorHandler from '@/pages/api/_middlewares/error-handler';
-import { NotFoundError } from '@/lib/errors';
 import prisma from '@/prisma';
+import xoxoday from '../../_lib/xoxoday';
+import { Item } from '@prisma/client';
+import { NotFoundError } from '@/lib/errors';
 
 export default errorHandler(async function handler(req, res) {
   const method = req.method;
@@ -9,13 +11,26 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const { slug } = req.query as any;
+  const slug = (req.query as any).slug.split('-');
+  const amount = slug.pop();
+  const itemId = slug.pop();
 
-  const item = await prisma.item.findFirst({
-    where: {
-      slug,
-    },
-  });
+  let item: Item | null = null;
+
+  if (!isNaN(itemId)) {
+    item = await xoxoday.vouchers.findOne({
+      itemId,
+      amount,
+    });
+
+    return res.send(item);
+  } else {
+    item = await prisma.item.findFirst({
+      where: {
+        slug,
+      },
+    });
+  }
 
   res.send(item);
 });

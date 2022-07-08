@@ -11,10 +11,20 @@ const pop10 = [
   'Under Armour',
   'Chipotle USA eGift Voucher',
   'Jamba Juice USD',
+  'Buffalo Wild Wings',
   'Panera Bread USA eGift Voucher',
+  'Peets Coffee & Tea',
+  'Taco Bell',
+  'Outback Steakhouse',
+  'DoorDash',
+  'Dunkin Donuts',
+  'The Cheesecake Factory',
+  "BJ's Restaurants",
+  'eBay',
   'Pinkberry USD',
   'Adidas (USA)',
   'Nike USA eGift Voucher',
+  'JCPenney USA eGift Card',
   'Target eGiftCard USA',
   'Dominos Pizza eCard',
   'Papa Johns USA eGift Voucher',
@@ -53,7 +63,7 @@ function randomInteger(min, max) {
   const sorted = [];
 
   for (const item of arr) {
-    const w1 = randomInteger(7, 10);
+    const w1 = randomInteger(1, 5);
 
     sorted.push([item.id, w1]);
   }
