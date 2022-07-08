@@ -6,18 +6,19 @@ import axios from 'axios';
 import Router from 'next/router';
 import { ROUTES } from '@/ROUTES';
 import parseErrorMessage from '@/lib/parse-error-message';
+import { useCreateItemMutation } from '@/services';
 
 export default withPageAuthRequired(function CreateCoupon() {
+  const [create, { loading }] = useCreateItemMutation();
+
   const handleCreate = async (data: any) => {
-    axios
-      .post('/api/admin/coupons', data)
+    create({
+      data,
+    })
       .then(() => {
-        alert('Success!');
         Router.push(ROUTES.admin.dashboard);
       })
-      .catch((err) => {
-        alert(parseErrorMessage(err));
-      });
+      .catch((err) => {});
   };
 
   return (

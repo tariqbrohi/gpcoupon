@@ -10,54 +10,64 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const { country, slug } = req.query as any;
+  const {
+    country,
+    slug,
+    take = 20,
+    skip = 0,
+    sortBy = 'sales,desc',
+  } = req.query as any;
 
   if (country && slug) {
-    const [items, xoxoItems] = await Promise.all([
-      prisma.item.findMany({
-        where: {
-          category: slug === 'all' ? '' : slug,
-          country,
+    const category = (await prisma.category.findUnique({
+      where: {
+        slug,
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        imageUrls: true,
+      },
+    })) as Record<string, any>;
+
+    let orderBy: Record<string, string> = {};
+
+    if (sortBy === 'sales,desc') {
+      orderBy.sortOrder = 'desc';
+    } else if (sortBy === 'amount,desc') {
+      orderBy.amount = 'desc';
+    } else {
+      orderBy.amount = 'asc';
+    }
+
+    // todo
+    // check with xoxoday for any updates in data.
+
+    const items = await prisma.item.findMany({
+      take,
+      skip,
+      where: {
+        country,
+        categories: {
+          every: {
+            id: category?.id,
+          },
         },
-      }),
-      xoxoday.getItems({ catSlug: slug === 'all' ? '' : slug, country }),
-    ]);
+      },
+      orderBy,
+      select: {
+        amount: true,
+        name: true,
+        extendedName: true,
+        imageUrls: true,
+        discountRate: true,
+        // slug: true,
+      },
+    });
 
-    res.send([
-      // ...items.map(
-      //   ({
-      //     id,
-      //     name,
-      //     amount,
-      //     discountRate,
-      //     description,
-      //     expiresIn,
-      //     imageUrl,
-      //   }) => ({
-      //     id,
-      //     name,
-      //     amount,
-      //     discount: discountRate,
-      //     description,
-      //     expiry: expiresIn,
-      //     image: {
-      //       medium: imageUrl,
-      //     },
-      //   }),
-      // ),
-      ...xoxoItems,
-    ]);
+    category.items = items;
 
-    // const [items, xoxoItems] = await Promise.all([
-    //   prisma.item.findMany({
-    //     where: {
-    //       category: slug,
-    //       country,
-    //     },
-    //   }),
-
-    // ]);
-    // console.log(items, '  here you go');
-    // return res.send([...xoxoItems]);
+    res.send(category);
   }
 });

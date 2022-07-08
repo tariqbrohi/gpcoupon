@@ -6,28 +6,34 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select,
+  // Select,
   TextareaAutosize,
 } from '@mui/material';
-import { Categories, Countries } from '@/constants';
+import stringSimilarity from 'string-similarity';
+import { countryOptions, Select, Spacer, Input } from '@growth-ui/react';
 import { LoadingButton } from '@mui/lab';
-import Spacer from '../Spacer';
+// import Spacer from '../Spacer';
 import { isNil, omitBy } from 'lodash';
+import {
+  useCreateItemMutation,
+  useGetBrandsQuery,
+  useGetCategoriesQuery,
+} from '@/services';
+import parseErrorMessage from '@/lib/parse-error-message';
 
 type State = Partial<{
-  description: string;
   name: string;
   discountRateType: string;
   extendedName: string;
   slug: string;
+  categories: string[];
   amount: string;
-  brand: string;
-  category: string;
+  brandId: string;
+  type: string;
   expiresIn: string;
-  bizAccountId: string;
   discountRate: string;
   country: string;
-  imageUrl: string;
+  imageUrls: any;
 }>;
 
 type Props = {
@@ -36,24 +42,28 @@ type Props = {
   onSubmit: (state: State) => Promise<void>;
 };
 
+const customSearchFunction = (searchQuery: any, item: any) => {
+  const string = item.text;
+
+  const similarity = stringSimilarity.compareTwoStrings(string, searchQuery);
+
+  if (similarity > 0.3) return true;
+
+  return false;
+};
+
 const initState = {
-  description: `1. Visit the nearest Home Depot outlet near you and inquire if they accept gift cards (vouchers) or visit the website. 
-
-2. Choose your preferred products.
-
-3. At checkout, use the Gift Card (voucher) to redeem.`,
   name: '',
-  discountRateType: '',
   extendedName: '',
   slug: '',
+  type: '',
   amount: '',
-  brand: '',
-  category: '',
+  brandId: '',
+  categories: [],
   expiresIn: '',
-  bizAccountId: '',
   discountRate: '',
   country: '',
-  imageUrl: '',
+  imageUrls: {},
 };
 
 export default function CouponForm({
@@ -61,19 +71,11 @@ export default function CouponForm({
   onSubmit,
   btnText,
 }: Props) {
-  const [submitting, setSubmitting] = useState(false);
+  const { data: categories } = useGetCategoriesQuery();
+  const { data: brands } = useGetBrandsQuery();
   const [image, setImage] = useState<any>();
   const [state, setState] = useState<State>(_state);
-  const [data, setData] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    axios
-      .get(`/api/brands`)
-      .then(({ data }) => setData(data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e: any) => {
     setState({
@@ -84,7 +86,6 @@ export default function CouponForm({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    setSubmitting(true);
 
     const data: any = {
       ...state,
@@ -99,9 +100,16 @@ export default function CouponForm({
       data.discountRate = +state.discountRate;
     }
 
-    if (!state.country) {
-      return alert('Country is required');
+    if (
+      !state.country ||
+      !state.type ||
+      !state.brandId ||
+      state.categories!.length === 0
+    ) {
+      return alert('Required field is missing');
     }
+
+    setSubmitting(true);
 
     try {
       if (image) {
@@ -120,15 +128,21 @@ export default function CouponForm({
             'Content-Type': image.type,
           },
         });
-
-        data.imageUrl = url || secure_url;
+        console.log(url, secure_url, ' dasdasjdakjdka jka');
+        data.imageUrls = {
+          small: url || secure_url,
+          medium: url || secure_url,
+          large: url || secure_url,
+        };
       }
 
       const ommitedData = omitBy(data, (v) => v === '' || isNil(v));
-
+      console.log(data, ommitedData);
       await onSubmit(ommitedData);
-    } catch {}
-    setSubmitting(false);
+    } catch (err) {
+      alert(parseErrorMessage(err));
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -161,11 +175,12 @@ export default function CouponForm({
           onChange={handleChange}
         />
         <TextField
+          required
           id="outlined-required"
-          label="Business Account ID"
-          name="bizAccountId"
-          value={state.bizAccountId}
-          placeholder=""
+          label="Type"
+          name="type"
+          value={state.type}
+          placeholder="GIFT_CARD or GIFT_ICON"
           onChange={handleChange}
         />
         <TextField
@@ -195,20 +210,60 @@ export default function CouponForm({
           onChange={handleChange}
         />
 
-        <InputLabel id="demo-simple-select-label">
-          Discount rate type
-        </InputLabel>
+        <Spacer size={30} />
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          name="discountRateType"
-          value={state.discountRateType}
-          label="discountRateType"
-          onChange={handleChange}
-        >
-          <MenuItem value={'fixed'}>Fixed</MenuItem>
-          <MenuItem value={'percent'}>%</MenuItem>
-        </Select>
+          scrolling
+          multiple
+          label="Category"
+          value={state.categories}
+          options={categories?.map(({ name, id }) => ({
+            key: id,
+            text: name,
+            value: id,
+          }))}
+          onChange={(_, { newValues }) => {
+            console.log(newValues);
+            setState({
+              ...state,
+              categories: newValues,
+            });
+          }}
+        />
+        <Spacer size={30} />
+        <Select
+          value={state.country}
+          onChange={(e: any, data) => {
+            setState({
+              ...state,
+              country: data.newValues,
+            });
+          }}
+          search={customSearchFunction}
+          label="Country"
+          options={countryOptions.map((option) => ({
+            key: option.iso,
+            text: `${option.flag} ${option.name}`,
+            value: option.iso,
+          }))}
+        />
+        <Spacer size={30} />
+        <Select
+          value={state.brandId}
+          onChange={(e: any, data) => {
+            setState({
+              ...state,
+              brandId: data.newValues,
+            });
+          }}
+          search={customSearchFunction}
+          label="Brand"
+          options={brands?.map(({ id, name }) => ({
+            key: id,
+            text: name,
+            value: id,
+          }))}
+        />
+
         <TextField
           id="outlined-required"
           name="discountRate"
@@ -217,44 +272,9 @@ export default function CouponForm({
           placeholder="5 (meaning 5%)"
           onChange={handleChange}
         />
-
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Country</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            name="country"
-            value={state.country}
-            label="Country"
-            onChange={handleChange}
-          >
-            {Countries.map(({ key, text }) => (
-              <MenuItem value={key} key={key}>
-                {text}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Category</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            name="category"
-            value={state.category}
-            label="Category"
-            onChange={handleChange}
-          >
-            {Categories.map(({ key, text }) => (
-              <MenuItem value={key} key={key}>
-                {text}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
       </div>
       <div>
-        <TextareaAutosize
+        {/* <TextareaAutosize
           maxRows={50}
           required
           name="description"
@@ -262,27 +282,9 @@ export default function CouponForm({
           onChange={handleChange}
           aria-label="maximum height"
           style={{ width: 500 }}
-        />
+        /> */}
       </div>
-      {data && (
-        <FormControl>
-          <InputLabel id="demo-simple-select-label">Brand</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            name="brand"
-            value={state.brand}
-            label="Brand"
-            onChange={handleChange}
-          >
-            {data.map(({ id, name, slug }: any) => (
-              <MenuItem value={slug} key={slug}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      )}
+
       <Spacer size={30} />
       <div>
         <label>Image</label>
@@ -297,8 +299,8 @@ export default function CouponForm({
       </div>
       <div style={{ margin: '8px' }}>
         <LoadingButton
-          variant="contained"
           loading={submitting}
+          variant="contained"
           onClick={handleSubmit}
         >
           {btnText}

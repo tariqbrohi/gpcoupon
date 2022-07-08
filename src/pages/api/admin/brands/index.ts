@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
+import { BadRequestError, NotFoundError } from '@/lib/errors';
 
 const prisma = new PrismaClient();
 
@@ -11,46 +12,40 @@ export default withApiAuthRequired(async function handler(
   const method = req.method?.toLowerCase();
 
   if (method !== 'post') {
-    return res.status(404).send({
-      errors: [
-        {
-          message: 'NotFound',
-        },
-      ],
-    });
+    throw new NotFoundError();
   }
 
   try {
-    if (!req.body.name || !req.body.logo || !req.body.descriptiveImage) {
-      return res.status(400).send({
-        errors: [
-          {
-            message: 'Name and image are requried.',
-          },
-        ],
-      });
+    if (!req.body.name || !req.body.backgroundUrl || !req.body.thumbnailUrl) {
+      throw new BadRequestError('Required field(s) are missing.');
     }
 
     if (method === 'post') {
       const existingBrand = await prisma.brand.findFirst({
         where: {
-          name: req.body.name,
           slug: req.body.slug,
         },
       });
 
       if (existingBrand) {
-        return res.status(400).send({
-          errors: [
-            {
-              message: 'Duplicate name',
-            },
-          ],
-        });
+        throw new BadRequestError('Duplicate slug.');
       }
 
+      const { id, categories, ...rest } = req.body;
+      const timestamp = +(new Date().valueOf() / 1000).toFixed(0);
       const brand = await prisma.brand.create({
-        data: req.body,
+        data: {
+          ...rest,
+          disclaimer: '',
+          terms: '',
+          status: 'AVAILABLE',
+          categoryIDs: categories,
+          createdAt: timestamp,
+          updatedAt: timestamp,
+          metadata: {
+            id,
+          },
+        },
       });
 
       res.send(brand);

@@ -11,8 +11,8 @@ const TextWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  background: ${({ theme }) => theme.color.themeBg};
-  padding: 48px 20px;
+  background: ${({ theme }) => theme.color['themeBg-600']};
+  padding: 48px 32px;
   overflow: hidden;
 
   & > div {

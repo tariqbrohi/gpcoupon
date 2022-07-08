@@ -1,5 +1,13 @@
 import { BaseOptions as QueryBaseOptions, useQuery } from './useQuery';
-import { Category, Item } from './types';
+import {
+  Brand,
+  Category,
+  Country,
+  Currency,
+  Item,
+  ItemType,
+  User,
+} from '@prisma/client';
 import { useLazyQuery } from './useLazyQuery';
 import { useMutation } from './useMutation';
 
@@ -22,37 +30,82 @@ export const useGetCategoriesLazyQuery = (
     baseOptions,
   );
 };
-export type GetCategoriesQueryVariables = {
-  g?: string;
-};
+export type GetCategoriesQueryVariables = {};
 export type GetCategoriesQueryResult = Category[];
 
 /**
- * GetItems
+ * GetBrands
  */
-export const useGetItemsQuery = (
-  baseOptions?: QueryBaseOptions<GetItemsQueryVariables>,
+export const useGetBrandsQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsQueryVariables>,
 ) => {
-  return useQuery<GetItemsQueryVariables, GetItemsQueryResult>(
+  return useQuery<GetBrandsQueryVariables, GetBrandsQueryResult>(
+    '/api/v1/brands',
+    baseOptions,
+  );
+};
+export const useGetBrandsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsQueryVariables>,
+) => {
+  return useLazyQuery<GetBrandsQueryVariables, GetBrandsQueryResult>(
+    '/api/v1/brands',
+    baseOptions,
+  );
+};
+export type GetBrandsQueryVariables = {};
+export type GetBrandsQueryResult = Brand[];
+
+/**
+ * GetCategoryItems
+ */
+export const useGetCategoryItemsQuery = (
+  baseOptions?: QueryBaseOptions<GetCategoryItemsQueryVariables>,
+) => {
+  return useQuery<GetCategoryItemsQueryVariables, GetCategoryItemsQueryResult>(
     '/api/v1/categories/:slug/items',
     baseOptions,
     ['slug'],
   );
 };
-export const useGetItemsLazyQuery = (
-  baseOptions?: QueryBaseOptions<GetItemsQueryVariables>,
+export const useGetCategoryItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetCategoryItemsQueryVariables>,
 ) => {
-  return useLazyQuery<GetItemsQueryVariables, GetItemsQueryResult>(
-    '/api/v1/categories/:slug/items',
-    baseOptions,
-    ['slug'],
-  );
+  return useLazyQuery<
+    GetCategoryItemsQueryVariables,
+    GetCategoryItemsQueryResult
+  >('/api/v1/categories/:slug/items', baseOptions, ['slug']);
 };
-export type GetItemsQueryVariables = {
+export type GetCategoryItemsQueryVariables = {
   country: string;
   slug: string | string[] | undefined;
 };
-export type GetItemsQueryResult = Item[];
+export type GetCategoryItemsQueryResult = Category & { items: Item[] };
+
+/**
+ * GetItem
+ */
+export const useGetItemQuery = (
+  baseOptions?: QueryBaseOptions<GetItemQueryVariables>,
+) => {
+  return useQuery<GetItemQueryVariables, GetItemQueryResult>(
+    '/api/v1/items/:slug',
+    baseOptions,
+    ['slug'],
+  );
+};
+export const useGetItemLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetItemQueryVariables>,
+) => {
+  return useLazyQuery<GetItemQueryVariables, GetItemQueryResult>(
+    '/api/v1/items/:slug',
+    baseOptions,
+    ['slug'],
+  );
+};
+export type GetItemQueryVariables = {
+  slug: string;
+};
+export type GetItemQueryResult = Item;
 
 /**
  * SearchItems
@@ -80,20 +133,89 @@ export type SearchItemsQueryVariables = {
 export type SearchItemsQueryResult = Item[];
 
 /**
- * CreateCase
+ * Login
  */
-// export const useCreateCaseMutation = () => {
-//   return useMutation<CreateCaseMutationVariables, CreateCaseMutationResult>(
-//     "/api/applications/:appId/cases",
-//     "post",
-//     ["appId"],
-//     ["subject", "description", "uploads"]
-//   );
-// };
-// export type CreateCaseMutationVariables = {
-//   appId: string;
-//   subject: string;
-//   description: string;
-//   uploads: string[];
-// };
-// export type CreateCaseMutationResult = Case;
+export const useLoginMutation = () => {
+  return useMutation<LoginMutationVariables, LoginMutationResult>(
+    '/api/login',
+    'post',
+    [],
+    ['username', 'password'],
+  );
+};
+export type LoginMutationVariables = {
+  username: string;
+  password: string;
+};
+export type LoginMutationResult = User;
+
+/**
+ * Order
+ */
+export const useOrderMutation = () => {
+  return useMutation<OrderMutationVariables, OrderMutationResult>(
+    '/api/v1/order',
+    'post',
+    [],
+    ['username', 'password'],
+  );
+};
+export type OrderMutationVariables = {
+  itemId: string;
+  message?: string;
+  quantity: number;
+  recipient: {
+    name: string;
+    email: string;
+  };
+  payment: {
+    amount: number;
+    currency: string;
+    method: string;
+    vendor: string;
+  };
+};
+export type OrderMutationResult = User;
+
+/**
+ * CreateItem
+ */
+export const useCreateItemMutation = () => {
+  return useMutation<CreateItemMutationVariables, CreateItemMutationResult>(
+    '/api/admin/items',
+    'post',
+    [''],
+    [
+      'name',
+      'extendedName',
+      'currency',
+      'expiresIn',
+      'amount',
+      'discountRate',
+      'notes',
+      'brandId',
+      'imageUrls',
+      'country',
+      'type',
+      'redemptionInstructions',
+      'categoryIDs',
+      'metadata',
+    ],
+  );
+};
+export type CreateItemMutationVariables = {
+  name: string;
+  extendedName: string;
+  currency: Currency;
+  expiresIn: number;
+  amount: number;
+  disCountRate?: number;
+  notes?: string[];
+  brandId: string;
+  country: Country;
+  type: ItemType;
+  redemptionInstructions?: string;
+  categoryIDs: string[];
+  metadata?: Record<string, any>;
+};
+export type CreateItemMutationResult = Item;

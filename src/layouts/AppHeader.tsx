@@ -22,6 +22,10 @@ import {
   Box,
 } from '@mui/material';
 
+const Container = styled(StyledGridRow)`
+  padding: 16px 32px;
+`;
+
 const Header = styled('header')<Props>`
   position: fixed;
   top: 0;
@@ -44,7 +48,7 @@ const Header = styled('header')<Props>`
   ${({ theme }) => theme.gui.media.mobile} {
     ${({ hideOnMobile }) => hideOnMobile && 'display: none;'}
     padding: 20px 0;
-    background: ${({ theme }) => theme.color.themeBg};
+    background: ${({ theme }) => theme.color['themeBg-600']};
 
     & > ${StyledGridRow}:last-child {
       display: none;
@@ -93,9 +97,9 @@ export default function AppHeader({
         if (window.innerWidth < 768 && window.scrollY > 80) {
           elem.style.background = '#fff';
         } else if (window.innerWidth < 768 && window.scrollY <= 80) {
-          elem.style.background = color.themeBg;
+          elem.style.background = color['themeBg-600'];
         } else if (window.innerWidth >= 768 && window.scrollY > 80) {
-          elem.style.background = color.themeBg;
+          elem.style.background = color['themeBg-600'];
         } else if (window.innerWidth >= 768 && window.scrollY <= 80) {
           elem.style.background = '#fff';
         }
@@ -110,7 +114,7 @@ export default function AppHeader({
   return (
     <Header ref={ref} hideOnMobile={hideOnMobile}>
       <HeaderLanguageSelector />
-      <Grid.Row verticalAlign="middle" style={{ padding: '16px' }}>
+      <Container verticalAlign="middle">
         <Grid.Col>
           <Grid.Row verticalAlign="middle">
             <Link href="/">
@@ -207,7 +211,7 @@ export default function AppHeader({
             )}
           </Grid.Row>
         </Grid.Col>
-      </Grid.Row>
+      </Container>
     </Header>
   );
 }

@@ -8,6 +8,7 @@ export const ROUTES = {
   buy: '/buy',
   privacy: '/privacyPolicy',
   legal: '/termsOfUse',
+  confirmAndPay: '/confirm-and-pay',
   admin: {
     brands: '/admin/brands',
     dashboard: '/admin/dashboard',

@@ -5,6 +5,7 @@ const Container = styled.div`
   width: 100%;
   max-width: ${({ theme }) => theme.size.maxWidth}px;
   margin: 0 auto;
+  padding: 0 32px;
 
   ${({ theme }) => theme.gui.media.mobile} {
     max-width: 100%;
