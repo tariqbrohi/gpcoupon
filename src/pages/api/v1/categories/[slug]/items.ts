@@ -58,7 +58,7 @@ export default errorHandler(async function handler(req, res) {
         take,
         skip,
         where: {
-          country,
+          country: country?.toUpperCase() || 'US',
           categories: {
             some: {
               id: category?.id,
