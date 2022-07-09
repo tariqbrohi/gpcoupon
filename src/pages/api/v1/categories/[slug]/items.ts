@@ -45,7 +45,7 @@ export default errorHandler(async function handler(req, res) {
     // save every countries
     let items;
 
-    if (country !== 'US') {
+    if (country?.toLowerCase() !== 'us') {
       items = await xoxoday.vouchers.findMany({
         country,
         category: slug,
