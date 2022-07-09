@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid, IconButton } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
+import { useUser } from '@auth0/nextjs-auth0';
+import Avatar from '@/modules/components/Avatar';
 
 const Nav = styled.nav`
   display: none;
@@ -25,6 +27,8 @@ const Nav = styled.nav`
 `;
 
 export default function AppNav() {
+  const { user } = useUser();
+
   return (
     <Nav>
       <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
@@ -43,7 +47,14 @@ export default function AppNav() {
           </Link>
         </Grid.Col>
         <Grid.Col>
-          <IconButton name="user" color="black" size={18} />
+          {!user && (
+            <Link href={ROUTES.login}>
+              <a>
+                <IconButton name="user" color="black" size={18} />
+              </a>
+            </Link>
+          )}
+          {user && <Avatar upward />}
         </Grid.Col>
       </Grid.Row>
     </Nav>

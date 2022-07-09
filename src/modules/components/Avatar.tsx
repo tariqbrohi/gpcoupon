@@ -1,10 +1,15 @@
 import React from 'react';
 import Router from 'next/router';
-import { Dropdown, DropdownItemProps, Image } from '@growth-ui/react';
+import {
+  Dropdown,
+  DropdownItemProps,
+  DropdownProps,
+  Image,
+} from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useUser } from '@auth0/nextjs-auth0';
 
-export default function Avatar() {
+export default function Avatar(props: DropdownProps) {
   const { user } = useUser();
 
   const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
@@ -29,6 +34,7 @@ export default function Avatar() {
           }
         />
       }
+      {...props}
     >
       <Dropdown.Menu>
         <Dropdown.Item text="Logout" onClick={handleClickDropdownItem} />
