@@ -10,7 +10,7 @@ export default function AppStateProvider({
   children: ReactNode;
   cookies: Record<string, string>;
 }) {
-  const [country, setCountry] = useState(cookies['country'] || 'us');
+  const [country, setCountry] = useState(cookies['country'] || 'US');
   const [searchHistories, setSearchHistories] = useState<string[]>([]);
 
   useEffect(() => {

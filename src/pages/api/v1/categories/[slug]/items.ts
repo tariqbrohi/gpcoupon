@@ -40,7 +40,7 @@ export default errorHandler(async function handler(req, res) {
     } else {
       orderBy.amount = 'asc';
     }
-
+    console.log(country);
     // todo
     // save every countries
     let items;
