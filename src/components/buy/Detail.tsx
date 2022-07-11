@@ -1,4 +1,3 @@
-import ConfirmAndPay from './ConfirmAndPay';
 import React, { useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import { ROUTES } from '@/ROUTES';

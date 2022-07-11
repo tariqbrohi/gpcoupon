@@ -8,7 +8,7 @@ import Hero from '@/components/home/Hero';
 import HomeContent from '@/components/home/HomeContent';
 import HowToUse from '@/components/home/HowToUse';
 import Section from '@/components/home/Section';
-import Spacer from '@/components/Spacer';
+import { Spacer } from '@growth-ui/react';
 
 export default function Home() {
   return (

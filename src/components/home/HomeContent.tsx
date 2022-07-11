@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 import Search from '@/modules/components/Search';
-import Spacer from '../Spacer';
 import styled from 'styled-components';
-import { Chip, Grid } from '@growth-ui/react';
+import { Chip, Grid, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 
 const Container = styled.div`
