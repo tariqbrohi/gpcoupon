@@ -49,6 +49,13 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
+  // rewrite for admin pages
+  if (currentHost === 'admin') {
+    url.pathname = `/admin${url.pathname}`;
+
+    return NextResponse.rewrite(url);
+  }
+
   // rewrite root application to `/home` folder
   if (
     hostname === 'localhost:3001' ||
@@ -59,11 +66,6 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  console.log(url.pathname, ' pathnname');
-  // rewrite everything else to `/_sites/[site] dynamic route
-  // if (!url.pathname.includes('.') && !url.pathname.startsWith('/api')) {
-
-  // }
   url.pathname = `/_sites/${currentHost}${url.pathname}`;
 
   return NextResponse.rewrite(url);
