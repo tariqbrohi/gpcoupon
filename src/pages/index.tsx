@@ -48,10 +48,11 @@ export default function Home() {
             <HomeContent />
             <Spacer size={50} />
             <Categories />
+            <Spacer size={50} />
             <HowToUse />
-            <Spacer size={30} />
-            <TempHowToUse />
-            <Spacer size={100} />
+            <Spacer size={50} />
+            {/* <TempHowToUse /> */}
+            <Spacer size={130} />
           </Section>
         </AppContainer>
       </AppMain>

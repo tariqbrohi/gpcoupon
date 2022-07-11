@@ -1,9 +1,9 @@
+import currencyFormat from '@/lib/currency-format';
 import Grid from '@/modules/components/Grid';
 import React from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
-import { Item } from '@/services/types';
-import { nameToSlug } from '@/lib/slugs';
+import { Item } from '@prisma/client';
 import { ROUTES } from '@/ROUTES';
 
 import {
@@ -13,12 +13,12 @@ import {
   Skeleton,
   Spacer,
   StyledParagraph,
+  MinHeight,
 } from '@growth-ui/react';
 
 const Title = styled(StyledParagraph)`
-  font-size: 13px;
-  font-weight: 500;
-  min-height: 40px;
+  font-size: 14px;
+  font-weight: 600;
 `;
 
 const Amount = styled(StyledParagraph)`
@@ -27,10 +27,26 @@ const Amount = styled(StyledParagraph)`
   color: black;
 `;
 
+const ImageWraper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  border-radius: 10px;
+`;
+
 export default function ItemList({ items, loading }: Props) {
+  const handleRoute = (slug: string) => () => {
+    Router.push(`${ROUTES.buy}/${slug}`);
+  };
+
   return (
     <>
       <Title color="black">Total {items?.length}</Title>
+      <Spacer size={30} />
       <Grid>
         {loading &&
           new Array(20).fill(0).map((i) => (
@@ -42,7 +58,7 @@ export default function ItemList({ items, loading }: Props) {
           ))}
         {items?.map((item: Item, idx) => (
           <GuiGrid.Col key={idx}>
-            {item.discount ? (
+            {item.discountRate ? (
               <Chip
                 color="yellow-500"
                 style={{
@@ -51,21 +67,24 @@ export default function ItemList({ items, loading }: Props) {
                   right: '7px',
                   zIndex: 8000,
                 }}
-                text={`${item.discount}% Rewards`}
+                text={`${item.discountRate}% Rewards`}
               />
             ) : null}
-            <Image
-              src={item.image.medium}
-              style={{ flex: 1, borderRadius: '10px', cursor: 'pointer' }}
-              onClick={() =>
-                Router.push(
-                  `${ROUTES.buy}/${nameToSlug(item.name)}-${item.amount}`,
-                )
-              }
-            />
+            <ImageWraper>
+              <Image
+                src={item.imageUrls.medium}
+                style={{
+                  width: '100%',
+                  borderRadius: '10px',
+                }}
+                onClick={handleRoute(item.slug)}
+              />
+            </ImageWraper>
             <Spacer size={5} />
-            <Title>{item.name}</Title>
-            <Amount>G{item.amount.toFixed(2)}</Amount>
+            <MinHeight min="60px" style={{ marginTop: 'auto' }}>
+              <Title>{item.name}</Title>
+              <Amount>{currencyFormat(item.amount, item.currency)}</Amount>
+            </MinHeight>
           </GuiGrid.Col>
         ))}
       </Grid>
@@ -74,6 +93,6 @@ export default function ItemList({ items, loading }: Props) {
 }
 
 type Props = {
-  items: any[] | null;
+  items?: Item[];
   loading: boolean;
 };

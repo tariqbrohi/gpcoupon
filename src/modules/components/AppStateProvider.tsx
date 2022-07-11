@@ -1,6 +1,7 @@
 import AppContext from './AppContext';
 import Cookies from 'js-cookie';
 import React, { ReactNode, useEffect, useState } from 'react';
+import { uniq } from 'lodash';
 
 export default function AppStateProvider({
   children,
@@ -9,7 +10,7 @@ export default function AppStateProvider({
   children: ReactNode;
   cookies: Record<string, string>;
 }) {
-  const [country, setCountry] = useState(cookies['country'] || 'us');
+  const [country, setCountry] = useState(cookies['country'] || 'US');
   const [searchHistories, setSearchHistories] = useState<string[]>([]);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function AppStateProvider({
   };
 
   const handleSearchHistories = (histories: string[]) => {
-    setSearchHistories(histories);
+    setSearchHistories(uniq(histories));
     Cookies.set('searchHistories', JSON.stringify(histories));
   };
 

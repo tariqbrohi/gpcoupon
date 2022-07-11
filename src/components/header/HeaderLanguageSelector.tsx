@@ -21,7 +21,7 @@ export const Container = styled.div`
   justify-content: center;
   padding: 5px 0;
   cursor: pointer;
-  background: ${({ theme }) => theme.color.themeBg};
+  background: ${({ theme }) => theme.color['themeBg-600']};
 
   ${({ theme }) => theme.gui.media.mobile} {
     background: #fff;

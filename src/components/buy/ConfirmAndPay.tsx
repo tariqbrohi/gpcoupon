@@ -2,8 +2,10 @@ import AppContext from '@/providers/app-context';
 import Completed from './Completed';
 import Grid from '@/modules/components/Grid';
 import Link from 'next/link';
+import parseErrorMessage from '@/lib/parse-error-message';
 import React, { useContext, useEffect, useState } from 'react';
-import { Item } from '@/services/types';
+import Router from 'next/router';
+import { Item } from '@prisma/client';
 import { postCharge } from '@/redux/actions/authActions';
 import { ROUTES } from '@/ROUTES';
 import {
@@ -16,8 +18,6 @@ import {
   Paragraph,
   Spacer,
 } from '@growth-ui/react';
-import Router from 'next/router';
-import parseErrorMessage from '@/lib/parse-error-message';
 
 type Props = Item & {
   qty: number;
@@ -25,9 +25,10 @@ type Props = Item & {
 
 export default function ConfirmAndPay({
   id,
-  image,
+  imageUrls,
   name,
   amount,
+  discountRate,
   qty,
   ...modalProps
 }: Props & ModalProps) {
@@ -61,7 +62,7 @@ export default function ConfirmAndPay({
         token,
         products: {
           id,
-          imageUrl: image.medium,
+          imageUrl: imageUrls.medium,
           name,
           amount,
         },
@@ -84,11 +85,12 @@ export default function ConfirmAndPay({
       postCharge({
         amount,
         quantity: qty,
+        margin: discountRate,
         userId: userDetail.id,
         token,
         products: {
           id,
-          imageUrl: image.medium,
+          imageUrl: imageUrls.medium,
           name,
           amount,
         },
@@ -109,12 +111,12 @@ export default function ConfirmAndPay({
   };
 
   return (
-    <Modal {...modalProps} style={{ width: '400px' }}>
+    <Modal {...modalProps} style={{ width: '360px' }}>
       <Modal.Content>
         {!success && (
           <>
             <Grid repeat={2}>
-              <Image rounded src={image.medium} />
+              <Image rounded src={imageUrls.medium} />
               <div>
                 <Paragraph fontSize="sm">
                   <strong>{name}</strong>
@@ -202,7 +204,7 @@ export default function ConfirmAndPay({
             </Button>
           </>
         )}
-        {success && <Completed email={email} imageUrl={image.medium} />}
+        {success && <Completed email={email} imageUrl={imageUrls.medium} />}
       </Modal.Content>
     </Modal>
   );

@@ -1,10 +1,10 @@
-export default function getCurrencySymbol(lang?: string) {
-  switch (lang) {
-    case "en":
-      return "$";
-    case "ko":
-      return "₩";
+export default function getCurrencySymbol(currencyCode?: string) {
+  switch (currencyCode) {
+    case 'GPT':
+      return 'G';
+    case 'KRW':
+      return '₩';
     default:
-      return "G";
+      return currencyCode;
   }
 }

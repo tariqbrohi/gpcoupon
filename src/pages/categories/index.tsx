@@ -16,12 +16,13 @@ export default function Categories() {
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
-          <Search hideOnDesktop />
+          {/* <Search hideOnDesktop /> */}
           <Spacer size={30} />
           <CategoryList />
+          <Spacer size={50} />
         </AppContainer>
       </AppMain>
-      <AppFooter />
+      {/* <AppFooter /> */}
       <AppNav />
     </>
   );

@@ -6,5 +6,5 @@ const convert = (gpoint: number, rate: number, qty: number) => {
     currency: 'KRW',
   }).format(gpoint * rate * qty);
 };
-
+//
 export default convert;

@@ -18,7 +18,7 @@ export default (
           .send({ errors: err.serializeErrors() });
       }
 
-      console.error('Cached unknown error - ', err.response);
+      console.error('Cached unknown error - ', err);
 
       res.status(500).send({
         errors: [

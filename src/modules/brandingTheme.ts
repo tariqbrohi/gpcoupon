@@ -1,8 +1,9 @@
 export const size = {
-  maxWidth: 700,
+  maxWidth: 1180,
   headerMaxWidth: 1180,
 };
 
 export const color = {
-  themeBg: '#E7E0FF',
+  'themeBg-600': '#E7E0FF',
+  'themeBg-700': '#e387ff',
 };
