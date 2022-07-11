@@ -22,7 +22,7 @@ export default async function middleware(req: NextRequest) {
     .replace(`.${HOST_NAME}`, '')
     .replace('.coupon-web.vercel.app', '')
     .replace('.coupon-gimn392dj-gpointwallet.vercel.app', '');
-
+  console.log(`current host = ${currentHost}`);
   if (url.pathname.startsWith('/images') || url.pathname.startsWith('/api')) {
     return NextResponse.rewrite(url);
   }
