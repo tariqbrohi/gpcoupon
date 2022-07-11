@@ -14,15 +14,12 @@ export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3001)
-  const hostname = req.headers.get('host') || 'demo.vercel.pub';
+  const hostname = req.headers.get('host') || 'coupon-web.vercel.app';
 
   const currentHost =
     process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
-      ? hostname
-          .replace(`.vercel.pub`, '')
-          .replace(`.platformize.vercel.app`, '')
+      ? hostname.replace(`.coupon-web.vercel.app`, '')
       : hostname.replace(`.localhost:3001`, '');
-
   // rewrites for app pages
   // if (currentHost == 'admin') {
   //   if (
