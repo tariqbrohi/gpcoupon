@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// const HOST_NAME = 'grapherjs.ngrok.io';
-const HOST_NAME = 'localhost:3001';
+const HOST_NAME = 'sandboxcommerce.io';
+// const HOST_NAME = 'localhost:3001';
 
 export const config = {
   matcher: [
@@ -22,7 +22,8 @@ export default async function middleware(req: NextRequest) {
     .replace(`.${HOST_NAME}`, '')
     .replace('.coupon-web.vercel.app', '')
     .replace('.coupon-gimn392dj-gpointwallet.vercel.app', '');
-  console.log(`current host = ${currentHost}`);
+  console.log(`current host = ${currentHost} and HOST_NAME=${HOST_NAME}`);
+  console.log(currentHost === HOST_NAME);
   if (url.pathname.startsWith('/images') || url.pathname.startsWith('/api')) {
     return NextResponse.rewrite(url);
   }
@@ -41,7 +42,8 @@ export default async function middleware(req: NextRequest) {
     currentHost === 'coupon-gimn392dj-gpointwallet.vercel.app'
   ) {
     url.pathname = `/home${url.pathname}`;
-
+    console.log(`in here`);
+    console.log(url);
     return NextResponse.rewrite(url);
   }
 
