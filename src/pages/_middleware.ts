@@ -20,9 +20,9 @@ export default async function middleware(req: NextRequest) {
   const hostname = req.headers.get('host') || HOST_NAME;
   const currentHost = hostname.replace(`.${HOST_NAME}`, '');
 
-  if (url.pathname.startsWith(`/_sites`)) {
-    return new Response(null, { status: 404 });
-  }
+  // if (hostname) {
+  //   return NextResponse.rewrite(url);
+  // }
 
   if (url.pathname.startsWith('/images') || url.pathname.startsWith('/api')) {
     return NextResponse.rewrite(url);
