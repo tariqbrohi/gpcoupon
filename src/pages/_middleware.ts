@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // const HOST_NAME = 'grapherjs.ngrok.io';
-const HOST_NAME = 'sandboxcommerce.io';
+const HOST_NAME = 'localhost:3001';
 
 export const config = {
   matcher: [
@@ -18,13 +18,10 @@ export default async function middleware(req: NextRequest) {
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3001)
   const hostname = req.headers.get('host') || HOST_NAME;
-  const currentHost = hostname.replace(`.${HOST_NAME}`, '');
-
-  if (hostname) {
-    url.pathname = `/home${url.pathname}`;
-
-    return NextResponse.rewrite(url);
-  }
+  const currentHost = hostname
+    .replace(`.${HOST_NAME}`, '')
+    .replace('.coupon-web.vercel.app', '')
+    .replace('.coupon-gimn392dj-gpointwallet.vercel.app', '');
 
   if (url.pathname.startsWith('/images') || url.pathname.startsWith('/api')) {
     return NextResponse.rewrite(url);
@@ -38,7 +35,11 @@ export default async function middleware(req: NextRequest) {
   }
 
   // rewrite root application to `/home` folder
-  if (hostname === HOST_NAME) {
+  if (
+    hostname === HOST_NAME ||
+    currentHost === 'coupon-web.vercel.app' ||
+    currentHost === 'coupon-gimn392dj-gpointwallet.vercel.app'
+  ) {
     url.pathname = `/home${url.pathname}`;
 
     return NextResponse.rewrite(url);
