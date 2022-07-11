@@ -18,11 +18,8 @@ export default async function middleware(req: NextRequest) {
 
   const currentHost =
     process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
-      ? hostname
-          .replace(`.vercel.app`, '')
-          .replace(`.coupon-web.vercel.app`, '')
+      ? hostname.replace(`.coupon-web.vercel.app`, '')
       : hostname.replace(`.localhost:3001`, '');
-
   // rewrites for app pages
   // if (currentHost == 'admin') {
   //   if (
