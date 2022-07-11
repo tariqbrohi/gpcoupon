@@ -57,10 +57,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   // rewrite root application to `/home` folder
-  if (
-    hostname === 'localhost:3001' ||
-    hostname === 'coupon-hr1zj8wjw-gpointwallet.vercel.app'
-  ) {
+  if (hostname === 'localhost:3001' || hostname === 'coupon-web.vercel.app') {
     url.pathname = `/home${url.pathname}`;
 
     return NextResponse.rewrite(url);
