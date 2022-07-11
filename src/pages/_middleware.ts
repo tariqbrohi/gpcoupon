@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // const HOST_NAME = 'grapherjs.ngrok.io';
-const HOST_NAME = 'coupon-web.vercel.app';
+const HOST_NAME = 'sandboxcommerce.io';
 
 export const config = {
   matcher: [
