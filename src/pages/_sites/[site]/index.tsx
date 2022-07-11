@@ -17,7 +17,7 @@ export default function Index() {
 }
 
 export const getStaticPaths: GetStaticPaths<PathProps> = async () => {
-  const paths = [{ params: { site: 'admin' } }];
+  const paths = [{ params: { site: 'abc' } }];
 
   return {
     paths,
@@ -29,12 +29,7 @@ export const getStaticProps: GetStaticProps<any, PathProps> = async ({
   params,
 }) => {
   if (!params) throw new Error('No path parameters found');
-
-  const data = [{ domain: 'admin', data: 'My first admin project' }];
-  console.log(params, ' params');
-  const project = data.find((p) => p.domain === params.site);
-  console.log('project ', project);
-
+  console.log(params);
   return {
     props: {},
   };
