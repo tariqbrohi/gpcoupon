@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// const HOST_NAME = 'grapherjs.ngrok.io';
+const HOST_NAME = 'coupon-web.vercel.app';
+
 export const config = {
   matcher: [
     '/',
@@ -14,30 +17,9 @@ export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3001)
-  const hostname = req.headers.get('host') || 'coupon-web.vercel.app';
+  const hostname = req.headers.get('host') || HOST_NAME;
+  const currentHost = hostname.replace(`.${HOST_NAME}`, '');
 
-  const currentHost =
-    process.env.NODE_ENV === 'production' && process.env.VERCEL === '1'
-      ? hostname.replace(`.coupon-web.vercel.app`, '')
-      : hostname.replace(`.localhost:3001`, '');
-  // rewrites for app pages
-  // if (currentHost == 'admin') {
-  //   if (
-  //     url.pathname === '/login' &&
-  //     (req.cookies.get('next-auth.session-token') ||
-  //       req.cookies.get('__Secure-next-auth.session-token'))
-  //   ) {
-  //     url.pathname = '/';
-  //     return NextResponse.redirect(url);
-  //   }
-
-  //   url.pathname = `/app${url.pathname}`;
-  //   return NextResponse.rewrite(url);
-  // }
-
-  // Prevent security issues – users should not be able to canonically access
-  // the pages/sites folder and its respective contents. This can also be done
-  // via rewrites to a custom 404 page
   if (url.pathname.startsWith(`/_sites`)) {
     return new Response(null, { status: 404 });
   }
@@ -54,7 +36,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   // rewrite root application to `/home` folder
-  if (hostname === 'localhost:3001' || hostname === 'coupon-web.vercel.app') {
+  if (hostname === HOST_NAME) {
     url.pathname = `/home${url.pathname}`;
 
     return NextResponse.rewrite(url);
