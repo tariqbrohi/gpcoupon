@@ -5,7 +5,7 @@ export const place = async (
   input: PlaceOrderInput,
 ): Promise<PlaceOrderResponse | null> => {
   try {
-    const { data } = await client.post('/', {
+    const { data } = await client.post('/api', {
       query: 'plumProAPI.mutation.placeOrder',
       tag: 'plumProAPI',
       variables: {

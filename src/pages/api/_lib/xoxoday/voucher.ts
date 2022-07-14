@@ -8,7 +8,7 @@ export const findMany = async ({
   category,
 }: FindManyVouchersInput): Promise<Item[]> => {
   try {
-    const { data } = await client.post('/', {
+    const { data } = await client.post('/api', {
       query: 'plumProAPI.mutation.getVouchers',
       tag: 'plumProAPI',
       variables: {
@@ -42,7 +42,7 @@ export const findOne = async ({
   amount,
 }: FindOneVoucherInput): Promise<Item | null> => {
   try {
-    const { data } = await client.post('/', {
+    const { data } = await client.post('/api', {
       query: 'plumProAPI.mutation.getVouchers',
       tag: 'plumProAPI',
       variables: {
