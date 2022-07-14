@@ -13,7 +13,7 @@ export default errorHandler(async function handler(req, res) {
 
   const { username, password } = req.body;
 
-  const data = await gpointwallet.getSession(username, password);
+  const data = await gpointwallet.login(username, password);
 
   if (!data) throw new UnauthenticatedError('Your credentials are not valid.');
 

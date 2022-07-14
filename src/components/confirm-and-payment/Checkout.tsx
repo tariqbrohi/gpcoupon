@@ -2,25 +2,17 @@ import Context, { State } from './Context';
 import isEmail from 'validator/lib/isEmail';
 import parseErrorMessage from '@/lib/parse-error-message';
 import React, { SyntheticEvent, useContext } from 'react';
+import Router from 'next/router';
 import ThemeButton from '@/modules/components/ThemeButton';
-import {
-  Button,
-  Input,
-  Modal,
-  ModalProps,
-  Snackbar,
-  Spacer,
-} from '@growth-ui/react';
 import { isEmpty } from 'lodash';
+import { Modal, ModalProps, Snackbar } from '@growth-ui/react';
 import { useOrderMutation } from '@/services';
 import { useState } from 'react';
-import Router from 'next/router';
 
 export default function Checkout(props: ModalProps) {
   const { state, setState } = useContext(Context);
   const [errors, setErrors] = useState<Partial<State>>({});
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+
   const [submittng, setSubmitting] = useState(false);
   const [order, { loading }] = useOrderMutation();
 
@@ -54,8 +46,6 @@ export default function Checkout(props: ModalProps) {
     order({
       data: {
         itemId: item.id as any,
-        username,
-        password,
         slug: slug,
         amount: item?.amount,
         message: message,
@@ -89,33 +79,14 @@ export default function Checkout(props: ModalProps) {
       )}
       <Modal {...props}>
         <Modal.Content>
-          <Modal
-            trigger={<ThemeButton fluid>Pay with GPoint Wallet</ThemeButton>}
+          <ThemeButton
+            fluid
+            secondary
+            loading={submittng}
+            onClick={handleCheckout}
           >
-            <Modal.Header>Pay with GPoint</Modal.Header>
-            <Modal.Content>
-              <form onSubmit={handleCheckout}>
-                <Input
-                  fluid
-                  label="Username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <Spacer size={20} />
-                <Input
-                  fluid
-                  label="Password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <Spacer size={20} />
-                <Button fluid secondary loading={submittng} type="submit">
-                  Login and pay
-                </Button>
-              </form>
-            </Modal.Content>
-          </Modal>
+            Pay with GPoint Wallet
+          </ThemeButton>
         </Modal.Content>
       </Modal>
     </>

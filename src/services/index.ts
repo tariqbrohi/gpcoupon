@@ -108,7 +108,7 @@ export const useGetItemQuery = (
   return useQuery<GetItemQueryVariables, GetItemQueryResult>(
     '/api/v1/items/:id',
     baseOptions,
-    ['id', 'amount'],
+    ['id'],
   );
 };
 export const useGetItemLazyQuery = (
@@ -117,7 +117,7 @@ export const useGetItemLazyQuery = (
   return useLazyQuery<GetItemQueryVariables, GetItemQueryResult>(
     '/api/v1/items/:id',
     baseOptions,
-    ['id', 'amount'],
+    ['id'],
   );
 };
 export type GetItemQueryVariables = {
@@ -159,24 +159,13 @@ export const useOrderMutation = () => {
     '/api/v1/order',
     'post',
     [],
-    [
-      'username',
-      'password',
-      'itemId',
-      'message',
-      'quantity',
-      'recipient',
-      'amount',
-      'slug',
-    ],
+    ['itemId', 'message', 'quantity', 'recipient', 'amount', 'slug'],
   );
 };
 export type OrderMutationVariables = {
   itemId: number;
   slug: string;
   message?: string;
-  username: string;
-  password: string;
   amount: number;
   quantity: number;
   recipient: {

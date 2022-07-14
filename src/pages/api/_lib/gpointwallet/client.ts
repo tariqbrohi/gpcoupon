@@ -1,6 +1,8 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { ChargeInput } from './types';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { parseCookies } from '@/lib/parse-cookies';
 
 const {
   GPOINT_WALLET_URL = 'https://api.gpointwallet.com',
@@ -58,19 +60,37 @@ export default class GPointWallet {
       }
 
       const { exp } = jwt_decode(this.token.accessToken) as any;
-      console.log(exp);
-      if (new Date().valueOf() >= exp) {
-        console.log('WOWOWOWOWOOW');
+
+      if (new Date().valueOf() >= exp * 1000) {
+        return {};
       }
 
       return this.token;
     } catch (err) {
-      console.log(err, ' erer erere');
       return {};
     }
   }
 
-  async getSession(username: string, password: string) {
+  getSession(req: NextApiRequest) {
+    try {
+      const { jid, sess } = parseCookies(req);
+
+      const { exp } = jwt_decode(jid) as any;
+
+      if (new Date().valueOf() >= exp * 1000) {
+        return null;
+      }
+
+      return {
+        user: JSON.parse(atob(sess)),
+        token: jid,
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  async login(username: string, password: string) {
     try {
       const { data } = await this.request.post('/v2/auth/login', {
         username,

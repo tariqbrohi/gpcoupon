@@ -1,4 +1,4 @@
-import { isNil, omit } from "lodash";
+import { isNil, omit, omitBy } from 'lodash';
 
 type Options = {
   url: string;
@@ -15,7 +15,10 @@ export const parseUrl = ({ url, data = {}, params, bodies = [] }: Options) => {
    */
   let newUrl = url;
 
-  const query = omit(data, [...params, ...bodies]) as Record<string, any>;
+  const query = omitBy(omit(data, [...params, ...bodies]), isNil) as Record<
+    string,
+    any
+  >;
 
   params.forEach((param) => {
     newUrl = newUrl.replaceAll(`:${param}`, data[param]);
@@ -27,8 +30,8 @@ export const parseUrl = ({ url, data = {}, params, bodies = [] }: Options) => {
    * Now it handles the query params.
    */
   Object.keys(query).forEach((q, i) => {
-    str.push(`${i === 0 ? "?" : "&"}${q}=${query[q]}`);
+    str.push(`${i === 0 ? '?' : '&'}${q}=${query[q]}`);
   });
 
-  return `${newUrl}${str.join("")}`;
+  return `${newUrl}${str.join('')}`;
 };
