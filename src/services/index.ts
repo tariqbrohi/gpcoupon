@@ -100,6 +100,32 @@ export type GetCategoryItemsQueryVariables = {
 export type GetCategoryItemsQueryResult = Category & { items: Item[] };
 
 /**
+ * GetOccasionItems
+ */
+export const useGetOccasionItemsQuery = (
+  baseOptions?: QueryBaseOptions<GetOccasionItemsQueryVariables>,
+) => {
+  return useQuery<GetOccasionItemsQueryVariables, GetOccasionItemsQueryResult>(
+    '/api/v1/occasions/:slug/items',
+    baseOptions,
+    ['slug'],
+  );
+};
+export const useGetOccasionItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetOccasionItemsQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetOccasionItemsQueryVariables,
+    GetOccasionItemsQueryResult
+  >('/api/v1/occasions/:slug/items', baseOptions, ['slug']);
+};
+export type GetOccasionItemsQueryVariables = {
+  country: string;
+  slug: string | string[] | undefined;
+};
+export type GetOccasionItemsQueryResult = Item[];
+
+/**
  * GetItem
  */
 export const useGetItemQuery = (
