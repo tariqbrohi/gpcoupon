@@ -1,7 +1,7 @@
-import moment from 'moment';
 import redirect from '../redirect';
-import { getSession, useUser } from '@auth0/nextjs-auth0';
+import useUser from '@/auth/useUser';
 import { NextPageContext } from 'next';
+import { parseCookies } from '../parse-cookies';
 import { ROUTES } from '@/ROUTES';
 import { useEffect } from 'react';
 
@@ -9,13 +9,13 @@ const withPageAuthRequired =
   (roles: string[]) =>
   (PageComponent: any, returnTo = ROUTES.login) => {
     const WithPageAuthRequired = (props: any) => {
-      const { user, error, isLoading } = useUser();
+      const user = useUser();
 
       useEffect(() => {
-        if ((user && !error) || isLoading) return;
+        if (user) return;
 
         redirect(null, returnTo);
-      }, [user, error, isLoading]);
+      }, [user]);
 
       return <PageComponent {...props} />;
     };
@@ -26,10 +26,10 @@ const withPageAuthRequired =
       let pageProps: Record<string, any> = {};
 
       if (req && res) {
-        const { user, accessTokenExpiresAt = 0 } = getSession(req, res) || {};
+        const { sess } = parseCookies(req);
 
-        if (!user || accessTokenExpiresAt <= moment().unix()) {
-          redirect(res, returnTo);
+        if (!sess) {
+          return redirect(res, returnTo);
         }
       }
 

@@ -8,11 +8,8 @@ interface Context {
   setCountry: (lang: Country) => void;
   searchHistories: string[];
   setSearchHistories: (searchHistories: string[]) => void;
+  user: Record<string, any> | null;
+  setUser: (user: Record<string, any> | null) => void;
 }
 
-export default createContext<Context>({
-  country: 'us',
-  setCountry: () => {},
-  searchHistories: [],
-  setSearchHistories: () => {},
-});
+export default createContext<Context>({} as any);

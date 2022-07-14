@@ -400,3 +400,36 @@ export type SignS3MutationResult = {
   signedUrl: string;
   url: string;
 };
+
+/**
+ * Login
+ */
+export const useLoginMutation = () => {
+  return useMutation<LoginMutationVariables, LoginMutationResult>(
+    '/api/v1/login',
+    'post',
+    [''],
+    ['username', 'password'],
+  );
+};
+export type LoginMutationVariables = {
+  username: string;
+  password: string;
+};
+export type LoginMutationResult = {
+  token: string;
+  user: Record<string, any>;
+};
+
+/**
+ * Logout
+ */
+export const useLogoutMutation = () => {
+  return useMutation<LogoutMutationVariables, LogoutMutationResult>(
+    '/api/v1/logout',
+    'post',
+    [''],
+  );
+};
+export type LogoutMutationVariables = {};
+export type LogoutMutationResult = boolean;

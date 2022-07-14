@@ -12,13 +12,20 @@ export default function AppStateProvider({
 }) {
   const [country, setCountry] = useState(cookies['country'] || 'US');
   const [searchHistories, setSearchHistories] = useState<string[]>([]);
+  const [user, setUser] = useState<Record<string, any> | null>(null);
 
   useEffect(() => {
-    const { searchHistories } = cookies;
+    const { sess, searchHistories } = cookies;
 
     try {
       setSearchHistories(JSON.parse(searchHistories));
     } catch {}
+
+    if (sess) {
+      const user = atob(sess);
+
+      if (user) setUser(JSON.parse(user));
+    }
   }, []);
 
   const handleCountryChange = (country: string) => {
@@ -38,6 +45,8 @@ export default function AppStateProvider({
         setCountry: handleCountryChange,
         searchHistories,
         setSearchHistories: handleSearchHistories,
+        user,
+        setUser,
       }}
     >
       {children}

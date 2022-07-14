@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { Button, Grid, Spacer, StyledGridRow } from '@growth-ui/react';
 import { color } from '@/modules/brandingTheme';
 import { ROUTES } from '@/ROUTES';
-import { useUser } from '@auth0/nextjs-auth0';
+import useUser from '@/auth/useUser';
 
 const Container = styled(StyledGridRow)`
   padding: 16px 32px;
@@ -50,7 +50,7 @@ export default function AppHeader({
   bgTransition = false,
 }: Props) {
   const ref = useRef<HTMLHeadElement>(null);
-  const { user } = useUser();
+  const user = useUser();
 
   useEffect(() => {
     if (bgTransition) {
@@ -100,7 +100,7 @@ export default function AppHeader({
             {user && <Avatar />}
             {!user && (
               <>
-                <Link href={ROUTES.login}>
+                <Link href="/login">
                   <a>Login</a>
                 </Link>
                 <Spacer size={20} />
