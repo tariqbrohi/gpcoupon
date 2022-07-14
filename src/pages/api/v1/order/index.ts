@@ -61,8 +61,10 @@ export default withApiAuthRequired(
           margin: discountRate,
           t: session?.token,
         });
-      } catch (err) {
-        console.log(err);
+      } catch (err: any) {
+        throw new BadRequestError(
+          err?.response?.data?.errors?.[0]?.message || 'Internal Server Error',
+        );
       }
       //
 
