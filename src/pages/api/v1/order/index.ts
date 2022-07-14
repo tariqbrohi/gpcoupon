@@ -2,12 +2,13 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import gpointwallet from '@/pages/api/_lib/gpointwallet';
 import moment from 'moment';
 import prisma from '@/prisma';
+import withApiAuthRequired from '../../_middlewares/with-api-auth-required';
 import xoxoday from '@/pages/api/_lib/xoxoday';
-import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import {
   BadRequestError,
   InternalServerError,
   NotFoundError,
+  UnauthenticatedError,
 } from '@/lib/errors';
 
 export default withApiAuthRequired(
@@ -17,17 +18,8 @@ export default withApiAuthRequired(
     }
 
     if (req.method === 'post') {
-      const {
-        amount,
-        recipient,
-        username,
-        password,
-        itemId,
-        quantity,
-        message,
-        slug,
-      } = req.body;
-      const sender = getSession(req, res)?.user;
+      const { amount, recipient, itemId, quantity, message, slug } = req.body;
+
       const timestamp = moment().unix();
 
       const [dbItem, xoxoItem] = await Promise.all([
@@ -49,17 +41,24 @@ export default withApiAuthRequired(
       const discountRate = xoxoItem?.discountRate || dbItem?.discountRate || 0;
 
       // gpointwallet
-      const session = await gpointwallet.getSession(username, password);
+      const session = gpointwallet.getSession(req);
 
       let charge;
 
+      if (!session) {
+        throw new UnauthenticatedError();
+      }
+
+      const { user, token } = session;
+
       try {
         charge = await gpointwallet.charge({
-          userId: session?.user.id,
-          amount,
+          userId: user?.id,
+          amount: amount * quantity,
           currency,
           margin: discountRate,
-          t: session?.token,
+          t: token,
+          name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
         });
       } catch (err: any) {
         throw new BadRequestError(
@@ -74,9 +73,9 @@ export default withApiAuthRequired(
 
       let orderId = '';
 
-      if ((dbItem && xoxoItem) || xoxoItem) {
+      if (xoxoItem || (dbItem?.metadata as any)?.productId) {
         const order = await xoxoday.orders.place({
-          productId: itemId,
+          productId: xoxoItem?.id || (dbItem?.metadata as any).productId,
           quantity,
           denomination: +amount,
           // todo
@@ -100,7 +99,7 @@ export default withApiAuthRequired(
           data: {
             // status: order.orderStatus as any,
             status: 'approved',
-            senderId: sender?.sub,
+            senderId: user?.id,
             recipient: {
               set: recipient,
             },

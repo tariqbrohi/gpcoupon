@@ -49,7 +49,7 @@ const Wrapper = styled.section`
 
 export default function Categories() {
   const { data, loading } = useGetCategoriesQuery();
-  console.log(data);
+
   const handleRoute = (route: string) => () => {
     Router.push(`${ROUTES.categories}/${route}`);
   };

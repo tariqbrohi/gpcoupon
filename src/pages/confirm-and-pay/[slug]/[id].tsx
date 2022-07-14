@@ -7,8 +7,8 @@ import Head from '@/modules/components/Head';
 import PaymentInfo from '@/components/confirm-and-payment/PaymentInfo';
 import Provider from '@/components/confirm-and-payment/Provider';
 import Recipient from '@/components/confirm-and-payment/Recipient';
+import withPageAuthRequired from '@/lib/hoc/with-page-auth-required';
 import { Spacer } from '@growth-ui/react';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 export default withPageAuthRequired(function ConfirmAndPay() {
   return (
