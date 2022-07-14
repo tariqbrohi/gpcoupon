@@ -3,12 +3,9 @@ import HeaderLanguageSelector from '@/components/header/HeaderLanguageSelector';
 import HeaderNavBar from '@/components/header/HeaderNavBar';
 import Link from 'next/link';
 import React, { useEffect, useRef } from 'react';
-import Router from 'next/router';
-import Search from '@/modules/components/Search';
 import styled from 'styled-components';
 import { Button, Grid, Spacer, StyledGridRow } from '@growth-ui/react';
 import { color } from '@/modules/brandingTheme';
-import { ROUTES } from '@/ROUTES';
 import useUser from '@/auth/useUser';
 
 const Container = styled(StyledGridRow)`
@@ -104,7 +101,11 @@ export default function AppHeader({
                   <a>Login</a>
                 </Link>
                 <Spacer size={20} />
-                <Button onClick={() => Router.push(ROUTES.login)}>
+                <Button
+                  onClick={() => {
+                    window.open('https://gpointwallet.com');
+                  }}
+                >
                   Signup
                 </Button>
               </>

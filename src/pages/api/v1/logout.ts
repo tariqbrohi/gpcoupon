@@ -1,6 +1,6 @@
 import errorHandler from '@/pages/api/_middlewares/error-handler';
-import { NotFoundError, UnauthenticatedError } from '@/lib/errors';
-import { removeCookie, removeTokenCookie } from '@/lib/auth/auth-cookies';
+import { NotFoundError } from '@/lib/errors';
+import { removeCookies } from '@/lib/parse-cookies';
 
 export default errorHandler(async function handler(req, res) {
   const method = req.method;
@@ -9,8 +9,7 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  removeTokenCookie(res);
-  removeCookie(res, 'sess');
+  removeCookies(res, ['jid', 'sess']);
 
   res.send(true);
 });

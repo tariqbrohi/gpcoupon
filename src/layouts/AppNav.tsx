@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Grid, IconButton } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useUser } from '@auth0/nextjs-auth0';
 import Avatar from '@/modules/components/Avatar';
+import useUser from '@/auth/useUser';
 
 const Nav = styled.nav`
   display: none;
@@ -27,7 +27,7 @@ const Nav = styled.nav`
 `;
 
 export default function AppNav() {
-  const { user } = useUser();
+  const user = useUser();
 
   return (
     <Nav>

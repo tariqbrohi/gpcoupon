@@ -16,7 +16,9 @@ export default function Avatar(props: DropdownProps) {
   const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
     if (data.text === 'Logout') {
       logout({})
-        .then(() => Router.reload())
+        .then(() => {
+          Router.reload();
+        })
         .catch(() => {});
     }
   };
