@@ -20,11 +20,17 @@ function MyApp({ Component, pageProps, cookies }: AppContext & AppProps) {
   );
 }
 
-MyApp.getInitialProps = async ({ ctx: { req } }: AppContext) => {
-  const cookies = parseCookies(req);
+MyApp.getInitialProps = async ({ Component, ctx }: AppContext) => {
+  const cookies = parseCookies(ctx.req);
+  let pageProps = {};
+
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
 
   return {
     cookies,
+    pageProps,
   };
 };
 

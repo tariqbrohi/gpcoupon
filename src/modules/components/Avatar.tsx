@@ -1,20 +1,25 @@
 import React from 'react';
 import Router from 'next/router';
+import useUser from '@/auth/useUser';
+import { useLogoutMutation } from '@/services';
 import {
   Dropdown,
   DropdownItemProps,
   DropdownProps,
   Image,
 } from '@growth-ui/react';
-import { ROUTES } from '@/ROUTES';
-import { useUser } from '@auth0/nextjs-auth0';
 
 export default function Avatar(props: DropdownProps) {
-  const { user } = useUser();
+  const user = useUser();
+  const [logout] = useLogoutMutation();
 
   const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
     if (data.text === 'Logout') {
-      return Router.push(ROUTES.logout);
+      logout({})
+        .then(() => {
+          Router.reload();
+        })
+        .catch(() => {});
     }
   };
 
@@ -30,7 +35,7 @@ export default function Avatar(props: DropdownProps) {
           size="mini"
           src={
             user?.picture ||
-            'https://react.semantic-ui.com/images/avatar/small/elliot.jpg'
+            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
           }
         />
       }

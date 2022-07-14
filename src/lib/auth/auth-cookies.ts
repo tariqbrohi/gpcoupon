@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { parse, serialize } from 'cookie';
 
-const TOKEN_NAME = 'csrf';
+const TOKEN_NAME = 'jid';
 
 export const MAX_AGE = 60 * 60 * 24; // 24 hours
 
@@ -21,6 +21,15 @@ export function setTokenCookie(res: NextApiResponse, token: string) {
 
 export function removeTokenCookie(res: NextApiResponse) {
   const cookie = serialize(TOKEN_NAME, '', {
+    maxAge: -1,
+    path: '/',
+  });
+
+  res.setHeader('Set-Cookie', cookie);
+}
+
+export function removeCookie(res: NextApiResponse, name: string) {
+  const cookie = serialize(name, '', {
     maxAge: -1,
     path: '/',
   });
