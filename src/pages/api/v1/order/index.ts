@@ -51,13 +51,19 @@ export default withApiAuthRequired(
       // gpointwallet
       const session = await gpointwallet.getSession(username, password);
 
-      const charge = await gpointwallet.charge({
-        userId: session?.user.id,
-        amount,
-        currency,
-        margin: discountRate,
-        t: session?.token,
-      });
+      let charge;
+
+      try {
+        charge = await gpointwallet.charge({
+          userId: session?.user.id,
+          amount,
+          currency,
+          margin: discountRate,
+          t: session?.token,
+        });
+      } catch (err) {
+        console.log(err);
+      }
       //
 
       if (!charge || !charge?.id) {
