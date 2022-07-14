@@ -17,12 +17,13 @@ import currencyFormat from '@/lib/currency-format';
 
 export default function Detail() {
   const {
-    query: { slug },
+    query: { slug, id, amount },
   } = useRouter();
 
   const { data: item, loading } = useGetItemQuery({
     data: {
-      slug: slug as string,
+      id: id as string,
+      amount: amount as any,
     },
   });
   const [qty, setQty] = useState(1);
@@ -32,12 +33,13 @@ export default function Detail() {
     setQty(qty);
   };
 
-  const handleRoute = () => {};
-
   const handleMenuItemClick = (menu: string) => () => {
     setActiveMenu(menu);
   };
 
+  // -----------------------
+  // Renderer
+  // -----------------------
   const renderMenu = () => {
     switch (activeMenu) {
       case 'description':
@@ -132,9 +134,15 @@ export default function Detail() {
                 fluid
                 rounded
                 secondary
-                onClick={() =>
-                  Router.push(`${ROUTES.confirmAndPay}/${slug}?qty=${qty}`)
-                }
+                onClick={() => {
+                  let route = `${ROUTES.confirmAndPay}/${slug}/${id}?qty=${qty}`;
+
+                  if (amount) {
+                    route = `${ROUTES.confirmAndPay}/${slug}/${id}?amount=${amount}&qty=${qty}`;
+                  }
+
+                  Router.push(route);
+                }}
               >
                 Purchase
               </Button>
