@@ -1,7 +1,9 @@
 import { IncomingMessage } from 'http';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { parse, serialize } from 'cookie';
-import { omit } from 'lodash';
+
+const domain =
+  process.env.NODE_ENV === 'production' ? '.gpcoupon.com' : 'localhost';
 
 export const setCookie = (
   res: NextApiResponse,
@@ -10,7 +12,7 @@ export const setCookie = (
   res.setHeader(
     'Set-Cookie',
     cookies.map((cookie) =>
-      serialize(cookie.name, cookie.value, { domain: 'localhost', path: '/' }),
+      serialize(cookie.name, cookie.value, { domain, path: '/' }),
     ),
   );
 };
@@ -20,7 +22,7 @@ export const removeCookies = (res: NextApiResponse, names: string[]) => {
     'Set-Cookie',
     names.map((name) =>
       serialize(name, '', {
-        domain: 'localhost',
+        domain,
         path: '/',
         maxAge: 0,
       }),
