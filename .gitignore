@@ -14,7 +14,7 @@ seed
 # next.js
 /.next/
 /out/
-
+temp
 # production
 /build
 
