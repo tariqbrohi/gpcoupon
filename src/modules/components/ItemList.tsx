@@ -39,8 +39,14 @@ const ImageWraper = styled.div`
 `;
 
 export default function ItemList({ items, loading }: Props) {
-  const handleRoute = (slug: string) => () => {
-    Router.push(`${ROUTES.buy}/${slug}`);
+  const handleRoute = (slug: string, id: string, amount?: number) => () => {
+    let route = `${ROUTES.buy}/${slug}/${id}`;
+
+    if (amount) {
+      route = `${ROUTES.buy}/${slug}/${id}?amount=${amount}`;
+    }
+
+    Router.push(route);
   };
 
   return (
@@ -49,8 +55,8 @@ export default function ItemList({ items, loading }: Props) {
       <Spacer size={30} />
       <Grid>
         {loading &&
-          new Array(20).fill(0).map((i) => (
-            <GuiGrid.Col key={i}>
+          new Array(20).fill(0).map((_, idx) => (
+            <GuiGrid.Col key={idx}>
               <Skeleton width="100%" height="150px" />
               <Spacer size={5} />
               <Skeleton width="100px" height="0.5em" />
@@ -77,7 +83,11 @@ export default function ItemList({ items, loading }: Props) {
                   width: '100%',
                   borderRadius: '10px',
                 }}
-                onClick={handleRoute(item.slug)}
+                onClick={handleRoute(
+                  item.slug,
+                  item.id,
+                  (item as any).ie ? item.amount : undefined,
+                )}
               />
             </ImageWraper>
             <Spacer size={5} />

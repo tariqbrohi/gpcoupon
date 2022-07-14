@@ -4,7 +4,11 @@ import moment from 'moment';
 import prisma from '@/prisma';
 import xoxoday from '@/pages/api/_lib/xoxoday';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
-import { InternalServerError, NotFoundError } from '@/lib/errors';
+import {
+  BadRequestError,
+  InternalServerError,
+  NotFoundError,
+} from '@/lib/errors';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -46,6 +50,7 @@ export default withApiAuthRequired(
 
       // gpointwallet
       const session = await gpointwallet.getSession(username, password);
+
       const charge = await gpointwallet.charge({
         userId: session?.user.id,
         amount,
@@ -54,6 +59,10 @@ export default withApiAuthRequired(
         t: session?.token,
       });
       //
+
+      if (!charge || !charge?.id) {
+        throw new InternalServerError();
+      }
 
       let orderId = '';
 

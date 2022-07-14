@@ -40,7 +40,7 @@ export default function CategoryList() {
       <Heading>Categories</Heading>
       <Grid>
         {loading &&
-          new Array(10).fill(0).map((i) => (
+          new Array(10).fill(0).map((_, i) => (
             <Column key={i}>
               <Skeleton width="100%" height="150px" />
               <Spacer size={5} />

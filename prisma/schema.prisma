@@ -37,7 +37,8 @@ model Brand {
   deletedAt               Int?
   categoryIDs             String[]          @db.ObjectId
   categories              Category[]        @relation(fields: [categoryIDs], references: [id])
-  items                   Item[]            
+  items                   Item[]   
+  sortOrder               Int               @default(0)         
   countries               Country[]
   metadata                Json?
 

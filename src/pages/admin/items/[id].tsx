@@ -1,16 +1,14 @@
 import AdminLayout from '@/layouts/AdminLayout';
-import CreateItemForm from '@/components/admin/items/CreateItemForm';
+import EditItemForm from '@/components/admin/items/EditItemForm';
 import Provider from '@/components/admin/items/Provider';
 import React from 'react';
-import { Heading } from '@growth-ui/react';
 
-export default function CreateItem() {
+export default function Item() {
   return (
     <>
       <AdminLayout>
         <Provider>
-          <Heading as="h2">Create Item</Heading>
-          <CreateItemForm />
+          <EditItemForm />
         </Provider>
       </AdminLayout>
     </>

@@ -48,6 +48,32 @@ export type GetBrandsQueryVariables = {};
 export type GetBrandsQueryResult = Brand[];
 
 /**
+ * GetBrand
+ */
+export const useGetBrandQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandQueryVariables>,
+) => {
+  return useQuery<GetBrandQueryVariables, GetBrandQueryResult>(
+    '/api/v1/brands/:slug',
+    baseOptions,
+    ['slug'],
+  );
+};
+export const useGetBrandLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandQueryVariables>,
+) => {
+  return useLazyQuery<GetBrandQueryVariables, GetBrandQueryResult>(
+    '/api/v1/brands/:slug',
+    baseOptions,
+    ['slug'],
+  );
+};
+export type GetBrandQueryVariables = {
+  slug: string;
+};
+export type GetBrandQueryResult = Brand;
+
+/**
  * GetCategoryItems
  */
 export const useGetCategoryItemsQuery = (
@@ -80,22 +106,23 @@ export const useGetItemQuery = (
   baseOptions?: QueryBaseOptions<GetItemQueryVariables>,
 ) => {
   return useQuery<GetItemQueryVariables, GetItemQueryResult>(
-    '/api/v1/items/:slug',
+    '/api/v1/items/:id',
     baseOptions,
-    ['slug'],
+    ['id', 'amount'],
   );
 };
 export const useGetItemLazyQuery = (
   baseOptions?: QueryBaseOptions<GetItemQueryVariables>,
 ) => {
   return useLazyQuery<GetItemQueryVariables, GetItemQueryResult>(
-    '/api/v1/items/:slug',
+    '/api/v1/items/:id',
     baseOptions,
-    ['slug'],
+    ['id', 'amount'],
   );
 };
 export type GetItemQueryVariables = {
-  slug: string;
+  id: string;
+  amount?: number;
 };
 export type GetItemQueryResult = Item;
 
@@ -172,15 +199,18 @@ export const useCreateItemMutation = () => {
       'extendedName',
       'currency',
       'expiresIn',
+      'sortOrder',
       'amount',
       'discountRate',
+      'available',
       'notes',
       'brandId',
-      'imageUrls',
+      'imageUrl',
       'country',
       'type',
       'redemptionInstructions',
       'categoryIDs',
+      'slug',
       'metadata',
     ],
   );
@@ -194,10 +224,179 @@ export type CreateItemMutationVariables = {
   disCountRate?: number;
   notes?: string[];
   brandId: string;
+  available: boolean;
+  sortOrder: number;
   country: Country;
   type: ItemType;
   redemptionInstructions?: string;
   categoryIDs: string[];
+  imageUrl: string;
+  slug: string;
   metadata?: Record<string, any>;
 };
 export type CreateItemMutationResult = Item;
+
+/**
+ * UpdateItem
+ */
+export const useUpdateItemMutation = () => {
+  return useMutation<UpdateItemMutationVariables, UpdateItemMutationResult>(
+    '/api/admin/items/:id',
+    'put',
+    ['id'],
+    [
+      'extendedName',
+      'currency',
+      'expiresIn',
+      'sortOrder',
+      'discountRate',
+      'available',
+      'notes',
+      'brandId',
+      'imageUrl',
+      'country',
+      'type',
+      'redemptionInstructions',
+      'categoryIDs',
+      'slug',
+      'metadata',
+      'id',
+    ],
+  );
+};
+export type UpdateItemMutationVariables = {
+  extendedName: string;
+  id: string;
+  currency: string;
+  expiresIn: number;
+  disCountRate?: number;
+  notes?: string[];
+  brandId: string;
+  available: boolean;
+  sortOrder: number;
+  country: Country;
+  type: ItemType;
+  redemptionInstructions?: string;
+  categoryIDs: string[];
+  imageUrl: string;
+  slug: string;
+  metadata?: Record<string, any>;
+};
+export type UpdateItemMutationResult = Item;
+
+/**
+ * UpdateBrand
+ */
+export const useUpdateBrandMutation = () => {
+  return useMutation<UpdateBrandMutationVariables, UpdateBrandMutationResult>(
+    '/api/admin/brands/:id',
+    'put',
+    ['id'],
+    [
+      'name',
+      'description',
+      'slug',
+      'disclaimer',
+      'backgroundUrl',
+      'thumbnailUrl',
+      'available',
+      'terms',
+      'categories',
+      'countries',
+    ],
+  );
+};
+export type UpdateBrandMutationVariables = {
+  id: string;
+  name: string;
+  description: string;
+  slug: string;
+  disclaimer: string;
+  backgroundUrl: string;
+  thumbnailUrl: string;
+  available: boolean;
+  terms: string;
+  categories: string[];
+  countries: string[];
+};
+export type UpdateBrandMutationResult = Brand;
+
+/**
+ * CreateBrand
+ */
+export const useCreateBrandMutation = () => {
+  return useMutation<CreateBrandMutationVariables, CreateBrandMutationResult>(
+    '/api/admin/brands',
+    'put',
+    [''],
+    [
+      'name',
+      'description',
+      'slug',
+      'disclaimer',
+      'backgroundUrl',
+      'thumbnailUrl',
+      'available',
+      'terms',
+      'categories',
+      'countries',
+    ],
+  );
+};
+export type CreateBrandMutationVariables = {
+  name: string;
+  description: string;
+  slug: string;
+  disclaimer: string;
+  backgroundUrl: string;
+  thumbnailUrl: string;
+  available: boolean;
+  terms: string;
+  categories: string[];
+  countries: string[];
+};
+export type CreateBrandMutationResult = Brand;
+
+/**
+ * GetItems for admin
+ */
+export const useGetItemsQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsQueryVariables>,
+) => {
+  return useQuery<GetItemsQueryVariables, GetItemsQueryResult>(
+    '/api/admin/items',
+    baseOptions,
+    [],
+  );
+};
+export const useGetItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsQueryVariables>,
+) => {
+  return useLazyQuery<GetItemsQueryVariables, GetItemsQueryResult>(
+    '/api/admin/items',
+    baseOptions,
+    [],
+  );
+};
+export type GetItemsQueryVariables = {};
+export type GetItemsQueryResult = Item[];
+
+/**
+ * SignS3
+ */
+export const useSignS3Mutation = () => {
+  return useMutation<SignS3MutationVariables, SignS3MutationResult>(
+    '/api/admin/sign-s3',
+    'post',
+    [''],
+    ['filename', 'filetype'],
+  );
+};
+export type SignS3MutationVariables = {
+  filename: string;
+  filetype: string;
+};
+export type SignS3MutationResult = {
+  signedUrl: string;
+  url: string;
+};

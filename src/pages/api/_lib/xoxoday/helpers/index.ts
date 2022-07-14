@@ -672,6 +672,7 @@ export const normalizeItems = (items: Record<string, any>[]) => {
       }-${amount}`,
       discountRate: item.discount,
       name: item.name,
+      ie: true,
       id: item.productId,
       termsAndConditionsInstructions: item.termsAndConditionsInstructions,
       redemptionInstructions: item.redemptionInstructions,

@@ -5,11 +5,12 @@ import { useRouter } from 'next/router';
 
 export default function Provider({ children }: { children: ReactNode }) {
   const {
-    query: { slug, qty = 1 },
+    query: { slug, id, qty = 1, amount },
   } = useRouter();
   const { data: item, loading } = useGetItemQuery({
     data: {
-      slug: slug as string,
+      id: id as string,
+      amount: amount as any,
     },
   });
   const [state, setState] = useState<State>({

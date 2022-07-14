@@ -2,6 +2,7 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import prisma from '@/prisma';
 import xoxoday from '@/pages/api/_lib/xoxoday';
 import { NotFoundError } from '@/lib/errors';
+import { flatten } from 'lodash';
 
 export default errorHandler(async function handler(req, res) {
   const method = req.method;
@@ -40,42 +41,50 @@ export default errorHandler(async function handler(req, res) {
     } else {
       orderBy.amount = 'asc';
     }
-    console.log(country);
+
     // todo
     // save every countries
     let items;
+
+    const params = {
+      take,
+      skip,
+      where: {
+        country: country?.toUpperCase() || 'US',
+        status: 'AVAILABLE',
+        categories: {
+          some: {
+            id: category?.id,
+          },
+        },
+      },
+      orderBy,
+      select: {
+        id: true,
+        amount: true,
+        name: true,
+        extendedName: true,
+        imageUrls: true,
+        discountRate: true,
+        currency: true,
+        slug: true,
+      },
+    };
 
     if (country?.toLowerCase() !== 'us') {
       items = await xoxoday.vouchers.findMany({
         country,
         category: slug,
       });
+
+      const dbItems = await prisma.item.findMany(params as any);
+
+      items = flatten([items, dbItems]);
     }
     // todo
     // check with xoxoday for any updates in data.
     else {
-      items = await prisma.item.findMany({
-        take,
-        skip,
-        where: {
-          country: country?.toUpperCase() || 'US',
-          categories: {
-            some: {
-              id: category?.id,
-            },
-          },
-        },
-        orderBy,
-        select: {
-          amount: true,
-          name: true,
-          extendedName: true,
-          imageUrls: true,
-          discountRate: true,
-          currency: true,
-          slug: true,
-        },
-      });
+      items = await prisma.item.findMany(params as any);
     }
 
     category.items = items;

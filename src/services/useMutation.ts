@@ -39,7 +39,7 @@ export function useMutation<D = any, R = any>(
       params,
       bodies,
     });
-    console.log(parsedUrl, ' parsed');
+
     return axios
       .request<R, AxiosResponse<R, D>>({
         method,
