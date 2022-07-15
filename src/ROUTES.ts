@@ -10,6 +10,7 @@ export const ROUTES = {
   privacy: '/privacyPolicy',
   legal: '/termsOfUse',
   confirmAndPay: '/confirm-and-pay',
+  occasions: '/occasions',
   admin: {
     createItem: '/admin/items/create',
     items: '/admin/items',
