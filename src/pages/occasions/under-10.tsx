@@ -12,7 +12,7 @@ const Under10 = () => {
   const { country } = useContext(AppContext);
   const { data, loading } = useGetOccasionItemsQuery({
     data: {
-      slug: 'automobiles_accessories',
+      slug,
       country,
     },
   });
