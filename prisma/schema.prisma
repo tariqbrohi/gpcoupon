@@ -54,6 +54,7 @@ model Item {
   extendedName                    String?
   status                          Status
   imageUrls                       Image
+  couponImageUrl                  String?
   currency                        String
   expiresIn                       Int?
   discountRate                    Float?

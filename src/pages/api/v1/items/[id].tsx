@@ -43,6 +43,7 @@ export default errorHandler(async function handler(req, res) {
       redemptionInstructions: true,
       slug: true,
       termsAndConditionsInstructions: true,
+      couponImageUrl: true,
       sortOrder: true,
       type: true,
     },

@@ -12,6 +12,7 @@ export default function Provider({ children }: Props) {
     expiresIn: 90,
     discountRate: 0,
     amount: 0,
+    couponImageUrl: '',
     categories: [],
     brand: '',
     redemptionInstructions: '',

@@ -477,10 +477,10 @@
     "@babel/runtime" "^7.10.4"
     react-is "^16.6.3"
 
-"@growth-ui/react@^1.34.1":
-  version "1.34.1"
-  resolved "https://registry.yarnpkg.com/@growth-ui/react/-/react-1.34.1.tgz#223f5195e5d7b9880d308c5d0e3173e85c2ee7c1"
-  integrity sha512-VCMIasIGBKGd1XJjOTW3tDYStKmR1Zdv4FSzNEUBWrS2tKizc/fM8idFXQbguhm6+p+klguX2f5kfmUwQVq/Yw==
+"@growth-ui/react@^1.36.0":
+  version "1.36.0"
+  resolved "https://registry.yarnpkg.com/@growth-ui/react/-/react-1.36.0.tgz#bccd0719e124a7e2a4a553ff44c58801faa864f4"
+  integrity sha512-kDgylInssQfLIbfLG2dXTrFceY8HhP1ZZa0Yi8A3nSHO8YzfvARxNx18jcexjPAt8Yb2LpAmcFmTtIAyzjE2Ug==
   dependencies:
     "@fluentui/react-component-ref" "^0.59.0"
     exenv "^1.2.2"

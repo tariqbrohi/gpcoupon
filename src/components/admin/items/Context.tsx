@@ -14,6 +14,7 @@ export type Item = {
   type: ItemType;
   brand: string;
   categories: string[];
+  couponImageUrl: string | File;
   sortOrder: number;
   redemptionInstructions: string;
   termsAndConditionsInstructions: string;
