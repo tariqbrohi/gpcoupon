@@ -54,6 +54,7 @@ export default function ItemList() {
       </Grid.Row>
       <Spacer size={30} />
       <List loading={loading} items={data?.items} />
+      <Spacer size={50} />
     </>
   );
 }
