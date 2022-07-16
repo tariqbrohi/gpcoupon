@@ -4,6 +4,8 @@ import React from 'react';
 import TopBrandItem from './TopBrandItem';
 import { Image, ImageList, Paragraph, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
+import Router from 'next/router';
+import { style } from '@mui/system';
 
 const TOP_BRANDS = [
   {
@@ -73,7 +75,11 @@ export default function TopBrands() {
         }}
       >
         {TOP_BRANDS.map((brand) => (
-          <ImageList.Item key={brand.name}>
+          <ImageList.Item
+            key={brand.name}
+            onClick={() => Router.push(brand.link)}
+            style={{ cursor: 'pointer' }}
+          >
             <Image src={brand.backgroundUrl} />
             <ImageList.ItemBar title={brand.name} thumbnail={brand.logoUrl} />
           </ImageList.Item>
