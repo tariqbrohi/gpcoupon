@@ -38,10 +38,7 @@ export default function ItemList() {
           <Image
             rounded
             size="small"
-            src={
-              data?.thumbnailUrl! ||
-              'https://sodagift.com/img/image/51969083109817.jpg'
-            }
+            src={data?.thumbnailUrl!}
             alt={data?.name}
           />
         </Grid.Col>
