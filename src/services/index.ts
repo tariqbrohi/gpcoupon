@@ -100,6 +100,33 @@ export type GetCategoryItemsQueryVariables = {
 export type GetCategoryItemsQueryResult = Category & { items: Item[] };
 
 /**
+ * GetBrandItems
+ */
+export const useGetBrandItemsQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandItemsQueryVariables>,
+) => {
+  return useQuery<GetBrandItemsQueryVariables, GetBrandItemsQueryResult>(
+    '/api/v1/brands/:slug/items',
+    baseOptions,
+    ['slug'],
+  );
+};
+export const useGetBrandItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandItemsQueryVariables>,
+) => {
+  return useLazyQuery<GetBrandItemsQueryVariables, GetBrandItemsQueryResult>(
+    '/api/v1/brands/:slug/items',
+    baseOptions,
+    ['slug'],
+  );
+};
+export type GetBrandItemsQueryVariables = {
+  country: string;
+  slug: string | string[] | undefined;
+};
+export type GetBrandItemsQueryResult = Brand & { items: Item[] };
+
+/**
  * GetOccasionItems
  */
 export const useGetOccasionItemsQuery = (
@@ -217,6 +244,7 @@ export const useCreateItemMutation = () => {
       'sortOrder',
       'amount',
       'discountRate',
+      'couponImageUrl',
       'available',
       'notes',
       'brandId',
@@ -237,6 +265,7 @@ export type CreateItemMutationVariables = {
   expiresIn: number;
   amount: number;
   disCountRate?: number;
+  couponImageUrl: string;
   notes?: string[];
   brandId: string;
   available: boolean;

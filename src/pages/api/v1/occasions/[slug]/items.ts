@@ -57,9 +57,6 @@ export default errorHandler(async function handler(req, res) {
             id: category?.id,
           },
         },
-        amount: {
-          lte: 10,
-        },
       },
       orderBy,
       select: {
@@ -72,7 +69,13 @@ export default errorHandler(async function handler(req, res) {
         currency: true,
         slug: true,
       },
-    };
+    } as Record<string, any>;
+
+    if (slug === 'under-10') {
+      params.where.amount = {
+        lte: 10,
+      };
+    }
 
     if (country?.toLowerCase() !== 'us') {
       items = await xoxoday.vouchers.findMany({

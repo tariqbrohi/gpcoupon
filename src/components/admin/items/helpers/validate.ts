@@ -14,11 +14,16 @@ const validate = (data: Item) => {
     country,
     currency,
     amount,
+    couponImageUrl,
     sortOrder,
   } = data;
 
   if (!imageUrl) {
     return 'imageUrl is required';
+  }
+
+  if (!couponImageUrl) {
+    return 'couponImageUrl is required';
   }
 
   if (!isInteger(+sortOrder) || +sortOrder < 0 || +sortOrder > 10) {

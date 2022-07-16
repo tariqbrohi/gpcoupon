@@ -1,8 +1,14 @@
 import Context from './Context';
 import stringSimilarity from 'string-similarity';
-import { countryOptions, Form, Image, Spacer } from '@growth-ui/react';
 import { FileUploader } from 'react-drag-drop-files';
 import { useGetBrandsQuery, useGetCategoriesQuery } from '@/services';
+import {
+  countryOptions,
+  Form,
+  Image,
+  Paragraph,
+  Spacer,
+} from '@growth-ui/react';
 import React, {
   ChangeEvent,
   SyntheticEvent,
@@ -175,7 +181,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
           }}
         />
       </Form.Group>
-
+      <Paragraph>Item Image</Paragraph>
       <FileUploader
         types={['JPG', 'PNG', 'JPEG']}
         name="file"
@@ -194,6 +200,29 @@ export default function ItemForm({ mode, onSubmit }: Props) {
               typeof item.imageUrl !== 'string'
                 ? URL.createObjectURL(item.imageUrl)
                 : item.imageUrl
+            }
+          />
+        </>
+      )}
+      <Paragraph>Coupon Image</Paragraph>
+      <FileUploader
+        types={['JPG', 'PNG', 'JPEG']}
+        name="file"
+        handleChange={(file: any) => {
+          setItem({
+            ...item,
+            couponImageUrl: file,
+          });
+        }}
+      />
+      {item.couponImageUrl && (
+        <>
+          <Spacer size={10} />
+          <Image
+            src={
+              typeof item.couponImageUrl !== 'string'
+                ? URL.createObjectURL(item.couponImageUrl)
+                : item.couponImageUrl
             }
           />
         </>

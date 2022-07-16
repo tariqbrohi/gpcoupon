@@ -39,6 +39,7 @@ export default withApiAuthRequired(
         brandId,
         imageUrl,
         available,
+        couponImageUrl,
         country,
         type,
         termsAndConditionsInstructions,
@@ -47,7 +48,7 @@ export default withApiAuthRequired(
         slug,
       } = req.body;
       const session = getSession(req, res);
-      console.log(req.body);
+
       const existingItem = await prisma.item.findUnique({
         where: {
           slug,
@@ -72,6 +73,7 @@ export default withApiAuthRequired(
               id: brandId,
             },
           },
+          couponImageUrl,
           imageUrls: {
             small: imageUrl,
             medium: imageUrl,

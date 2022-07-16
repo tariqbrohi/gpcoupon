@@ -47,6 +47,7 @@ export default function EditItemForm() {
     }
 
     let imageUrl = item.imageUrl;
+    let couponImageUrl = item.couponImageUrl;
 
     if (!imageUrl || typeof imageUrl !== 'string') {
       const { data } = await sign({
@@ -60,6 +61,21 @@ export default function EditItemForm() {
 
       await axios.put(data.signedUrl, item.imageUrl, {
         headers: { 'Content-Type': (item.imageUrl as File).type },
+      });
+    }
+
+    if (!couponImageUrl || typeof couponImageUrl !== 'string') {
+      const { data } = await sign({
+        data: {
+          filename: (item.couponImageUrl as File).name,
+          filetype: (item.couponImageUrl as File).type,
+        },
+      });
+
+      couponImageUrl = data.url;
+
+      await axios.put(data.signedUrl, item.couponImageUrl, {
+        headers: { 'Content-Type': (item.couponImageUrl as File).type },
       });
     }
 

@@ -33,12 +33,24 @@ export default function CreateBrandFrom() {
       headers: { 'Content-Type': (item.imageUrl as File).type },
     });
 
+    const { data: couponImageUrl } = await sign({
+      data: {
+        filename: (item.couponImageUrl as File).name,
+        filetype: (item.couponImageUrl as File).type,
+      },
+    });
+
+    await axios.put(couponImageUrl.signedUrl, item.couponImageUrl, {
+      headers: { 'Content-Type': (item.couponImageUrl as File).type },
+    });
+
     const { categories, brand, ...rest } = item;
 
     await create({
       data: {
         ...rest,
         imageUrl: imageUrl.url,
+        couponImageUrl: couponImageUrl.url,
         categoryIDs: categories,
         brandId: brand,
       },
