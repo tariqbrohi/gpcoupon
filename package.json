@@ -23,6 +23,7 @@
   "dependencies": {
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
+    "@grapherjs/nextjs": "^0.0.7",
     "@growth-ui/react": "^1.36.0",
     "@mui/core": "5.0.0-alpha.54",
     "@mui/icons-material": "5.8.3",
@@ -57,7 +58,7 @@
     "react-drag-drop-files": "^2.3.7",
     "react-icons": "4.4.0",
     "react-multi-carousel": "^2.8.2",
-    "react-qr-code": "2.0.7",
+    "react-qr-code": "^2.0.7",
     "react-responsive-carousel": "^3.2.23",
     "string-similarity": "^4.0.4",
     "styled-components": "^5.3.5",

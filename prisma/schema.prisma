@@ -108,6 +108,8 @@ model Gift {
   createdAt               Int
   updatedAt               Int
   deletedAt               Int?
+
+  @@unique([code, pin])
 }
 
 type Image {
