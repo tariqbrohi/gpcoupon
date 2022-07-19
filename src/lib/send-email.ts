@@ -1,11 +1,16 @@
-import sg from "@sendgrid/mail";
-import { SEND_COUPON, ORDER_PROCESSING, ORDER_DENIED } from "../email-templates";
+import sg from '@sendgrid/mail';
+import {
+  SEND_COUPON,
+  ORDER_PROCESSING,
+  ORDER_DENIED,
+  COUPON_EMAIL,
+} from '../email-templates';
 
 const apiKey = process.env.SEND_GRID_API_KEY;
 const from = process.env.SEND_GRID_FROM;
 
 if (!apiKey || !from) {
-  throw new Error("send-email:environ variables must be provided.");
+  throw new Error('send-email:environ variables must be provided.');
 }
 
 sg.setApiKey(apiKey);
@@ -49,7 +54,9 @@ type OrderProcessingData = {
   };
 };
 
-export const sendOrderProcessingEmail = async (options: OrderProcessingData) => {
+export const sendOrderProcessingEmail = async (
+  options: OrderProcessingData,
+) => {
   sendEmail({
     templateId: ORDER_PROCESSING,
     ...options,
@@ -68,6 +75,21 @@ type OrderDenied = {
 export const sendOrderDenied = async (options: OrderDenied) => {
   sendEmail({
     templateId: ORDER_DENIED,
+    ...options,
+  });
+};
+
+type CouponEmail = {
+  to: string;
+  amount: string;
+  qrcode: string;
+  desc: string;
+  headingImg: string;
+  itemImg: string;
+};
+export const sendCouponEmail = async (options: CouponEmail) => {
+  sendEmail({
+    templateId: COUPON_EMAIL,
     ...options,
   });
 };
