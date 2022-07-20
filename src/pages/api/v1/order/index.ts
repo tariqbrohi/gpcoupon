@@ -73,6 +73,7 @@ export default withApiAuthRequired(
           name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
         });
       } catch (err: any) {
+        console.log(err, ' from gpointwallet charge');
         throw new BadRequestError(
           err?.response?.data?.errors?.[0]?.message || 'Internal Server Error',
         );

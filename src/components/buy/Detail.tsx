@@ -9,6 +9,7 @@ import {
   Heading,
   Image,
   Menu,
+  Paragraph,
   Skeleton,
   Snackbar,
   Spacer,
@@ -99,7 +100,11 @@ export default function Detail() {
                 text="eGift"
               />
               <Spacer size={10} />
-              <Heading>{item.name}</Heading>
+              <Paragraph fontSize={26} fontWeight={600}>
+                {item.name}
+              </Paragraph>
+              <Paragraph fontSize={20}>{item.extendedName}</Paragraph>
+              <Spacer size={10} />
               <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
                   {currencyFormat(item.amount * exchangeRate, item.currency)}
@@ -119,6 +124,8 @@ export default function Detail() {
             message="No returns and no refunds on gift cards."
           />
           <Spacer size={20} />
+          <Paragraph fontWeight={500}>You can give up to 5</Paragraph>
+          <Spacer size={15} />
           <Grid.Row wrap="wrap">
             <Button.Group rounded>
               <Button
