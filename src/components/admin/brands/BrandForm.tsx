@@ -54,6 +54,13 @@ export default function BrandForm({ mode, onSubmit }: Props) {
       >
         Available
       </Form.Checkbox>
+      <Form.Input
+        label="Business Account ID"
+        name="sub"
+        value={brand.sub}
+        onChange={handleChange}
+        disabled={mode === 'update'}
+      />
       <Form.Group>
         <Form.Input
           label="Name"
@@ -71,6 +78,7 @@ export default function BrandForm({ mode, onSubmit }: Props) {
           label="Slug"
           name="slug"
           value={brand.slug}
+          disabled={mode === 'update'}
           onChange={handleChange}
         />
       </Form.Group>

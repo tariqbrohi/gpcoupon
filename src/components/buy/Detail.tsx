@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import { ROUTES } from '@/ROUTES';
 import { useGetItemQuery } from '@/services';
@@ -14,6 +14,7 @@ import {
   Spacer,
 } from '@growth-ui/react';
 import currencyFormat from '@/lib/currency-format';
+import convert from '@/lib/forex';
 
 export default function Detail() {
   const {
@@ -28,6 +29,13 @@ export default function Detail() {
   });
   const [qty, setQty] = useState(1);
   const [activeMenu, setActiveMenu] = useState('description');
+  const [exchangeRate, setExchangeRate] = useState(1);
+
+  useEffect(() => {
+    if (item?.currency && item?.currency !== 'GPT') {
+      convert(item.currency, setExchangeRate);
+    }
+  }, [item]);
 
   const handleQtyChange = (qty: number) => {
     setQty(qty);
@@ -94,7 +102,7 @@ export default function Detail() {
               <Heading>{item.name}</Heading>
               <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
-                  {currencyFormat(item.amount, item.currency)}
+                  {currencyFormat(item.amount * exchangeRate, item.currency)}
                 </Heading>
                 {item.discountRate ? (
                   <Chip

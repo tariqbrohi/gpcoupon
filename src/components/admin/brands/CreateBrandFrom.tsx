@@ -16,7 +16,7 @@ export default function CreateBrandFrom() {
 
   const handleSubmit = async (data: Brand) => {
     const errMessage = validate(data);
-
+    console.log(data);
     if (errMessage || loading) {
       return setError(errMessage);
     }
@@ -49,6 +49,7 @@ export default function CreateBrandFrom() {
         ...data,
         backgroundUrl: backgroundUrl.url,
         thumbnailUrl: thumbnailUrl.url,
+        sub: data.sub!,
       },
     })
       .then(() => {

@@ -48,7 +48,7 @@ export default withApiAuthRequired(
         slug,
       } = req.body;
       const session = getSession(req, res);
-
+      console.log(req.body);
       const existingItem = await prisma.item.findUnique({
         where: {
           slug,
@@ -64,6 +64,7 @@ export default withApiAuthRequired(
           name,
           extendedName,
           currency,
+          affiliate: true,
           expiresIn: +expiresIn,
           sortOrder: +sortOrder,
           amount: +amount,

@@ -93,6 +93,14 @@ export default function ItemForm({ mode, onSubmit }: Props) {
           onChange={handleChange}
         />
         <Form.Input
+          label="Currency"
+          name="currency"
+          disabled={mode === 'update'}
+          placeholder="GPT, KRW, etc... "
+          value={item.currency}
+          onChange={handleChange}
+        />
+        <Form.Input
           label="Discount Rate"
           name="discountRate"
           value={item.discountRate}

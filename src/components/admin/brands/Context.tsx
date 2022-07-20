@@ -2,6 +2,7 @@ import { Country } from '@prisma/client';
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 export type Brand = {
+  sub: string | null;
   name: string;
   slug: string;
   description: string;

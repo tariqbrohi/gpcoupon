@@ -8,6 +8,7 @@ export type State = {
   slug: string;
   item: Item | null;
   qty: number;
+  exchangeRate: number;
   loading: boolean;
 };
 
