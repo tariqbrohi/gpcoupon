@@ -54,22 +54,22 @@ export const useGetBrandQuery = (
   baseOptions?: QueryBaseOptions<GetBrandQueryVariables>,
 ) => {
   return useQuery<GetBrandQueryVariables, GetBrandQueryResult>(
-    '/api/v1/brands/:slug',
+    '/api/admin/brands/:id',
     baseOptions,
-    ['slug'],
+    ['id'],
   );
 };
 export const useGetBrandLazyQuery = (
   baseOptions?: QueryBaseOptions<GetBrandQueryVariables>,
 ) => {
   return useLazyQuery<GetBrandQueryVariables, GetBrandQueryResult>(
-    '/api/v1/brands/:slug',
+    '/api/v1/brands/:id',
     baseOptions,
-    ['slug'],
+    ['id'],
   );
 };
 export type GetBrandQueryVariables = {
-  slug: string;
+  id: string;
 };
 export type GetBrandQueryResult = Brand;
 
@@ -371,7 +371,7 @@ export type UpdateBrandMutationResult = Brand;
 export const useCreateBrandMutation = () => {
   return useMutation<CreateBrandMutationVariables, CreateBrandMutationResult>(
     '/api/admin/brands',
-    'put',
+    'post',
     [''],
     [
       'name',
@@ -379,6 +379,7 @@ export const useCreateBrandMutation = () => {
       'slug',
       'disclaimer',
       'backgroundUrl',
+      'sub',
       'thumbnailUrl',
       'available',
       'terms',
@@ -390,6 +391,7 @@ export const useCreateBrandMutation = () => {
 export type CreateBrandMutationVariables = {
   name: string;
   description: string;
+  sub: string;
   slug: string;
   disclaimer: string;
   backgroundUrl: string;

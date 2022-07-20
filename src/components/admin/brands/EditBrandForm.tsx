@@ -15,11 +15,11 @@ import validate from './helpers/validate';
 
 export default function UpdateBrandFrom() {
   const {
-    query: { slug },
+    query: { id },
   } = useRouter();
   const { data } = useGetBrandQuery({
     data: {
-      slug: slug as string,
+      id: id as string,
     },
   });
 

@@ -16,8 +16,8 @@ export default errorHandler(
     if (method !== 'post') {
       throw new NotFoundError();
     }
-
-    const { amount, code, pin, brandId, itemId } = req.body;
+    console.log(req.body);
+    const { amount, code, pin, sub, itemId } = req.body;
 
     const gift = await prisma.gift.findUnique({
       where: {
@@ -29,7 +29,11 @@ export default errorHandler(
       include: {
         order: {
           include: {
-            item: true,
+            item: {
+              include: {
+                brand: true,
+              },
+            },
           },
         },
       },
@@ -42,7 +46,10 @@ export default errorHandler(
     // if gift is expired
     if (
       gift.status === 'expired' ||
-      moment().unix() >= moment(gift.order.createdAt).add(item.expiresIn).unix()
+      moment().unix() >=
+        moment(gift.order.createdAt * 1000)
+          .add(item.expiresIn, 'days')
+          .unix()
     ) {
       throw new BadRequestError('Gift expired');
     }
@@ -51,7 +58,7 @@ export default errorHandler(
     if (gift.status === 'used') throw new BadRequestError('Gift already used');
 
     // If requested gift detail is different thant what is in db.
-    if (item.id !== itemId || item.brandId !== brandId) {
+    if (item.id !== itemId || item.brand?.sub !== sub) {
       throw new BadRequestError('');
     }
 
@@ -77,19 +84,23 @@ export default errorHandler(
       throw new InternalServerError();
     }
 
-    const diff = amount - gift.amount;
+    const diff = +amount - gift.amount;
 
     await prisma.gift.update({
       where: {
         id: gift.id,
       },
       data: {
-        amount: diff >= 0 ? 0 : diff,
+        amount: diff >= 0 ? 0 : diff * -1,
         updatedAt: moment().unix(),
+        status: diff >= 0 ? 'used' : 'available',
       },
     });
 
-    // return balance (diff)
-    res.send(true);
+    res.send({
+      remainingAmountToPay: diff < 0 ? 0 : diff,
+      remainingBalance: diff >= 0 ? 0 : diff * -1,
+    });
+    // res.send(true);
   }),
 );

@@ -21,6 +21,7 @@ export default function Provider({ children }: { children: ReactNode }) {
     qty: qty as number,
     slug: slug as string,
     loading,
+    exchangeRate: 1,
   });
 
   useEffect(() => {

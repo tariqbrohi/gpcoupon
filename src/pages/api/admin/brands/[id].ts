@@ -5,8 +5,20 @@ import { BadRequestError, NotFoundError } from '@/lib/errors';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
-    if (req.method !== 'put') {
+    if (req.method !== 'put' && req.method !== 'get') {
       throw new NotFoundError();
+    }
+
+    if (req.method === 'get') {
+      const { id } = req.query as any;
+
+      const brand = await prisma.brand.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      return res.send(brand);
     }
 
     if (req.method === 'put') {

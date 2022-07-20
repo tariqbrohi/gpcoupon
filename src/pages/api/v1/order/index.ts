@@ -2,14 +2,23 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import gpointwallet from '@/pages/api/_lib/gpointwallet';
 import moment from 'moment';
 import prisma from '@/prisma';
+import randomString from '@/lib/random-string';
+import sendEmail from '../../_lib/send-email';
 import withApiAuthRequired from '../../_middlewares/with-api-auth-required';
 import xoxoday from '@/pages/api/_lib/xoxoday';
+import {
+  ORDER_CREATED,
+  OrderCreatedData,
+} from '../../_lib/send-email/templates';
+import QRCode from 'qrcode';
+import { Prisma } from '@prisma/client';
 import {
   BadRequestError,
   InternalServerError,
   NotFoundError,
   UnauthenticatedError,
 } from '@/lib/errors';
+import { times } from 'lodash';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -26,6 +35,9 @@ export default withApiAuthRequired(
         prisma.item.findFirst({
           where: {
             slug,
+          },
+          include: {
+            brand: true,
           },
         }),
         xoxoday.vouchers.findOne({ amount: +amount, itemId }),
@@ -80,7 +92,6 @@ export default withApiAuthRequired(
           denomination: +amount,
           // todo
           // remove this and implement custom email
-          notifyAdminEmail: 1,
           notifyReceiverEmail: 1,
           email: recipient.email,
         });
@@ -95,48 +106,117 @@ export default withApiAuthRequired(
       }
 
       if (dbItem) {
-        const { id } = await prisma.order.create({
-          data: {
-            // status: order.orderStatus as any,
-            status: 'approved',
-            senderId: user?.id,
-            recipient: {
-              set: recipient,
-            },
-            message,
-            item: {
-              connect: {
-                id: dbItem.id,
-              },
-            },
-            metadata: {
-              gpointwallet: charge,
-            },
-            payment: {
-              set: {
-                paymentVendor: 'GPOINT',
-                discountRate,
-                totalAmount: amount * quantity,
-                exchange: {
-                  exchangeRate: charge.exRate || 1,
-                  source: currency,
-                  target: 'GPT',
-                },
-                price: {
-                  amount,
-                  currency,
-                },
-              },
-            },
-            createdAt: timestamp,
-            updatedAt: timestamp,
+        const data: Prisma.OrderCreateInput = {
+          // status: order.orderStatus as any,
+          status: 'approved',
+          senderId: user?.id,
+          recipient: {
+            set: recipient,
           },
+          message,
+          item: {
+            connect: {
+              id: dbItem.id,
+            },
+          },
+          metadata: {
+            gpointwallet: charge,
+          },
+          payment: {
+            set: {
+              paymentVendor: 'GPOINT',
+              discountRate,
+              totalAmount: amount * quantity,
+              exchange: {
+                exchangeRate: charge.exRate || 1,
+                source: currency,
+                target: 'GPT',
+              },
+              price: {
+                amount,
+                currency,
+              },
+            },
+          },
+          createdAt: timestamp,
+          updatedAt: timestamp,
+        };
+
+        const codes = times(quantity, () => randomString(13, true));
+        const pins = times(quantity, () => randomString());
+
+        if (dbItem.affiliate) {
+          data.gifts = {
+            createMany: {
+              data: times(quantity, (i) => ({
+                code: codes[i],
+                amount,
+                pin: pins[i],
+                status: 'available',
+                createdAt: timestamp,
+                updatedAt: timestamp,
+              })),
+            },
+          };
+        }
+
+        const { id } = await prisma.order.create({
+          data,
         });
 
         orderId = `${id}-${orderId}`;
+
+        if (dbItem.affiliate) {
+          const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
+            QRCode.toDataURL(
+              btoa(
+                JSON.stringify({
+                  code: codes[i],
+                  pin: pins[i],
+                  itemId,
+                  sub: dbItem.brand?.sub,
+                }),
+              ),
+            ),
+          );
+
+          const qrcodes = await Promise.all(qrcodesPromises);
+
+          sendEmail<OrderCreatedData>({
+            to: recipient.email,
+            templateId: ORDER_CREATED,
+            dynamicTemplateData: {
+              itemImage: dbItem.imageUrls.large,
+              couponImageUrl: dbItem.couponImageUrl,
+              name: dbItem.name,
+              brandLogoUrl: dbItem.brand?.thumbnailUrl!,
+              brandName: dbItem.brand!.name,
+              expiresIn: dbItem.expiresIn!,
+              redemptionInstructions: dbItem.redemptionInstructions,
+              termsAndConditionsInstructions:
+                dbItem.termsAndConditionsInstructions,
+              qrcodes: new Array(quantity)
+                .fill(0)
+                .map(
+                  (_, i) =>
+                    `<img class="image"  src="cid:${i}23456"  style="width: 150px; height: 150px;" />`,
+                )
+                .join(' '),
+            },
+            attachments: qrcodes.map((qr, i) => ({
+              filename: `qr-${i}.png`,
+              content: qr.replace('data:image/png;base64,', ''),
+              contentType: 'image/png',
+              content_id: `${i}23456`,
+              cid: `${i}23456`,
+              disposition: 'inline',
+            })),
+          });
+        }
       }
 
-      //
+      // todo
+      // send email
 
       res.send(orderId);
     }

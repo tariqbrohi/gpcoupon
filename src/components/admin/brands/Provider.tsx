@@ -6,6 +6,7 @@ export default function Provider({ children }: Props) {
     name: '',
     description: '',
     slug: '',
+    sub: '',
     disclaimer: '',
     backgroundUrl: '',
     thumbnailUrl: '',

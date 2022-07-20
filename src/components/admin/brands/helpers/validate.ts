@@ -10,8 +10,13 @@ const validate = (data: Brand) => {
     backgroundUrl,
     terms,
     disclaimer,
+    sub,
     thumbnailUrl,
   } = data;
+
+  if (!sub) {
+    return 'Business account id is required';
+  }
 
   if (!backgroundUrl) {
     return 'backgroundUrl is required';

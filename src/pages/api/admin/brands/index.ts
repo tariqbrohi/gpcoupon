@@ -15,6 +15,7 @@ export default withApiAuthRequired(
         slug,
         description,
         thumbnailUrl,
+        sub,
         backgroundUrl,
         available,
         terms,
@@ -36,6 +37,7 @@ export default withApiAuthRequired(
 
       const brand = await prisma.brand.create({
         data: {
+          sub,
           name,
           slug,
           description,
