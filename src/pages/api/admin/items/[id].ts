@@ -53,7 +53,7 @@ export default withApiAuthRequired(
           extendedName,
           currency,
           expiresIn: +expiresIn,
-          sortOrder,
+          sortOrder: +sortOrder,
           discountRate: +discountRate,
           brand: {
             connect: {
