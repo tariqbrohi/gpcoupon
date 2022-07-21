@@ -86,8 +86,7 @@ export default errorHandler(async function handler(req, res) {
     else {
       items = await prisma.item.findMany(params as any);
     }
-    items = await prisma.item.findMany(params as any);
-    console.log('???');
+
     category.items = items;
 
     res.send(category);
