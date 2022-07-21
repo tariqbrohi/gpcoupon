@@ -43,7 +43,7 @@ export default errorHandler(async function handler(req, res) {
     }
 
     // todo
-    // save every countries
+    // save every countrie
     let items;
 
     const params = {
