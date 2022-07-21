@@ -61,7 +61,7 @@ export default errorHandler(async function handler(req, res) {
       extendedName: true,
       imageUrls: true,
       discountRate: true,
-      currency: true,
+      price: true,
       slug: true,
     },
   });

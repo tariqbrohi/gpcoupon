@@ -8,8 +8,12 @@ export type Item = {
   available: boolean;
   currency: string;
   expiresIn: number;
+  customerDiscountRate?: number;
+  influencerDiscountRate?: number;
+  influencerId?: string;
   discountRate: number;
   amount: number;
+  price: number;
   country: Country;
   type: ItemType;
   brand: string;

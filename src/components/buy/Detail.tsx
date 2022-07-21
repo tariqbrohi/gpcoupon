@@ -33,8 +33,8 @@ export default function Detail() {
   const [exchangeRate, setExchangeRate] = useState(1);
 
   useEffect(() => {
-    if (item?.currency && item?.currency !== 'GPT') {
-      convert(item.currency, setExchangeRate);
+    if (item?.price.currency && item?.price.currency !== 'GPT') {
+      convert(item.price.currency, setExchangeRate);
     }
   }, [item]);
 
@@ -107,7 +107,10 @@ export default function Detail() {
               <Spacer size={10} />
               <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
-                  {currencyFormat(item.amount * exchangeRate, item.currency)}
+                  {currencyFormat(
+                    item.price.amount * exchangeRate,
+                    item.price.currency,
+                  )}
                 </Heading>
                 {item.discountRate ? (
                   <Chip

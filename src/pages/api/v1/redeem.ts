@@ -8,6 +8,7 @@ import {
   InternalServerError,
   NotFoundError,
 } from '@/lib/errors';
+import { Item } from '@prisma/client';
 
 export default errorHandler(
   grapherjs.withTracingHandler(async function handler(req, res) {
@@ -27,15 +28,7 @@ export default errorHandler(
         },
       },
       include: {
-        order: {
-          include: {
-            item: {
-              include: {
-                brand: true,
-              },
-            },
-          },
-        },
+        order: true,
       },
     });
 
@@ -48,7 +41,7 @@ export default errorHandler(
       gift.status === 'expired' ||
       moment().unix() >=
         moment(gift.order.createdAt * 1000)
-          .add(item.expiresIn, 'days')
+          .add((item as Item).expiresIn, 'days')
           .unix()
     ) {
       throw new BadRequestError('Gift expired');
@@ -58,11 +51,11 @@ export default errorHandler(
     if (gift.status === 'used') throw new BadRequestError('Gift already used');
 
     // If requested gift detail is different thant what is in db.
-    if (item.id !== itemId || item.brand?.sub !== sub) {
+    if ((item as Item).id !== itemId || (item as any).brand?.sub !== sub) {
       throw new BadRequestError('');
     }
 
-    if (item.type === 'GIFT_ICON') {
+    if ((item as Item).type === 'GIFT_ICON') {
       await prisma.gift.update({
         where: {
           id: gift.id,

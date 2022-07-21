@@ -31,6 +31,8 @@ export default function EditItemForm() {
     if (data) {
       setItem({
         ...data,
+        currency: (data.price as any)?.currency || 'GPT',
+        price: (data.price as any)?.amount || 0,
         categories: data.categoryIDs,
         available: data.status === 'AVAILABLE',
         imageUrl: data.imageUrls.medium,
@@ -40,7 +42,7 @@ export default function EditItemForm() {
   }, [data]);
 
   const handleSubmit = async () => {
-    const errMessage = validate(item);
+    const errMessage = validate(item, true);
 
     if (errMessage || loading) {
       return setError(errMessage);
@@ -86,7 +88,6 @@ export default function EditItemForm() {
         ...rest,
         imageUrl,
         categoryIDs: categories,
-        brandId: brand,
         id: data?.id!,
       },
     })

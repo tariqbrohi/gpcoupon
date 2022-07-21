@@ -57,14 +57,16 @@ model Item {
   status                          Status
   imageUrls                       Image
   couponImageUrl                  String?
-  currency                        String
   expiresIn                       Int?
   discountRate                    Float?
+  customerDiscountRate            Float?
+  influencerDiscountRate          Float?
+  influencerId                    String?
   amount                          Float
+  price                           Price
   createdAt                       Int
   updatedAt                       Int
   deletedAt                       Int?
-  orders                          Order[]
   brandId                         String?           @db.ObjectId
   brand                           Brand?            @relation(fields: [brandId], references: [id])
   country                         Country
@@ -81,6 +83,7 @@ model Item {
   @@index([discountRate])
   @@index([country])
   @@index([status])
+  @@index([influencerId])
 }
 
 model Order {
@@ -90,13 +93,15 @@ model Order {
   recipient               Recipient
   message                 String?
   itemId                  String            @db.ObjectId
-  item                    Item              @relation(fields:[itemId], references: [id])
+  item                    Json       
   payment                 Payment
   gifts                   Gift[]                  
   metadata                Json?
   createdAt               Int
   updatedAt               Int
   deletedAt               Int?
+
+  @@index([senderId])
 }
 
 model Gift {

@@ -1,5 +1,15 @@
 import { BaseOptions as QueryBaseOptions, useQuery } from './useQuery';
-import { Brand, Category, Country, Item, ItemType } from '@prisma/client';
+import {
+  Brand,
+  Category,
+  Country,
+  Item,
+  ItemType,
+  Order,
+  Payment,
+  Recipient,
+  Status,
+} from '@prisma/client';
 import { useLazyQuery } from './useLazyQuery';
 import { useMutation } from './useMutation';
 
@@ -180,6 +190,38 @@ export type GetItemQueryVariables = {
 export type GetItemQueryResult = Item;
 
 /**
+ * MyGifts
+ */
+export const useMyGiftsQuery = (
+  baseOptions?: QueryBaseOptions<MyGiftsQueryVariables>,
+) => {
+  return useQuery<MyGiftsQueryVariables, MyGiftsQueryResult>(
+    '/api/v1/orders',
+    baseOptions,
+    [],
+  );
+};
+export const useMyGiftsLazyQuery = (
+  baseOptions?: QueryBaseOptions<MyGiftsQueryVariables>,
+) => {
+  return useLazyQuery<MyGiftsQueryVariables, MyGiftsQueryResult>(
+    '/api/v1/orders',
+    baseOptions,
+    [],
+  );
+};
+export type MyGiftsQueryVariables = {};
+export type MyGiftsQueryResult = {
+  orderNumber: string;
+  item: Item;
+  payment: Payment;
+  status: Status;
+  recipient: Recipient;
+  message?: string;
+  createdAt: number;
+}[];
+
+/**
  * SearchItems
  */
 export const useSearchItemsQuery = (
@@ -209,7 +251,7 @@ export type SearchItemsQueryResult = Item[];
  */
 export const useOrderMutation = () => {
   return useMutation<OrderMutationVariables, OrderMutationResult>(
-    '/api/v1/order',
+    '/api/v1/orders',
     'post',
     [],
     ['itemId', 'message', 'quantity', 'recipient', 'amount', 'slug'],
@@ -250,9 +292,13 @@ export const useCreateItemMutation = () => {
       'brandId',
       'imageUrl',
       'country',
+      'price',
       'type',
       'redemptionInstructions',
       'categoryIDs',
+      'influencerDiscountRate',
+      'customerDiscountRate',
+      'influencerId',
       'slug',
       'metadata',
     ],
@@ -268,6 +314,7 @@ export type CreateItemMutationVariables = {
   couponImageUrl: string;
   notes?: string[];
   brandId: string;
+  price: number;
   available: boolean;
   sortOrder: number;
   country: Country;
@@ -296,13 +343,15 @@ export const useUpdateItemMutation = () => {
       'discountRate',
       'available',
       'notes',
-      'brandId',
+      'amount',
+      'price',
       'imageUrl',
       'country',
       'type',
       'redemptionInstructions',
       'categoryIDs',
-      'slug',
+      'influencerDiscountRate',
+      'customerDiscountRate',
       'metadata',
       'id',
     ],
@@ -315,7 +364,7 @@ export type UpdateItemMutationVariables = {
   expiresIn: number;
   disCountRate?: number;
   notes?: string[];
-  brandId: string;
+  price: number;
   available: boolean;
   sortOrder: number;
   country: Country;

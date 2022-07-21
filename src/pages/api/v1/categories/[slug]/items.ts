@@ -18,7 +18,7 @@ export default errorHandler(async function handler(req, res) {
     skip = 0,
     sortBy = 'sales,desc',
   } = req.query as any;
-
+  console.log(slug, country);
   if (country && slug) {
     const category = (await prisma.category.findUnique({
       where: {
@@ -66,17 +66,18 @@ export default errorHandler(async function handler(req, res) {
         extendedName: true,
         imageUrls: true,
         discountRate: true,
-        currency: true,
+        price: true,
         slug: true,
       },
     };
 
     if (country?.toLowerCase() !== 'us') {
+      console.log('HERE');
       items = await xoxoday.vouchers.findMany({
         country,
         category: slug,
       });
-
+      console.log(items);
       const dbItems = await prisma.item.findMany(params as any);
 
       items = flatten([items, dbItems]);
@@ -86,7 +87,7 @@ export default errorHandler(async function handler(req, res) {
     else {
       items = await prisma.item.findMany(params as any);
     }
-    items = await prisma.item.findMany(params as any);
+
     console.log('???');
     category.items = items;
 

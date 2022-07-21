@@ -1,7 +1,7 @@
 import { isInteger, isNil } from 'lodash';
 import { Item } from '../Context';
 
-const validate = (data: Item) => {
+const validate = (data: Item, update = false) => {
   const {
     name,
     slug,
@@ -30,7 +30,7 @@ const validate = (data: Item) => {
     return 'sortOrder (0 to 10) is required';
   }
 
-  if (!brand) {
+  if (!update && !brand) {
     return 'brand is required';
   }
 
@@ -62,7 +62,7 @@ const validate = (data: Item) => {
     return 'amount is required';
   }
 
-  if (!type) {
+  if (!update && !type) {
     return 'type is required';
   }
 

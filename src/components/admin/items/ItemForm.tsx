@@ -67,7 +67,6 @@ export default function ItemForm({ mode, onSubmit }: Props) {
         <Form.Input
           label="Name"
           name="name"
-          disabled={mode === 'update'}
           value={item.name}
           onChange={handleChange}
         />
@@ -83,13 +82,24 @@ export default function ItemForm({ mode, onSubmit }: Props) {
           value={item.slug}
           onChange={handleChange}
         />
+        <Form.Input
+          label="InfluencerId"
+          name="influencerId"
+          value={item.influencerId}
+          onChange={handleChange}
+        />
       </Form.Group>
       <Form.Group>
         <Form.Input
           label="Amount"
           name="amount"
-          disabled={mode === 'update'}
           value={item.amount}
+          onChange={handleChange}
+        />
+        <Form.Input
+          label="price"
+          name="price"
+          value={item.price}
           onChange={handleChange}
         />
         <Form.Input
@@ -101,9 +111,21 @@ export default function ItemForm({ mode, onSubmit }: Props) {
           onChange={handleChange}
         />
         <Form.Input
-          label="Discount Rate"
+          label="Total Discount Rate"
           name="discountRate"
           value={item.discountRate}
+          onChange={handleChange}
+        />
+        <Form.Input
+          label="Customer Discount Rate"
+          name="customerDiscountRate"
+          value={item.customerDiscountRate}
+          onChange={handleChange}
+        />
+        <Form.Input
+          label="Influencer Discount Rate"
+          name="influencerDiscountRate"
+          value={item.influencerDiscountRate}
           onChange={handleChange}
         />
         <Form.Input
@@ -141,6 +163,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
           scrolling
           clearable
           label="Brand"
+          disabled={mode === 'update'}
           value={item.brand}
           options={brands?.map(({ id, name }) => ({
             key: id,
@@ -154,6 +177,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
         <Form.Select
           fluid
           label="Type"
+          disabled={mode === 'update'}
           value={item.type || 'GIFT_ICON'}
           options={[
             {

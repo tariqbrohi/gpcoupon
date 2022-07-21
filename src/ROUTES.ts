@@ -9,6 +9,7 @@ export const ROUTES = {
   buy: '/buy',
   privacy: '/privacyPolicy',
   legal: '/termsOfUse',
+  orders: '/orders',
   confirmAndPay: '/confirm-and-pay',
   admin: {
     createItem: '/admin/items/create',

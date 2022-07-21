@@ -93,7 +93,7 @@ export default function ItemList({ items, loading }: Props) {
             <Spacer size={5} />
             <MinHeight min="60px" style={{ marginTop: 'auto' }}>
               <Title>{item.name}</Title>
-              <Amount>{currencyFormat(item.amount, 'GPT')}</Amount>
+              <Amount>{currencyFormat(item.price.amount, 'GPT')}</Amount>
             </MinHeight>
           </GuiGrid.Col>
         ))}

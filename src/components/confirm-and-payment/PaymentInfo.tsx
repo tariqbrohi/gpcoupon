@@ -20,8 +20,8 @@ export default function PaymentInfo() {
   const { loading, item, qty, exchangeRate } = state;
 
   useEffect(() => {
-    if (item?.currency && item.currency !== 'GPT') {
-      convert(item.currency, (rate) => {
+    if (item?.price.currency && item.price.currency !== 'GPT') {
+      convert(item.price.currency, (rate) => {
         setState({
           ...state,
           exchangeRate: rate,
@@ -53,17 +53,20 @@ export default function PaymentInfo() {
           )}
           <Spacer size={5} />
           {loading && <Skeleton width={46} height={22} />}
-          {item?.discountRate ? (
+          {item?.customerDiscountRate ? (
             <Chip
               style={{ background: '#ffeec1', color: '#e16a00' }}
-              text={`${item.discountRate}%`}
+              text={`${item.customerDiscountRate}%`}
             />
           ) : null}
           <Spacer size={15} />
           {loading && <Skeleton width={100} height={18} />}
           {item && (
             <Typography>
-              {currencyFormat(item.amount * exchangeRate * +qty, item.currency)}{' '}
+              {currencyFormat(
+                item.price.amount * exchangeRate * +qty,
+                item.price.currency,
+              )}{' '}
               / Qty: {qty}
             </Typography>
           )}
@@ -80,7 +83,10 @@ export default function PaymentInfo() {
               Total pay
             </Typography>
             <Typography fontWeight={600} fontSize={16}>
-              {currencyFormat(item.amount * exchangeRate * +qty, item.currency)}
+              {currencyFormat(
+                item.price.amount * exchangeRate * +qty,
+                item.price.currency,
+              )}
             </Typography>
           </>
         )}
