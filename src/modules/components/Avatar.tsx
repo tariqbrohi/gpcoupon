@@ -11,7 +11,7 @@ import {
 import { ROUTES } from '@/ROUTES';
 
 export default function Avatar(props: DropdownProps) {
-  const user = useUser();
+  const { user } = useUser();
   const [logout] = useLogoutMutation();
 
   const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {

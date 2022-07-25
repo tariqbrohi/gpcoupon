@@ -18,7 +18,7 @@ export default errorHandler(
       throw new NotFoundError();
     }
     console.log(req.body);
-    const { amount, code, pin, sub, itemId } = req.body;
+    const { amount, code, pin, sub, orderId } = req.body;
 
     const gift = await prisma.gift.findUnique({
       where: {
@@ -32,7 +32,7 @@ export default errorHandler(
       },
     });
 
-    if (!gift) throw new NotFoundError('');
+    if (!gift || gift.orderId !== orderId) throw new NotFoundError('');
 
     const { item } = gift.order;
 
@@ -51,7 +51,7 @@ export default errorHandler(
     if (gift.status === 'used') throw new BadRequestError('Gift already used');
 
     // If requested gift detail is different thant what is in db.
-    if ((item as Item).id !== itemId || (item as any).brand?.sub !== sub) {
+    if ((item as any).brand?.sub !== sub) {
       throw new BadRequestError('');
     }
 

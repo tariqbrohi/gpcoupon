@@ -1,7 +1,7 @@
 import Checkout from './Checkout';
 import Container from './Container';
 import Context from './Context';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import ThemeButton from '@/modules/components/ThemeButton';
 import Typography from '@/modules/components/Typography';
 import {
@@ -12,23 +12,11 @@ import {
   Spacer,
 } from '@growth-ui/react';
 import currencyFormat from '@/lib/currency-format';
-import convert from '@/lib/forex';
 
 export default function PaymentInfo() {
-  const { state, setState } = useContext(Context);
+  const { state } = useContext(Context);
 
-  const { loading, item, qty, exchangeRate } = state;
-
-  useEffect(() => {
-    if (item?.price.currency && item.price.currency !== 'GPT') {
-      convert(item.price.currency, (rate) => {
-        setState({
-          ...state,
-          exchangeRate: rate,
-        });
-      });
-    }
-  }, [item]);
+  const { loading, item, qty } = state;
 
   return (
     <Container>
@@ -63,11 +51,8 @@ export default function PaymentInfo() {
           {loading && <Skeleton width={100} height={18} />}
           {item && (
             <Typography>
-              {currencyFormat(
-                item.price.amount * exchangeRate * +qty,
-                item.price.currency,
-              )}{' '}
-              / Qty: {qty}
+              {currencyFormat(item.price.amount * +qty, item.price.currency)} /
+              Qty: {qty}
             </Typography>
           )}
         </Grid.Col>
@@ -83,10 +68,7 @@ export default function PaymentInfo() {
               Total pay
             </Typography>
             <Typography fontWeight={600} fontSize={16}>
-              {currencyFormat(
-                item.price.amount * exchangeRate * +qty,
-                item.price.currency,
-              )}
+              {currencyFormat(item.price.amount * +qty, item.price.currency)}
             </Typography>
           </>
         )}

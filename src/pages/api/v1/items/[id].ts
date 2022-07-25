@@ -38,6 +38,8 @@ export default errorHandler(async function handler(req, res) {
       extendedName: true,
       imageUrls: true,
       price: true,
+      customerDiscountRate: true,
+      originalPrice: true,
       name: true,
       amount: true,
       redemptionInstructions: true,

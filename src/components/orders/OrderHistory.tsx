@@ -1,7 +1,9 @@
 import currencyFormat from '@/lib/currency-format';
-import { useMyGiftsQuery } from '@/services';
-import { Grid, Image, Paragraph, Spacer } from '@growth-ui/react';
+import { ROUTES } from '@/ROUTES';
+import { useMyGiftsQuery, useResendGiftMutation } from '@/services';
+import { Button, Grid, Image, Paragraph, Spacer } from '@growth-ui/react';
 import moment from 'moment';
+import Router from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -45,6 +47,8 @@ const ItemDetail = styled.div`
   }
 
   ${({ theme }) => theme.gui.media.mobile} {
+    width: 100%;
+
     ${Recipient} {
       display: block;
     }
@@ -53,6 +57,15 @@ const ItemDetail = styled.div`
 
 export default function OrderHistory() {
   const { data, loading } = useMyGiftsQuery();
+  const [resend, { loading: sending }] = useResendGiftMutation();
+
+  const handleResend = (id: string) => () => {
+    resend({
+      data: {
+        id,
+      },
+    }).catch(() => {});
+  };
 
   return (
     <>
@@ -69,13 +82,16 @@ export default function OrderHistory() {
               <Paragraph fontWeight={600}>To.{gift.recipient.name}</Paragraph>
             </Recipient>
           </ItemMeta>
-          <ItemDetail>
+          <ItemDetail
+          // style={{ cursor: 'pointer' }}
+          // onClick={() => Router.push(`${ROUTES.item}/${gift.item.id}`)}
+          >
             <Grid.Row>
               <Grid.Col>
                 <Image size="small" rounded src={gift.item.imageUrls.medium} />
               </Grid.Col>
               <Spacer size={10} />
-              <Grid.Col>
+              <Grid.Col flex="1">
                 <Paragraph fontWeight={600}>{gift.item.name}</Paragraph>
                 <Paragraph fontSize={14} color="gray-600">
                   {currencyFormat(
@@ -90,6 +106,11 @@ export default function OrderHistory() {
                     Discount: {gift.payment.discountRate}%
                   </Paragraph>
                 ) : null}
+                <div style={{ marginTop: 'auto', width: '100%' }}>
+                  <Button fluid onClick={handleResend(gift.orderNumber)}>
+                    Resend gift
+                  </Button>
+                </div>
               </Grid.Col>
             </Grid.Row>
             <Recipient style={{ marginTop: 'auto' }}>

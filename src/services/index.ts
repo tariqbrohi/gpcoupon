@@ -54,7 +54,9 @@ export const useGetBrandsLazyQuery = (
     baseOptions,
   );
 };
-export type GetBrandsQueryVariables = {};
+export type GetBrandsQueryVariables = {
+  country: string;
+};
 export type GetBrandsQueryResult = Brand[];
 
 /**
@@ -106,6 +108,7 @@ export const useGetCategoryItemsLazyQuery = (
 export type GetCategoryItemsQueryVariables = {
   country: string;
   slug: string | string[] | undefined;
+  sortBy?: string;
 };
 export type GetCategoryItemsQueryResult = Category & { items: Item[] };
 
@@ -133,6 +136,7 @@ export const useGetBrandItemsLazyQuery = (
 export type GetBrandItemsQueryVariables = {
   country: string;
   slug: string | string[] | undefined;
+  sortBy?: string;
 };
 export type GetBrandItemsQueryResult = Brand & { items: Item[] };
 
@@ -286,6 +290,7 @@ export const useCreateItemMutation = () => {
       'sortOrder',
       'amount',
       'discountRate',
+      'originalPrice',
       'couponImageUrl',
       'available',
       'notes',
@@ -310,6 +315,7 @@ export type CreateItemMutationVariables = {
   currency: string;
   expiresIn: number;
   amount: number;
+  originalPrice: number;
   disCountRate?: number;
   couponImageUrl: string;
   notes?: string[];
@@ -339,10 +345,12 @@ export const useUpdateItemMutation = () => {
       'extendedName',
       'currency',
       'expiresIn',
+      'originalPrice',
       'sortOrder',
       'discountRate',
       'available',
       'notes',
+      'brandId',
       'amount',
       'price',
       'imageUrl',
@@ -363,8 +371,10 @@ export type UpdateItemMutationVariables = {
   currency: string;
   expiresIn: number;
   disCountRate?: number;
+  originalPrice: number;
   notes?: string[];
   price: number;
+  brandId?: string;
   available: boolean;
   sortOrder: number;
   country: Country;
@@ -528,3 +538,19 @@ export const useLogoutMutation = () => {
 };
 export type LogoutMutationVariables = {};
 export type LogoutMutationResult = boolean;
+
+/**
+ * ResendGift
+ */
+export const useResendGiftMutation = () => {
+  return useMutation<ResendGiftMutationVariables, ResendGiftMutationResult>(
+    '/api/v1/orders/:id/resend',
+    'post',
+    ['id'],
+    [],
+  );
+};
+export type ResendGiftMutationVariables = {
+  id: string;
+};
+export type ResendGiftMutationResult = boolean;

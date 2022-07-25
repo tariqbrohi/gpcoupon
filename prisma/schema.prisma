@@ -62,6 +62,7 @@ model Item {
   customerDiscountRate            Float?
   influencerDiscountRate          Float?
   influencerId                    String?
+  originalPrice                   Float
   amount                          Float
   price                           Price
   createdAt                       Int

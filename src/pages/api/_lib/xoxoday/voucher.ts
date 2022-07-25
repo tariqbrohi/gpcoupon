@@ -28,7 +28,7 @@ export const findMany = async ({
         },
       },
     });
-    console.log(data.data.getVouchers);
+
     return normalizeItems(data.data.getVouchers.data);
   } catch (err) {
     console.log(err);

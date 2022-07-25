@@ -9,6 +9,7 @@ interface Context {
   searchHistories: string[];
   setSearchHistories: (searchHistories: string[]) => void;
   user: Record<string, any> | null;
+  loading: boolean;
   setUser: (user: Record<string, any> | null) => void;
 }
 

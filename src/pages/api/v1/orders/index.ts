@@ -4,7 +4,7 @@ import moment from 'moment';
 import prisma from '@/prisma';
 import QRCode from 'qrcode';
 import randomString from '@/lib/random-string';
-import sendEmail from '../../_lib/send-email';
+import { sendOrder } from '../../_lib/send-email';
 import withApiAuthRequired from '../../_middlewares/with-api-auth-required';
 import xoxoday from '@/pages/api/_lib/xoxoday';
 import { Prisma } from '@prisma/client';
@@ -46,7 +46,7 @@ export default withApiAuthRequired(
         take,
         skip,
       });
-      console.log(orders);
+
       const normalizedGifts = orders.map((order) => ({
         orderNumber: order.id,
         item: order.item,
@@ -93,18 +93,20 @@ export default withApiAuthRequired(
 
       const totalDiscountRate =
         xoxoItem?.discountRate || dbItem?.discountRate || 0;
-      const customerDiscountRate =
-        (totalDiscountRate * (dbItem?.customerDiscountRate || 0)) / 100;
-      const influencerDiscountRate =
-        (totalDiscountRate * (dbItem?.influencerDiscountRate || 0)) / 100;
+      const customerDiscountRate = dbItem?.customerDiscountRate || 0;
+      const influencerDiscountRate = dbItem?.influencerDiscountRate || 0;
       const profitRate =
-        (totalDiscountRate *
-          (100 -
-            ((dbItem?.customerDiscountRate || 0) +
-              (dbItem?.influencerDiscountRate || 0)))) /
-        100;
+        totalDiscountRate - customerDiscountRate - influencerDiscountRate;
       // gpointwallet
       let charge;
+
+      if (
+        customerDiscountRate + influencerDiscountRate + profitRate >
+        totalDiscountRate
+      ) {
+        console.log(`Discount rate is malformed`);
+        throw new InternalServerError();
+      }
 
       try {
         charge = await gpointwallet.charge({
@@ -221,7 +223,7 @@ export default withApiAuthRequired(
                 JSON.stringify({
                   code: codes[i],
                   pin: pins[i],
-                  itemId,
+                  orderId,
                   sub: dbItem.brand?.sub,
                 }),
               ),
@@ -230,41 +232,22 @@ export default withApiAuthRequired(
 
           const qrcodes = await Promise.all(qrcodesPromises);
 
-          sendEmail<OrderCreatedData>({
-            to: recipient.email,
-            templateId: ORDER_CREATED,
-            dynamicTemplateData: {
-              itemImage: dbItem.imageUrls.large,
-              couponImageUrl: dbItem.couponImageUrl,
-              name: dbItem.name,
-              brandLogoUrl: dbItem.brand?.thumbnailUrl!,
-              brandName: dbItem.brand!.name,
-              expiresIn: dbItem.expiresIn!,
-              redemptionInstructions: dbItem.redemptionInstructions,
-              termsAndConditionsInstructions:
-                dbItem.termsAndConditionsInstructions,
-              qrcodes: new Array(quantity)
-                .fill(0)
-                .map(
-                  (_, i) =>
-                    `<img class="image"  src="cid:${i}23456"  style="width: 150px; height: 150px;" />`,
-                )
-                .join(' '),
-            },
-            attachments: qrcodes.map((qr, i) => ({
-              filename: `qr-${i}.png`,
-              content: qr.replace('data:image/png;base64,', ''),
-              contentType: 'image/png',
-              content_id: `${i}23456`,
-              cid: `${i}23456`,
-              disposition: 'inline',
-            })),
+          sendOrder({
+            quantity,
+            qrcodes,
+            recipientEmail: recipient.email,
+            name: dbItem.name,
+            brandLogoUrl: dbItem.brand?.thumbnailUrl!,
+            couponImageUrl: dbItem.couponImageUrl!,
+            expiresIn: dbItem.expiresIn!,
+            redemptionInstructions: dbItem.redemptionInstructions,
+            termsAndConditionsInstructions:
+              dbItem.termsAndConditionsInstructions,
+            brandName: dbItem.brand?.name!,
+            itemImage: dbItem.imageUrls.medium,
           });
         }
       }
-
-      // todo
-      // send email
 
       res.send(orderId);
     }

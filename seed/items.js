@@ -72,6 +72,7 @@ const prisma = new PrismaClient();
           discountRate: discount,
           customerDiscountRate: discount,
           status: 'AVAILABLE',
+          originalPrice: +val,
           amount: +val,
           price: {
             currency: 'GPT',

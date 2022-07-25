@@ -1,4 +1,6 @@
+import QRCode from 'qrcode';
 import sgMail, { MailService } from '@sendgrid/mail';
+import { OrderCreatedData, ORDER_CREATED } from './templates';
 
 const { SEND_GRID_API_KEY, SEND_GRID_FROM, SEND_GRID_NO_REPLY } = process.env;
 
@@ -50,5 +52,64 @@ export default async function sendEmail<T>({
     .then((data) => {})
     .catch((err) => {
       console.log(err);
+      console.log(err.response.body.errors);
     });
 }
+
+type SendOrder = {
+  quantity: number;
+  recipientEmail: string;
+  itemImage: string;
+  couponImageUrl: string;
+  redemptionInstructions: string;
+  termsAndConditionsInstructions: string;
+  name: string;
+  brandName: string;
+  brandLogoUrl: string;
+  expiresIn: number;
+  qrcodes: string[];
+};
+
+export const sendOrder = async ({
+  quantity,
+  recipientEmail,
+  qrcodes,
+  brandLogoUrl,
+  itemImage,
+  redemptionInstructions,
+  termsAndConditionsInstructions,
+  expiresIn,
+  name,
+  couponImageUrl,
+  brandName,
+}: SendOrder) => {
+  return sendEmail<OrderCreatedData>({
+    to: recipientEmail,
+    templateId: ORDER_CREATED,
+    dynamicTemplateData: {
+      itemImage,
+      couponImageUrl,
+      name,
+      brandLogoUrl,
+      brandName,
+      expiresIn,
+      redemptionInstructions,
+      termsAndConditionsInstructions,
+      qrcodes: new Array(quantity)
+        .fill(0)
+        .map(
+          (_, i) =>
+            `<img class="image"  src="cid:${i}23456"  style="width: 150px; height: 150px;" />`,
+        )
+        .join(' '),
+    },
+    attachments: qrcodes.map((qr, i) => ({
+      filename: 'qr.png',
+      content: qr.replace('data:image/png;base64,', ''),
+      contentType: 'image/png',
+      content_id: `${i}23456`,
+      cid: `${i}23456`,
+      disposition: 'inline',
+    })),
+  });
+};

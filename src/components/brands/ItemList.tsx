@@ -1,21 +1,33 @@
 import AppContext from '@/modules/components/AppContext';
 import List from '@/modules/components/ItemList';
-import React, { useContext } from 'react';
-import { useGetBrandItemsQuery } from '@/services';
+import React, { useContext, useEffect, useState } from 'react';
+import { useGetBrandItemsLazyQuery } from '@/services';
 import { useRouter } from 'next/router';
 import { Grid, Image, Paragraph, Skeleton, Spacer } from '@growth-ui/react';
+import ItemListHeader from '@/modules/components/ItemListHeader';
 
 export default function ItemList() {
   const {
     query: { slug },
   } = useRouter();
+  const [sortBy, setSortBy] = useState('sales,desc');
   const { country } = useContext(AppContext);
-  const { data, loading } = useGetBrandItemsQuery({
+  const [query, { data, loading }] = useGetBrandItemsLazyQuery({
     data: {
       slug,
       country,
     },
   });
+
+  useEffect(() => {
+    query({
+      data: {
+        sortBy,
+        slug,
+        country,
+      },
+    });
+  }, [sortBy]);
 
   return (
     <>
@@ -53,6 +65,8 @@ export default function ItemList() {
         </Grid.Col>
       </Grid.Row>
       <Spacer size={30} />
+
+      <ItemListHeader total={data?.items?.length || 0} setSortBy={setSortBy} />
       <List loading={loading} items={data?.items} />
       <Spacer size={50} />
     </>

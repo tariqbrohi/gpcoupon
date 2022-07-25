@@ -16,6 +16,10 @@ export default withApiAuthRequired(
         expiresIn,
         sortOrder = 0,
         discountRate,
+        originalPrice,
+        amount,
+        influencerDiscountRate = 0,
+        customerDiscountRate = 0,
         price = 0,
         notes,
         brandId,
@@ -30,7 +34,7 @@ export default withApiAuthRequired(
       } = req.body;
       const { id } = req.query as any;
       const session = getSession(req, res);
-
+      console.log(req.body);
       const existingItem = await prisma.item.findFirst({
         where: {
           id: {
@@ -75,6 +79,10 @@ export default withApiAuthRequired(
             },
           },
           country,
+          amount: +amount,
+          influencerDiscountRate: +influencerDiscountRate,
+          customerDiscountRate: +customerDiscountRate,
+          originalPrice: +originalPrice,
           type,
           redemptionInstructions: '',
           termsAndConditionsInstructions: '',

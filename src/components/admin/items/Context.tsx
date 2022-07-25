@@ -15,6 +15,7 @@ export type Item = {
   amount: number;
   price: number;
   country: Country;
+  originalPrice: number;
   type: ItemType;
   brand: string;
   categories: string[];

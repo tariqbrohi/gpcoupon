@@ -91,13 +91,19 @@ export default function ItemForm({ mode, onSubmit }: Props) {
       </Form.Group>
       <Form.Group>
         <Form.Input
-          label="Amount"
+          label="originalPrice"
+          name="originalPrice"
+          value={item.originalPrice}
+          onChange={handleChange}
+        />
+        <Form.Input
+          label="Discount Price"
           name="amount"
           value={item.amount}
           onChange={handleChange}
         />
         <Form.Input
-          label="price"
+          label="Retail Price"
           name="price"
           value={item.price}
           onChange={handleChange}
