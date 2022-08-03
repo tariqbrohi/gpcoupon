@@ -45,7 +45,45 @@ model Brand {
   @@index([name])
   @@index([status])
   @@index([countries])
-} 
+}
+
+model GPoint {
+  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
+  name                            String
+  slug                            String            @unique  
+  imageUrl                    String
+  amount        Float
+  createdAt                       Int
+  updatedAt                       Int
+}
+
+model GPointGift {
+  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
+  code  String
+  pin   String
+  amount  Float
+  status String
+  orderId String @db.ObjectId
+  order GPointOrder     @relation(references: [id], fields: [orderId])
+  createdAt                       Int
+  updatedAt                       Int
+}
+
+model GPointOrder {
+  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
+  gpointId  String
+  gpoint  Json
+  sendId  String
+  exchangeRate  Float
+  totalPrice  Float
+  status String
+  code  Int
+  qty Int
+  recipient Recipient
+  createdAt                       Int
+  updatedAt                       Int
+  gifts GPointGift[]
+}
 
 model Item {
   id                              String            @id @default(auto()) @map("_id") @db.ObjectId

@@ -1,5 +1,12 @@
 import { BaseOptions as QueryBaseOptions, useQuery } from './useQuery';
-import { Brand, Category, Country, Item, ItemType } from '@prisma/client';
+import {
+  Brand,
+  Category,
+  Country,
+  GPoint,
+  Item,
+  ItemType,
+} from '@prisma/client';
 import { useLazyQuery } from './useLazyQuery';
 import { useMutation } from './useMutation';
 
@@ -422,3 +429,60 @@ export const useLogoutMutation = () => {
 };
 export type LogoutMutationVariables = {};
 export type LogoutMutationResult = boolean;
+
+/**
+ * CreateGPoint
+ */
+export const useCreateGPointMutation = () => {
+  return useMutation<CreateGPointMutationVariables, CreateGPointMutationResult>(
+    '/api/admin/gpoints/create',
+    'post',
+    [],
+    ['name', 'slug', 'amount', 'imageUrl'],
+  );
+};
+export type CreateGPointMutationVariables = {
+  name: string;
+  imageUrl: string;
+  slug: string;
+  amount: number;
+};
+export type CreateGPointMutationResult = GPoint;
+
+/**
+ * ListGPoints
+ */
+export const useListGPointsQuery = (
+  baseOptions?: QueryBaseOptions<ListGPointsQueryVariables>,
+) => {
+  return useQuery<ListGPointsQueryVariables, ListGPointsQueryResult>(
+    '/api/admin/gpoints/list',
+    baseOptions,
+  );
+};
+export const useListGPointsLazyQuery = (
+  baseOptions?: QueryBaseOptions<ListGPointsQueryVariables>,
+) => {
+  return useLazyQuery<ListGPointsQueryVariables, ListGPointsQueryResult>(
+    '/api/admin/gpoints/list',
+    baseOptions,
+  );
+};
+export type ListGPointsQueryVariables = {};
+export type ListGPointsQueryResult = GPoint[];
+
+/**
+ * DeleteGPoint
+ */
+export const useDeleteGPointMutation = () => {
+  return useMutation<DeleteGPointMutationVariables, DeleteGPointMutationResult>(
+    '/api/admin/gpoints/:id',
+    'delete',
+    ['id'],
+    [],
+  );
+};
+export type DeleteGPointMutationVariables = {
+  id: string;
+};
+export type DeleteGPointMutationResult = GPoint;

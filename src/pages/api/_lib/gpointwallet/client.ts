@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { parseCookies } from '@/lib/parse-cookies';
 
 const {
-  GPOINT_WALLET_URL = 'https://api.gpointwallet.com',
+  GPOINT_WALLET_URL = process.env.GPOINT_WALLET_URL,
   GPOINT_WALLET_CLIENT_ID = '9087852374oasjf982y0auooh41',
   GPOINT_WALLET_SECRET = 'dasdas231rkaopsiru092ujrlakb23hjb',
 } = process.env;
