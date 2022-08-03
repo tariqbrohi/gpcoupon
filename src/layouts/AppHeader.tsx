@@ -47,7 +47,7 @@ export default function AppHeader({
   bgTransition = false,
 }: Props) {
   const ref = useRef<HTMLHeadElement>(null);
-  const user = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     if (bgTransition) {

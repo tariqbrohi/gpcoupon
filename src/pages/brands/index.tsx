@@ -7,7 +7,7 @@ import CategoryList from '@/components/categories/CategoryList';
 import Head from '@/modules/components/Head';
 import React from 'react';
 import Search from '@/modules/components/Search';
-import { Spacer } from '@growth-ui/react';
+import { Paragraph, Spacer } from '@growth-ui/react';
 import BrandList from '@/components/brands/BrandList';
 
 export default function Brands() {
@@ -17,6 +17,9 @@ export default function Brands() {
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
+          <Paragraph fontWeight={700} fontSize={26}>
+            Brands
+          </Paragraph>
           {/* <Search hideOnDesktop /> */}
           <Spacer size={30} />
           <BrandList />

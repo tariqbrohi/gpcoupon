@@ -6,11 +6,11 @@ import { useEffect } from 'react';
 
 const withPageAuthRequired = (PageComponent: any, returnTo = '/login') => {
   const WithPageAuthRequired = (props: any) => {
-    const user = useUser();
+    const { user, loading } = useUser();
 
     useEffect(() => {
-      if (user) return;
-      console.log(returnTo);
+      if (user || loading) return;
+
       redirect(null, returnTo);
     }, [user]);
 

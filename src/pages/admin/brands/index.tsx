@@ -39,7 +39,7 @@ export default function Brands() {
               <List.Item
                 key={brand.id}
                 onClick={() =>
-                  Router.push(`${ROUTES.admin.brands}/${brand.slug}`)
+                  Router.push(`${ROUTES.admin.brands}/${brand.id}`)
                 }
               >
                 <List.Image rounded src={brand.thumbnailUrl} size="mini" />

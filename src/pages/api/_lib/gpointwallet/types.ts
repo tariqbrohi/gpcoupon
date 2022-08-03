@@ -3,6 +3,9 @@ export type ChargeInput = {
   amount: number;
   name: string;
   currency: string;
-  margin: number;
+  influencerId?: string | null;
+  influencerDiscountRate: number;
+  customerDiscountRate: number;
+  profitRate: number;
   t: string;
 };

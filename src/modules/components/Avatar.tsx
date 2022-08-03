@@ -8,9 +8,10 @@ import {
   DropdownProps,
   Image,
 } from '@growth-ui/react';
+import { ROUTES } from '@/ROUTES';
 
 export default function Avatar(props: DropdownProps) {
-  const user = useUser();
+  const { user } = useUser();
   const [logout] = useLogoutMutation();
 
   const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
@@ -20,6 +21,10 @@ export default function Avatar(props: DropdownProps) {
           Router.reload();
         })
         .catch(() => {});
+    }
+
+    if (data.text === 'My gifts') {
+      Router.push(ROUTES.orders);
     }
   };
 
@@ -42,6 +47,7 @@ export default function Avatar(props: DropdownProps) {
       {...props}
     >
       <Dropdown.Menu>
+        <Dropdown.Item text="My gifts" onClick={handleClickDropdownItem} />
         <Dropdown.Item text="Logout" onClick={handleClickDropdownItem} />
       </Dropdown.Menu>
     </Dropdown>

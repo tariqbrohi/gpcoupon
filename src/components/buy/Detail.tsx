@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import { ROUTES } from '@/ROUTES';
 import { useGetItemQuery } from '@/services';
@@ -9,11 +9,13 @@ import {
   Heading,
   Image,
   Menu,
+  Paragraph,
   Skeleton,
   Snackbar,
   Spacer,
 } from '@growth-ui/react';
 import currencyFormat from '@/lib/currency-format';
+import Price from '@/modules/components/Price';
 
 export default function Detail() {
   const {
@@ -91,18 +93,24 @@ export default function Detail() {
                 text="eGift"
               />
               <Spacer size={10} />
-              <Heading>{item.name}</Heading>
-              <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
+              <Paragraph fontSize={26} fontWeight={600}>
+                {item.name}
+              </Paragraph>
+              <Paragraph fontSize={20}>{item.extendedName}</Paragraph>
+              <Spacer size={10} />
+              <Price item={item} emphasis />
+              {/* <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
-                  {currencyFormat(item.amount, item.currency)}
+                  
+                  {currencyFormat(item.price.amount, item.price.currency)}
                 </Heading>
-                {item.discountRate ? (
+                {item.customerDiscountRate ? (
                   <Chip
                     style={{ background: '#ffeec1', color: '#e16a00' }}
-                    text={`${item.discountRate}%`}
+                    text={`${item.customerDiscountRate}%`}
                   />
                 ) : null}
-              </Grid.Row>
+              </Grid.Row> */}
             </>
           )}
           <Snackbar
@@ -111,6 +119,8 @@ export default function Detail() {
             message="No returns and no refunds on gift cards."
           />
           <Spacer size={20} />
+          <Paragraph fontWeight={500}>You can give up to 5</Paragraph>
+          <Spacer size={15} />
           <Grid.Row wrap="wrap">
             <Button.Group rounded>
               <Button

@@ -39,15 +39,21 @@ export default withApiAuthRequired(
         brandId,
         imageUrl,
         available,
+        couponImageUrl,
+        price,
         country,
         type,
+        originalPrice,
+        influencerDiscountRate = 0,
+        customerDiscountRate = 0,
+        influencerId,
         termsAndConditionsInstructions,
         redemptionInstructions,
         categoryIDs,
         slug,
       } = req.body;
       const session = getSession(req, res);
-      console.log(req.body);
+
       const existingItem = await prisma.item.findUnique({
         where: {
           slug,
@@ -62,16 +68,27 @@ export default withApiAuthRequired(
         data: {
           name,
           extendedName,
-          currency,
+          originalPrice: +originalPrice,
+          affiliate: true,
+          influencerDiscountRate: +influencerDiscountRate,
+          customerDiscountRate: +customerDiscountRate,
+          influencerId,
           expiresIn: +expiresIn,
           sortOrder: +sortOrder,
           amount: +amount,
+          price: {
+            set: {
+              amount: +price,
+              currency,
+            },
+          },
           discountRate: +discountRate,
           brand: {
             connect: {
               id: brandId,
             },
           },
+          couponImageUrl,
           imageUrls: {
             small: imageUrl,
             medium: imageUrl,

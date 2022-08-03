@@ -16,6 +16,11 @@ export default withApiAuthRequired(
         expiresIn,
         sortOrder = 0,
         discountRate,
+        originalPrice,
+        amount,
+        influencerDiscountRate = 0,
+        customerDiscountRate = 0,
+        price = 0,
         notes,
         brandId,
         imageUrl,
@@ -29,7 +34,7 @@ export default withApiAuthRequired(
       } = req.body;
       const { id } = req.query as any;
       const session = getSession(req, res);
-
+      console.log(req.body);
       const existingItem = await prisma.item.findFirst({
         where: {
           id: {
@@ -44,16 +49,18 @@ export default withApiAuthRequired(
       if (existingItem) throw new BadRequestError('Slug exits');
 
       const timestamp = new Date().valueOf();
-      console.log(req.body, id);
+      console.log({
+        amount: +price,
+        currency,
+      });
       const item = await prisma.item.update({
         where: {
           id,
         },
         data: {
           extendedName,
-          currency,
           expiresIn: +expiresIn,
-          sortOrder,
+          sortOrder: +sortOrder,
           discountRate: +discountRate,
           brand: {
             connect: {
@@ -65,7 +72,17 @@ export default withApiAuthRequired(
             medium: imageUrl,
             large: imageUrl,
           },
+          price: {
+            set: {
+              amount: +price,
+              currency,
+            },
+          },
           country,
+          amount: +amount,
+          influencerDiscountRate: +influencerDiscountRate,
+          customerDiscountRate: +customerDiscountRate,
+          originalPrice: +originalPrice,
           type,
           redemptionInstructions: '',
           termsAndConditionsInstructions: '',

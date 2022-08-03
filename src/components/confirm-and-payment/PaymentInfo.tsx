@@ -14,9 +14,9 @@ import {
 import currencyFormat from '@/lib/currency-format';
 
 export default function PaymentInfo() {
-  const {
-    state: { loading, item, qty },
-  } = useContext(Context);
+  const { state } = useContext(Context);
+
+  const { loading, item, qty } = state;
 
   return (
     <Container>
@@ -41,17 +41,18 @@ export default function PaymentInfo() {
           )}
           <Spacer size={5} />
           {loading && <Skeleton width={46} height={22} />}
-          {item?.discountRate ? (
+          {item?.customerDiscountRate ? (
             <Chip
               style={{ background: '#ffeec1', color: '#e16a00' }}
-              text={`${item.discountRate}%`}
+              text={`${item.customerDiscountRate}%`}
             />
           ) : null}
           <Spacer size={15} />
           {loading && <Skeleton width={100} height={18} />}
           {item && (
             <Typography>
-              {currencyFormat(item.amount * +qty, item.currency)} / Qty: {qty}
+              {currencyFormat(item.price.amount * +qty, item.price.currency)} /
+              Qty: {qty}
             </Typography>
           )}
         </Grid.Col>
@@ -67,7 +68,7 @@ export default function PaymentInfo() {
               Total pay
             </Typography>
             <Typography fontWeight={600} fontSize={16}>
-              {currencyFormat(item.amount * +qty, item.currency)}
+              {currencyFormat(item.price.amount * +qty, item.price.currency)}
             </Typography>
           </>
         )}

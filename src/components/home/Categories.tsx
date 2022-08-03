@@ -17,6 +17,10 @@ const responsive = {
     breakpoint: { max: size.maxWidth, min: 0 },
     items: 4,
   },
+  // mobile: {
+  //   breakpoint: { max: 600, min: 0 },
+  //   items: 4,
+  // },
 };
 
 const Image = styled.div<{ imageUrl: string }>`
@@ -42,7 +46,7 @@ const Wrapper = styled.section`
 
   ${({ theme }) => theme.gui.media.mobile} {
     .react-multi-carousel-item {
-      min-width: 320px;
+      // min-width: 320px;
     }
   }
 `;
@@ -62,6 +66,7 @@ export default function Categories() {
         swipeable
         ssr
         infinite
+        partialVisible
         removeArrowOnDeviceType={['tablet', 'mobile']}
         responsive={responsive}
       >

@@ -13,29 +13,18 @@ import {
   Skeleton,
   Spacer,
   StyledParagraph,
+  Paragraph,
   MinHeight,
 } from '@growth-ui/react';
 
-const Title = styled(StyledParagraph)`
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-const Amount = styled(StyledParagraph)`
-  font-weight: 600;
-  font-size: 16px;
-  color: black;
-`;
-
 const ImageWraper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  padding-top: 100%;
   background: rgba(0, 0, 0, 0.05);
   cursor: pointer;
   border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
 `;
 
 export default function ItemList({ items, loading }: Props) {
@@ -49,22 +38,71 @@ export default function ItemList({ items, loading }: Props) {
     Router.push(route);
   };
 
+  const renderPrice = (item: Item) => {
+    if (item.originalPrice !== item.price.amount) {
+      return (
+        <GuiGrid.Row>
+          <Paragraph
+            style={{
+              textDecoration: 'line-through',
+            }}
+          >
+            {currencyFormat(item.originalPrice, item.price.currency)}
+          </Paragraph>
+          <Spacer size={10} />
+          <Paragraph color="#318200" fontWeight={800}>
+            {currencyFormat(item.price.amount, item.price.currency)}
+          </Paragraph>
+          <Spacer size={10} />
+          <Chip
+            color="green-400"
+            text={`${((item.price.amount / item.originalPrice) * 100).toFixed(
+              2,
+            )}% OFF`}
+          />
+        </GuiGrid.Row>
+      );
+    }
+
+    return (
+      <Paragraph>
+        {currencyFormat(item.price.amount, item.price.currency)}
+      </Paragraph>
+    );
+  };
+
   return (
     <>
-      <Title color="black">Total {items?.length}</Title>
       <Spacer size={30} />
       <Grid>
         {loading &&
-          new Array(20).fill(0).map((_, idx) => (
-            <GuiGrid.Col key={idx}>
-              <Skeleton width="100%" height="150px" />
+          new Array(10).fill(0).map((_, i) => (
+            <GuiGrid.Col key={i}>
+              <div
+                style={{
+                  position: 'relative',
+                  paddingTop: '100%',
+                  width: '100%',
+                }}
+              >
+                <Skeleton
+                  width="100%"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                  }}
+                />
+              </div>
               <Spacer size={5} />
               <Skeleton width="100px" height="0.5em" />
             </GuiGrid.Col>
           ))}
         {items?.map((item: Item, idx) => (
           <GuiGrid.Col key={idx}>
-            {item.discountRate ? (
+            {item.customerDiscountRate ? (
               <Chip
                 color="yellow-500"
                 style={{
@@ -73,7 +111,7 @@ export default function ItemList({ items, loading }: Props) {
                   right: '7px',
                   zIndex: 8000,
                 }}
-                text={`${item.discountRate}% Rewards`}
+                text={`${item.customerDiscountRate}% Rewards`}
               />
             ) : null}
             <ImageWraper>
@@ -81,7 +119,12 @@ export default function ItemList({ items, loading }: Props) {
                 src={item.imageUrls.medium}
                 style={{
                   width: '100%',
-                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  position: 'absolute',
+                  top: '50%',
+                  left: 0,
+                  right: 0,
+                  transform: 'translateY(-50%)',
                 }}
                 onClick={handleRoute(
                   item.slug,
@@ -92,8 +135,7 @@ export default function ItemList({ items, loading }: Props) {
             </ImageWraper>
             <Spacer size={5} />
             <MinHeight min="60px" style={{ marginTop: 'auto' }}>
-              <Title>{item.name}</Title>
-              <Amount>{currencyFormat(item.amount, item.currency)}</Amount>
+              {renderPrice(item)}
             </MinHeight>
           </GuiGrid.Col>
         ))}

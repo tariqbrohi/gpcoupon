@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { Brand } from '../Context';
 
 const validate = (data: Brand) => {
@@ -10,8 +11,13 @@ const validate = (data: Brand) => {
     backgroundUrl,
     terms,
     disclaimer,
+    sub,
     thumbnailUrl,
   } = data;
+
+  // if (!sub) {
+  //   return 'Business account id is required';
+  // }
 
   if (!backgroundUrl) {
     return 'backgroundUrl is required';
@@ -37,7 +43,7 @@ const validate = (data: Brand) => {
     return 'countries is required';
   }
 
-  if (!categories) {
+  if (isEmpty(categories)) {
     return 'categories is required';
   }
 
