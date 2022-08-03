@@ -3,7 +3,9 @@ import { NextApiResponse } from 'next';
 import { parse, serialize } from 'cookie';
 
 const domain =
-  process.env.NODE_ENV === 'production' ? '.gpcoupon.com' : 'localhost';
+  process.env.NODE_ENV === 'production'
+    ? '.gpcoupon.com'
+    : '.gpointwallet.ngrok.io';
 
 export const setCookie = (
   res: NextApiResponse,

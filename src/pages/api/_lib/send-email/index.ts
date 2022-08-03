@@ -113,3 +113,36 @@ export const sendOrder = async ({
     })),
   });
 };
+
+export const gpointOrderProcessing = async ({
+  recipientEmail,
+  ...dynamicTemplateData
+}: any) => {
+  return sendEmail<any>({
+    to: recipientEmail,
+    templateId: 'd-b080e1776dff492fbcf097e80ff8962b',
+    dynamicTemplateData,
+  });
+};
+
+export const gpointOrderApproved = async ({
+  recipientEmail,
+  ...dynamicTemplateData
+}: any) => {
+  return sendEmail<any>({
+    to: recipientEmail,
+    templateId: 'd-590015908abb45a9b406bd2763842508',
+    dynamicTemplateData,
+  });
+};
+
+export const gpointOrderDenied = async ({
+  recipientEmail,
+  ...dynamicTemplateData
+}: any) => {
+  return sendEmail<any>({
+    to: recipientEmail,
+    templateId: 'd-4e78ec084ee64ac99a352794e5df3d21',
+    dynamicTemplateData,
+  });
+};

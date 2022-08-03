@@ -60,6 +60,37 @@ export default function AdminSidebar(props: SidebarProps) {
             </List.Item>
           </List>
         </Collapse>
+
+        {/* GPOINTS */}
+        <List.Item active={activeItem === 'gpoints'} style={styles.listItem}>
+          <List.Content>GPoints</List.Content>
+        </List.Item>
+        <Collapse expanded>
+          <List padded selection verticalAlign="middle">
+            <List.Item
+              active={pathname === ROUTES.admin.createGpoint}
+              onClick={handleClickItem(ROUTES.admin.createGpoint)}
+              style={styles.collapseItem}
+            >
+              <List.Content>Create Gpoint</List.Content>
+            </List.Item>
+            <List.Item
+              active={pathname === ROUTES.admin.listGpoints}
+              onClick={handleClickItem(ROUTES.admin.listGpoints)}
+              style={styles.collapseItem}
+            >
+              <List.Content>List Gpoints</List.Content>
+            </List.Item>
+
+            <List.Item
+              active={pathname === ROUTES.admin.orders}
+              onClick={handleClickItem(ROUTES.admin.orders)}
+              style={styles.collapseItem}
+            >
+              <List.Content>Orders</List.Content>
+            </List.Item>
+          </List>
+        </Collapse>
       </List>
     </Sidebar>
   );

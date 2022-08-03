@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode';
 import { ChargeInput } from './types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { parseCookies } from '@/lib/parse-cookies';
-console.log(process.env.GPOINT_API_URI);
+
 const {
   GPOINT_WALLET_URL = process.env.GPOINT_API_URI,
   GPOINT_WALLET_CLIENT_ID = '9087852374oasjf982y0auooh41',

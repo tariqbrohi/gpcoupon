@@ -490,10 +490,10 @@
     lodash.pick "^4.4.0"
     request-ip "^2.1.3"
 
-"@growth-ui/react@^1.36.0":
-  version "1.36.0"
-  resolved "https://registry.yarnpkg.com/@growth-ui/react/-/react-1.36.0.tgz#bccd0719e124a7e2a4a553ff44c58801faa864f4"
-  integrity sha512-kDgylInssQfLIbfLG2dXTrFceY8HhP1ZZa0Yi8A3nSHO8YzfvARxNx18jcexjPAt8Yb2LpAmcFmTtIAyzjE2Ug==
+"@growth-ui/react@^1.41.0":
+  version "1.41.0"
+  resolved "https://registry.yarnpkg.com/@growth-ui/react/-/react-1.41.0.tgz#a30fbd9059b44bb9c8ed2a370b1b2cf19d73f03e"
+  integrity sha512-arBZf34klC1rGJ8HiKqVzwOXYCRHbnLOna1u4mVuNKoxevQknWq2Asr7J2K4cIr5jL0AGdfZrvDT9fCtg22rBQ==
   dependencies:
     "@fluentui/react-component-ref" "^0.59.0"
     exenv "^1.2.2"
