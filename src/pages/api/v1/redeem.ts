@@ -5,6 +5,7 @@ import prisma from '@/prisma';
 import { isNil } from 'lodash';
 import {
   BadRequestError,
+  ForbiddenError,
   InternalServerError,
   NotFoundError,
 } from '@/lib/errors';
@@ -17,8 +18,12 @@ export default errorHandler(
     if (method !== 'post') {
       throw new NotFoundError();
     }
-    console.log(req.body);
-    const { amount, code, pin, sub, orderId } = req.body;
+
+    const { amount, code, pin, sub, orderId, t } = req.body;
+
+    if (t !== 'thisisfortemporaryshit') {
+      throw new ForbiddenError();
+    }
 
     const gift = await prisma.gift.findUnique({
       where: {
@@ -32,7 +37,7 @@ export default errorHandler(
       },
     });
 
-    if (!gift || gift.orderId !== orderId) throw new NotFoundError('');
+    if (!gift || gift.order.id !== orderId) throw new NotFoundError('');
 
     const { item } = gift.order;
 
@@ -51,6 +56,7 @@ export default errorHandler(
     if (gift.status === 'used') throw new BadRequestError('Gift already used');
 
     // If requested gift detail is different thant what is in db.
+    console.log((item as any).brand?.sub);
     if ((item as any).brand?.sub !== sub) {
       throw new BadRequestError('');
     }
@@ -66,7 +72,7 @@ export default errorHandler(
         },
       });
 
-      return res.send(true);
+      return res.send(item);
     }
 
     // For GIFT_CARD

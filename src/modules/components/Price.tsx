@@ -26,9 +26,9 @@ export default function Price({
       <Spacer size={10} />
       <Chip
         color="green-400"
-        text={`${((item.price.amount / item.originalPrice) * 100).toFixed(
-          2,
-        )}% OFF`}
+        text={`${
+          100 - +((item.price.amount / item.originalPrice) * 100).toFixed(2)
+        }% OFF`}
       />
     </Grid.Row>
   );

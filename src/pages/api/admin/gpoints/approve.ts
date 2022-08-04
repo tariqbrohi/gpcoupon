@@ -6,6 +6,16 @@ import moment from 'moment';
 import { gpointOrderApproved } from '../../_lib/send-email';
 import { times } from 'lodash';
 
+const randomString = (length: number) => {
+  let text = '';
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
     if (req.method !== 'post') {
@@ -26,12 +36,8 @@ export default withApiAuthRequired(
 
     const timestamp = moment().unix();
 
-    const randomString = times(10, () =>
-      Math.floor(Math.random() * 10).toString(),
-    );
-
     const credentials = times(order.qty).map(() => ({
-      code: randomString.join(''),
+      code: randomString(12),
       pin: Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000,
     }));
 
@@ -48,7 +54,7 @@ export default withApiAuthRequired(
               code: cred.code,
               pin: cred.pin.toString(),
               amount: (order.gpoint as any).amount,
-              status: 'AVAILABLE',
+              status: 'available',
               createdAt: timestamp,
               updatedAt: timestamp,
             })),

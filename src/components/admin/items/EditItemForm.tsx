@@ -26,7 +26,7 @@ export default function EditItemForm() {
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>('');
-
+  console.log(item);
   useEffect(() => {
     if (data) {
       setItem({

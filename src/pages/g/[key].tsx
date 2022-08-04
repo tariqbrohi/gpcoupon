@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import QRCode from 'react-qr-code';
-import { encode, decode } from 'js-base64';
+import { decode } from 'js-base64';
 import { Paragraph, Spacer, Grid } from '@growth-ui/react';
 import styled from 'styled-components';
 import Divider from '@/modules/components/Divider';

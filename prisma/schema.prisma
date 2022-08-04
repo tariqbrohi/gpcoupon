@@ -68,6 +68,8 @@ model GPointGift {
   order GPointOrder     @relation(references: [id], fields: [orderId])
   createdAt                       Int
   updatedAt                       Int
+
+  @@unique([code, pin])
 }
 
 model GPointOrder {

@@ -362,8 +362,10 @@ export const useUpdateItemMutation = () => {
       'categoryIDs',
       'influencerDiscountRate',
       'customerDiscountRate',
+      'slug',
       'metadata',
-      'id',
+      'influencerId',
+      'influencerDiscountRate',
     ],
   );
 };
@@ -382,6 +384,8 @@ export type UpdateItemMutationVariables = {
   country: Country;
   type: ItemType;
   redemptionInstructions?: string;
+  influencerDiscountRate?: number;
+  influencerId?: string;
   categoryIDs: string[];
   imageUrl: string;
   slug: string;

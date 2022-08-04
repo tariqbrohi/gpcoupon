@@ -19,6 +19,7 @@ export default withApiAuthRequired(
         originalPrice,
         amount,
         influencerDiscountRate = 0,
+        influencerId,
         customerDiscountRate = 0,
         price = 0,
         notes,
@@ -34,25 +35,18 @@ export default withApiAuthRequired(
       } = req.body;
       const { id } = req.query as any;
       const session = getSession(req, res);
-      console.log(req.body);
-      const existingItem = await prisma.item.findFirst({
+      console.log(id);
+      const existingItem = await prisma.item.findUnique({
         where: {
-          id: {
-            not: {
-              equals: id,
-            },
-          },
           slug,
         },
       });
 
-      if (existingItem) throw new BadRequestError('Slug exits');
+      if (existingItem && existingItem?.id !== id)
+        throw new BadRequestError('Slug exits');
 
       const timestamp = new Date().valueOf();
-      console.log({
-        amount: +price,
-        currency,
-      });
+      console.log(influencerDiscountRate, influencerId);
       const item = await prisma.item.update({
         where: {
           id,
@@ -85,6 +79,7 @@ export default withApiAuthRequired(
           originalPrice: +originalPrice,
           type,
           redemptionInstructions: '',
+          influencerId,
           termsAndConditionsInstructions: '',
           slug,
           status: available ? 'AVAILABLE' : 'UNAVAILABLE',
