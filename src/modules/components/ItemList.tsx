@@ -56,9 +56,9 @@ export default function ItemList({ items, loading }: Props) {
           <Spacer size={10} />
           <Chip
             color="green-400"
-            text={`${((item.price.amount / item.originalPrice) * 100).toFixed(
-              2,
-            )}% OFF`}
+            text={`${
+              100 - +((item.price.amount / item.originalPrice) * 100).toFixed(2)
+            }% OFF`}
           />
         </GuiGrid.Row>
       );
@@ -135,6 +135,7 @@ export default function ItemList({ items, loading }: Props) {
             </ImageWraper>
             <Spacer size={5} />
             <MinHeight min="60px" style={{ marginTop: 'auto' }}>
+              <Paragraph fontWeight={600}>{item.name}</Paragraph>
               {renderPrice(item)}
             </MinHeight>
           </GuiGrid.Col>

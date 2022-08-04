@@ -48,6 +48,8 @@ export default errorHandler(async function handler(req, res) {
       couponImageUrl: true,
       sortOrder: true,
       type: true,
+      influencerDiscountRate: true,
+      influencerId: true,
     },
   });
 
