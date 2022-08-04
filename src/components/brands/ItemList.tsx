@@ -32,7 +32,7 @@ export default function ItemList() {
   return (
     <>
       <Grid.Row wrap="wrap">
-        <Grid.Col width={16} only={['mobile', 'minimobile']}>
+        <Grid.Col width={16} only={['tablet', 'mobile', 'minimobile']}>
           {data?.backgroundUrl && (
             <Image
               src={data?.backgroundUrl!}
@@ -46,7 +46,7 @@ export default function ItemList() {
             />
           )}
         </Grid.Col>
-        <Grid.Col only={['computer', 'widescreen', 'laptop', 'tablet']}>
+        <Grid.Col only={['computer', 'widescreen', 'laptop']}>
           <Image
             rounded
             size="small"

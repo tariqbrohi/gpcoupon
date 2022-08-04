@@ -1,13 +1,15 @@
 import AppContext from '@/modules/components/AppContext';
 import CategoriesVertical from './CategoriesVertical';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import {
+  EventListener,
   Grid,
   Image,
   ImageList,
   Paragraph,
+  Ref,
   Skeleton,
   Spacer,
 } from '@growth-ui/react';
@@ -37,19 +39,33 @@ const Description = styled.div`
 
 export default function BrandList() {
   const { country } = useContext(AppContext);
+  const [height, setHeight] = useState(155);
   const { data, loading } = useGetBrandsQuery({
     data: {
       country,
     },
   });
+  const ref = useRef<HTMLElement>(null);
   const [cat, setCat] = useState<Category>();
+
+  useEffect(() => {
+    handleResize();
+  }, []);
 
   const filteredBrands = data?.filter(
     (brand) => !cat || some(brand.categoryIDs, (id) => id === cat?.id),
   );
 
+  const handleResize = () => {
+    if (ref.current) {
+      console.log(ref.current.clientWidth);
+      setHeight(ref.current.clientWidth * 0.564);
+    }
+  };
+
   return (
     <>
+      <EventListener name="resize" listener={handleResize} target="window" />
       <Grid.Row>
         <Grid.Col only={['computer', 'widescreen', 'laptop', 'tablet']}>
           <CategoriesVertical cat={cat} setCat={setCat} />
@@ -84,11 +100,18 @@ export default function BrandList() {
                   onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
                   style={{ cursor: 'pointer' }}
                 >
-                  <ImageList.ItemBar
-                    title={brand.name}
-                    thumbnail={brand.thumbnailUrl}
+                  <Ref innerRef={ref}>
+                    <ImageList.ItemBar
+                      title={brand.name}
+                      thumbnail={brand.thumbnailUrl}
+                    />
+                  </Ref>
+                  <Image
+                    src={brand.backgroundUrl}
+                    style={{
+                      height: `${height}px`,
+                    }}
                   />
-                  <Image src={brand.backgroundUrl} />
                   <Description>{brand.description}</Description>
                 </ImageList.Item>
               ))}
