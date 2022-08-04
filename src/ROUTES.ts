@@ -11,6 +11,7 @@ export const ROUTES = {
   legal: '/termsOfUse',
   orders: '/orders',
   confirmAndPay: '/confirm-and-pay',
+  occasions: '/occasions',
   admin: {
     createItem: '/admin/items/create',
     items: '/admin/items',
