@@ -9,7 +9,19 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const brands = await prisma.brand.findMany({});
+  const { country } = req.query as any;
+
+  let where: Record<string, any> = {};
+
+  if (country) {
+    where.countries = {
+      has: country,
+    };
+  }
+
+  const brands = await prisma.brand.findMany({
+    where,
+  });
 
   res.send(brands);
 });

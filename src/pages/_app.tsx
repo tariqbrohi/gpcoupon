@@ -13,7 +13,8 @@ function MyApp({ Component, pageProps, cookies }: AppContext & AppProps) {
     <UserProvider>
       <GrowthThemeProvider>
         <AppStateProvider cookies={cookies}>
-          <Component {...pageProps} />
+          {/* <Component {...pageProps} /> */}
+          <div>Maintanance</div>
         </AppStateProvider>
       </GrowthThemeProvider>
     </UserProvider>

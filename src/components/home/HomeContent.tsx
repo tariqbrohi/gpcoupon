@@ -29,12 +29,12 @@ export default function HomeContent() {
             <Chip text="Categories" />
           </a>
         </Link>
-        {/* <Spacer size={10} />
-        <Link href={ROUTES.affiliates}>
+        <Spacer size={10} />
+        <Link href={ROUTES.brands}>
           <a>
-            <Chip text="Affiliates" />
+            <Chip text="Brands" />
           </a>
-        </Link> */}
+        </Link>
       </Grid.Row>
     </Container>
   );

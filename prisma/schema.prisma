@@ -46,7 +46,47 @@ model Brand {
   @@index([name])
   @@index([status])
   @@index([countries])
-} 
+}
+
+model GPoint {
+  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
+  name                            String
+  slug                            String            @unique  
+  imageUrl                    String
+  amount        Float
+  createdAt                       Int
+  updatedAt                       Int
+}
+
+model GPointGift {
+  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
+  code  String
+  pin   String
+  amount  Float
+  status String
+  orderId String @db.ObjectId
+  order GPointOrder     @relation(references: [id], fields: [orderId])
+  createdAt                       Int
+  updatedAt                       Int
+
+  @@unique([code, pin])
+}
+
+model GPointOrder {
+  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
+  gpointId  String
+  gpoint  Json
+  sender  Json
+  exchangeRate  Float
+  totalPrice  Float
+  status String
+  code  Int
+  qty Int
+  recipient Recipient
+  createdAt                       Int
+  updatedAt                       Int
+  gifts GPointGift[]
+}
 
 model Item {
   id                              String            @id @default(auto()) @map("_id") @db.ObjectId
@@ -57,14 +97,17 @@ model Item {
   status                          Status
   imageUrls                       Image
   couponImageUrl                  String?
-  currency                        String
   expiresIn                       Int?
   discountRate                    Float?
+  customerDiscountRate            Float?
+  influencerDiscountRate          Float?
+  influencerId                    String?
+  originalPrice                   Float
   amount                          Float
+  price                           Price
   createdAt                       Int
   updatedAt                       Int
   deletedAt                       Int?
-  orders                          Order[]
   brandId                         String?           @db.ObjectId
   brand                           Brand?            @relation(fields: [brandId], references: [id])
   country                         Country
@@ -81,6 +124,7 @@ model Item {
   @@index([discountRate])
   @@index([country])
   @@index([status])
+  @@index([influencerId])
 }
 
 model Order {
@@ -90,13 +134,15 @@ model Order {
   recipient               Recipient
   message                 String?
   itemId                  String            @db.ObjectId
-  item                    Item              @relation(fields:[itemId], references: [id])
+  item                    Json       
   payment                 Payment
   gifts                   Gift[]                  
   metadata                Json?
   createdAt               Int
   updatedAt               Int
   deletedAt               Int?
+
+  @@index([senderId])
 }
 
 model Gift {

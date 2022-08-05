@@ -15,7 +15,7 @@ import {
   Spacer,
 } from '@growth-ui/react';
 import currencyFormat from '@/lib/currency-format';
-import convert from '@/lib/forex';
+import Price from '@/modules/components/Price';
 
 export default function Detail() {
   const {
@@ -30,13 +30,6 @@ export default function Detail() {
   });
   const [qty, setQty] = useState(1);
   const [activeMenu, setActiveMenu] = useState('description');
-  const [exchangeRate, setExchangeRate] = useState(1);
-
-  useEffect(() => {
-    if (item?.currency && item?.currency !== 'GPT') {
-      convert(item.currency, setExchangeRate);
-    }
-  }, [item]);
 
   const handleQtyChange = (qty: number) => {
     setQty(qty);
@@ -105,17 +98,19 @@ export default function Detail() {
               </Paragraph>
               <Paragraph fontSize={20}>{item.extendedName}</Paragraph>
               <Spacer size={10} />
-              <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
+              <Price item={item} emphasis />
+              {/* <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
-                  {currencyFormat(item.amount * exchangeRate, item.currency)}
+                  
+                  {currencyFormat(item.price.amount, item.price.currency)}
                 </Heading>
-                {item.discountRate ? (
+                {item.customerDiscountRate ? (
                   <Chip
                     style={{ background: '#ffeec1', color: '#e16a00' }}
-                    text={`${item.discountRate}%`}
+                    text={`${item.customerDiscountRate}%`}
                   />
                 ) : null}
-              </Grid.Row>
+              </Grid.Row> */}
             </>
           )}
           <Snackbar

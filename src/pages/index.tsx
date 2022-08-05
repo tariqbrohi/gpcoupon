@@ -12,6 +12,7 @@ import Section from '@/components/home/Section';
 import TopBrands from '@/components/home/TopBrands';
 import { Spacer } from '@growth-ui/react';
 import { useContext } from 'react';
+import GPoints from '@/components/gpoints';
 
 export default function Home() {
   const { country } = useContext(AppContext);
@@ -25,6 +26,7 @@ export default function Home() {
         <AppContainer>
           <Section>
             <HomeContent />
+            {country === 'KR' && <GPoints />}
             <Spacer size={50} />
             <Categories />
             <Spacer size={50} />

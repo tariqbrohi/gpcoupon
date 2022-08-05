@@ -5,12 +5,12 @@ const Container = styled.div`
   width: 100%;
   max-width: ${({ theme }) => theme.size.maxWidth}px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 30px 32px 0px;
 
   ${({ theme }) => theme.gui.media.mobile} {
     max-width: 100%;
     margin: 0;
-    padding: 0 8px;
+    padding: 30px 8px 70px;
   }
 `;
 

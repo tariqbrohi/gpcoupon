@@ -5,8 +5,9 @@ import stringSimilarity from 'string-similarity';
 import { Input, List, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetBrandsQuery } from '@/services';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function Brands() {
+export default withPageAuthRequired(function Brands() {
   const { data: brands } = useGetBrandsQuery();
   const [search, setSearch] = useState('');
 
@@ -52,4 +53,4 @@ export default function Brands() {
       </AdminLayout>
     </>
   );
-}
+});

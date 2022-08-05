@@ -32,14 +32,16 @@ export default errorHandler(async function handler(req, res) {
       },
     })) as Record<string, any>;
 
-    let orderBy: Record<string, string> = {};
+    let orderBy: Record<string, any> = {};
 
-    if (sortBy === 'sales,desc') {
-      orderBy.sortOrder = 'desc';
+    if (sortBy === 'amount,asc') {
+      orderBy.price = {};
+      orderBy.price.amount = 'asc';
     } else if (sortBy === 'amount,desc') {
-      orderBy.amount = 'desc';
+      orderBy.price = {};
+      orderBy.price.amount = 'desc';
     } else {
-      orderBy.amount = 'asc';
+      orderBy.sortOrder = 'desc';
     }
 
     // todo
@@ -65,8 +67,10 @@ export default errorHandler(async function handler(req, res) {
         name: true,
         extendedName: true,
         imageUrls: true,
+        originalPrice: true,
         discountRate: true,
-        currency: true,
+        customerDiscountRate: true,
+        price: true,
         slug: true,
       },
     };

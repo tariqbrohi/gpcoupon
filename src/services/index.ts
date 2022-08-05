@@ -1,5 +1,17 @@
 import { BaseOptions as QueryBaseOptions, useQuery } from './useQuery';
-import { Brand, Category, Country, Item, ItemType } from '@prisma/client';
+import {
+  Brand,
+  Category,
+  Country,
+  GPoint,
+  GPointOrder,
+  Item,
+  ItemType,
+  Order,
+  Payment,
+  Recipient,
+  Status,
+} from '@prisma/client';
 import { useLazyQuery } from './useLazyQuery';
 import { useMutation } from './useMutation';
 
@@ -44,7 +56,9 @@ export const useGetBrandsLazyQuery = (
     baseOptions,
   );
 };
-export type GetBrandsQueryVariables = {};
+export type GetBrandsQueryVariables = {
+  country: string;
+};
 export type GetBrandsQueryResult = Brand[];
 
 /**
@@ -96,6 +110,7 @@ export const useGetCategoryItemsLazyQuery = (
 export type GetCategoryItemsQueryVariables = {
   country: string;
   slug: string | string[] | undefined;
+  sortBy?: string;
 };
 export type GetCategoryItemsQueryResult = Category & { items: Item[] };
 
@@ -123,6 +138,7 @@ export const useGetBrandItemsLazyQuery = (
 export type GetBrandItemsQueryVariables = {
   country: string;
   slug: string | string[] | undefined;
+  sortBy?: string;
 };
 export type GetBrandItemsQueryResult = Brand & { items: Item[] };
 
@@ -180,6 +196,38 @@ export type GetItemQueryVariables = {
 export type GetItemQueryResult = Item;
 
 /**
+ * MyGifts
+ */
+export const useMyGiftsQuery = (
+  baseOptions?: QueryBaseOptions<MyGiftsQueryVariables>,
+) => {
+  return useQuery<MyGiftsQueryVariables, MyGiftsQueryResult>(
+    '/api/v1/orders',
+    baseOptions,
+    [],
+  );
+};
+export const useMyGiftsLazyQuery = (
+  baseOptions?: QueryBaseOptions<MyGiftsQueryVariables>,
+) => {
+  return useLazyQuery<MyGiftsQueryVariables, MyGiftsQueryResult>(
+    '/api/v1/orders',
+    baseOptions,
+    [],
+  );
+};
+export type MyGiftsQueryVariables = {};
+export type MyGiftsQueryResult = {
+  orderNumber: string;
+  item: Item;
+  payment: Payment;
+  status: Status;
+  recipient: Recipient;
+  message?: string;
+  createdAt: number;
+}[];
+
+/**
  * SearchItems
  */
 export const useSearchItemsQuery = (
@@ -209,7 +257,7 @@ export type SearchItemsQueryResult = Item[];
  */
 export const useOrderMutation = () => {
   return useMutation<OrderMutationVariables, OrderMutationResult>(
-    '/api/v1/order',
+    '/api/v1/orders',
     'post',
     [],
     ['itemId', 'message', 'quantity', 'recipient', 'amount', 'slug'],
@@ -244,15 +292,20 @@ export const useCreateItemMutation = () => {
       'sortOrder',
       'amount',
       'discountRate',
+      'originalPrice',
       'couponImageUrl',
       'available',
       'notes',
       'brandId',
       'imageUrl',
       'country',
+      'price',
       'type',
       'redemptionInstructions',
       'categoryIDs',
+      'influencerDiscountRate',
+      'customerDiscountRate',
+      'influencerId',
       'slug',
       'metadata',
     ],
@@ -264,10 +317,12 @@ export type CreateItemMutationVariables = {
   currency: string;
   expiresIn: number;
   amount: number;
+  originalPrice: number;
   disCountRate?: number;
   couponImageUrl: string;
   notes?: string[];
   brandId: string;
+  price: number;
   available: boolean;
   sortOrder: number;
   country: Country;
@@ -292,19 +347,25 @@ export const useUpdateItemMutation = () => {
       'extendedName',
       'currency',
       'expiresIn',
+      'originalPrice',
       'sortOrder',
       'discountRate',
       'available',
       'notes',
       'brandId',
+      'amount',
+      'price',
       'imageUrl',
       'country',
       'type',
       'redemptionInstructions',
       'categoryIDs',
+      'influencerDiscountRate',
+      'customerDiscountRate',
       'slug',
       'metadata',
-      'id',
+      'influencerId',
+      'influencerDiscountRate',
     ],
   );
 };
@@ -314,13 +375,17 @@ export type UpdateItemMutationVariables = {
   currency: string;
   expiresIn: number;
   disCountRate?: number;
+  originalPrice: number;
   notes?: string[];
-  brandId: string;
+  price: number;
+  brandId?: string;
   available: boolean;
   sortOrder: number;
   country: Country;
   type: ItemType;
   redemptionInstructions?: string;
+  influencerDiscountRate?: number;
+  influencerId?: string;
   categoryIDs: string[];
   imageUrl: string;
   slug: string;
@@ -479,3 +544,213 @@ export const useLogoutMutation = () => {
 };
 export type LogoutMutationVariables = {};
 export type LogoutMutationResult = boolean;
+
+/**
+ * ResendGift
+ */
+export const useResendGiftMutation = () => {
+  return useMutation<ResendGiftMutationVariables, ResendGiftMutationResult>(
+    '/api/v1/orders/:id/resend',
+    'post',
+    ['id'],
+    [],
+  );
+};
+export type ResendGiftMutationVariables = {
+  id: string;
+};
+export type ResendGiftMutationResult = boolean;
+
+/**
+ * CreateGPoint
+ */
+export const useCreateGPointMutation = () => {
+  return useMutation<CreateGPointMutationVariables, CreateGPointMutationResult>(
+    '/api/admin/gpoints/create',
+    'post',
+    [],
+    ['name', 'slug', 'amount', 'imageUrl'],
+  );
+};
+export type CreateGPointMutationVariables = {
+  name: string;
+  imageUrl: string;
+  slug: string;
+  amount: number;
+};
+export type CreateGPointMutationResult = GPoint;
+
+/**
+ * ListGPoints
+ */
+export const useListGPointsQuery = (
+  baseOptions?: QueryBaseOptions<ListGPointsQueryVariables>,
+) => {
+  return useQuery<ListGPointsQueryVariables, ListGPointsQueryResult>(
+    '/api/admin/gpoints/list',
+    baseOptions,
+  );
+};
+export const useListGPointsLazyQuery = (
+  baseOptions?: QueryBaseOptions<ListGPointsQueryVariables>,
+) => {
+  return useLazyQuery<ListGPointsQueryVariables, ListGPointsQueryResult>(
+    '/api/admin/gpoints/list',
+    baseOptions,
+  );
+};
+export type ListGPointsQueryVariables = {};
+export type ListGPointsQueryResult = GPoint[];
+
+/**
+ * DeleteGPoint
+ */
+export const useDeleteGPointMutation = () => {
+  return useMutation<DeleteGPointMutationVariables, DeleteGPointMutationResult>(
+    '/api/admin/gpoints/:id',
+    'delete',
+    ['id'],
+    [],
+  );
+};
+export type DeleteGPointMutationVariables = {
+  id: string;
+};
+export type DeleteGPointMutationResult = Boolean;
+
+/**
+ * GPoints
+ */
+export const useGPointsQuery = (
+  baseOptions?: QueryBaseOptions<GPointsQueryVariables>,
+) => {
+  return useQuery<GPointsQueryVariables, GPointsQueryResult>(
+    '/api/gpoints',
+    baseOptions,
+  );
+};
+export const useGPointsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GPointsQueryVariables>,
+) => {
+  return useLazyQuery<GPointsQueryVariables, GPointsQueryResult>(
+    '/api/gpoints',
+    baseOptions,
+  );
+};
+export type GPointsQueryVariables = {};
+export type GPointsQueryResult = GPoint[];
+
+/**
+ * GPoint
+ */
+export const useGPointQuery = (
+  baseOptions?: QueryBaseOptions<GPointQueryVariables>,
+) => {
+  return useQuery<GPointQueryVariables, GPointQueryResult>(
+    '/api/gpoints/:id',
+    baseOptions,
+    ['id'],
+  );
+};
+export const useGPointLazyQuery = (
+  baseOptions?: QueryBaseOptions<GPointQueryVariables>,
+) => {
+  return useLazyQuery<GPointQueryVariables, GPointQueryResult>(
+    '/api/gpoints/:id',
+    baseOptions,
+    ['id'],
+  );
+};
+export type GPointQueryVariables = {
+  id: string;
+};
+export type GPointQueryResult = GPoint;
+
+/**
+ * Forex
+ */
+export const useForexMutation = () => {
+  return useMutation<ForexMutationVariables, ForexMutationResult>(
+    '/api/forex',
+    'post',
+    [],
+    ['currency'],
+  );
+};
+export type ForexMutationVariables = {
+  currency?: string;
+};
+export type ForexMutationResult = number;
+
+/**
+ * GPointOrder
+ */
+export const useGPointOrderMutation = () => {
+  return useMutation<GPointOrderMutationVariables, GPointOrderMutationResult>(
+    '/api/gpoints/order',
+    'post',
+    [],
+    ['id', 'qty', 'recipientName', 'recipientEmail', 'code'],
+  );
+};
+export type GPointOrderMutationVariables = {
+  id: string;
+  qty: number;
+  recipientName: string;
+  recipientEmail: string;
+  code: number;
+};
+export type GPointOrderMutationResult = GPointOrder;
+
+/**
+ * GPointOrders
+ */
+export const useGPointOrdersQuery = (
+  baseOptions?: QueryBaseOptions<GPointOrdersQueryVariables>,
+) => {
+  return useQuery<GPointOrdersQueryVariables, GPointOrdersQueryResult>(
+    '/api/admin/gpoints/orders',
+    baseOptions,
+    [],
+  );
+};
+export const useGPointOrdersLazyQuery = (
+  baseOptions?: QueryBaseOptions<GPointOrdersQueryVariables>,
+) => {
+  return useLazyQuery<GPointOrdersQueryVariables, GPointOrdersQueryResult>(
+    '/api/admin/gpoints/orders',
+    baseOptions,
+    [],
+  );
+};
+export type GPointOrdersQueryVariables = {};
+export type GPointOrdersQueryResult = GPointOrder[];
+
+/**
+ * GPointOrderApprove
+ */
+export const useGPointOrderApproveMutation = () => {
+  return useMutation<
+    GPointOrderApproveMutationVariables,
+    GPointOrderApproveMutationResult
+  >('/api/admin/gpoints/approve', 'post', [], ['id']);
+};
+export type GPointOrderApproveMutationVariables = {
+  id: string;
+};
+export type GPointOrderApproveMutationResult = boolean;
+
+/**
+ * GPointOrderDeny
+ */
+export const useGPointOrderDenyMutation = () => {
+  return useMutation<
+    GPointOrderDenyMutationVariables,
+    GPointOrderDenyMutationResult
+  >('/api/admin/gpoints/deny', 'post', [], ['id', 'string']);
+};
+export type GPointOrderDenyMutationVariables = {
+  id: string;
+  reason: string;
+};
+export type GPointOrderDenyMutationResult = boolean;

@@ -22,11 +22,7 @@ export default errorHandler(
         },
       },
       include: {
-        order: {
-          include: {
-            item: true,
-          },
-        },
+        order: true,
       },
     });
 
@@ -39,7 +35,7 @@ export default errorHandler(
       gift.status === 'expired' ||
       moment().unix() >=
         moment(gift.order.createdAt * 1000)
-          .add(item.expiresIn, 'days')
+          .add((item as any).expiresIn, 'days')
           .unix()
     ) {
       return res.send({

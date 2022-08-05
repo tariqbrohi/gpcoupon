@@ -5,9 +5,11 @@ import prisma from '@/prisma';
 import { isNil } from 'lodash';
 import {
   BadRequestError,
+  ForbiddenError,
   InternalServerError,
   NotFoundError,
 } from '@/lib/errors';
+import { Item } from '@prisma/client';
 
 export default errorHandler(
   grapherjs.withTracingHandler(async function handler(req, res) {
@@ -16,8 +18,12 @@ export default errorHandler(
     if (method !== 'post') {
       throw new NotFoundError();
     }
-    console.log(req.body);
-    const { amount, code, pin, sub, itemId } = req.body;
+
+    const { amount, code, pin, sub, orderId, t } = req.body;
+
+    if (t !== 'thisisfortemporaryshit') {
+      throw new ForbiddenError();
+    }
 
     const gift = await prisma.gift.findUnique({
       where: {
@@ -27,19 +33,11 @@ export default errorHandler(
         },
       },
       include: {
-        order: {
-          include: {
-            item: {
-              include: {
-                brand: true,
-              },
-            },
-          },
-        },
+        order: true,
       },
     });
 
-    if (!gift) throw new NotFoundError('');
+    if (!gift || gift.order.id !== orderId) throw new NotFoundError('');
 
     const { item } = gift.order;
 
@@ -48,7 +46,7 @@ export default errorHandler(
       gift.status === 'expired' ||
       moment().unix() >=
         moment(gift.order.createdAt * 1000)
-          .add(item.expiresIn, 'days')
+          .add((item as Item).expiresIn, 'days')
           .unix()
     ) {
       throw new BadRequestError('Gift expired');
@@ -58,11 +56,12 @@ export default errorHandler(
     if (gift.status === 'used') throw new BadRequestError('Gift already used');
 
     // If requested gift detail is different thant what is in db.
-    if (item.id !== itemId || item.brand?.sub !== sub) {
+    console.log((item as any).brand?.sub);
+    if ((item as any).brand?.sub !== sub) {
       throw new BadRequestError('');
     }
 
-    if (item.type === 'GIFT_ICON') {
+    if ((item as Item).type === 'GIFT_ICON') {
       await prisma.gift.update({
         where: {
           id: gift.id,
@@ -73,7 +72,7 @@ export default errorHandler(
         },
       });
 
-      return res.send(true);
+      return res.send(item);
     }
 
     // For GIFT_CARD

@@ -2,7 +2,7 @@ import AppContext from '@/modules/components/AppContext';
 import { useContext } from 'react';
 
 export default function useUser() {
-  const { user } = useContext(AppContext);
+  const { user, loading } = useContext(AppContext);
 
-  return user;
+  return { user, loading };
 }

@@ -8,9 +8,14 @@ export type Item = {
   available: boolean;
   currency: string;
   expiresIn: number;
+  customerDiscountRate?: number;
+  influencerDiscountRate?: number;
+  influencerId?: string;
   discountRate: number;
   amount: number;
+  price: number;
   country: Country;
+  originalPrice: number;
   type: ItemType;
   brand: string;
   categories: string[];

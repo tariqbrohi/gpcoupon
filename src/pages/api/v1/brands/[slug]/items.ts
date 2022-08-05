@@ -58,10 +58,12 @@ export default errorHandler(async function handler(req, res) {
       id: true,
       amount: true,
       name: true,
+      originalPrice: true,
       extendedName: true,
       imageUrls: true,
       discountRate: true,
-      currency: true,
+      customerDiscountRate: true,
+      price: true,
       slug: true,
     },
   });

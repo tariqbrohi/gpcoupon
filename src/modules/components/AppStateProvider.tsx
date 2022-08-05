@@ -13,6 +13,7 @@ export default function AppStateProvider({
   const [country, setCountry] = useState(cookies['country'] || 'US');
   const [searchHistories, setSearchHistories] = useState<string[]>([]);
   const [user, setUser] = useState<Record<string, any> | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const { sess, searchHistories } = cookies;
@@ -26,6 +27,8 @@ export default function AppStateProvider({
 
       if (user) setUser(JSON.parse(user));
     }
+
+    setLoading(false);
   }, []);
 
   const handleCountryChange = (country: string) => {
@@ -47,6 +50,7 @@ export default function AppStateProvider({
         setSearchHistories: handleSearchHistories,
         user,
         setUser,
+        loading,
       }}
     >
       {children}
