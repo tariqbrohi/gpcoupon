@@ -22,12 +22,12 @@ const Under10 = () => {
     <>
       <Spacer size={30} />
       <h3>hi</h3>
-      <List
+      {/* <List
         loading={loading}
         items={data?.items.filter(
           (item: { amount: number }) => item.amount < 10,
         )}
-      />
+      /> */}
     </>
   );
 };
