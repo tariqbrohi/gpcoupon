@@ -4,8 +4,9 @@ import Provider from '@/components/admin/items/Provider';
 import React from 'react';
 import { Heading, Spacer } from '@growth-ui/react';
 import ExcelToJson from '@/components/admin/ExcelToJson';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function CreateItem() {
+export default withPageAuthRequired(function CreateItem() {
   return (
     <>
       <AdminLayout>
@@ -18,4 +19,4 @@ export default function CreateItem() {
       </AdminLayout>
     </>
   );
-}
+});

@@ -7,11 +7,12 @@ import { FileUploader } from 'react-drag-drop-files';
 import { useCreateGPointMutation, useSignS3Mutation } from '@/services';
 import Router from 'next/router';
 import axios from 'axios';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function CreateItem() {
-  const [state, setState] = useState<any>({})
+export default withPageAuthRequired(function CreateItem() {
+  const [state, setState] = useState<any>({});
   const [sign] = useSignS3Mutation();
-  const [create, { loading }] = useCreateGPointMutation()
+  const [create, { loading }] = useCreateGPointMutation();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -22,7 +23,7 @@ export default function CreateItem() {
         filetype: (state.imageUrl as File).type,
       },
     });
-    
+
     await axios.put(imageUrl.signedUrl, state.imageUrl, {
       headers: { 'Content-Type': (state.imageUrl as File).type },
     });
@@ -32,15 +33,15 @@ export default function CreateItem() {
         ...state,
         amount: +state.amount,
         imageUrl: imageUrl.url,
-      }
+      },
     })
-    .then(() => {
-      Router.reload()
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+      .then(() => {
+        Router.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleChange = (e: any) => {
     const name = e.target.name;
@@ -48,9 +49,9 @@ export default function CreateItem() {
 
     setState({
       ...state,
-      [name]: val
-    })
-  }
+      [name]: val,
+    });
+  };
 
   return (
     <>
@@ -110,4 +111,4 @@ export default function CreateItem() {
       </AdminLayout>
     </>
   );
-}
+});

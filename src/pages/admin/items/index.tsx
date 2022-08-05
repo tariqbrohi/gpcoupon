@@ -5,8 +5,9 @@ import stringSimilarity from 'string-similarity';
 import { Input, List, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetItemsQuery } from '@/services';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function Items() {
+export default withPageAuthRequired(function Items() {
   const { data: items } = useGetItemsQuery();
   const [search, setSearch] = useState('');
 
@@ -50,4 +51,4 @@ export default function Items() {
       </AdminLayout>
     </>
   );
-}
+});

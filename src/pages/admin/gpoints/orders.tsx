@@ -7,6 +7,7 @@ import {
   useGPointOrdersQuery,
   useListGPointsQuery,
 } from '@/services';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import {
   Button,
   Checkbox,
@@ -20,7 +21,7 @@ import moment from 'moment';
 import Router from 'next/router';
 import React, { useState } from 'react';
 
-export default function List() {
+export default withPageAuthRequired(function List() {
   const { data } = useGPointOrdersQuery();
   const [checked, setChecked] = useState<any>([]);
   const [approve, { loading: loadingApprove }] =
@@ -168,4 +169,4 @@ export default function List() {
       </AdminLayout>
     </>
   );
-}
+});
