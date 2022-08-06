@@ -12,24 +12,33 @@ export default function Price({
 }) {
   return (
     <Grid.Row verticalAlign="middle">
-      <Paragraph
-        style={{
-          textDecoration: 'line-through',
-        }}
-      >
-        {currencyFormat(item.originalPrice, item.price.currency)}
-      </Paragraph>
-      <Spacer size={10} />
+      {item.originalPrice !== item.price.amount && (
+        <>
+          <Paragraph
+            style={{
+              textDecoration: 'line-through',
+            }}
+          >
+            {currencyFormat(item.originalPrice, item.price.currency)}
+          </Paragraph>
+          <Spacer size={10} />
+        </>
+      )}
       <Paragraph color="#318200" fontWeight={800} fontSize={emphasis ? 24 : 16}>
         {currencyFormat(item.price.amount, item.price.currency)}
       </Paragraph>
-      <Spacer size={10} />
-      <Chip
-        color="green-400"
-        text={`${
-          100 - +((item.price.amount / item.originalPrice) * 100).toFixed(2)
-        }% OFF`}
-      />
+
+      {item.originalPrice !== item.price.amount && (
+        <>
+          <Spacer size={10} />
+          <Chip
+            color="green-400"
+            text={`${
+              100 - +((item.price.amount / item.originalPrice) * 100).toFixed(2)
+            }% OFF`}
+          />
+        </>
+      )}
     </Grid.Row>
   );
 }

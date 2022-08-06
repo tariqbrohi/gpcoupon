@@ -103,7 +103,7 @@ export default function OrderHistory() {
                 </Paragraph>
                 {gift.payment.discountRate ? (
                   <Paragraph color="gray-600" fontSize={14}>
-                    Discount: {gift.payment.discountRate}%
+                    Rewards: {gift.payment.discountRate}%
                   </Paragraph>
                 ) : null}
                 <div style={{ marginTop: 'auto', width: '100%' }}>

@@ -15,11 +15,17 @@ const TOP_BRANDS = [
     link: `${ROUTES.brands}/starbucks`,
   },
   {
-    logoUrl: '/images/amazon.jpeg',
-    name: 'Amazon',
-    backgroundUrl: '/images/amazon-background.jpeg',
-    link: `${ROUTES.brands}/amazon`,
+    logoUrl: '/images/brands/52092098195124.jpg',
+    name: 'Target',
+    backgroundUrl: '/images/brands/52092456052821.jpg',
+    link: `${ROUTES.brands}/target`,
   },
+  // {
+  //   logoUrl: '/images/amazon.jpeg',
+  //   name: 'Amazon',
+  //   backgroundUrl: '/images/amazon-background.jpeg',
+  //   link: `${ROUTES.brands}/amazon`,
+  // },
   {
     logoUrl: '/images/buffalo-wild-wings.jpeg',
     name: 'Buffalo Wild Wings',
