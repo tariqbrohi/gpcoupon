@@ -14,8 +14,8 @@ function MyApp({ Component, pageProps, cookies }: AppContext & AppProps) {
     <UserProvider>
       <GrowthThemeProvider>
         <AppStateProvider cookies={cookies}>
-          {/* <Component {...pageProps} /> */}
-          <div>
+          <Component {...pageProps} />
+          {/* <div>
             <Spacer size={50} />
             <div style={{}}>
               <img
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps, cookies }: AppContext & AppProps) {
             <Paragraph textAlign="center">
               Coming soon with better features!
             </Paragraph>
-          </div>
+          </div> */}
         </AppStateProvider>
       </GrowthThemeProvider>
     </UserProvider>
