@@ -16,7 +16,7 @@ export default errorHandler(async function handler(req, res) {
     skip = 0,
     sortBy = 'sales,desc',
   } = req.query as any;
-  console.log(country, slug);
+
   if (!slug || !country) throw new BadRequestError('');
 
   let orderBy: Record<string, string> = {};
@@ -29,9 +29,10 @@ export default errorHandler(async function handler(req, res) {
     orderBy.amount = 'asc';
   }
 
-  const brand = (await prisma.brand.findUnique({
+  const brand = (await prisma.brand.findFirst({
     where: {
       slug,
+      status: 'AVAILABLE',
     },
     select: {
       id: true,

@@ -11,7 +11,9 @@ export default errorHandler(async function handler(req, res) {
 
   const { country } = req.query as any;
 
-  let where: Record<string, any> = {};
+  let where: Record<string, any> = {
+    status: 'AVAILABLE',
+  };
 
   if (country) {
     where.countries = {

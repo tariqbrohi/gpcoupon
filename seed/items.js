@@ -39,6 +39,33 @@ const prisma = new PrismaClient();
     const createdAt = now;
     const updatedAt = now;
 
+    const options = {
+      name,
+      imageUrls: {
+        small: imageUrl,
+        medium: imageUrl,
+        large: imageUrl,
+      },
+      termsAndConditionsInstructions,
+      categories: {
+        connect: dbCats.map(({ id }) => ({ id })),
+      },
+      discountRate: discount,
+      customerDiscountRate: discount,
+      status: 'AVAILABLE',
+      country: 'US',
+      redemptionInstructions,
+      createdAt,
+      updatedAt,
+      type: 'GIFT_CARD',
+      metadata: {
+        vendor: 'xoxoday',
+        productId,
+        fee,
+        expiryAndValidity,
+      },
+    };
+
     if (brand) {
       const dbBrand = await prisma.brand.findUnique({
         where: {
@@ -46,51 +73,31 @@ const prisma = new PrismaClient();
         },
       });
 
-      for (const val of valueDenominations.split(',')) {
-        arr.push({
-          slug: `${name
-            .toLowerCase()
-            .replaceAll('& ', '')
-            .replaceAll(' ', '-')
-            .replaceAll('.', '')
-            .replaceAll("'", '')}-us-${productId}-${val}`,
-          name,
-          imageUrls: {
-            small: imageUrl,
-            medium: imageUrl,
-            large: imageUrl,
+      if (dbBrand) {
+        options.brand = {
+          connect: {
+            id: dbBrand.id,
           },
-          brand: {
-            connect: {
-              id: dbBrand.id,
-            },
-          },
-          termsAndConditionsInstructions,
-          categories: {
-            connect: dbCats.map(({ id }) => ({ id })),
-          },
-          discountRate: discount,
-          customerDiscountRate: discount,
-          status: 'AVAILABLE',
-          originalPrice: +val,
-          amount: +val,
-          price: {
-            currency: 'GPT',
-            amount: +val,
-          },
-          country: 'US',
-          redemptionInstructions,
-          createdAt,
-          updatedAt,
-          type: 'GIFT_CARD',
-          metadata: {
-            vendor: 'xoxoday',
-            productId,
-            fee,
-            expiryAndValidity,
-          },
-        });
+        };
       }
+    }
+
+    for (const val of valueDenominations.split(',')) {
+      arr.push({
+        ...options,
+        slug: `${name
+          .toLowerCase()
+          .replaceAll('& ', '')
+          .replaceAll(' ', '-')
+          .replaceAll('.', '')
+          .replaceAll("'", '')}-us-${productId}-${val}`,
+        originalPrice: +val,
+        amount: +val,
+        price: {
+          currency: 'GPT',
+          amount: +val,
+        },
+      });
     }
   }
   console.log('GET IT~~~');

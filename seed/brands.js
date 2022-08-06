@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const wow = require('./brands.json');
+// const brands = require('./brands.json');
 const brands = require('../wow.json');
 
 const prisma = new PrismaClient();
@@ -9,7 +9,7 @@ const dict = {};
   // Create
 
   for await (const brand of brands) {
-    const cats = brand.item.categories.split(',');
+    const cats = brand.item?.categories.split(',') || [];
     // console.log();
     const dbCats = await prisma.category.findMany({
       where: {
