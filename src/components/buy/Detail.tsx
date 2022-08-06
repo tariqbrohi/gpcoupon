@@ -99,7 +99,7 @@ export default function Detail() {
               <Paragraph fontSize={20}>{item.extendedName}</Paragraph>
               <Spacer size={10} />
               <Price item={item} emphasis />
-              {item.customerDiscountRate && (
+              {item.customerDiscountRate ? (
                 <>
                   <Spacer size={10} />
                   <Chip
@@ -107,7 +107,7 @@ export default function Detail() {
                     text={`${item.customerDiscountRate}% Rewards`}
                   />
                 </>
-              )}
+              ) : null}
               {/* <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
                 <Heading as="h2" style={{ width: 'fit-content' }}>
                   
