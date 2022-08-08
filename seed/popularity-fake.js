@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const pop10 = [
   'Walmart egift Voucher',
-  'Amazon.com Gift Card',
+  // 'Amazon.com Gift Card',
   'Starbucks USA eGift Card',
   'lululemon USD',
   'Under Armour',
