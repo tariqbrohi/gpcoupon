@@ -14,8 +14,8 @@ export const place = async (
     });
 
     return data.data.placeOrder.data;
-  } catch (err) {
-    console.error(err);
+  } catch (err: any) {
+    console.error(err?.response?.data);
 
     return null;
   }
