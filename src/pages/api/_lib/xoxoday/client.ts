@@ -1,9 +1,9 @@
 import axios from 'axios';
-import redis from '../redis';
 
 const baseURL = 'https://accounts.xoxoday.com/chef/v1/oauth';
 
 let accessToken = process.env.XOXO_TOKEN || '';
+let refreshToken = process.env.XOXO_REFRESH_TOKEN || '';
 let expiresIn: number | null = null;
 
 const client = axios.create({
@@ -11,7 +11,6 @@ const client = axios.create({
 });
 
 async function validate() {
-  console.log(`validating xoxo token`);
   if (!accessToken) return false;
 
   try {
@@ -35,12 +34,6 @@ async function validate() {
 }
 
 async function refreshTokens() {
-  const refreshToken = await redis.get('xoxo:refreshToken');
-
-  if (!refreshToken) {
-  }
-
-  console.log(`refreshTokening xoxo token - `, refreshToken);
   try {
     const { data } = await axios.post(`${baseURL}/token/bearer`, {
       grant_type: 'refresh_token',
@@ -74,8 +67,7 @@ client.interceptors.request.use(
     const { access_token, refresh_token } = await refreshTokens();
 
     accessToken = access_token;
-
-    await redis.set('xoxo:refreshToken', refresh_token);
+    refreshToken = refresh_token;
 
     config.headers!.Authorization = `Bearer ${accessToken}`;
 
