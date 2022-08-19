@@ -42,24 +42,29 @@ export default function ItemList({ items, loading }: Props) {
     if (item.originalPrice !== item.price.amount) {
       return (
         <GuiGrid.Row>
-          <Paragraph
-            style={{
-              textDecoration: 'line-through',
-            }}
-          >
-            {currencyFormat(item.originalPrice, item.price.currency)}
-          </Paragraph>
+          {item.originalPrice && (
+            <Paragraph
+              style={{
+                textDecoration: 'line-through',
+              }}
+            >
+              {currencyFormat(item.originalPrice, item.price.currency)}
+            </Paragraph>
+          )}
           <Spacer size={10} />
           <Paragraph color="#318200" fontWeight={800}>
             {currencyFormat(item.price.amount, item.price.currency)}
           </Paragraph>
           <Spacer size={10} />
-          <Chip
-            color="green-400"
-            text={`${
-              100 - +((item.price.amount / item.originalPrice) * 100).toFixed(2)
-            }% OFF`}
-          />
+          {item.originalPrice && (
+            <Chip
+              color="green-400"
+              text={`${
+                100 -
+                +((item.price.amount / item.originalPrice) * 100).toFixed(2)
+              }% OFF`}
+            />
+          )}
         </GuiGrid.Row>
       );
     }

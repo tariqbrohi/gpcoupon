@@ -28,7 +28,7 @@ export default function Price({
         {currencyFormat(item.price.amount, item.price.currency)}
       </Paragraph>
 
-      {item.originalPrice !== item.price.amount && (
+      {item.originalPrice !== item.price.amount && item.originalPrice && (
         <>
           <Spacer size={10} />
           <Chip

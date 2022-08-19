@@ -1,6 +1,6 @@
 export default function currencyFormat(val: number, currencyCode: string) {
   return `${currency[currencyCode]?.symbol_native || currencyCode} ${val
-    .toFixed(2)
+    ?.toFixed(2)
     .replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
 }
 
