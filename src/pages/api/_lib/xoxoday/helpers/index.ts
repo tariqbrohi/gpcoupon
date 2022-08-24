@@ -1,5 +1,42 @@
 import { flattenDeep } from 'lodash';
 
+export const mapStagingCatToProdCat = (cat: string) => {
+  switch (cat) {
+    case 'automobiles_accessories':
+      return 'automobile';
+    case 'baby_kids':
+      return 'baby_kids';
+    case 'cash_prepaid_card':
+      return 'cash_cards';
+    case 'electronics':
+      return 'electronics';
+    case 'food_restaurant':
+      return 'restaurants_foods_and_drinks';
+    case 'software':
+      return 'software_and_licensing';
+    case 'travel_entertainment':
+      return 'travel_and_tourism';
+    case 'charity_donations':
+      return 'insurance';
+    case 'experiences':
+      return 'music_movies_and_entertainment';
+    case 'gaming':
+      return 'experiences_test';
+    case 'gold_jewelry':
+      return 'jewelry_lifestyle';
+    case 'grocery':
+      return 'grocery_and_retail';
+    case 'home_living':
+      return 'home_living';
+    case 'in_house_benefits':
+      return 'in_house_benefits';
+    case 'merchandise':
+      return 'ecommerce';
+    default:
+      return 'all';
+  }
+};
+
 export const countries = (iso: string) => {
   return (
     [

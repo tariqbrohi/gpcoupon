@@ -44,10 +44,6 @@ export default errorHandler(async function handler(req, res) {
       orderBy.sortOrder = 'desc';
     }
 
-    // todo
-    // save every countrie
-    let items;
-
     const params = {
       take,
       skip,
@@ -75,21 +71,10 @@ export default errorHandler(async function handler(req, res) {
       },
     };
 
-    if (country?.toLowerCase() !== 'us') {
-      items = await xoxoday.vouchers.findMany({
-        country,
-        category: slug,
-      });
-
-      const dbItems = await prisma.item.findMany(params as any);
-
-      items = flatten([items, dbItems]);
-    }
-    // todo
-    // check with xoxoday for any updates in data.
-    else {
-      items = await prisma.item.findMany(params as any);
-    }
+    const items = await xoxoday.vouchers.findMany({
+      country,
+      category: slug,
+    });
 
     category.items = items;
 

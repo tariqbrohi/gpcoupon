@@ -1,5 +1,5 @@
 import client from './client';
-import { countries, normalizeItems } from './helpers';
+import { countries, mapStagingCatToProdCat, normalizeItems } from './helpers';
 import { Item } from '@prisma/client';
 import type { FindOneVoucherInput, FindManyVouchersInput } from './types';
 
@@ -22,7 +22,10 @@ export const findMany = async ({
             },
             {
               key: 'voucher_category',
-              value: category,
+              value:
+                process.env.NODE_ENV === 'production'
+                  ? category
+                  : mapStagingCatToProdCat(category),
             },
           ],
         },

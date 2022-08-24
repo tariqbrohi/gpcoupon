@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const baseURL = 'https://accounts.xoxoday.com/chef/v1/oauth';
+const baseURL =
+  process.env.XOXO_API_URI ||
+  'https://stagingaccount.xoxoday.com/chef/v1/oauth';
 
 let accessToken = process.env.XOXO_TOKEN || '';
 let refreshToken = process.env.XOXO_REFRESH_TOKEN || '';
