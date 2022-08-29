@@ -19,6 +19,21 @@ export default withApiAuthRequired(
       },
     });
 
+    if (req.method === 'get') {
+      if (!customer?.stripeId) {
+        return res.send([]);
+      }
+
+      const listPaymentMethods = await stripe.customers.listPaymentMethods(
+        customer.stripeId,
+        {
+          type: 'card',
+        },
+      );
+
+      return res.send(listPaymentMethods.data);
+    }
+
     if (req.method === 'post') {
       const { number, expMonth, expYear, cvc, holdername } = req.body;
 
