@@ -12,7 +12,7 @@ export default function Price({
 }) {
   return (
     <Grid.Row verticalAlign="middle">
-      {item.originalPrice !== item.price.amount && (
+      {item.originalPrice && item.originalPrice !== item.price.amount && (
         <>
           <Paragraph
             style={{
@@ -28,17 +28,20 @@ export default function Price({
         {currencyFormat(item.price.amount, item.price.currency)}
       </Paragraph>
 
-      {item.originalPrice !== item.price.amount && item.originalPrice && (
-        <>
-          <Spacer size={10} />
-          <Chip
-            color="green-400"
-            text={`${
-              100 - +((item.price.amount / item.originalPrice) * 100).toFixed(2)
-            }% OFF`}
-          />
-        </>
-      )}
+      {item.originalPrice &&
+        item.originalPrice !== item.price.amount &&
+        item.originalPrice && (
+          <>
+            <Spacer size={10} />
+            <Chip
+              color="green-400"
+              text={`${
+                100 -
+                +((item.price.amount / item.originalPrice) * 100).toFixed(2)
+              }% OFF`}
+            />
+          </>
+        )}
     </Grid.Row>
   );
 }
