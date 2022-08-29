@@ -162,6 +162,14 @@ model Gift {
   @@unique([code, pin])
 }
 
+model Stripe {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  stripeId                String            @unique
+  userId                  String            @unique 
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @default(now())
+}
+
 type Image {
   small                   String
   medium                  String
@@ -194,6 +202,7 @@ type Exchange {
 
 enum PaymentVendor {
   GPOINT
+  STRIPE
 }
 
 enum GiftStatus {
