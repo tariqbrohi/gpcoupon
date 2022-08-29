@@ -14,6 +14,7 @@ import {
 } from '@prisma/client';
 import { useLazyQuery } from './useLazyQuery';
 import { useMutation } from './useMutation';
+import Stripe from 'stripe';
 
 /**
  * GetCategories
@@ -754,3 +755,26 @@ export type GPointOrderDenyMutationVariables = {
   reason: string;
 };
 export type GPointOrderDenyMutationResult = boolean;
+
+/**
+ * CreatePaymentCard
+ */
+export const useCreatePaymentCardMutation = () => {
+  return useMutation<
+    CreatePaymentCardMutationVariables,
+    CreatePaymentCardMutationResult
+  >(
+    '/api/v1/payment-cards',
+    'post',
+    [],
+    ['holdername', 'number', 'cvc', 'expMonth', 'expYear'],
+  );
+};
+export type CreatePaymentCardMutationVariables = {
+  holdername: string;
+  number: string;
+  expMonth: string;
+  expYear: string;
+  cvc: string;
+};
+export type CreatePaymentCardMutationResult = Stripe.PaymentMethod[];
