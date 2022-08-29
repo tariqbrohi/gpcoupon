@@ -802,3 +802,17 @@ export const usePaymentCardsLazyQuery = (
 };
 export type PaymentCardsQueryVariables = {};
 export type PaymentCardsQueryResult = Stripe.PaymentMethod[];
+
+/**
+ * DeletePaymentCard
+ */
+export const useDeletePaymentCardMutation = () => {
+  return useMutation<
+    DeletePaymentCardMutationVariables,
+    DeletePaymentCardMutationResult
+  >('/api/v1/payment-cards/:id', 'delete', ['id'], []);
+};
+export type DeletePaymentCardMutationVariables = {
+  id: string;
+};
+export type DeletePaymentCardMutationResult = boolean;
