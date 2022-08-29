@@ -778,3 +778,27 @@ export type CreatePaymentCardMutationVariables = {
   cvc: string;
 };
 export type CreatePaymentCardMutationResult = Stripe.PaymentMethod[];
+
+/**
+ * PaymentCards
+ */
+export const usePaymentCardsQuery = (
+  baseOptions?: QueryBaseOptions<PaymentCardsQueryVariables>,
+) => {
+  return useQuery<PaymentCardsQueryVariables, PaymentCardsQueryResult>(
+    '/api/v1/payment-cards',
+    baseOptions,
+    [],
+  );
+};
+export const usePaymentCardsLazyQuery = (
+  baseOptions?: QueryBaseOptions<PaymentCardsQueryVariables>,
+) => {
+  return useLazyQuery<PaymentCardsQueryVariables, PaymentCardsQueryResult>(
+    '/api/v1/payment-cards',
+    baseOptions,
+    [],
+  );
+};
+export type PaymentCardsQueryVariables = {};
+export type PaymentCardsQueryResult = Stripe.PaymentMethod[];
