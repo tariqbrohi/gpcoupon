@@ -26,6 +26,8 @@ export const mapStagingCatToProdCat = (cat: string) => {
       return 'jewelry_lifestyle';
     case 'grocery':
       return 'grocery_and_retail';
+    case 'fashion_lifestyle':
+      return 'apparel_fashion_accessories';
     case 'home_living':
       return 'home_living';
     case 'in_house_benefits':

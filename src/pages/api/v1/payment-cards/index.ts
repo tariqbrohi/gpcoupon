@@ -3,7 +3,11 @@ import gpointwallet from '@/pages/api/_lib/gpointwallet';
 import prisma from '@/prisma';
 import withApiAuthRequired from '../../_middlewares/with-api-auth-required';
 import { stripe } from '../../_lib/stripe';
-import { InternalServerError, UnauthenticatedError } from '@/lib/errors';
+import {
+  BadRequestError,
+  InternalServerError,
+  UnauthenticatedError,
+} from '@/lib/errors';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -61,7 +65,7 @@ export default withApiAuthRequired(
 
       if (!stripeId) throw new InternalServerError();
 
-      const paymentMethod = await stripe.paymentMethods.create({
+      let paymentMethod = await stripe.paymentMethods.create({
         type: 'card',
         card: {
           number,
@@ -75,9 +79,13 @@ export default withApiAuthRequired(
       });
 
       // Attach a payment method to a Customer
-      await stripe.paymentMethods.attach(paymentMethod.id, {
-        customer: stripeId!,
-      });
+      try {
+        await stripe.paymentMethods.attach(paymentMethod.id, {
+          customer: stripeId!,
+        });
+      } catch (err: any) {
+        throw new BadRequestError(err?.raw?.message);
+      }
 
       const listPaymentMethods = await stripe.customers.listPaymentMethods(
         stripeId!,

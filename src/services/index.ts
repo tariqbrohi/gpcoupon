@@ -261,10 +261,19 @@ export const useOrderMutation = () => {
     '/api/v1/orders',
     'post',
     [],
-    ['itemId', 'message', 'quantity', 'recipient', 'amount', 'slug'],
+    [
+      'itemId',
+      'message',
+      'quantity',
+      'recipient',
+      'amount',
+      'slug',
+      'paymentMethodId',
+    ],
   );
 };
 export type OrderMutationVariables = {
+  paymentMethodId?: string;
   itemId: number;
   slug: string;
   message?: string;

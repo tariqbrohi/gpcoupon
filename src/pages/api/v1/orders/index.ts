@@ -143,7 +143,8 @@ export default withApiAuthRequired(
             confirm: true,
           });
         } catch (err: any) {
-          console.log(err.error);
+          console.log(err);
+          throw new BadRequestError(err?.error?.message || err?.raw?.message);
         }
       }
       // Pay with GPoint
@@ -161,7 +162,6 @@ export default withApiAuthRequired(
             name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
           });
         } catch (err: any) {
-          console.log(err, ' from gpointwallet charge');
           throw new BadRequestError(
             err?.response?.data?.errors?.[0]?.message ||
               'Internal Server Error',
@@ -205,7 +205,7 @@ export default withApiAuthRequired(
         },
         message,
         item: (xoxoItem || dbItem)!,
-        itemId,
+        itemId: `${itemId}`,
         payment: {
           set: {
             paymentVendor: paymentMethodId ? 'STRIPE' : 'GPOINT',
