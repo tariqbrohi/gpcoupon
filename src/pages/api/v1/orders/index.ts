@@ -20,6 +20,8 @@ import {
   NotFoundError,
   UnauthenticatedError,
 } from '@/lib/errors';
+import { stripe } from '../../_lib/stripe';
+import Stripe from 'stripe';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -61,7 +63,15 @@ export default withApiAuthRequired(
     }
 
     if (req.method === 'post') {
-      const { amount, recipient, itemId, quantity, message, slug } = req.body;
+      const {
+        paymentMethodId,
+        amount,
+        recipient,
+        itemId,
+        quantity,
+        message,
+        slug,
+      } = req.body;
 
       const timestamp = moment().unix();
 
@@ -108,35 +118,67 @@ export default withApiAuthRequired(
         throw new InternalServerError();
       }
 
-      try {
-        charge = await gpointwallet.charge({
-          userId: user?.id,
-          amount: price * +quantity,
-          currency,
-          influencerId: dbItem?.influencerId,
-          customerDiscountRate: +customerDiscountRate,
-          influencerDiscountRate: +influencerDiscountRate,
-          profitRate: +profitRate,
-          t: token,
-          name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
-        });
-      } catch (err: any) {
-        console.log(err, ' from gpointwallet charge');
-        throw new BadRequestError(
-          err?.response?.data?.errors?.[0]?.message || 'Internal Server Error',
-        );
-      }
-      //
+      // If payment_method_id is given,
+      // use stripe
+      let intent: Stripe.PaymentIntent | null = null;
 
-      if (!charge || !charge?.id) {
-        throw new InternalServerError();
+      if (paymentMethodId) {
+        const customer = await prisma.stripe.findUnique({
+          where: {
+            userId: user.id,
+          },
+        });
+
+        if (!customer?.stripeId) {
+          throw new UnauthenticatedError();
+        }
+
+        try {
+          intent = await stripe.paymentIntents.create({
+            amount: amount * 100 * quantity,
+            currency: 'usd',
+            payment_method_types: ['card'],
+            customer: customer.stripeId,
+            payment_method: paymentMethodId,
+            confirm: true,
+          });
+        } catch (err: any) {
+          console.log(err.error);
+        }
+      }
+      // Pay with GPoint
+      else {
+        try {
+          charge = await gpointwallet.charge({
+            userId: user?.id,
+            amount: price * +quantity,
+            currency,
+            influencerId: dbItem?.influencerId,
+            customerDiscountRate: +customerDiscountRate,
+            influencerDiscountRate: +influencerDiscountRate,
+            profitRate: +profitRate,
+            t: token,
+            name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
+          });
+        } catch (err: any) {
+          console.log(err, ' from gpointwallet charge');
+          throw new BadRequestError(
+            err?.response?.data?.errors?.[0]?.message ||
+              'Internal Server Error',
+          );
+        }
+        //
+
+        if (!charge || !charge?.id) {
+          throw new InternalServerError();
+        }
       }
 
       let orderId = '';
 
-      if (xoxoItem || (dbItem?.metadata as any)?.productId) {
+      if (xoxoItem) {
         const order = await xoxoday.orders.place({
-          productId: xoxoItem?.id || (dbItem?.metadata as any).productId,
+          productId: +xoxoItem.id,
           quantity,
           denomination: +price,
           // todo
@@ -154,105 +196,109 @@ export default withApiAuthRequired(
         orderId = `${order.orderId}`;
       }
 
-      if (dbItem) {
-        const data: Prisma.OrderCreateInput = {
-          // status: order.orderStatus as any,
-          status: 'approved',
-          senderId: user?.id,
-          recipient: {
-            set: recipient,
-          },
-          message,
-          item: dbItem,
-          itemId: dbItem.id,
-          metadata: {
-            gpointwallet: charge,
-          },
-          payment: {
-            set: {
-              paymentVendor: 'GPOINT',
-              discountRate: +customerDiscountRate,
-              totalAmount: price * quantity,
-              exchange: {
-                exchangeRate: charge.exRate || 1,
-                source: currency,
-                target: 'GPT',
-              },
-              price: {
-                amount: price,
-                currency,
-              },
+      const data: Prisma.OrderCreateInput = {
+        // status: order.orderStatus as any,
+        status: 'approved',
+        senderId: user?.id,
+        recipient: {
+          set: recipient,
+        },
+        message,
+        item: (xoxoItem || dbItem)!,
+        itemId,
+        payment: {
+          set: {
+            paymentVendor: paymentMethodId ? 'STRIPE' : 'GPOINT',
+            discountRate: +customerDiscountRate,
+            totalAmount: price * quantity,
+            exchange: {
+              exchangeRate: charge?.exRate || 1,
+              source: currency,
+              target: paymentMethodId ? 'USD' : 'GPT',
+            },
+            price: {
+              amount: price,
+              currency: paymentMethodId ? 'USD' : currency,
             },
           },
-          createdAt: timestamp,
-          updatedAt: timestamp,
+        },
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      };
+
+      if (paymentMethodId && intent) {
+        data.metadata = {
+          stripe: intent.id,
         };
+      } else {
+        data.metadata = {
+          gpointwallet: charge.id,
+        };
+      }
 
-        if (orderId) {
-          (data.metadata as any).xoxoOrderId = `${orderId}`;
-        }
+      if (orderId) {
+        (data.metadata as any).xoxoOrderId = `${orderId}`;
+      }
 
-        const codes = times(quantity, () => randomString(13, true));
-        const pins = times(quantity, () => randomString());
+      const codes = times(quantity, () => randomString(13, true));
+      const pins = times(quantity, () => randomString());
 
-        if (dbItem.affiliate) {
-          data.gifts = {
-            createMany: {
-              data: times(quantity, (i) => ({
+      if (dbItem?.affiliate) {
+        data.gifts = {
+          createMany: {
+            data: times(quantity, (i) => ({
+              code: codes[i],
+              amount,
+              pin: pins[i],
+              status: 'available',
+              createdAt: timestamp,
+              updatedAt: timestamp,
+            })),
+          },
+        };
+      }
+
+      const { id } = await prisma.order.create({
+        data,
+      });
+
+      orderId = `${id}-${orderId}`;
+
+      if (dbItem?.affiliate) {
+        const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
+          QRCode.toDataURL(
+            btoa(
+              JSON.stringify({
                 code: codes[i],
-                amount,
                 pin: pins[i],
-                status: 'available',
-                createdAt: timestamp,
-                updatedAt: timestamp,
-              })),
-            },
-          };
-        }
-
-        const { id } = await prisma.order.create({
-          data,
-        });
-
-        orderId = `${id}-${orderId}`;
-
-        if (dbItem.affiliate) {
-          const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
-            QRCode.toDataURL(
-              btoa(
-                JSON.stringify({
-                  code: codes[i],
-                  pin: pins[i],
-                  orderId,
-                  sub: dbItem.brand?.sub,
-                  isGP: true,
-                  originalPrice: dbItem.originalPrice,
-                  name: dbItem.name,
-                  extednedName: dbItem.extendedName,
-                  brandName: dbItem?.brand?.name!,
-                  amount: dbItem.amount,
-                }),
-              ),
+                orderId,
+                sub: dbItem.brand?.sub,
+                isGP: true,
+                originalPrice: dbItem.originalPrice,
+                name: dbItem.name,
+                extednedName: dbItem.extendedName,
+                brandName: dbItem?.brand?.name!,
+                amount: dbItem.amount,
+              }),
             ),
-          );
+          ),
+        );
 
-          const qrcodes = await Promise.all(qrcodesPromises);
+        const qrcodes = await Promise.all(qrcodesPromises);
 
-          sendOrder({
-            quantity,
-            qrcodes,
-            recipientEmail: recipient.email,
-            name: dbItem.name,
-            brandLogoUrl: dbItem.brand?.thumbnailUrl!,
-            couponImageUrl: dbItem.couponImageUrl!,
-            expiresIn: dbItem.expiresIn!,
-            redemptionInstructions: dbItem.redemptionInstructions,
-            termsAndConditionsInstructions:
-              dbItem.termsAndConditionsInstructions,
-            brandName: dbItem.brand?.name!,
-            itemImage: dbItem.imageUrls.medium,
-          });
-        }
+        sendOrder({
+          quantity,
+          qrcodes,
+          recipientEmail: recipient.email,
+          name: dbItem.name,
+          brandLogoUrl: dbItem.brand?.thumbnailUrl!,
+          couponImageUrl: dbItem.couponImageUrl!,
+          expiresIn: dbItem.expiresIn!,
+          redemptionInstructions: dbItem.redemptionInstructions,
+          termsAndConditionsInstructions: dbItem.termsAndConditionsInstructions,
+          brandName: dbItem.brand?.name!,
+          itemImage: dbItem.imageUrls.medium,
+        });
       }
 
       res.send(orderId);
