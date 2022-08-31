@@ -14,7 +14,7 @@ export default errorHandler(async function handler(req, res) {
   const {
     country,
     slug,
-    take = 500,
+    take = 20,
     skip = 0,
     sortBy = 'sales,desc',
   } = req.query as any;
@@ -76,7 +76,16 @@ export default errorHandler(async function handler(req, res) {
       category: slug,
     });
 
-    category.items = items;
+    if (sortBy === 'amount,asc') {
+      items.sort((a, b) => a.price.amount - b.price.amount);
+    } else if (sortBy === 'amount,desc') {
+      items.sort((a, b) => b.price.amount - a.price.amount);
+    }
+
+    // todo
+    // temp
+    // fix in better way
+    category.items = items.slice(skip, skip + take + 1);
 
     res.send(category);
   }
