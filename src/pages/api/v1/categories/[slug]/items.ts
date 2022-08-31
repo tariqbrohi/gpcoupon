@@ -85,7 +85,7 @@ export default errorHandler(async function handler(req, res) {
     // todo
     // temp
     // fix in better way
-    category.items = items.slice(+skip, +skip + (+take + 1));
+    category.items = items.slice(+skip, +skip + +take);
 
     res.send(category);
   }
