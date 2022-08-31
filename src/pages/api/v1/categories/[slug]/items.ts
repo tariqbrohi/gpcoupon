@@ -14,7 +14,7 @@ export default errorHandler(async function handler(req, res) {
   const {
     country,
     slug,
-    take = 20,
+    take = 500,
     skip = 0,
     sortBy = 'sales,desc',
   } = req.query as any;
@@ -85,7 +85,7 @@ export default errorHandler(async function handler(req, res) {
     // todo
     // temp
     // fix in better way
-    category.items = items.slice(skip, skip + take + 1);
+    category.items = items.slice(skip, skip + (+take + 1));
 
     res.send(category);
   }
