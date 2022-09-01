@@ -56,6 +56,7 @@ export default errorHandler(async function handler(req, res) {
     items.sort((a, b) => b.price.amount - a.price.amount);
   }
 
+  brand.total = items.length;
   brand.items = items.slice(+skip, +skip + +take);
 
   res.send(brand);

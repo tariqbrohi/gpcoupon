@@ -33,6 +33,17 @@ export default function ItemList() {
     <>
       <Grid.Row wrap="wrap">
         <Grid.Col width={16} only={['tablet', 'mobile', 'minimobile']}>
+          {loading && (
+            <Skeleton
+              height={340}
+              style={{
+                width: 'calc(100% + 16px)',
+                maxWidth: 'none',
+                marginLeft: '-8px',
+                marginTop: '-50px',
+              }}
+            />
+          )}
           {data?.backgroundUrl && (
             <Image
               src={data?.backgroundUrl!}

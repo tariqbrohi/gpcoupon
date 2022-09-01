@@ -5,7 +5,7 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import {
   EventListener,
-  Grid,
+  Grid as GuiGrid,
   Image,
   ImageList,
   Paragraph,
@@ -18,10 +18,12 @@ import { useGetBrandsQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
+import Grid from '@/modules/components/Grid';
 
 const Wrapper = styled.div`
   max-width: 100vw;
   overflow-x: auto;
+  width: 100%;
 
   &::-webkit-scrollbar {
     display: none;
@@ -66,15 +68,15 @@ export default function BrandList() {
   return (
     <>
       <EventListener name="resize" listener={handleResize} target="window" />
-      <Grid.Row>
-        <Grid.Col only={['computer', 'widescreen', 'laptop', 'tablet']}>
-          <CategoriesVertical cat={cat} setCat={setCat} />
-        </Grid.Col>
-        <Grid.Col only={['mobile', 'minimobile']}>
+      <GuiGrid.Row>
+        <GuiGrid.Col only={['computer', 'widescreen', 'laptop', 'tablet']}>
+          <CategoriesVertical loading={loading} cat={cat} setCat={setCat} />
+        </GuiGrid.Col>
+        <GuiGrid.Col only={['mobile', 'minimobile']}>
           <CategoriesHorizontal cat={cat} setCat={setCat} />
-        </Grid.Col>
+        </GuiGrid.Col>
         <Spacer size={15} />
-        <Grid.Col flex="1">
+        <GuiGrid.Col flex="1">
           <Paragraph fontWeight={700} fontSize={22}>
             {cat?.name || 'All'}
           </Paragraph>
@@ -84,6 +86,76 @@ export default function BrandList() {
           </Paragraph>
           <Spacer size={30} />
           <Wrapper>
+            {loading && (
+              <>
+                <GuiGrid.Col
+                  only={['computer', 'widescreen', 'laptop', 'tablet']}
+                >
+                  <Grid repeat={3} style={{ width: '100%' }}>
+                    {new Array(20).fill(0).map((_, i) => (
+                      <GuiGrid.Col key={i} flex="1">
+                        <div
+                          style={{
+                            position: 'relative',
+                            paddingTop: '100%',
+                            width: '100%',
+                          }}
+                        >
+                          <Skeleton
+                            width="100%"
+                            style={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              bottom: 0,
+                              right: 0,
+                            }}
+                          />
+                        </div>
+                        <Spacer size={5} />
+                        <Skeleton width="100px" height="0.5em" />
+                      </GuiGrid.Col>
+                    ))}
+                  </Grid>
+                </GuiGrid.Col>
+                <GuiGrid.Col only={['mobile', 'minimobile']}>
+                  <GuiGrid.Row
+                    flex="1"
+                    wrap="nowrap"
+                    style={{ maxHeight: '226px' }}
+                  >
+                    {new Array(5).fill(0).map((_, i) => (
+                      <GuiGrid.Col
+                        key={i}
+                        style={{
+                          marginRight: '20px',
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: 'relative',
+                            paddingTop: '100%',
+                            width: '210px',
+                            height: '226px',
+                          }}
+                        >
+                          <Skeleton
+                            width="100%"
+                            style={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              bottom: 0,
+                              right: 0,
+                            }}
+                          />
+                        </div>
+                      </GuiGrid.Col>
+                    ))}
+                  </GuiGrid.Row>
+                </GuiGrid.Col>
+              </>
+            )}
             <ImageList
               cols={3}
               gap={20}
@@ -117,8 +189,8 @@ export default function BrandList() {
               ))}
             </ImageList>
           </Wrapper>
-        </Grid.Col>
-      </Grid.Row>
+        </GuiGrid.Col>
+      </GuiGrid.Row>
     </>
   );
 }
