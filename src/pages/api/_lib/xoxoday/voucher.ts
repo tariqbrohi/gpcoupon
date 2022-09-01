@@ -1,12 +1,42 @@
 import client from './client';
-import { countries, mapStagingCatToProdCat, normalizeItems } from './helpers';
+import {
+  countries,
+  mapBrandSlugToProductName,
+  mapStagingCatToProdCat,
+  normalizeItems,
+} from './helpers';
 import { Item } from '@prisma/client';
 import type { FindOneVoucherInput, FindManyVouchersInput } from './types';
 
 export const findMany = async ({
   country,
   category,
+  brand,
 }: FindManyVouchersInput): Promise<Item[]> => {
+  const filters = [
+    {
+      key: 'country',
+      value: countries(country),
+    },
+  ];
+
+  if (category) {
+    filters.push({
+      key: 'voucher_category',
+      value:
+        process.env.NODE_ENV === 'production'
+          ? category
+          : mapStagingCatToProdCat(category),
+    });
+  }
+
+  if (brand) {
+    filters.push({
+      key: 'productName',
+      value: mapBrandSlugToProductName(brand),
+    });
+  }
+
   try {
     const { data } = await client.post('/api', {
       query: 'plumProAPI.mutation.getVouchers',
@@ -15,19 +45,7 @@ export const findMany = async ({
         data: {
           limit: 0,
           page: 0,
-          filters: [
-            {
-              key: 'country',
-              value: countries(country),
-            },
-            {
-              key: 'voucher_category',
-              value:
-                process.env.NODE_ENV === 'production'
-                  ? category
-                  : mapStagingCatToProdCat(category),
-            },
-          ],
+          filters,
         },
       },
     });

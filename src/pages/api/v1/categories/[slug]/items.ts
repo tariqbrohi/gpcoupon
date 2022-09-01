@@ -44,33 +44,6 @@ export default errorHandler(async function handler(req, res) {
       orderBy.sortOrder = 'desc';
     }
 
-    const params = {
-      take,
-      skip,
-      where: {
-        country: country?.toUpperCase() || 'US',
-        status: 'AVAILABLE',
-        categories: {
-          some: {
-            id: category?.id,
-          },
-        },
-      },
-      orderBy,
-      select: {
-        id: true,
-        amount: true,
-        name: true,
-        extendedName: true,
-        imageUrls: true,
-        originalPrice: true,
-        discountRate: true,
-        customerDiscountRate: true,
-        price: true,
-        slug: true,
-      },
-    };
-
     const items = await xoxoday.vouchers.findMany({
       country,
       category: slug,

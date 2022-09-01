@@ -1,6 +1,7 @@
 import errorHandler from '@/pages/api/_middlewares/error-handler';
 import prisma from '@/prisma';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
+import xoxoday from '@/pages/api/_lib/xoxoday';
 
 export default errorHandler(async function handler(req, res) {
   const method = req.method;
@@ -44,32 +45,18 @@ export default errorHandler(async function handler(req, res) {
     },
   })) as Record<string, any>;
 
-  const items = await prisma.item.findMany({
-    where: {
-      country: country?.toUpperCase() || 'US',
-      status: 'AVAILABLE',
-      brand: {
-        id: brand?.id,
-      },
-    },
-    take,
-    skip,
-    orderBy,
-    select: {
-      id: true,
-      amount: true,
-      name: true,
-      originalPrice: true,
-      extendedName: true,
-      imageUrls: true,
-      discountRate: true,
-      customerDiscountRate: true,
-      price: true,
-      slug: true,
-    },
+  const items = await xoxoday.vouchers.findMany({
+    country,
+    brand: slug,
   });
 
-  brand.items = items;
+  if (sortBy === 'amount,asc') {
+    items.sort((a, b) => a.price.amount - b.price.amount);
+  } else if (sortBy === 'amount,desc') {
+    items.sort((a, b) => b.price.amount - a.price.amount);
+  }
+
+  brand.items = items.slice(+skip, +skip + +take);
 
   res.send(brand);
 });
