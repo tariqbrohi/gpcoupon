@@ -30,6 +30,13 @@ export default function HeaderNavBar() {
             </Link>
           )}
         </List.Item>
+        <List.Item>
+          {country === 'US' && (
+            <Link href={ROUTES.brands}>
+              <a>Affiliates</a>
+            </Link>
+          )}
+        </List.Item>
       </List>
     </Nav>
   );
