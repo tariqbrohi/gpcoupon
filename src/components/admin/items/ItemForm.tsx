@@ -1,7 +1,11 @@
 import Context from './Context';
 import stringSimilarity from 'string-similarity';
 import { FileUploader } from 'react-drag-drop-files';
-import { useGetBrandsQuery, useGetCategoriesQuery } from '@/services';
+import {
+  useGetAffiliatesQuery,
+  useGetBrandsQuery,
+  useGetCategoriesQuery,
+} from '@/services';
 import {
   countryOptions,
   Form,
@@ -19,7 +23,7 @@ import React, {
 export default function ItemForm({ mode, onSubmit }: Props) {
   const { item, setItem } = useContext(Context);
   const { data: categories } = useGetCategoriesQuery();
-  const { data: brands } = useGetBrandsQuery();
+  const { data: brands } = useGetAffiliatesQuery();
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: SyntheticEvent) => {

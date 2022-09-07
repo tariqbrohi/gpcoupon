@@ -4,11 +4,11 @@ import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
 import { Input, List, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsQuery } from '@/services';
+import { useGetAffiliatesQuery, useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 export default withPageAuthRequired(function Brands() {
-  const { data: brands } = useGetBrandsQuery();
+  const { data: brands } = useGetAffiliatesQuery();
   const [search, setSearch] = useState('');
 
   return (
