@@ -21,13 +21,6 @@ export const theme = createTheme({
     //     hover: '#E5E5E5',
     //     overlay: 'rgba(0,0,0,0.6)',
     //   },
-    //   text: {
-    //     primary: '#000',
-    //     secondary: '#666',
-    //     disabled: '#B2B2B2',
-    //     placeholder: '#B8B8B8',
-    //     title: '#787A97',
-    //   },
     //   border: {
     //     lightBorder: '#E7E8EA',
     //   },
