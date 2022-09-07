@@ -21,9 +21,6 @@ export const theme = createTheme({
     //     hover: '#E5E5E5',
     //     overlay: 'rgba(0,0,0,0.6)',
     //   },
-    //   border: {
-    //     lightBorder: '#E7E8EA',
-    //   },
   },
   typography: {
     fontFamily: `Montserrat`,
