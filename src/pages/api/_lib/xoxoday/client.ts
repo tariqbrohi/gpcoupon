@@ -64,7 +64,7 @@ client.interceptors.request.use(
   async (config) => {
     accessToken = await redis.get('accessToken');
     const isValid = await validate();
-
+    console.log(accessToken, ' xoxo accessToken ');
     config.headers = {
       'Content-Type': `application/json`,
       Authorization: `Bearer ${accessToken}`,
