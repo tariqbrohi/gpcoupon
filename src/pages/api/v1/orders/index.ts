@@ -154,105 +154,99 @@ export default withApiAuthRequired(
         orderId = `${order.orderId}`;
       }
 
-      if (dbItem) {
-        const data: Prisma.OrderCreateInput = {
-          // status: order.orderStatus as any,
-          status: 'approved',
-          senderId: user?.id,
-          recipient: {
-            set: recipient,
-          },
-          message,
-          item: dbItem,
-          itemId: dbItem.id,
-          metadata: {
-            gpointwallet: charge,
-          },
-          payment: {
-            set: {
-              paymentVendor: 'GPOINT',
-              discountRate: +customerDiscountRate,
-              totalAmount: price * quantity,
-              exchange: {
-                exchangeRate: charge.exRate || 1,
-                source: currency,
-                target: 'GPT',
-              },
-              price: {
-                amount: price,
-                currency,
-              },
+      const data: Prisma.OrderCreateInput = {
+        // status: order.orderStatus as any,
+        status: 'approved',
+        senderId: user?.id,
+        recipient: {
+          set: recipient,
+        },
+        message,
+        item: (xoxoItem || dbItem)!,
+        itemId,
+        payment: {
+          set: {
+            paymentVendor: 'GPOINT',
+            discountRate: +customerDiscountRate,
+            totalAmount: price * quantity,
+            exchange: {
+              exchangeRate: charge?.exRate || 1,
+              source: currency,
+              target: 'GPT',
+            },
+            price: {
+              amount: price,
+              currency: currency,
             },
           },
-          createdAt: timestamp,
-          updatedAt: timestamp,
+        },
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      };
+
+      if (orderId) {
+        (data.metadata as any).xoxoOrderId = `${orderId}`;
+      }
+
+      const codes = times(quantity, () => randomString(13, true));
+      const pins = times(quantity, () => randomString());
+
+      if (dbItem?.affiliate) {
+        data.gifts = {
+          createMany: {
+            data: times(quantity, (i) => ({
+              code: codes[i],
+              amount,
+              pin: pins[i],
+              status: 'available',
+              createdAt: timestamp,
+              updatedAt: timestamp,
+            })),
+          },
         };
+      }
 
-        if (orderId) {
-          (data.metadata as any).xoxoOrderId = `${orderId}`;
-        }
+      const { id } = await prisma.order.create({
+        data,
+      });
 
-        const codes = times(quantity, () => randomString(13, true));
-        const pins = times(quantity, () => randomString());
+      orderId = `${id}-${orderId}`;
 
-        if (dbItem.affiliate) {
-          data.gifts = {
-            createMany: {
-              data: times(quantity, (i) => ({
+      if (dbItem?.affiliate) {
+        const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
+          QRCode.toDataURL(
+            btoa(
+              JSON.stringify({
                 code: codes[i],
-                amount,
                 pin: pins[i],
-                status: 'available',
-                createdAt: timestamp,
-                updatedAt: timestamp,
-              })),
-            },
-          };
-        }
-
-        const { id } = await prisma.order.create({
-          data,
-        });
-
-        orderId = `${id}-${orderId}`;
-
-        if (dbItem.affiliate) {
-          const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
-            QRCode.toDataURL(
-              btoa(
-                JSON.stringify({
-                  code: codes[i],
-                  pin: pins[i],
-                  orderId,
-                  sub: dbItem.brand?.sub,
-                  isGP: true,
-                  originalPrice: dbItem.originalPrice,
-                  name: dbItem.name,
-                  extednedName: dbItem.extendedName,
-                  brandName: dbItem?.brand?.name!,
-                  amount: dbItem.amount,
-                }),
-              ),
+                orderId,
+                sub: dbItem.brand?.sub,
+                isGP: true,
+                originalPrice: dbItem.originalPrice,
+                name: dbItem.name,
+                extednedName: dbItem.extendedName,
+                brandName: dbItem?.brand?.name!,
+                amount: dbItem.amount,
+              }),
             ),
-          );
+          ),
+        );
 
-          const qrcodes = await Promise.all(qrcodesPromises);
+        const qrcodes = await Promise.all(qrcodesPromises);
 
-          sendOrder({
-            quantity,
-            qrcodes,
-            recipientEmail: recipient.email,
-            name: dbItem.name,
-            brandLogoUrl: dbItem.brand?.thumbnailUrl!,
-            couponImageUrl: dbItem.couponImageUrl!,
-            expiresIn: dbItem.expiresIn!,
-            redemptionInstructions: dbItem.redemptionInstructions,
-            termsAndConditionsInstructions:
-              dbItem.termsAndConditionsInstructions,
-            brandName: dbItem.brand?.name!,
-            itemImage: dbItem.imageUrls.medium,
-          });
-        }
+        sendOrder({
+          quantity,
+          qrcodes,
+          recipientEmail: recipient.email,
+          name: dbItem.name,
+          brandLogoUrl: dbItem.brand?.thumbnailUrl!,
+          couponImageUrl: dbItem.couponImageUrl!,
+          expiresIn: dbItem.expiresIn!,
+          redemptionInstructions: dbItem.redemptionInstructions,
+          termsAndConditionsInstructions: dbItem.termsAndConditionsInstructions,
+          brandName: dbItem.brand?.name!,
+          itemImage: dbItem.imageUrls.medium,
+        });
       }
 
       res.send(orderId);
