@@ -64,6 +64,7 @@ client.interceptors.request.use(
   async (config) => {
     console.log('HERE HERE HERE HERE');
     accessToken = await redis.get('accessToken');
+    console.log(accessToken, ' xoxo accessToken ');
     const isValid = await validate();
     console.log(accessToken, ' xoxo accessToken ');
     config.headers = {
