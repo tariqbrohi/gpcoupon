@@ -145,7 +145,7 @@ export default withApiAuthRequired(
           notifyReceiverEmail: 1,
           email: recipient.email,
         });
-        console.log('HERE YOU GO IN THE ORDER');
+
         if (!order) {
           // todo
           // slack notify with gpointwallet transaction id and etc...
@@ -164,7 +164,7 @@ export default withApiAuthRequired(
         },
         message,
         item: (xoxoItem || dbItem)!,
-        itemId,
+        itemId: `${itemId}`,
         payment: {
           set: {
             paymentVendor: 'GPOINT',
