@@ -181,6 +181,7 @@ export default withApiAuthRequired(
             },
           },
         },
+        metadata: {},
         createdAt: timestamp,
         updatedAt: timestamp,
       };
