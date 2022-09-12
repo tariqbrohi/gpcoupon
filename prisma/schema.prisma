@@ -136,7 +136,7 @@ model Order {
   senderId                String            
   recipient               Recipient
   message                 String?
-  itemId                  String            
+  itemId                  String      
   item                    Json       
   payment                 Payment
   gifts                   Gift[]                  
