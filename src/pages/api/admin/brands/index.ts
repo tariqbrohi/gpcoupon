@@ -52,6 +52,7 @@ export default withApiAuthRequired(
           countries,
           createdAt: timestamp,
           updatedAt: timestamp,
+          affiliate: true,
           metadata: {
             createdBy: session?.user,
           },

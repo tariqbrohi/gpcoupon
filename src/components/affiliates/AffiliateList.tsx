@@ -1,5 +1,5 @@
 import AppContext from '@/modules/components/AppContext';
-import CategoriesVertical from './CategoriesVertical';
+import CategoriesVertical from '../brands/CategoriesVertical';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import styled from 'styled-components';
@@ -14,11 +14,11 @@ import {
   Spacer,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsQuery } from '@/services';
+import { useGetAffiliatesQuery, useGetBrandsQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
-import CategoriesHorizontal from './CategoriesHorizontal';
 import Grid from '@/modules/components/Grid';
+import CategoriesHorizontal from '../brands/CategoriesHorizontal';
 
 const Wrapper = styled.div`
   max-width: 100vw;
@@ -43,7 +43,7 @@ export default function BrandList() {
   const { country } = useContext(AppContext);
   const [height, setHeight] = useState(155);
 
-  const { data, loading } = useGetBrandsQuery({
+  const { data, loading } = useGetAffiliatesQuery({
     data: {
       country,
     },
@@ -170,7 +170,9 @@ export default function BrandList() {
               {filteredBrands?.map((brand) => (
                 <ImageList.Item
                   key={brand.id}
-                  onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
+                  onClick={() =>
+                    Router.push(`${ROUTES.affiliates}/${brand.slug}`)
+                  }
                   style={{ cursor: 'pointer' }}
                 >
                   <Ref innerRef={ref}>
