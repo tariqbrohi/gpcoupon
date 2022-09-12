@@ -39,6 +39,59 @@ export type GetCategoriesQueryVariables = {};
 export type GetCategoriesQueryResult = Category[];
 
 /**
+ * GetAffiliates
+ */
+export const useGetAffiliatesQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliatesQueryVariables>,
+) => {
+  return useQuery<GetAffiliatesQueryVariables, GetAffiliatesQueryResult>(
+    '/api/v1/affiliates',
+    baseOptions,
+  );
+};
+export const useGetAffiliatesLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliatesQueryVariables>,
+) => {
+  return useLazyQuery<GetAffiliatesQueryVariables, GetAffiliatesQueryResult>(
+    '/api/v1/affiliates',
+    baseOptions,
+  );
+};
+export type GetAffiliatesQueryVariables = {
+  country: string;
+};
+export type GetAffiliatesQueryResult = Brand[];
+
+/**
+ * GetAffiliateItems
+ */
+export const useGetAffiliateItemsQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsQueryVariables>,
+) => {
+  return useQuery<
+    GetAffiliateItemsQueryVariables,
+    GetAffiliateItemsQueryResult
+  >('/api/v1/affiliates/:slug/items', baseOptions, ['slug']);
+};
+export const useGetAffiliateItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetAffiliateItemsQueryVariables,
+    GetAffiliateItemsQueryResult
+  >('/api/v1/affiliates/:slug/items', baseOptions, ['slug']);
+};
+export type GetAffiliateItemsQueryVariables = {
+  country: string;
+  slug: string | string[] | undefined;
+  sortBy?: string;
+};
+export type GetAffiliateItemsQueryResult = Brand & {
+  total: number;
+  items: Item[];
+};
+
+/**
  * GetBrands
  */
 export const useGetBrandsQuery = (
@@ -113,7 +166,10 @@ export type GetCategoryItemsQueryVariables = {
   slug: string | string[] | undefined;
   sortBy?: string;
 };
-export type GetCategoryItemsQueryResult = Category & { items: Item[] };
+export type GetCategoryItemsQueryResult = Category & {
+  total: number;
+  items: Item[];
+};
 
 /**
  * GetBrandItems
@@ -141,7 +197,7 @@ export type GetBrandItemsQueryVariables = {
   slug: string | string[] | undefined;
   sortBy?: string;
 };
-export type GetBrandItemsQueryResult = Brand & { items: Item[] };
+export type GetBrandItemsQueryResult = Brand & { total: number; items: Item[] };
 
 /**
  * GetOccasionItems

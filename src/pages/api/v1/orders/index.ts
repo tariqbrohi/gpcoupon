@@ -20,8 +20,6 @@ import {
   NotFoundError,
   UnauthenticatedError,
 } from '@/lib/errors';
-import { stripe } from '../../_lib/stripe';
-import Stripe from 'stripe';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -63,15 +61,7 @@ export default withApiAuthRequired(
     }
 
     if (req.method === 'post') {
-      const {
-        paymentMethodId,
-        amount,
-        recipient,
-        itemId,
-        quantity,
-        message,
-        slug,
-      } = req.body;
+      const { amount, recipient, itemId, quantity, message, slug } = req.body;
 
       const timestamp = moment().unix();
 
@@ -118,67 +108,36 @@ export default withApiAuthRequired(
         throw new InternalServerError();
       }
 
-      // If payment_method_id is given,
-      // use stripe
-      let intent: Stripe.PaymentIntent | null = null;
-
-      if (paymentMethodId) {
-        const customer = await prisma.stripe.findUnique({
-          where: {
-            userId: user.id,
-          },
+      try {
+        charge = await gpointwallet.charge({
+          userId: user?.id,
+          amount: price * +quantity,
+          currency,
+          influencerId: dbItem?.influencerId,
+          customerDiscountRate: +customerDiscountRate,
+          influencerDiscountRate: +influencerDiscountRate,
+          profitRate: +profitRate,
+          t: token,
+          name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
         });
-
-        if (!customer?.stripeId) {
-          throw new UnauthenticatedError();
-        }
-
-        try {
-          intent = await stripe.paymentIntents.create({
-            amount: amount * 100 * quantity,
-            currency: 'usd',
-            payment_method_types: ['card'],
-            customer: customer.stripeId,
-            payment_method: paymentMethodId,
-            confirm: true,
-          });
-        } catch (err: any) {
-          console.log(err);
-          throw new BadRequestError(err?.error?.message || err?.raw?.message);
-        }
+      } catch (err: any) {
+        console.log(err, ' from gpointwallet charge');
+        throw new BadRequestError(
+          err?.response?.data?.errors?.[0]?.message || 'Internal Server Error',
+        );
       }
-      // Pay with GPoint
-      else {
-        try {
-          charge = await gpointwallet.charge({
-            userId: user?.id,
-            amount: price * +quantity,
-            currency,
-            influencerId: dbItem?.influencerId,
-            customerDiscountRate: +customerDiscountRate,
-            influencerDiscountRate: +influencerDiscountRate,
-            profitRate: +profitRate,
-            t: token,
-            name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
-          });
-        } catch (err: any) {
-          throw new BadRequestError(
-            err?.response?.data?.errors?.[0]?.message ||
-              'Internal Server Error',
-          );
-        }
-        //
+      //
 
-        if (!charge || !charge?.id) {
-          throw new InternalServerError();
-        }
+      if (!charge || !charge?.id) {
+        console.log(`Charge is malformed`);
+        throw new InternalServerError();
       }
 
       let orderId = '';
 
-      if (xoxoItem) {
+      if (xoxoItem || (dbItem?.metadata as any)?.productId) {
         const order = await xoxoday.orders.place({
-          productId: +xoxoItem.id,
+          productId: xoxoItem?.id || (dbItem?.metadata as any).productId,
           quantity,
           denomination: +price,
           // todo
@@ -208,33 +167,24 @@ export default withApiAuthRequired(
         itemId: `${itemId}`,
         payment: {
           set: {
-            paymentVendor: paymentMethodId ? 'STRIPE' : 'GPOINT',
+            paymentVendor: 'GPOINT',
             discountRate: +customerDiscountRate,
             totalAmount: price * quantity,
             exchange: {
               exchangeRate: charge?.exRate || 1,
               source: currency,
-              target: paymentMethodId ? 'USD' : 'GPT',
+              target: 'GPT',
             },
             price: {
               amount: price,
-              currency: paymentMethodId ? 'USD' : currency,
+              currency: currency,
             },
           },
         },
+        metadata: {},
         createdAt: timestamp,
         updatedAt: timestamp,
       };
-
-      if (paymentMethodId && intent) {
-        data.metadata = {
-          stripe: intent.id,
-        };
-      } else {
-        data.metadata = {
-          gpointwallet: charge.id,
-        };
-      }
 
       if (orderId) {
         (data.metadata as any).xoxoOrderId = `${orderId}`;

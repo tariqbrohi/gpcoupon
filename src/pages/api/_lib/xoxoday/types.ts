@@ -1,6 +1,7 @@
 export type FindManyVouchersInput = {
   country: string;
-  category: string;
+  category?: string;
+  brand?: string;
 };
 
 export type FindOneVoucherInput = {

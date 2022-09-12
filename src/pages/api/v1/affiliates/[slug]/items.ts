@@ -45,19 +45,24 @@ export default errorHandler(async function handler(req, res) {
     },
   })) as Record<string, any>;
 
-  const items = await xoxoday.vouchers.findMany({
-    country,
-    brand: slug,
+  const items = await prisma.item.findMany({
+    take,
+    skip,
+    orderBy,
+    where: {
+      brandId: brand.id,
+    },
   });
 
-  if (sortBy === 'amount,asc') {
-    items.sort((a, b) => a.price.amount - b.price.amount);
-  } else if (sortBy === 'amount,desc') {
-    items.sort((a, b) => b.price.amount - a.price.amount);
-  }
+  const total = await prisma.item.aggregate({
+    where: {
+      brandId: brand.id,
+    },
+    _count: true,
+  });
 
-  brand.total = items.length;
-  brand.items = items.slice(+skip, +skip + +take);
+  brand.items = items;
+  brand.total = total._count;
 
   res.send(brand);
 });

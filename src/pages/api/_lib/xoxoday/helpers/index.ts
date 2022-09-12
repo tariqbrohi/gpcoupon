@@ -697,6 +697,19 @@ export const countries = (iso: string) => {
   );
 };
 
+export const mapBrandSlugToProductName = (slug: string) => {
+  const cleanedSlug = slug.replaceAll('-', ' ');
+
+  switch (cleanedSlug) {
+    case 'peets coffee tea':
+      return 'Peets Coffee & Tea';
+    case 'bjs restaurant':
+      return "BJ's Restaurants";
+    default:
+      return cleanedSlug;
+  }
+};
+
 export const normalizeItems = (items: Record<string, any>[]) => {
   const normalizedItems = items.map((item) =>
     item.valueDenominations.split(',').map((amount: string) => ({

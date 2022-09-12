@@ -4,9 +4,8 @@ const baseURL =
   process.env.XOXO_API_URI ||
   'https://stagingaccount.xoxoday.com/chef/v1/oauth';
 
-let accessToken = process.env.XOXO_TOKEN || '';
-let refreshToken = process.env.XOXO_REFRESH_TOKEN || '';
 let expiresIn: number | null = null;
+let accessToken: string | null = null;
 
 const client = axios.create({
   baseURL,
@@ -55,6 +54,8 @@ async function refreshTokens() {
 
 client.interceptors.request.use(
   async (config) => {
+    accessToken = await redis.get('accessToken');
+    
     const isValid = await validate();
 
     config.headers = {

@@ -1,7 +1,11 @@
 import Context from './Context';
 import stringSimilarity from 'string-similarity';
 import { FileUploader } from 'react-drag-drop-files';
-import { useGetBrandsQuery, useGetCategoriesQuery } from '@/services';
+import {
+  // useGetAffiliatesQuery,
+  useGetBrandsQuery,
+  useGetCategoriesQuery,
+} from '@/services';
 import {
   countryOptions,
   Form,

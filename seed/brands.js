@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
-// const brands = require('./brands.json');
-const brands = require('../wow.json');
+const brands = require('./brands.json');
+// const brands = require('../wow.json');
 
 const prisma = new PrismaClient();
 const dict = {};
@@ -25,19 +25,15 @@ const dict = {};
     // await prisma.brand.create();
     const a = await prisma.brand.create({
       data: {
-        name: brand.brandName,
-        slug: brand.brandName
-          .toLowerCase()
-          .replaceAll('& ', '')
-          .replaceAll(' ', '-')
-          .replaceAll('.', '')
-          .replaceAll("'", ''),
-        description: '',
-        disclaimer: '',
-        backgroundUrl: '',
-        thumbnailUrl: '',
+        name: brand.name,
+        slug: brand.slug,
+        description: brand.description,
+        disclaimer: brand.disclaimer,
+        backgroundUrl: brand.backgroundUrl,
+        affiliate: false,
+        thumbnailUrl: brand.thumbnailUrl,
         status: 'AVAILABLE',
-        terms: '',
+        terms: brand.terms,
         createdAt: 1657210820,
         updatedAt: 1657210820,
         countries: ['US'],
