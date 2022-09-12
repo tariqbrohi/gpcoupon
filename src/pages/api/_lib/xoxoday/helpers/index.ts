@@ -714,6 +714,7 @@ export const normalizeItems = (items: Record<string, any>[]) => {
   const normalizedItems = items.map((item) =>
     item.valueDenominations.split(',').map((amount: string) => ({
       amount: +amount,
+      originalPrice: +amount,
       price: {
         amount: +amount,
         currency: item.currencyCode,
