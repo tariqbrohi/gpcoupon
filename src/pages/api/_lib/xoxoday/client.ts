@@ -52,9 +52,8 @@ async function refreshTokens() {
     await redis.set('refreshToken', data.refresh_token);
 
     return data;
-  } catch {
-    // todo
-    // slack crifical error
+  } catch (err) {
+    console.log(err);
   }
 
   return {};
@@ -62,11 +61,10 @@ async function refreshTokens() {
 
 client.interceptors.request.use(
   async (config) => {
-    console.log('HERE HERE HERE HERE');
     accessToken = await redis.get('accessToken');
-    console.log(accessToken, ' xoxo accessToken ');
+
     const isValid = await validate();
-    console.log(accessToken, ' xoxo accessToken ');
+
     config.headers = {
       'Content-Type': `application/json`,
       Authorization: `Bearer ${accessToken}`,
