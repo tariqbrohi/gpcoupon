@@ -44,39 +44,22 @@ export default errorHandler(async function handler(req, res) {
       orderBy.sortOrder = 'desc';
     }
 
-    const params = {
-      take,
-      skip,
-      where: {
-        country: country?.toUpperCase() || 'US',
-        status: 'AVAILABLE',
-        categories: {
-          some: {
-            id: category?.id,
-          },
-        },
-      },
-      orderBy,
-      select: {
-        id: true,
-        amount: true,
-        name: true,
-        extendedName: true,
-        imageUrls: true,
-        originalPrice: true,
-        discountRate: true,
-        customerDiscountRate: true,
-        price: true,
-        slug: true,
-      },
-    };
-
     const items = await xoxoday.vouchers.findMany({
       country,
       category: slug,
     });
 
-    category.items = items;
+    if (sortBy === 'amount,asc') {
+      items.sort((a, b) => a.price.amount - b.price.amount);
+    } else if (sortBy === 'amount,desc') {
+      items.sort((a, b) => b.price.amount - a.price.amount);
+    }
+
+    // todo
+    // temp
+    // fix in better way
+    category.total = items.length;
+    category.items = items.slice(+skip, +skip + +take);
 
     res.send(category);
   }

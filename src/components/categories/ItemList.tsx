@@ -31,7 +31,7 @@ export default function ItemList() {
 
   return (
     <>
-      <ItemListHeader total={data?.items?.length || 0} setSortBy={setSortBy} />
+      <ItemListHeader total={data?.total || 0} setSortBy={setSortBy} />
       <List loading={loading} items={data?.items} />
     </>
   );

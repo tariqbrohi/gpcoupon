@@ -113,7 +113,10 @@ export type GetCategoryItemsQueryVariables = {
   slug: string | string[] | undefined;
   sortBy?: string;
 };
-export type GetCategoryItemsQueryResult = Category & { items: Item[] };
+export type GetCategoryItemsQueryResult = Category & {
+  total: number;
+  items: Item[];
+};
 
 /**
  * GetBrandItems
@@ -141,7 +144,7 @@ export type GetBrandItemsQueryVariables = {
   slug: string | string[] | undefined;
   sortBy?: string;
 };
-export type GetBrandItemsQueryResult = Brand & { items: Item[] };
+export type GetBrandItemsQueryResult = Brand & { total: number; items: Item[] };
 
 /**
  * GetOccasionItems
