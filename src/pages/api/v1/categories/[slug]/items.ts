@@ -69,8 +69,8 @@ export default errorHandler(async function handler(req, res) {
           termsAndConditionsInstructions: true,
           redemptionInstructions: true,
         },
-        take,
-        skip,
+        take: +take,
+        skip: +skip,
       }),
       prisma.item.count({
         where: {
