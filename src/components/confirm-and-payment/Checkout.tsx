@@ -5,13 +5,15 @@ import React, { SyntheticEvent, useContext } from 'react';
 import Router from 'next/router';
 import ThemeButton from '@/modules/components/ThemeButton';
 import { isEmpty } from 'lodash';
-import { Modal, ModalProps, Snackbar } from '@growth-ui/react';
+import { Modal, ModalProps, Snackbar, Spacer } from '@growth-ui/react';
 import { useOrderMutation } from '@/services';
 import { useState } from 'react';
+import PayWithCard from './PayWithCard';
 
 export default function Checkout(props: ModalProps) {
   const { state, setState } = useContext(Context);
   const [errors, setErrors] = useState<Partial<State>>({});
+  const [payWithCard, setPayWithCard] = useState(false);
 
   const [submittng, setSubmitting] = useState(false);
   const [order, { loading }] = useOrderMutation();
@@ -47,7 +49,7 @@ export default function Checkout(props: ModalProps) {
       data: {
         itemId: item.id as any,
         slug: slug,
-        amount: item?.amount,
+        amount: item?.price.amount,
         message: message,
         quantity: +qty,
         recipient: {
@@ -79,14 +81,29 @@ export default function Checkout(props: ModalProps) {
       )}
       <Modal {...props}>
         <Modal.Content>
-          <ThemeButton
-            fluid
-            secondary
-            loading={submittng}
-            onClick={handleCheckout}
-          >
-            Pay with GPoint Wallet
-          </ThemeButton>
+          {payWithCard ? (
+            <PayWithCard />
+          ) : (
+            <>
+              <ThemeButton
+                fluid
+                secondary
+                loading={submittng}
+                onClick={handleCheckout}
+              >
+                Pay with GPoint Wallet
+              </ThemeButton>
+              <Spacer size={30} />
+              <ThemeButton
+                fluid
+                secondary
+                basic
+                onClick={() => setPayWithCard(true)}
+              >
+                Pay with Card
+              </ThemeButton>
+            </>
+          )}
         </Modal.Content>
       </Modal>
     </>

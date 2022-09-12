@@ -4,9 +4,9 @@ import HeaderNavBar from '@/components/header/HeaderNavBar';
 import Link from 'next/link';
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import useUser from '@/auth/useUser';
 import { Button, Grid, Spacer, StyledGridRow } from '@growth-ui/react';
 import { color } from '@/modules/brandingTheme';
-import useUser from '@/auth/useUser';
 
 const Container = styled(StyledGridRow)`
   padding: 16px 32px;
