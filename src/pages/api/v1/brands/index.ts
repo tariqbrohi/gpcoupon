@@ -25,6 +25,6 @@ export default errorHandler(async function handler(req, res) {
   const brands = await prisma.brand.findMany({
     where,
   });
-
+  
   res.send(brands);
 });
