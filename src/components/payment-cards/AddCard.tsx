@@ -1,17 +1,10 @@
 import PaymentMethodForm from '@/modules/components/PaymentMethodForm';
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import Router from 'next/router';
-import { ButtonProps, Modal, ModalProps, Spacer } from '@growth-ui/react';
+import { Modal, ModalProps, Spacer } from '@growth-ui/react';
 import { useCreatePaymentCardMutation } from '@/services';
-import Stripe from 'stripe';
-import parseErrorMessage from '@/lib/parse-error-message';
 
-export default function AddCard({
-  onSuccess,
-  header,
-  buttonText,
-  ...props
-}: ModalProps & Props) {
+export default function AddCard(props: ModalProps) {
   const [state, setState] = useState({
     exp: '',
     cvc: '',
@@ -31,26 +24,19 @@ export default function AddCard({
         expYear,
       },
     })
-      .then((res) => {
-        if (onSuccess) {
-          return onSuccess(res.data);
-        }
-
-        // Default behavior is to close the modal
-        Router.reload();
-      })
+      .then(() => Router.reload())
       .catch((err) => {
-        alert(parseErrorMessage(err));
+        console.log(err);
       });
   };
 
   return (
     <Modal {...props}>
-      {header || <Modal.Header>Add card</Modal.Header>}
+      <Modal.Header>Add card</Modal.Header>
       <Modal.Content>
         <Spacer size={20} />
         <PaymentMethodForm
-          buttonText={buttonText || 'Add Card'}
+          buttonText="Add Card"
           buttonProps={{
             onClick: handleSubmit,
             loading,
@@ -91,10 +77,4 @@ export default function AddCard({
       </Modal.Content>
     </Modal>
   );
-}
-
-interface Props {
-  header?: ReactNode;
-  buttonText?: string;
-  onSuccess?: (data: Stripe.PaymentMethod[]) => void;
 }
