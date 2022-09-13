@@ -34,6 +34,7 @@ export default errorHandler(async function handler(req, res) {
 
     let orderBy: Record<string, any> = {};
     let orderByKey = 'price.amount';
+    let orderByDirection = 'asc';
 
     if (sortBy === 'amount,asc') {
       orderBy.price = {};
@@ -41,9 +42,11 @@ export default errorHandler(async function handler(req, res) {
     } else if (sortBy === 'amount,desc') {
       orderBy.price = {};
       orderBy.price.amount = 'desc';
+      orderByDirection = 'desc';
     } else {
       orderBy.sortOrder = 'desc';
       orderByKey = 'sortOrder';
+      orderByDirection = 'desc';
     }
 
     const [affiliateCoupons, count] = await Promise.all([
@@ -105,7 +108,7 @@ export default errorHandler(async function handler(req, res) {
     category.items = sort(
       items.slice(+skip, +skip + +take).concat(affiliateCoupons as any),
       orderByKey,
-      orderBy.sortOrder,
+      orderByDirection as any,
     );
 
     res.send(category);
