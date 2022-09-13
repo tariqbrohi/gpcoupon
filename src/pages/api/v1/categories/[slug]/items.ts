@@ -104,8 +104,8 @@ export default errorHandler(async function handler(req, res) {
 
     category.items = sort(
       items.slice(+skip, +skip + +take).concat(affiliateCoupons as any),
-      [orderByKey],
-      [orderBy.sortOrder],
+      orderByKey,
+      orderBy.sortOrder,
     );
 
     res.send(category);
