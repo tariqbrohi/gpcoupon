@@ -143,7 +143,8 @@ export default withApiAuthRequired(
             confirm: true,
           });
         } catch (err: any) {
-          console.log(err.error);
+          console.log('NOT HERE WHERE  IS IT');
+          throw new BadRequestError(err.error?.error);
         }
       }
       // Pay with GPoint
@@ -205,7 +206,7 @@ export default withApiAuthRequired(
         },
         message,
         item: (xoxoItem || dbItem)!,
-        itemId,
+        itemId: `${itemId}`,
         payment: {
           set: {
             paymentVendor: paymentMethodId ? 'STRIPE' : 'GPOINT',

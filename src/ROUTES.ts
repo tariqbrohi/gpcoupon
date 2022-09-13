@@ -12,6 +12,7 @@ export const ROUTES = {
   orders: '/orders',
   confirmAndPay: '/confirm-and-pay',
   occasions: '/occasions',
+  paymentCards: '/account/payment-cards',
   admin: {
     createItem: '/admin/items/create',
     items: '/admin/items',

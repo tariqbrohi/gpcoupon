@@ -30,7 +30,7 @@ export default function PayWithCard() {
   const handleSubmit = async () => {
     const { item, slug, qty, message, name, email } = state;
 
-    if (!paymentMethodId || !item) return;
+    if (!paymentMethodId || !item || submitting) return;
 
     order({
       data: {

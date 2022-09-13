@@ -26,6 +26,10 @@ export default function Avatar(props: DropdownProps) {
     if (data.text === 'My gifts') {
       Router.push(ROUTES.orders);
     }
+
+    if (data.text === 'Payment methods') {
+      Router.push(ROUTES.paymentCards);
+    }
   };
 
   return (
@@ -48,6 +52,10 @@ export default function Avatar(props: DropdownProps) {
     >
       <Dropdown.Menu>
         <Dropdown.Item text="My gifts" onClick={handleClickDropdownItem} />
+        <Dropdown.Item
+          text="Payment methods"
+          onClick={handleClickDropdownItem}
+        />
         <Dropdown.Item text="Logout" onClick={handleClickDropdownItem} />
       </Dropdown.Menu>
     </Dropdown>

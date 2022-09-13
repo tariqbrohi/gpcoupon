@@ -98,6 +98,7 @@ export default errorHandler(async function handler(req, res) {
     // temp
     // fix in better way
     category.total = items.length + count;
+    category.hasMore = items.length - skip >= take || count - skip >= take;
 
     category.items = sort(
       items.slice(+skip, +skip + +take).concat(affiliateCoupons as any),
