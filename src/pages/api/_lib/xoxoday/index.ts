@@ -10,5 +10,5 @@ const xoxoday = {
     place,
   },
 };
-
+//
 export default xoxoday;
