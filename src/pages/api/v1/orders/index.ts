@@ -93,7 +93,8 @@ export default withApiAuthRequired(
 
       const totalDiscountRate =
         xoxoItem?.discountRate || dbItem?.discountRate || 0;
-      const customerDiscountRate = dbItem?.customerDiscountRate || 0;
+      const customerDiscountRate =
+        xoxoItem?.customerDiscountRate || dbItem?.customerDiscountRate || 0;
       const influencerDiscountRate = dbItem?.influencerDiscountRate || 0;
       const profitRate =
         totalDiscountRate - customerDiscountRate - influencerDiscountRate;
