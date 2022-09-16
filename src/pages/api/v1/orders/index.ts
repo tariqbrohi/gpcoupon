@@ -103,13 +103,19 @@ export default withApiAuthRequired(
 
       const totalDiscountRate =
         xoxoItem?.discountRate || dbItem?.discountRate || 0;
-      const customerDiscountRate = dbItem?.customerDiscountRate || 0;
+      const customerDiscountRate =
+        xoxoItem?.customerDiscountRate || dbItem?.customerDiscountRate || 0;
       const influencerDiscountRate = dbItem?.influencerDiscountRate || 0;
       const profitRate =
         totalDiscountRate - customerDiscountRate - influencerDiscountRate;
       // gpointwallet
       let charge;
-
+      console.log(
+        xoxoItem?.discountRate,
+        totalDiscountRate,
+        customerDiscountRate,
+        profitRate,
+      );
       if (
         customerDiscountRate + influencerDiscountRate + profitRate >
         totalDiscountRate
