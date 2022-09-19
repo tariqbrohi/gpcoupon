@@ -9,24 +9,24 @@ const stripe = new Stripe(
 
 (async () => {
   const invoice = await stripe.invoices.voidInvoice(
-    'in_1LimCQJgNGV1fP5SCHWP4crv',
+    'in_1Ljqj5JgNGV1fP5SR1T3pkBJ',
   );
 
   console.log(invoice);
   // const a = await stripe.paymentMethods.create({
   //   type: 'card',
   //   card: {
-  //     number: '376743654131003',
-  //     exp_month: 03,
+  //     number: '4246315328750599',
+  //     exp_month: 02,
   //     exp_year: 2027,
-  //     cvc: '5252',
+  //     cvc: '821',
   //   },
   // });
 
   // console.log(a);
 
   // const paymentMethod = await stripe.paymentMethods.attach(a.id, {
-  //   customer: 'cus_MP3c7lasznikEm',
+  //   customer: 'cus_MSmBxpFS1K7Sgb',
   // });
 
   // console.log(paymentMethod);
