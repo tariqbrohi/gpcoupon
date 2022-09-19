@@ -18,7 +18,7 @@ export default isAuth(
         skip: +skip,
       });
 
-      const normalizedGifts = orders.map((order) => ({
+      const normalizedOrder = orders.map((order) => ({
         orderNumber: order.id,
         item: order.item,
         payment: order.payment,
@@ -28,7 +28,7 @@ export default isAuth(
         createdAt: order.createdAt,
       }));
 
-      return res.send(normalizedGifts);
+      return res.send(normalizedOrder);
     }
   }),
 );
