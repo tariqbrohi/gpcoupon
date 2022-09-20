@@ -12,7 +12,6 @@ export default isAuth(
       throw new NotFoundError();
     }
     const { id, orderId } = req.query as any;
-    console.log(req.query);
     const order = await prisma.order.findUnique({
       where: {
         id: orderId,
