@@ -9,11 +9,11 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const { country } = req.query as any;
+  const { affiliate = false, country } = req.query as any;
 
   let where: Record<string, any> = {
     status: 'AVAILABLE',
-    affiliate: false,
+    affiliate,
   };
 
   if (country) {
@@ -25,6 +25,6 @@ export default errorHandler(async function handler(req, res) {
   const brands = await prisma.brand.findMany({
     where,
   });
-  
+
   res.send(brands);
 });
