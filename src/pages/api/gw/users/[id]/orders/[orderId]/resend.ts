@@ -4,13 +4,14 @@ import prisma from '@/prisma';
 import QRCode from 'qrcode';
 import { sendOrder } from '@/pages/api/_lib/send-email';
 import { BadRequestError, ForbiddenError, NotFoundError } from '@/lib/errors';
+import xoxoday from '@/pages/api/_lib/xoxoday';
 
 export default isAuth(
   errorHandler(async function handler(req, res) {
-    console.log(req.method);
     if (req.method !== 'post') {
       throw new NotFoundError();
     }
+
     const { id, orderId } = req.query as any;
     const order = await prisma.order.findUnique({
       where: {
@@ -33,7 +34,12 @@ export default isAuth(
     const item = order.item as any;
 
     if (!item.affiliate) {
-      throw new BadRequestError('');
+      console.log('xoxoday ', +(order.metadata as any)?.xoxoOrderId || 0);
+      const data = await xoxoday.orders.detail(
+        +(order.metadata as any)?.xoxoOrderId || 0,
+      );
+      console.log(JSON.stringify(data, null, 2));
+      return res.send('Ok');
     }
 
     const quantity = order.payment.totalAmount / order.payment.price.amount;
