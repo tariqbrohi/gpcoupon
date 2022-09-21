@@ -1,5 +1,5 @@
 import { findMany, findOne } from './voucher';
-import { place } from './orders';
+import { place, detail } from './orders';
 
 const xoxoday = {
   vouchers: {
@@ -8,6 +8,7 @@ const xoxoday = {
   },
   orders: {
     place,
+    detail,
   },
 };
 

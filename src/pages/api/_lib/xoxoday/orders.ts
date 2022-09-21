@@ -20,3 +20,24 @@ export const place = async (
     return null;
   }
 };
+
+export const detail = async (orderId: number) => {
+  try {
+    const { data } = await client.post('/api', {
+      query: 'plumProAPI.mutation.getOrderDetails',
+      tag: 'plumProAPI',
+      variables: {
+        data: {
+          poNumber: '',
+          orderId,
+        },
+      },
+    });
+
+    return data;
+  } catch (err: any) {
+    console.log(err.response.data);
+
+    return null;
+  }
+};
