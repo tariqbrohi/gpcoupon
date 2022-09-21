@@ -13,7 +13,7 @@ export default errorHandler(async function handler(req, res) {
 
   let where: Record<string, any> = {
     status: 'AVAILABLE',
-    affiliate,
+    affiliate: !!affiliate,
   };
 
   if (country) {
