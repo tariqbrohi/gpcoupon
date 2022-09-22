@@ -45,7 +45,7 @@ export default isAuth(
           ? Promise.resolve(null)
           : prisma.item.findFirst({
               where: {
-                slug,
+                ...(slug ? { slug } : { id: itemId }),
               },
               include: {
                 brand: true,
