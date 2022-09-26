@@ -9,11 +9,11 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const { affiliate = false, country } = req.query as any;
+  const { affiliate = 'false', country } = req.query as any;
 
   let where: Record<string, any> = {
     status: 'AVAILABLE',
-    affiliate: !!affiliate,
+    ...(affiliate === 'true' ? { affiliate: true } : {}),
   };
 
   if (country) {
