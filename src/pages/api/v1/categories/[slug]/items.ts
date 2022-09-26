@@ -70,6 +70,7 @@ export default errorHandler(async function handler(req, res) {
         where: {
           status: 'AVAILABLE',
           affiliate: true,
+          country,
           categoryIDs: {
             hasSome: catIds,
           },
