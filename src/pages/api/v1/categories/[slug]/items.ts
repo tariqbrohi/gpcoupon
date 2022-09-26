@@ -18,19 +18,35 @@ export default errorHandler(async function handler(req, res) {
     skip = 0,
     sortBy = 'sales,desc',
   } = req.query as any;
-
   if (country && slug) {
-    const category = (await prisma.category.findUnique({
-      where: {
-        slug,
-      },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        imageUrls: true,
-      },
-    })) as Record<string, any>;
+    let catIds = [] as string[];
+    console.log(slug);
+    if (slug === 'all') {
+      const categories = (await prisma.category.findMany({
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          imageUrls: true,
+        },
+      })) as Record<string, any>;
+
+      catIds = categories.map((cat: any) => cat.id);
+    } else {
+      const category = (await prisma.category.findUnique({
+        where: {
+          slug,
+        },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          imageUrls: true,
+        },
+      })) as Record<string, any>;
+
+      catIds.push(category.id);
+    }
 
     let orderBy: Record<string, any> = {};
     let orderByKey = 'price.amount';
@@ -55,7 +71,7 @@ export default errorHandler(async function handler(req, res) {
           status: 'AVAILABLE',
           affiliate: true,
           categoryIDs: {
-            has: category.id,
+            hasSome: catIds,
           },
         },
         orderBy,
@@ -82,7 +98,7 @@ export default errorHandler(async function handler(req, res) {
           status: 'AVAILABLE',
           affiliate: true,
           categoryIDs: {
-            has: category.id,
+            hasSome: catIds,
           },
         },
       }),
@@ -99,18 +115,26 @@ export default errorHandler(async function handler(req, res) {
       items.sort((a, b) => b.price.amount - a.price.amount);
     }
 
+    const resp: Record<string, any> = {};
+
     // todo
     // temp
     // fix in better way
-    category.total = items.length + count;
-    category.hasMore = items.length - skip >= take || count - skip >= take;
+    resp.id = '';
+    resp.name = 'All';
+    resp.slug = 'all';
+    resp.imageUrls = {
+      medium: '/categories/AllGiftCards.jpg',
+    };
+    resp.total = items.length + count;
+    resp.hasMore = items.length - skip >= take || count - skip >= take;
 
-    category.items = sort(
+    resp.items = sort(
       items.slice(+skip, +skip + +take).concat(affiliateCoupons as any),
       orderByKey,
       orderByDirection as any,
     );
 
-    res.send(category);
+    res.send(resp);
   }
 });

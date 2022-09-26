@@ -49,14 +49,18 @@ export default errorHandler(
           .add((item as Item).expiresIn, 'days')
           .unix()
     ) {
-      throw new BadRequestError('Gift expired');
+      throw new BadRequestError(
+        `Gift expired at ${moment(gift.order.createdAt * 1000)
+          .add((item as Item).expiresIn, 'days')
+          .utc()
+          .format('MM-DD-YYYY hh:mm:ss (UTC)')}`,
+      );
     }
 
     // if gift is already used.
     if (gift.status === 'used') throw new BadRequestError('Gift already used');
 
     // If requested gift detail is different thant what is in db.
-    console.log((item as any).brand?.sub);
     if ((item as any).brand?.sub !== sub) {
       throw new BadRequestError('');
     }

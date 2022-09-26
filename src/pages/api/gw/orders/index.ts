@@ -236,6 +236,7 @@ export default isAuth(
           termsAndConditionsInstructions: dbItem.termsAndConditionsInstructions,
           brandName: dbItem.brand?.name!,
           itemImage: dbItem.imageUrls.medium,
+          message,
         });
       }
 

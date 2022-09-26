@@ -20,7 +20,7 @@ export const findMany = async ({
     },
   ];
 
-  if (category) {
+  if (category && category !== 'all') {
     filters.push({
       key: 'voucher_category',
       value:

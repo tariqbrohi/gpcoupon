@@ -49,6 +49,7 @@ export default isAuth(
           order,
           vouchers: data.data.getOrderDetails.data.vouchers,
           paymentMethod,
+          status: data.data.getOrderDetails.data.deliveryStatus,
         });
       }
 

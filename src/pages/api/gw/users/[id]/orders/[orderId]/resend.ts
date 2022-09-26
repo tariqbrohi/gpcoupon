@@ -13,6 +13,7 @@ export default isAuth(
     }
 
     const { id, orderId } = req.query as any;
+    console.log(id, orderId);
     const order = await prisma.order.findUnique({
       where: {
         id: orderId,
@@ -58,7 +59,7 @@ export default isAuth(
     );
 
     const qrcodes = await Promise.all(qrcodesPromises);
-
+    console.log('HERE ?? ? ? ?? ? ? ? ?? ? ? ? ? ?? ');
     sendOrder({
       quantity,
       qrcodes,
