@@ -32,7 +32,7 @@ export default function HeaderNavBar() {
         </List.Item>
         <List.Item>
           {country === 'US' && (
-            <Link href={ROUTES.brands}>
+            <Link href={ROUTES.affiliates}>
               <a>Affiliates</a>
             </Link>
           )}

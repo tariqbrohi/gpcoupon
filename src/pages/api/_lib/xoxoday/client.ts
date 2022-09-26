@@ -52,9 +52,8 @@ async function refreshTokens() {
     await redis.set('refreshToken', data.refresh_token);
 
     return data;
-  } catch {
-    // todo
-    // slack crifical error
+  } catch (err) {
+    console.log(err);
   }
 
   return {};

@@ -20,6 +20,8 @@ import {
   NotFoundError,
   UnauthenticatedError,
 } from '@/lib/errors';
+import { stripe } from '../../_lib/stripe';
+import Stripe from 'stripe';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -61,7 +63,15 @@ export default withApiAuthRequired(
     }
 
     if (req.method === 'post') {
-      const { amount, recipient, itemId, quantity, message, slug } = req.body;
+      const {
+        paymentMethodId,
+        amount,
+        recipient,
+        itemId,
+        quantity,
+        message,
+        slug,
+      } = req.body;
 
       const timestamp = moment().unix();
 
@@ -100,7 +110,12 @@ export default withApiAuthRequired(
         totalDiscountRate - customerDiscountRate - influencerDiscountRate;
       // gpointwallet
       let charge;
-
+      console.log(
+        xoxoItem?.discountRate,
+        totalDiscountRate,
+        customerDiscountRate,
+        profitRate,
+      );
       if (
         customerDiscountRate + influencerDiscountRate + profitRate >
         totalDiscountRate
@@ -109,36 +124,68 @@ export default withApiAuthRequired(
         throw new InternalServerError();
       }
 
-      try {
-        charge = await gpointwallet.charge({
-          userId: user?.id,
-          amount: price * +quantity,
-          currency,
-          influencerId: dbItem?.influencerId,
-          customerDiscountRate: +customerDiscountRate,
-          influencerDiscountRate: +influencerDiscountRate,
-          profitRate: +profitRate,
-          t: token,
-          name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
-        });
-      } catch (err: any) {
-        console.log(err, ' from gpointwallet charge');
-        throw new BadRequestError(
-          err?.response?.data?.errors?.[0]?.message || 'Internal Server Error',
-        );
-      }
-      //
+      // If payment_method_id is given,
+      // use stripe
+      let intent: Stripe.PaymentIntent | null = null;
 
-      if (!charge || !charge?.id) {
-        console.log(`Charge is malformed`);
-        throw new InternalServerError();
+      if (paymentMethodId) {
+        const customer = await prisma.stripe.findUnique({
+          where: {
+            userId: user.id,
+          },
+        });
+
+        if (!customer?.stripeId) {
+          throw new UnauthenticatedError();
+        }
+
+        try {
+          intent = await stripe.paymentIntents.create({
+            amount: amount * 100 * quantity,
+            currency: 'usd',
+            payment_method_types: ['card'],
+            customer: customer.stripeId,
+            payment_method: paymentMethodId,
+            confirm: true,
+          });
+        } catch (err: any) {
+          console.log('NOT HERE WHERE  IS IT');
+          throw new BadRequestError(err.error?.error);
+        }
+      }
+      // Pay with GPoint
+      else {
+        try {
+          charge = await gpointwallet.charge({
+            userId: user?.id,
+            amount: price * +quantity,
+            currency,
+            influencerId: dbItem?.influencerId,
+            customerDiscountRate: +customerDiscountRate,
+            influencerDiscountRate: +influencerDiscountRate,
+            profitRate: +profitRate,
+            t: token,
+            name: `${dbItem?.name || xoxoItem?.name || ''} (${quantity})`,
+          });
+        } catch (err: any) {
+          console.log(err, ' from gpointwallet charge');
+          throw new BadRequestError(
+            err?.response?.data?.errors?.[0]?.message ||
+              'Internal Server Error',
+          );
+        }
+        //
+
+        if (!charge || !charge?.id) {
+          throw new InternalServerError();
+        }
       }
 
       let orderId = '';
 
-      if (xoxoItem || (dbItem?.metadata as any)?.productId) {
+      if (xoxoItem) {
         const order = await xoxoday.orders.place({
-          productId: xoxoItem?.id || (dbItem?.metadata as any).productId,
+          productId: +xoxoItem.id,
           quantity,
           denomination: +price,
           // todo
@@ -168,24 +215,33 @@ export default withApiAuthRequired(
         itemId: `${itemId}`,
         payment: {
           set: {
-            paymentVendor: 'GPOINT',
+            paymentVendor: paymentMethodId ? 'STRIPE' : 'GPOINT',
             discountRate: +customerDiscountRate,
             totalAmount: price * quantity,
             exchange: {
               exchangeRate: charge?.exRate || 1,
               source: currency,
-              target: 'GPT',
+              target: paymentMethodId ? 'USD' : 'GPT',
             },
             price: {
               amount: price,
-              currency: currency,
+              currency: paymentMethodId ? 'USD' : currency,
             },
           },
         },
-        metadata: {},
         createdAt: timestamp,
         updatedAt: timestamp,
       };
+
+      if (paymentMethodId && intent) {
+        data.metadata = {
+          stripe: intent.id,
+        };
+      } else {
+        data.metadata = {
+          gpointwallet: charge.id,
+        };
+      }
 
       if (orderId) {
         (data.metadata as any).xoxoOrderId = `${orderId}`;

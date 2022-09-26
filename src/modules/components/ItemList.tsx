@@ -75,7 +75,7 @@ export default function ItemList({ items, loading }: Props) {
       </Paragraph>
     );
   };
-  console.log(loading);
+
   return (
     <>
       <Spacer size={30} />

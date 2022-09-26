@@ -1,7 +1,7 @@
 import AppContext from '@/modules/components/AppContext';
 import CategoriesVertical from './CategoriesVertical';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import styled from 'styled-components';
 import {
   EventListener,
@@ -42,6 +42,7 @@ const Description = styled.div`
 export default function BrandList() {
   const { country } = useContext(AppContext);
   const [height, setHeight] = useState(155);
+
   const { data, loading } = useGetBrandsQuery({
     data: {
       country,

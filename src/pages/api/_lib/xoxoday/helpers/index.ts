@@ -26,6 +26,8 @@ export const mapStagingCatToProdCat = (cat: string) => {
       return 'jewelry_lifestyle';
     case 'grocery':
       return 'grocery_and_retail';
+    case 'fashion_lifestyle':
+      return 'apparel_fashion_accessories';
     case 'home_living':
       return 'home_living';
     case 'in_house_benefits':
@@ -712,6 +714,7 @@ export const normalizeItems = (items: Record<string, any>[]) => {
   const normalizedItems = items.map((item) =>
     item.valueDenominations.split(',').map((amount: string) => ({
       amount: +amount,
+      originalPrice: +amount,
       price: {
         amount: +amount,
         currency: item.currencyCode,
@@ -726,6 +729,7 @@ export const normalizeItems = (items: Record<string, any>[]) => {
       }-${amount}`,
       discountRate: item.discount,
       customerDiscountRate: item.discount,
+      sortOrder: 0,
       name: item.name,
       ie: true,
       id: item.productId,

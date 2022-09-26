@@ -24,7 +24,7 @@ type Params<T> = {
   from?: string;
   to: string;
   templateId: string;
-  dynamicTemplateData: T;
+  dynamicTemplateData: T & { [key: string]: any };
   attachments?: any[];
 };
 
@@ -67,6 +67,7 @@ type SendOrder = {
   brandName: string;
   brandLogoUrl: string;
   expiresIn: number;
+  message?: string;
   qrcodes: string[];
 };
 
@@ -74,6 +75,7 @@ export const sendOrder = async ({
   quantity,
   recipientEmail,
   qrcodes,
+  message,
   brandLogoUrl,
   itemImage,
   redemptionInstructions,
@@ -93,6 +95,7 @@ export const sendOrder = async ({
       brandLogoUrl,
       brandName,
       expiresIn,
+      message,
       redemptionInstructions,
       termsAndConditionsInstructions,
       qrcodes: new Array(quantity)

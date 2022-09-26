@@ -8,7 +8,11 @@ import { useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 export default withPageAuthRequired(function Brands() {
-  const { data: brands } = useGetBrandsQuery();
+  const { data: brands } = useGetBrandsQuery({
+    data: {
+      affiliate: true,
+    },
+  });
   const [search, setSearch] = useState('');
 
   return (

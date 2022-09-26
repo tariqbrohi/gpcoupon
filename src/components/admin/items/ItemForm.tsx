@@ -23,7 +23,11 @@ import React, {
 export default function ItemForm({ mode, onSubmit }: Props) {
   const { item, setItem } = useContext(Context);
   const { data: categories } = useGetCategoriesQuery();
-  const { data: brands } = useGetBrandsQuery();
+  const { data: brands } = useGetBrandsQuery({
+    data: {
+      affiliate: true,
+    },
+  });
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: SyntheticEvent) => {
