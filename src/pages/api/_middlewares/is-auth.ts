@@ -23,7 +23,7 @@ export default (
       throw new ForbiddenError();
     }
 
-    if (token !== process.env.GW_SECRET || 'secret') {
+    if (token !== process.env.GW_SECRET) {
       throw new ForbiddenError();
     }
 
