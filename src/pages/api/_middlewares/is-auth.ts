@@ -10,14 +10,9 @@ export default (
   apiHandler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
-    const token = req.headers.authorization?.split('Bearer ')[1];
-    console.log(
-      token,
-      ' not coming ?? ?? ? ? ',
-      req.headers.authorization,
-      ' and ',
-      process.env.GW_SECRET,
-    );
+    const { token } = req.query as any;
+    console.log(token, req.query, ' dasdkajsdlajl jalsdj lasjdl jalj ld');
+
     if (!token) {
       throw new ForbiddenError();
     }
