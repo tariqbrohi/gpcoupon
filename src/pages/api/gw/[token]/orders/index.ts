@@ -5,10 +5,10 @@ import prisma from '@/prisma';
 import QRCode from 'qrcode';
 import randomString from '@/lib/random-string';
 import Stripe from 'stripe';
-import xoxoday from '../../_lib/xoxoday';
+import xoxoday from '../../../_lib/xoxoday';
 import { Prisma } from '@prisma/client';
-import { sendOrder } from '../../_lib/send-email';
-import { stripe } from '../../_lib/stripe';
+import { sendOrder } from '../../../_lib/send-email';
+import { stripe } from '../../../_lib/stripe';
 import { times } from 'lodash';
 import {
   BadRequestError,
