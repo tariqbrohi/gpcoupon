@@ -11,12 +11,18 @@ export default (
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const token = req.headers.authorization?.split('Bearer ')[1];
-
+    console.log(
+      token,
+      ' not coming ?? ?? ? ? ',
+      req.headers.authorization,
+      ' and ',
+      process.env.GW_SECRET,
+    );
     if (!token) {
       throw new ForbiddenError();
     }
 
-    if (token !== 'secret') {
+    if (token !== process.env.GW_SECRET || 'secret') {
       throw new ForbiddenError();
     }
 
