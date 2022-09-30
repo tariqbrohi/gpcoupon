@@ -10,10 +10,6 @@ import xoxoday from '@/pages/api/_lib/xoxoday';
 import { Prisma } from '@prisma/client';
 import { times } from 'lodash';
 import {
-  ORDER_CREATED,
-  OrderCreatedData,
-} from '../../_lib/send-email/templates';
-import {
   BadRequestError,
   ForbiddenError,
   InternalServerError,

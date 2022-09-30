@@ -17,6 +17,31 @@ import {
   UnauthenticatedError,
 } from '@/lib/errors';
 
+const isZeroDecimalCurrency = (currency: string) => {
+  if (
+    currency === 'BIF' ||
+    currency === 'PYG' ||
+    currency === 'CLP' ||
+    currency === 'RWF' ||
+    currency === 'DJF' ||
+    currency === 'UGX' ||
+    currency === 'GNF' ||
+    currency === 'VND' ||
+    currency === 'JPY' ||
+    currency === 'VUV' ||
+    currency === 'KMF' ||
+    currency === 'XAF' ||
+    currency === 'KRW' ||
+    currency === 'XOF' ||
+    currency === 'MGA' ||
+    currency === 'XPF'
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 export default isAuth(
   errorHandler(async function handler(req, res) {
     if (req.method === 'post') {
@@ -28,6 +53,7 @@ export default isAuth(
         slug,
         quantity,
         message,
+        ratedAmount,
         paymentMethodId,
         transactionId,
       } = req.body;
@@ -67,7 +93,7 @@ export default isAuth(
           ? 'GPT'
           : xoxoItem?.price.currency
       )!;
-
+      console.log(currency);
       const totalDiscountRate =
         xoxoItem?.discountRate || dbItem?.discountRate || 0;
       const customerDiscountRate = dbItem?.customerDiscountRate || 0;
@@ -100,14 +126,22 @@ export default isAuth(
 
         try {
           intent = await stripe.paymentIntents.create({
-            amount: amount * 100,
-            currency: 'usd',
+            amount:
+              amount *
+              quantity *
+              (isZeroDecimalCurrency(
+                currency === 'GPT' ? 'USD' : currency.toUpperCase(),
+              )
+                ? 1
+                : 100),
+            currency: currency === 'GPT' ? 'USD' : currency,
             payment_method_types: ['card'],
             customer: customer.stripeId,
             payment_method: paymentMethodId,
             confirm: true,
           });
         } catch (err: any) {
+          console.log(err);
           throw new BadRequestError(err.error?.error);
         }
       }
@@ -119,6 +153,7 @@ export default isAuth(
           productId: +xoxoItem.id,
           quantity,
           denomination: +amount,
+          notifyAdminEmail: 0,
           // todo
           // remove this and implement custom email
           notifyReceiverEmail: 1,
@@ -133,7 +168,7 @@ export default isAuth(
 
         orderId = `${order.orderId}`;
       }
-
+      console.log('move on');
       const data: Prisma.OrderCreateInput = {
         // status: order.orderStatus as any,
         status: 'approved',
@@ -150,13 +185,13 @@ export default isAuth(
             discountRate: +customerDiscountRate,
             totalAmount: price * quantity,
             exchange: {
-              exchangeRate: 1,
+              exchangeRate: ratedAmount / price,
               source: currency,
               target: paymentMethodId ? 'USD' : 'GPT',
             },
             price: {
               amount: price,
-              currency: paymentMethodId ? 'USD' : currency,
+              currency,
             },
           },
         },
