@@ -11,13 +11,6 @@ export default (
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const { token } = req.query as any;
-    console.log(
-      token,
-      req.query,
-      ' dasdkajsdlajl jalsdj lasjdl jalj ld ',
-      process.env.GW_SECRET,
-      token === process.env.GW_SECRET,
-    );
 
     if (!token) {
       throw new ForbiddenError();
