@@ -113,6 +113,7 @@ export const useGetBrandsLazyQuery = (
 export type GetBrandsQueryVariables = {
   country?: string;
   affiliate?: boolean;
+  status?: 'AVAILABLE' | 'ALL';
 };
 export type GetBrandsQueryResult = Brand[];
 
