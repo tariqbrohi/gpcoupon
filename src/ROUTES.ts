@@ -13,6 +13,7 @@ export const ROUTES = {
   confirmAndPay: '/confirm-and-pay',
   occasions: '/occasions',
   paymentCards: '/account/payment-cards',
+  affiliateDashboard: '/affiliateDashboard',
   admin: {
     createItem: '/admin/items/create',
     items: '/admin/items',
