@@ -20,6 +20,8 @@ import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
 import Grid from '@/modules/components/Grid';
 
+// Show all coupons includes brands and affiliate when the user clicks G-Coupon on the Main page header
+
 const Wrapper = styled.div`
   max-width: 100vw;
   overflow-x: auto;
@@ -39,7 +41,7 @@ const Description = styled.div`
   }
 `;
 
-export default function BrandList() {
+export default function GcouponList() {
   const { country } = useContext(AppContext);
   const [height, setHeight] = useState(155);
 
@@ -78,10 +80,26 @@ export default function BrandList() {
         </GuiGrid.Col>
         <Spacer size={15} />
         <GuiGrid.Col flex="1">
-          <Paragraph fontWeight={700} fontSize={22}>
-            {cat?.name || 'All'}
-          </Paragraph>
-          <Spacer size={15} />
+
+          {/* <div style={{display: "flex", alignItems: "center",}}>  
+            <Paragraph fontWeight={700} fontSize={22}>
+              {cat?.name || 'All'}
+            </Paragraph>
+            <Spacer size={15} />
+            <Paragraph fontWeight={700} fontSize={22}>
+              {cat?.name || 'Brands'}
+            </Paragraph>
+            <Spacer size={15} />
+            <Paragraph fontWeight={700} fontSize={22}>
+              {cat?.name || 'Affiliates'}
+            </Paragraph>
+            <Spacer size={15} />
+          </div> */}
+
+            <Paragraph fontWeight={700} fontSize={22}>
+              {cat?.name || 'All'}
+            </Paragraph>
+            <Spacer size={15} />
           <Paragraph fontWeight={500}>
             Total {filteredBrands?.length || 0}
           </Paragraph>

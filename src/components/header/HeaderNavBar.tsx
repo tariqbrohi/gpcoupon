@@ -18,6 +18,13 @@ export default function HeaderNavBar() {
             <a>Affiliates</a>
           </Link>
         </List.Item> */}
+
+        <List.Item>
+          <Link href={ROUTES.gcoupons}>
+            <a>G-Coupons</a>
+          </Link>
+        </List.Item>
+
         <List.Item>
           <Link href={ROUTES.categories}>
             <a>Categories</a>
