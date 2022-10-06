@@ -11,6 +11,7 @@ export default withPageAuthRequired(function Brands() {
   const { data: brands } = useGetBrandsQuery({
     data: {
       affiliate: true,
+      status: 'ALL',
     },
   });
   const [search, setSearch] = useState('');

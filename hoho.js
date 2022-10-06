@@ -32,11 +32,11 @@ const stripe = new Stripe(
 
   // console.log(subscriptionSchedule);
 
-  const subscriptionSchedule = await stripe.subscriptions.update(
-    'sub_1Ljqj5JgNGV1fP5SPRM7mHOe',
-    { cancel_at_period_end: false },
-  );
-  console.log(subscriptionSchedule);
+  // const subscriptionSchedule = await stripe.subscriptions.update(
+  //   'sub_1Ljqj5JgNGV1fP5SPRM7mHOe',
+  //   { cancel_at_period_end: false },
+  // );
+  // console.log(subscriptionSchedule);
 
   // const subscription = await stripe.subscriptions.update(
   //   'sub_1Ljqj5JgNGV1fP5SPRM7mHOe',
@@ -53,21 +53,21 @@ const stripe = new Stripe(
   // );
 
   // console.log(invoice);
-  // const a = await stripe.paymentMethods.create({
-  //   type: 'card',
-  //   card: {
-  //     number: '4246315328750599',
-  //     exp_month: 02,
-  //     exp_year: 2027,
-  //     cvc: '821',
-  //   },
-  // });
+  const a = await stripe.paymentMethods.create({
+    type: 'card',
+    card: {
+      number: '4246315328750599',
+      exp_month: 02,
+      exp_year: 2027,
+      cvc: '821',
+    },
+  });
 
   // console.log(a);
 
-  // const paymentMethod = await stripe.paymentMethods.attach(a.id, {
-  //   customer: 'cus_MSmBxpFS1K7Sgb',
-  // });
+  const paymentMethod = await stripe.paymentMethods.attach(a.id, {
+    customer: 'cus_MWuavsyjH6tVPl',
+  });
 
   // console.log(paymentMethod);
 })();

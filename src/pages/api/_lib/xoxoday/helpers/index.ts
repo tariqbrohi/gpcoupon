@@ -729,6 +729,7 @@ export const normalizeItems = (items: Record<string, any>[]) => {
       }-${amount}`,
       discountRate: item.discount,
       customerDiscountRate: item.discount,
+      currencyCode: item.currencyCode,
       sortOrder: 0,
       name: item.name,
       ie: true,
