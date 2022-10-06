@@ -30,6 +30,11 @@ export default function Avatar(props: DropdownProps) {
     if (data.text === 'Payment methods') {
       Router.push(ROUTES.paymentCards);
     }
+
+    if (data.text === 'My dashboard') {
+      // Router.push();
+      console.log('My Dashboard Clicked');
+    }
   };
 
   return (
@@ -56,6 +61,13 @@ export default function Avatar(props: DropdownProps) {
           text="Payment methods"
           onClick={handleClickDropdownItem}
         />
+        {
+          user?.type === 'BUSINESS' &&
+            <Dropdown.Item
+              text="My dashboard"
+              onClick={handleClickDropdownItem}
+            />
+        }
         <Dropdown.Item text="Logout" onClick={handleClickDropdownItem} />
       </Dropdown.Menu>
     </Dropdown>
