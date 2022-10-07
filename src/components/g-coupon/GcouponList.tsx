@@ -26,10 +26,18 @@ import Link from 'next/link';
 
 const Nav = styled('nav')``;
 
-const NavHeader = styled.a`
+const NavHeader = styled.p`
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: var(--leading-normal);
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    color: #F6A2B1;
+    transform: scale(1.1);
+    text-decoration: underline;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -95,8 +103,8 @@ export default function GcouponList() {
             <List horizontal>
               <List.Item>
                 <Link href={ROUTES.gcoupons}>
-                  <NavHeader>
-                    All
+                  <NavHeader style={{color: "#F6A2B1"}}>
+                    Show All
                   </NavHeader>
                 </Link>
               </List.Item>
