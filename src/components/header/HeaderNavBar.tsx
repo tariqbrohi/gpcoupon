@@ -7,6 +7,15 @@ import AppContext from '@/modules/components/AppContext';
 
 const Nav = styled('nav')``;
 
+const NavListAnchor = styled.a`
+  font-size: 1rem !important;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    color: #F6A2b1;
+  }
+`;
+
 export default function HeaderNavBar() {
   const { country } = useContext(AppContext);
 
@@ -19,9 +28,9 @@ export default function HeaderNavBar() {
           </Link>
         </List.Item> */}
 
-        <List.Item>
+        <List.Item style={{padding: "0"}}>
           <Link href={ROUTES.gcoupons}>
-            <a>Categories</a>
+            <NavListAnchor>Categories</NavListAnchor>
           </Link>
         </List.Item>
 
