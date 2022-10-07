@@ -8,6 +8,7 @@ import {
   Grid as GuiGrid,
   Image,
   ImageList,
+  List,
   Paragraph,
   Ref,
   Skeleton,
@@ -19,6 +20,25 @@ import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import Grid from '@/modules/components/Grid';
 import CategoriesHorizontal from '../brands/CategoriesHorizontal';
+import Link from 'next/link';
+
+// Show affiliate coupons only when the user clicks Affiliate Brands nav
+
+const Nav = styled('nav')``;
+
+const NavHeader = styled.p`
+  font-size: 22px;
+  font-weight: 500;
+  line-height: var(--leading-normal);
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    color: #F6A2B1;
+    transform: scale(1.1);
+    text-decoration: underline;
+  }
+`;
 
 const Wrapper = styled.div`
   max-width: 100vw;
@@ -77,11 +97,45 @@ export default function BrandList() {
           <CategoriesHorizontal cat={cat} setCat={setCat} />
         </GuiGrid.Col>
         <Spacer size={15} />
-        <GuiGrid.Col flex="1">
-          <Paragraph fontWeight={700} fontSize={22}>
+        <GuiGrid.Col flex="1" style={{marginLeft: "40px"}}>
+          <Nav>
+            <List horizontal>
+              <List.Item>
+                <Link href={ROUTES.gcoupons}>
+                  <NavHeader>
+                    Show All
+                  </NavHeader>
+                </Link>
+              </List.Item>
+              <Spacer size={30} />
+    
+              <List.Item>
+                {country === 'US' && (
+                  <Link href={ROUTES.brands}>
+                    <NavHeader>
+                      Big Brands
+                    </NavHeader>
+                  </Link>
+                )}
+              </List.Item>
+              <Spacer size={30} />
+                
+              <List.Item>
+                {country === 'US' && (
+                  <Link href={ROUTES.affiliates}>
+                    <NavHeader style={{color: "#F6A2B1"}}>
+                      Affiliate Brands
+                    </NavHeader>
+                  </Link>
+                )}
+              </List.Item>
+            </List>
+          </Nav>
+
+          {/* <Paragraph fontWeight={700} fontSize={22}>
             {cat?.name || 'All'}
           </Paragraph>
-          <Spacer size={15} />
+          <Spacer size={15} /> */}
           <Paragraph fontWeight={500}>
             Total {filteredBrands?.length || 0}
           </Paragraph>
@@ -183,6 +237,7 @@ export default function BrandList() {
                   </Ref>
                   <Image
                     src={brand.backgroundUrl}
+                    alt='Affiliate'
                     style={{
                       height: `${height}px`,
                     }}
