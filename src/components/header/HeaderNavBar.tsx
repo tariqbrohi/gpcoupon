@@ -9,6 +9,7 @@ const Nav = styled('nav')``;
 
 const NavListAnchor = styled.a`
   font-size: 1rem !important;
+  color: #404040;
   transition: all 0.7s ease-in-out;
 
   &:hover {

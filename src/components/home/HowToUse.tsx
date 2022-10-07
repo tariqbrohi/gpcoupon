@@ -10,11 +10,22 @@ import {
 } from '@growth-ui/react';
 import { isMobile } from 'react-device-detect';
 
+const TitleDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Title = styled(StyledParagraph)`
   font-weight: 600;
   font-size: 14px;
   text-align: center;
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
+  padding: 10px 25px;
+  background-color: #FBD9D8;
+  color: #BF7582;
+  border-radius: 30px;
+  border: none;
 `;
 
 const Description = styled(StyledParagraph)`
@@ -40,9 +51,15 @@ const Feature = styled.li`
   display: inline-block;
   width: ${({ theme }) => theme.size.maxWidth / 3 - 40}px;
   margin: 0 auto;
+  transition: all 0.7s ease-in-out;
 
   ${StyledImage} {
     margin: 0 auto;
+  }
+  
+  &:hover {
+    transform: scale(1.1);
+    cursor: pointer;
   }
 
   ${({ theme }) => theme.gui.media.mobile} {
@@ -84,10 +101,10 @@ const Texts = styled.div`
 
 const features = [
   {
-    imageUrl: '/images/money.png',
-    title: 'Cash back rewards',
+    imageUrl: '/images/global.png',
+    title: 'Global Purchase',
     description:
-      'Earn real cash back when you purchase a big brand G-coupon. Earn some more when you redeem your GCoupon at your designated affiliate business.',
+      'Pay for your Global purchases easily and instantly. Purchase and redeem your GCoupon from anywhere around the world.',
   },
   {
     imageUrl: '/images/gift.png',
@@ -96,10 +113,10 @@ const features = [
       'Find the perfect gift for any special occasion. Purchase a G-Coupon and input your recipients email to send a gift instantly!',
   },
   {
-    imageUrl: '/images/global.png',
-    title: 'Global Purchase',
+    imageUrl: '/images/money.png',
+    title: 'Cash back rewards',
     description:
-      'Pay for your Global purchases easily and instantly. Purchase and redeem your GCoupon from anywhere around the world.',
+      'Earn real cash back when you purchase a big brand G-coupon. Earn some more when you redeem your GCoupon at your designated affiliate business.',
   },
 ];
 
@@ -113,7 +130,12 @@ export default function HowToUse() {
         {features.map(({ imageUrl, title, description }) => (
           <Feature key={title}>
             <Image size="small" src={imageUrl} />
-            <Title>{title}</Title>
+            <TitleDiv>
+              <Title>
+                {title}
+              </Title>
+            </TitleDiv>
+            <Spacer size={15} />
             <Description>{description}</Description>
           </Feature>
         ))}
@@ -135,7 +157,7 @@ export default function HowToUse() {
             }}
           >
             <Image
-              src="/images/Image.png"
+              src="/images/purchase.png"
               size="large"
               style={{ alignSelf: 'end' }}
             />
@@ -165,7 +187,8 @@ export default function HowToUse() {
                 }}
               >
                 <Image
-                  src="/images/GPoint Wallet_Cell_QR_Code 1.png"
+                  // src="/images/GPoint Wallet_Cell_QR_Code 1.png"
+                  src="/images/purchase.png"
                   size="large"
                   style={{ alignSelf: 'flex-start' }}
                 />
@@ -207,7 +230,7 @@ export default function HowToUse() {
                 }}
               >
                 <Image
-                  src="/images/GPoint Wallet_Cell_QR_Code 1.png"
+                  src="/images/redeem.png"
                   size="large"
                   style={{ alignSelf: 'flex-start' }}
                 />
@@ -227,7 +250,7 @@ export default function HowToUse() {
             }}
           >
             <Image
-              src="/images/Cash_Back.png"
+              src="/images/earn.png"
               size="large"
               style={{ alignSelf: 'end' }}
             />
