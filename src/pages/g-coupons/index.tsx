@@ -63,6 +63,7 @@ const Texts = styled.div`
   justify-content: center;
   padding-inline: 50px;
   font-size: 14px;
+  color: #2D126D;
 
   ${({ theme }) => theme.gui.media.mobile} {
     flex-direction: column;
@@ -71,6 +72,18 @@ const Texts = styled.div`
     color: rgba(0, 0, 0, 0.87);
     text-align: center;
     line-height: 1.5;
+  }
+`;
+
+const TextRow = styled.div`
+  display: flex;
+  padding: 50px 0;
+  text-align: center;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    max-width: 180px;
+    flex-direction: column;
+    margin: 0 auto;
   }
 `;
 
@@ -84,12 +97,17 @@ export default function Gcoupons() {
           <Row>
             <Column>
               <Texts>
-                <h2 style={{color: "#2D126D"}}>
+                <h2>
                   Send the perfect gift this fall <br /> and earn cash back on with every purchase!
                 </h2>
                 <Spacer size={50} />
                 <div>
-                  <button style={{padding: "15px 30px", borderRadius: "25px", border: "none", backgroundColor: "#622AF3", color: "#fff"}}>Shop GCoupon</button>
+                  <button style={{
+                    padding: "15px 30px", borderRadius: "25px", border: "none", backgroundColor: "#622AF3", color: "#fff", fontSize: "16px", fontWeight: 600, cursor: "pointer",
+                    }}
+                  >
+                    Shop GCoupon
+                  </button>
                 </div>
               </Texts>
             </Column>
@@ -112,6 +130,20 @@ export default function Gcoupons() {
               </Column>
             </Row>
           </Container> */}
+
+          <TextRow>
+            <Column>
+              <Texts>
+                <h2 style={{fontSize: "36px"}}>
+                  All Coupons
+                </h2>
+                <Spacer size={20} />
+                <p style={{fontSize: "22px"}}>
+                  What would you like to shop?
+                </p>
+              </Texts>
+            </Column>
+          </TextRow>
 
           <Paragraph fontWeight={700} fontSize={26}>
             G-Coupons

@@ -8,6 +8,7 @@ import {
   Grid as GuiGrid,
   Image,
   ImageList,
+  List,
   Paragraph,
   Ref,
   Skeleton,
@@ -19,8 +20,17 @@ import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
 import Grid from '@/modules/components/Grid';
+import Link from 'next/link';
 
 // Show all coupons includes brands and affiliate when the user clicks G-Coupon on the Main page header
+
+const Nav = styled('nav')``;
+
+const NavHeader = styled.a`
+  font-size: 22px;
+  font-weight: 700;
+  line-height: var(--leading-normal);
+`;
 
 const Wrapper = styled.div`
   max-width: 100vw;
@@ -79,27 +89,60 @@ export default function GcouponList() {
           <CategoriesHorizontal cat={cat} setCat={setCat} />
         </GuiGrid.Col>
         <Spacer size={15} />
-        <GuiGrid.Col flex="1">
+        <GuiGrid.Col flex="1" style={{marginLeft: "40px",}}>
+
+          <Nav>
+            <List horizontal>
+              <List.Item>
+                <Link href={ROUTES.gcoupons}>
+                  <NavHeader>
+                    All
+                  </NavHeader>
+                </Link>
+              </List.Item>
+              <Spacer size={30} />
+    
+              <List.Item>
+                {country === 'US' && (
+                  <Link href={ROUTES.brands}>
+                    <NavHeader>
+                      Big Brands
+                    </NavHeader>
+                  </Link>
+                )}
+              </List.Item>
+              <Spacer size={30} />
+                
+              <List.Item>
+                {country === 'US' && (
+                  <Link href={ROUTES.affiliates}>
+                    <NavHeader>
+                      Affiliate Brands
+                    </NavHeader>
+                  </Link>
+                )}
+              </List.Item>
+            </List>
+          </Nav>
 
           {/* <div style={{display: "flex", alignItems: "center",}}>  
             <Paragraph fontWeight={700} fontSize={22}>
               {cat?.name || 'All'}
             </Paragraph>
-            <Spacer size={15} />
+            <Spacer size={50} />
             <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'Brands'}
+              {cat?.name || 'Big Brands'}
             </Paragraph>
-            <Spacer size={15} />
+            <Spacer size={50} />
             <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'Affiliates'}
+              {cat?.name || 'Affiliate Brands'}
             </Paragraph>
-            <Spacer size={15} />
           </div> */}
 
-            <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'All'}
-            </Paragraph>
-            <Spacer size={15} />
+          {/* <Paragraph fontWeight={700} fontSize={22}>
+            {cat?.name || 'All'}
+          </Paragraph>
+          <Spacer size={15} /> */}
           <Paragraph fontWeight={500}>
             Total {filteredBrands?.length || 0}
           </Paragraph>
