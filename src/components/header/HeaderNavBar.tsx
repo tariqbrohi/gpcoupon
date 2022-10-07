@@ -21,11 +21,11 @@ export default function HeaderNavBar() {
 
         <List.Item>
           <Link href={ROUTES.gcoupons}>
-            <a>G-Coupons</a>
+            <a>Categories</a>
           </Link>
         </List.Item>
 
-        <List.Item>
+        {/* <List.Item>
           <Link href={ROUTES.categories}>
             <a>Categories</a>
           </Link>
@@ -43,7 +43,7 @@ export default function HeaderNavBar() {
               <a>Affiliates</a>
             </Link>
           )}
-        </List.Item>
+        </List.Item> */}
       </List>
     </Nav>
   );
