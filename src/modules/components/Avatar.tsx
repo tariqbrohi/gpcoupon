@@ -32,8 +32,7 @@ export default function Avatar(props: DropdownProps) {
     }
 
     if (data.text === 'My dashboard') {
-      // Router.push();
-      console.log('My Dashboard Clicked');
+      Router.push(ROUTES.affiliateDashboard);
     }
   };
 
