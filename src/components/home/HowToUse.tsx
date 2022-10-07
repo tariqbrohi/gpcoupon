@@ -47,6 +47,18 @@ const Wrapper = styled.ul`
   }
 `;
 
+const HowBtn = styled(Button)`
+  background-color: #622AF3;
+  color: #fff;
+  border-radius: 25px;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    background-color: #2D126D;
+  }
+`;
+
 const Feature = styled.li`
   display: inline-block;
   width: ${({ theme }) => theme.size.maxWidth / 3 - 40}px;
@@ -121,9 +133,18 @@ const features = [
 ];
 
 export default function HowToUse() {
+  const scrollToHere = (elementRef: any) => {
+    const refLocation: any = document.getElementById(elementRef)?.offsetTop;
+    window.scrollTo({
+        top: refLocation - 100,
+        behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     console.log('ismobile: ', isMobile);
   }, [isMobile]);
+
   return (
     <section>
       <Wrapper>
@@ -142,12 +163,14 @@ export default function HowToUse() {
       </Wrapper>
       <Spacer size={60} />
       <div style={{ textAlign: 'center' }}>
-        <Button rounded style={{ color: '#fff', background: '#622AF3' }}>
+        <HowBtn rounded
+          onClick={() => scrollToHere('howtouse')}
+        >
           How to use
-        </Button>
+        </HowBtn>
       </div>
       <Spacer size={70} />
-      <Row>
+      <Row id='howtouse'>
         <Column>
           <div
             style={{
