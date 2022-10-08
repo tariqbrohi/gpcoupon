@@ -7,9 +7,10 @@ import CategoryList from '@/components/categories/CategoryList';
 import Head from '@/modules/components/Head';
 import React from 'react';
 import Search from '@/modules/components/Search';
-import { Paragraph, Spacer, StyledHeading } from '@growth-ui/react';
+import { Button, Paragraph, Spacer, StyledHeading } from '@growth-ui/react';
 import BrandList from '@/components/brands/BrandList';
 import styled from 'styled-components';
+import ArrowUp from '@/components/arrowUp';
 
 const Container = styled.div`
   background-image: url(/images/categories/mainbanner.png);
@@ -75,15 +76,21 @@ const Texts = styled.div`
   }
 `;
 
-const BannerBtn = styled.button`
+const BannerBtn = styled(Button)`
   padding: 15px 30px;
   border-radius: 25px;
   border: none;
   background-color: #622AF3;
   color: #fff;
+  box-shadow: -4px 4px 4px 0px #00000040;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    background-color: #2D126D;
+  }
 `;
 
 const TextRow = styled.div`
@@ -99,6 +106,14 @@ const TextRow = styled.div`
 `;
 
 export default function Brands() {
+  const scrollToHere = (elementRef: any) => {
+    const refLocation: any = document.getElementById(elementRef)?.offsetTop;
+    window.scrollTo({
+        top: refLocation - 100,
+        behavior: "smooth",
+    });
+  };
+  
   return (
     <>
       <Head title="GCoupon | Brands" />
@@ -113,7 +128,7 @@ export default function Brands() {
                 </h2>
                 <Spacer size={50} />
                 <div>
-                  <BannerBtn>
+                  <BannerBtn onClick={() => scrollToHere('brands')}>
                     Shop GCoupon
                   </BannerBtn>
                 </div>
@@ -126,7 +141,7 @@ export default function Brands() {
           <TextRow>
             <Column>
               <Texts>
-                <h2 style={{fontSize: "36px"}}>
+                <h2 id='brands' style={{fontSize: "36px"}}>
                   Brands
                 </h2>
                 <Spacer size={20} />
@@ -148,6 +163,8 @@ export default function Brands() {
       </AppMain>
       {/* <AppFooter /> */}
       <AppNav />
+
+      <ArrowUp />
     </>
   );
 }
