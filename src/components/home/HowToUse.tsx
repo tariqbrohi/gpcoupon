@@ -169,7 +169,7 @@ export default function HowToUse() {
           How to use
         </HowBtn>
       </div>
-      <Spacer size={70} />
+      <Spacer size={100} />
       <Row id='howtouse'>
         <Column>
           <div
