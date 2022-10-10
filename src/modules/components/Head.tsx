@@ -10,7 +10,7 @@ export default function Head(props: HeadProps) {
     children,
     description = 'description',
     largeCard = true,
-    title = 'GCoupon',
+    title = 'GPcoupon',
   } = props;
   const router = useRouter();
   const preview = card.startsWith('http') ? card : `${HOST}${card}`;
