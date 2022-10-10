@@ -132,19 +132,19 @@ const features = [
     imageUrl: '/images/global.png',
     title: 'Global Purchase',
     description:
-      'Pay for your Global purchases easily and instantly. Purchase and redeem your GCoupon from anywhere around the world.',
+      'Pay for your Global purchases easily and instantly. Purchase and redeem your GPcoupon from anywhere around the world.',
   },
   {
     imageUrl: '/images/gift.png',
     title: 'Gifts for all occasions',
     description:
-      'Find the perfect gift for any special occasion. Purchase a G-Coupon and input your recipients email to send a gift instantly!',
+      'Find the perfect gift for any special occasion. Purchase a GPcoupon and input your recipients email to send a gift instantly!',
   },
   {
     imageUrl: '/images/money.png',
     title: 'Cash back rewards',
     description:
-      'Earn real cash back when you purchase a big brand G-coupon. Earn some more when you redeem your GCoupon at your designated affiliate business.',
+      'Earn real cash back when you purchase a big brand GPcoupon. Earn some more when you redeem your GPcoupon at your designated affiliate business.',
   },
 ];
 
@@ -208,11 +208,11 @@ export default function HowToUse() {
         </Column>
         <Column>
           <Texts>
-            <h2>1. Purchase your G-Coupon</h2>
+            <h2>1. Purchase your GPcoupon</h2>
             <p>
-              Browse our selection of local businesses to purchase your GCoupon
+              Browse our selection of local businesses to purchase your GPcoupon
               with cash, GPoints or wire transfer. Receive your Coupon code via
-              email and earn cash back rewards with your GCoupon purchase.
+              email and earn cash back rewards with your GPcoupon purchase.
             </p>
           </Texts>
         </Column>
@@ -222,12 +222,12 @@ export default function HowToUse() {
       <RowReverse>
         <Column>
           <Texts>
-            <h2>2. Load & Redeem your G-Coupon</h2>
+            <h2>2. Load & Redeem your GPcoupon</h2>
             <p>
-              Download your GPoint Wallet to load your GPpoint Reloadable
-              coupon. Redeem your affiliate GCoupon at your designated
-              location. Pay for your purchase with your GCoupon by heading
-              to the brands's website and Redeeming your GCoupon online.
+              Download your GPoint Wallet to load your GPoint Reloadable
+              coupon. Redeem your affiliate GPcoupon at your designated
+              location. Pay for your purchase with your GPcoupon by heading
+              to the brands's website and Redeeming your GPcoupon online.
             </p>
           </Texts>
         </Column>
@@ -248,70 +248,6 @@ export default function HowToUse() {
         </Column>
       </RowReverse>
       <Spacer size={100} />
-
-      {/* <Row>
-        {isMobile ? (
-          <>
-            <Column>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}
-              >
-                <Image
-                  // src="/images/GPoint Wallet_Cell_QR_Code 1.png"
-                  src="/images/redeem.png"
-                  size="large"
-                  style={{ alignSelf: 'flex-start' }}
-                />
-              </div>
-            </Column>
-            <Column>
-              <Texts>
-                <h2>2. Load & Redeem your G-Coupon</h2>
-                <p>
-                  Download your GPoint Wallet to load your GPpoint Reloadable
-                  coupon. Redeem your affiliate GCoupon at your designated
-                  location. Pay for your purchase with your GCoupon by heading
-                  to the brands's website and Redeeming your GCoupon online.
-                </p>
-              </Texts>
-            </Column>
-          </>
-        ) : (
-          <>
-            <Column>
-              <Texts>
-                <h2>2. Load & Redeem your G-Coupon</h2>
-                <p>
-                  Download your GPoint Wallet to load your GPpoint Reloadable
-                  coupon. Redeem your affiliate GCoupon at your designated
-                  location. Pay for your purchase with your GCoupon by heading
-                  to the brands's website and Redeeming your GCoupon online.
-                </p>
-              </Texts>
-            </Column>
-            <Column>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                }}
-              >
-                <Image
-                  src="/images/redeem.png"
-                  size="large"
-                  style={{ alignSelf: 'flex-start' }}
-                />
-              </div>
-            </Column>
-          </>
-        )}
-      </Row>
-      <Spacer size={100} /> */}
 
       <Row>
         <Column>
@@ -334,8 +270,8 @@ export default function HowToUse() {
             <h2>3. Earn while you shop</h2>
             <p>
               Shop online or visit your GPoint Affiliate business to redeem your
-              GCoupon. Earn cash back rewards after each and every one of your
-              GCoupon purchases.
+              GPcoupon. Earn cash back rewards after each and every one of your
+              GPcoupon purchases.
             </p>
           </Texts>
         </Column>

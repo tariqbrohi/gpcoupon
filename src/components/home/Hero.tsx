@@ -98,6 +98,7 @@ export default function Hero() {
     //     />
     //   </div>
     // </Container>
+    
     <Container>
       <Row>
         <Column>
@@ -109,7 +110,7 @@ export default function Hero() {
             <Spacer size={20} />
             <p style={{color: "#404040"}}>
               Browse a huge selection of popular brands or shop local with
-              GPoint Affiliate brands. Buy a GCoupon and earn cash back rewards
+              GPoint Affiliate brands. Buy a GPcoupon and earn cash back rewards
               every time you shop.
             </p>
           </Texts>
