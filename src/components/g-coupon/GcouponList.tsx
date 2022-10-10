@@ -1,5 +1,5 @@
 import AppContext from '@/modules/components/AppContext';
-import CategoriesVertical from '../brands/CategoriesVertical';
+import CategoriesVertical from './CategoriesVertical';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import styled from 'styled-components';
@@ -15,14 +15,14 @@ import {
   Spacer,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetAffiliatesQuery, useGetBrandsQuery } from '@/services';
+import { useGetBrandsQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
+import CategoriesHorizontal from './CategoriesHorizontal';
 import Grid from '@/modules/components/Grid';
-import CategoriesHorizontal from '../brands/CategoriesHorizontal';
 import Link from 'next/link';
 
-// Show affiliate coupons only when the user clicks Affiliate Brands nav
+// Show all coupons includes brands and affiliate when the user clicks G-Coupon on the Main page header
 
 const Nav = styled('nav')``;
 
@@ -59,11 +59,11 @@ const Description = styled.div`
   }
 `;
 
-export default function BrandList() {
+export default function GcouponList() {
   const { country } = useContext(AppContext);
   const [height, setHeight] = useState(155);
 
-  const { data, loading } = useGetAffiliatesQuery({
+  const { data, loading } = useGetBrandsQuery({
     data: {
       country,
     },
@@ -97,12 +97,13 @@ export default function BrandList() {
           <CategoriesHorizontal cat={cat} setCat={setCat} />
         </GuiGrid.Col>
         <Spacer size={15} />
-        <GuiGrid.Col flex="1" style={{marginLeft: "40px"}}>
+        <GuiGrid.Col flex="1" style={{marginLeft: "40px",}}>
+
           <Nav>
             <List horizontal>
               <List.Item>
                 <Link href={ROUTES.gcoupons}>
-                  <NavHeader>
+                  <NavHeader style={{color: "#F6A2B1"}}>
                     Show All
                   </NavHeader>
                 </Link>
@@ -123,7 +124,7 @@ export default function BrandList() {
               <List.Item>
                 {country === 'US' && (
                   <Link href={ROUTES.affiliates}>
-                    <NavHeader style={{color: "#F6A2B1"}}>
+                    <NavHeader>
                       Affiliate Brands
                     </NavHeader>
                   </Link>
@@ -131,6 +132,20 @@ export default function BrandList() {
               </List.Item>
             </List>
           </Nav>
+
+          {/* <div style={{display: "flex", alignItems: "center",}}>  
+            <Paragraph fontWeight={700} fontSize={22}>
+              {cat?.name || 'All'}
+            </Paragraph>
+            <Spacer size={50} />
+            <Paragraph fontWeight={700} fontSize={22}>
+              {cat?.name || 'Big Brands'}
+            </Paragraph>
+            <Spacer size={50} />
+            <Paragraph fontWeight={700} fontSize={22}>
+              {cat?.name || 'Affiliate Brands'}
+            </Paragraph>
+          </div> */}
 
           {/* <Paragraph fontWeight={700} fontSize={22}>
             {cat?.name || 'All'}
@@ -224,9 +239,7 @@ export default function BrandList() {
               {filteredBrands?.map((brand) => (
                 <ImageList.Item
                   key={brand.id}
-                  onClick={() =>
-                    Router.push(`${ROUTES.affiliates}/${brand.slug}`)
-                  }
+                  onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
                   style={{ cursor: 'pointer' }}
                 >
                   <Ref innerRef={ref}>
@@ -237,7 +250,7 @@ export default function BrandList() {
                   </Ref>
                   <Image
                     src={brand.backgroundUrl}
-                    alt='Affiliate'
+                    alt='Brands'
                     style={{
                       height: `${height}px`,
                     }}

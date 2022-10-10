@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Avatar from '@/modules/components/Avatar';
 import HeaderLanguageSelector from '@/components/header/HeaderLanguageSelector';
 import HeaderNavBar from '@/components/header/HeaderNavBar';
@@ -42,6 +43,27 @@ const Header = styled('header')<Props>`
   }
 `;
 
+const LoginButton = styled.a`
+  font-size: 1rem !important;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    color: #F6A2b1;
+  }
+`;
+
+const SignUpButton = styled(Button)`
+  background-color: #F6A2B1;
+  color: #fff;
+  border-radius: 25px;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    background-color: #2D126D;
+  }
+`;
+
 export default function AppHeader({
   hideOnMobile = true,
   bgTransition = false,
@@ -80,8 +102,9 @@ export default function AppHeader({
             <Link href="/">
               <a>
                 <img
-                  src="/images/gpoint-black-logo.png"
-                  style={{ width: '85px' }}
+                  src="/images/logo_with_rich.png"
+                  alt='GPoint Coupon with Rich'
+                  style={{ width: '140px' }}
                 />
               </a>
             </Link>
@@ -98,16 +121,16 @@ export default function AppHeader({
             {!user && (
               <>
                 <Link href="/login">
-                  <a>Login</a>
+                  <LoginButton>Login</LoginButton>
                 </Link>
                 <Spacer size={20} />
-                <Button
+                <SignUpButton
                   onClick={() => {
-                    window.open('https://gpointwallet.com');
+                    window.open('https://gpointwallet.com/account/signup');
                   }}
                 >
                   Signup
-                </Button>
+                </SignUpButton>
               </>
             )}
           </Grid.Row>

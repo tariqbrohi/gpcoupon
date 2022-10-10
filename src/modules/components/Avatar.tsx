@@ -9,6 +9,15 @@ import {
   Image,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
+import styled from 'styled-components';
+
+const AvatarImage = styled(Image)`
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    transform: scale(1.3);
+  }
+`;
 
 export default function Avatar(props: DropdownProps) {
   const { user } = useUser();
@@ -43,7 +52,7 @@ export default function Avatar(props: DropdownProps) {
       space
       direction="right"
       trigger={
-        <Image
+        <AvatarImage
           rounded
           alt="profile"
           size="mini"

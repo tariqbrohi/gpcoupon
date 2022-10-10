@@ -98,18 +98,19 @@ export default function Hero() {
     //     />
     //   </div>
     // </Container>
+    
     <Container>
       <Row>
         <Column>
           <Texts>
-            <h2>
+            <h2 style={{color: "#2D126D"}}>
               Celebrate special moments and earn real cash back on every
               purchase, anywhere around the world.
             </h2>
             <Spacer size={20} />
-            <p>
+            <p style={{color: "#404040"}}>
               Browse a huge selection of popular brands or shop local with
-              GPoint Affiliate brands. Buy a GCoupon and earn cash back rewards
+              GPoint Affiliate brands. Buy a GPcoupon and earn cash back rewards
               every time you shop.
             </p>
           </Texts>
