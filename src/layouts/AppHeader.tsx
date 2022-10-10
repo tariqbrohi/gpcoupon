@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Avatar from '@/modules/components/Avatar';
 import HeaderLanguageSelector from '@/components/header/HeaderLanguageSelector';
 import HeaderNavBar from '@/components/header/HeaderNavBar';
