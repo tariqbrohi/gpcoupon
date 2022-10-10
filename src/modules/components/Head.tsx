@@ -10,7 +10,7 @@ export default function Head(props: HeadProps) {
     children,
     description = 'description',
     largeCard = true,
-    title = 'GCoupon',
+    title = 'GPcoupon',
   } = props;
   const router = useRouter();
   const preview = card.startsWith('http') ? card : `${HOST}${card}`;
@@ -40,7 +40,7 @@ export default function Head(props: HeadProps) {
       <meta property="og:ttl" content="604800" />
       {/* #major-version-switch */}
       <meta name="docsearch:version" content="master" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
       {children}
     </NextHead>
   );
