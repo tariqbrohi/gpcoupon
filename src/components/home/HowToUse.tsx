@@ -70,7 +70,7 @@ const Feature = styled.li`
   }
   
   &:hover {
-    transform: scale(1.1);
+    box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
     cursor: pointer;
   }
 
@@ -83,17 +83,31 @@ const Feature = styled.li`
 const Container = styled.div`
   display: flex;
 `;
+
 const Row = styled.div`
   display: flex;
+
   ${({ theme }) => theme.gui.media.mobile} {
     max-width: 180px;
     flex-direction: column;
     margin: 0 auto;
   }
 `;
+
+const RowReverse = styled.div`
+  display: flex;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    max-width: 180px;
+    flex-direction: column-reverse;
+    margin: 0 auto;
+  }
+`;
+
 const Column = styled.div`
   flex: 50%;
 `;
+
 const Texts = styled.div`
   height: 100%;
   display: flex;
@@ -101,6 +115,7 @@ const Texts = styled.div`
   justify-content: center;
   padding-inline: 50px;
   font-size: 14px;
+
   ${({ theme }) => theme.gui.media.mobile} {
     flex-direction: column;
     padding-inline: 0;
@@ -143,6 +158,7 @@ export default function HowToUse() {
 
   useEffect(() => {
     console.log('ismobile: ', isMobile);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
   return (
@@ -157,7 +173,9 @@ export default function HowToUse() {
               </Title>
             </TitleDiv>
             <Spacer size={15} />
-            <Description>{description}</Description>
+            <Description>
+              {description}
+            </Description>
           </Feature>
         ))}
       </Wrapper>
@@ -198,7 +216,38 @@ export default function HowToUse() {
         </Column>
       </Row>
       <Spacer size={100} />
-      <Row>
+
+      <RowReverse>
+        <Column>
+          <Texts>
+            <h2>2. Load & Redeem your G-Coupon</h2>
+            <p>
+              Download your GPoint Wallet to load your GPpoint Reloadable
+              coupon. Redeem your affiliate GCoupon at your designated
+              location. Pay for your purchase with your GCoupon by heading
+              to the brands's website and Redeeming your GCoupon online.
+            </p>
+          </Texts>
+        </Column>
+        <Column>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}
+          >
+            <Image
+              src="/images/redeem.png"
+              size="large"
+              style={{ alignSelf: 'flex-start' }}
+            />
+          </div>
+        </Column>
+      </RowReverse>
+      <Spacer size={100} />
+
+      {/* <Row>
         {isMobile ? (
           <>
             <Column>
@@ -211,7 +260,7 @@ export default function HowToUse() {
               >
                 <Image
                   // src="/images/GPoint Wallet_Cell_QR_Code 1.png"
-                  src="/images/purchase.png"
+                  src="/images/redeem.png"
                   size="large"
                   style={{ alignSelf: 'flex-start' }}
                 />
@@ -227,7 +276,6 @@ export default function HowToUse() {
                   to the brands's website and Redeeming your GCoupon online.
                 </p>
               </Texts>
-              {/* </div> */}
             </Column>
           </>
         ) : (
@@ -242,7 +290,6 @@ export default function HowToUse() {
                   to the brands's website and Redeeming your GCoupon online.
                 </p>
               </Texts>
-              {/* </div> */}
             </Column>
             <Column>
               <div
@@ -262,7 +309,8 @@ export default function HowToUse() {
           </>
         )}
       </Row>
-      <Spacer size={100} />
+      <Spacer size={100} /> */}
+      
       <Row>
         <Column>
           <div
