@@ -97,10 +97,13 @@ export default function GcouponList() {
           <CategoriesHorizontal cat={cat} setCat={setCat} />
         </GuiGrid.Col>
         <Spacer size={15} />
-        <GuiGrid.Col flex="1" style={{marginLeft: "40px",}}>
 
+        <GuiGrid.Col flex="1" style={{marginLeft: "40px", overflow: "auto"}}>
           <Nav>
-            <List horizontal>
+            <List 
+              horizontal 
+              style={{flexWrap: "nowrap", justifyContent: "center",}}
+            >
               <List.Item>
                 <Link href={ROUTES.gcoupons}>
                   <NavHeader style={{color: "#F6A2B1"}}>

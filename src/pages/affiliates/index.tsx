@@ -7,10 +7,9 @@ import CategoryList from '@/components/categories/CategoryList';
 import Head from '@/modules/components/Head';
 import React from 'react';
 import Search from '@/modules/components/Search';
-import { Button, Paragraph, Spacer, StyledHeading } from '@growth-ui/react';
+import { Paragraph, Spacer, StyledHeading } from '@growth-ui/react';
 import AffiliateList from '@/components/affiliates/AffiliateList';
 import styled from 'styled-components';
-import ArrowUp from '@/components/arrowUp';
 
 const Container = styled.div`
   background-image: url(/images/categories/mainbanner.png);
@@ -76,7 +75,7 @@ const Texts = styled.div`
   }
 `;
 
-const BannerBtn = styled(Button)`
+const BannerBtn = styled.button`
   padding: 15px 30px;
   border-radius: 25px;
   border: none;
@@ -99,9 +98,10 @@ const TextRow = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.gui.media.mobile} {
-    max-width: 180px;
+    max-width: 250px;
     flex-direction: column;
     margin: 0 auto;
+    padding: 30px 0 40px;
   }
 `;
 
@@ -113,10 +113,10 @@ export default function Brands() {
         behavior: "smooth",
     });
   };
-
+  
   return (
     <>
-      <Head title="GCoupon | Affiliates" />
+      <Head title="GPcoupon | Affiliates" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <Container>
@@ -129,7 +129,7 @@ export default function Brands() {
                 <Spacer size={50} />
                 <div>
                   <BannerBtn onClick={() => scrollToHere('affiliates')}>
-                    Shop GCoupon
+                    Shop GPcoupon
                   </BannerBtn>
                 </div>
               </Texts>
@@ -163,8 +163,6 @@ export default function Brands() {
       </AppMain>
       {/* <AppFooter /> */}
       <AppNav />
-
-      <ArrowUp />
     </>
   );
 }

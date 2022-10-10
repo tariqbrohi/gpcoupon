@@ -99,9 +99,10 @@ const TextRow = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.gui.media.mobile} {
-    max-width: 180px;
+    max-width: 250px;
     flex-direction: column;
     margin: 0 auto;
+    padding: 30px 0 40px;
   }
 `;
 
@@ -116,7 +117,7 @@ export default function Gcoupons() {
 
   return (
     <>
-      <Head title="GCoupon | G-Coupons" />
+      <Head title="GPcoupon | GPcoupons" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <Container>
@@ -129,7 +130,7 @@ export default function Gcoupons() {
                 <Spacer size={50} />
                 <div>
                   <BannerBtn onClick={() => scrollToHere('allCoupons')}>
-                    Shop GCoupon
+                    Shop GPcoupon
                   </BannerBtn>
                 </div>
               </Texts>
