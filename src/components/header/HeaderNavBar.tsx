@@ -14,6 +14,7 @@ const NavListAnchor = styled.a`
 
   &:hover {
     color: #F6A2b1;
+    text-decoration: underline;
   }
 `;
 

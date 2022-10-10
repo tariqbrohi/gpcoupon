@@ -44,7 +44,7 @@ const Header = styled('header')<Props>`
 
 const LoginButton = styled.a`
   font-size: 1rem !important;
-  transition: all 0.7s ease-in-out;
+  transition: all 0.4s ease-in-out;
 
   &:hover {
     color: #F6A2b1;

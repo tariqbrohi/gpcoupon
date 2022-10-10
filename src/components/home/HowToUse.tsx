@@ -41,7 +41,7 @@ const Wrapper = styled.ul`
   justify-content: space-between;
 
   ${({ theme }) => theme.gui.media.mobile} {
-    max-width: 180px;
+    max-width: 250px;
     flex-direction: column;
     margin: 0 auto;
   }
@@ -64,6 +64,7 @@ const Feature = styled.li`
   width: ${({ theme }) => theme.size.maxWidth / 3 - 40}px;
   margin: 0 auto;
   transition: all 0.7s ease-in-out;
+  padding: 10px;
 
   ${StyledImage} {
     margin: 0 auto;
@@ -188,6 +189,7 @@ export default function HowToUse() {
         </HowBtn>
       </div>
       <Spacer size={100} />
+
       <Row id='howtouse'>
         <Column>
           <div
@@ -310,7 +312,7 @@ export default function HowToUse() {
         )}
       </Row>
       <Spacer size={100} /> */}
-      
+
       <Row>
         <Column>
           <div
