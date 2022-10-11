@@ -24,7 +24,13 @@ export default function HomeContent() {
       {/* <Search /> */}
       <Spacer size={15} />
       <Grid.Row>
-        <Link href={ROUTES.categories}>
+        <Link href={ROUTES.gcoupons}>
+          <a>
+            <Chip text="Categories" />
+          </a>
+        </Link>
+        <Spacer size={10} />
+        {/* <Link href={ROUTES.categories}>
           <a>
             <Chip text="Categories" />
           </a>
@@ -34,7 +40,7 @@ export default function HomeContent() {
           <a>
             <Chip text="Brands" />
           </a>
-        </Link>
+        </Link> */}
       </Grid.Row>
     </Container>
   );

@@ -13,6 +13,18 @@ import {
   Snackbar,
   Spacer,
 } from '@growth-ui/react';
+import { styled } from '@mui/material';
+
+const LoginBtn = styled(ThemeButton)`
+  background-color: #F6A2B1 !important;
+  color: #fff;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    background-color: #2D126D !important;
+  }
+`;
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -59,7 +71,7 @@ export default function Login() {
             <Grid.Row>
               <Link href="/">
                 <a>
-                  <Image size="tiny" src="/images/gpoint-black-logo.png" />
+                  <Image size="small" src="/images/logo_with_rich.png" alt="GPoint Coupon with Rich" />
                 </a>
               </Link>
             </Grid.Row>
@@ -88,9 +100,9 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <ThemeButton fluid loading={loading}>
+                <LoginBtn fluid loading={loading}>
                   Login
-                </ThemeButton>
+                </LoginBtn>
               </Form>
             </div>
           </Grid.Col>

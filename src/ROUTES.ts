@@ -3,6 +3,7 @@ export const ROUTES = {
   logout: '/api/auth/logout',
   item: '/item',
   search: '/search',
+  gcoupons: '/g-coupons',
   brands: '/brands',
   categories: '/categories',
   affiliates: '/affiliates',
