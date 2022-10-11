@@ -8,7 +8,7 @@ import Head from '@/modules/components/Head';
 import React from 'react';
 import Search from '@/modules/components/Search';
 import { Paragraph, Spacer, StyledHeading } from '@growth-ui/react';
-import BrandList from '@/components/brands/BrandList';
+import GcouponList from '@/components/g-coupon/GcouponList';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -75,17 +75,6 @@ const Texts = styled.div`
   }
 `;
 
-const BannerBtn = styled.button`
-  padding: 15px 30px;
-  border-radius: 25px;
-  border: none;
-  background-color: #622AF3;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-`;
-
 const TextRow = styled.div`
   display: flex;
   padding: 50px 0;
@@ -98,10 +87,10 @@ const TextRow = styled.div`
   }
 `;
 
-export default function Brands() {
+export default function Gcoupons() {
   return (
     <>
-      <Head title="GCoupon | Brands" />
+      <Head title="GCoupon | G-Coupons" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <Container>
@@ -113,9 +102,12 @@ export default function Brands() {
                 </h2>
                 <Spacer size={50} />
                 <div>
-                  <BannerBtn>
+                  <button style={{
+                    padding: "15px 30px", borderRadius: "25px", border: "none", backgroundColor: "#622AF3", color: "#fff", fontSize: "16px", fontWeight: 600, cursor: "pointer",
+                    }}
+                  >
                     Shop GCoupon
-                  </BannerBtn>
+                  </button>
                 </div>
               </Texts>
             </Column>
@@ -123,11 +115,27 @@ export default function Brands() {
         </Container>
 
         <AppContainer>
+          {/* <Container>
+            <Row>
+              <Column>
+                <Texts>
+                  <h2 style={{width: "50%"}}>
+                    Send the perfect gift this fall and earn cash back on with every purchase!
+                  </h2>
+                  <Spacer size={20} />
+                  <div>
+                    <button>Shop GCoupon</button>
+                  </div>
+                </Texts>
+              </Column>
+            </Row>
+          </Container> */}
+
           <TextRow>
             <Column>
               <Texts>
                 <h2 style={{fontSize: "36px"}}>
-                  Brands
+                  All Coupons
                 </h2>
                 <Spacer size={20} />
                 <p style={{fontSize: "22px"}}>
@@ -138,11 +146,11 @@ export default function Brands() {
           </TextRow>
 
           <Paragraph fontWeight={700} fontSize={26}>
-            Brands
+            G-Coupons
           </Paragraph>
           {/* <Search hideOnDesktop /> */}
           <Spacer size={30} />
-          <BrandList />
+          <GcouponList />
           <Spacer size={50} />
         </AppContainer>
       </AppMain>
