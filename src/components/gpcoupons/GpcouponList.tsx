@@ -105,7 +105,7 @@ export default function GcouponList() {
               style={{flexWrap: "nowrap", justifyContent: "center",}}
             >
               <List.Item>
-                <Link href={ROUTES.gcoupons}>
+                <Link href={ROUTES.gpcoupons}>
                   <NavHeader style={{color: "#F6A2B1"}}>
                     Show All
                   </NavHeader>

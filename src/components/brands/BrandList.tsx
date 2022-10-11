@@ -105,7 +105,7 @@ export default function BrandList() {
               style={{flexWrap: "nowrap", justifyContent: "center",}}
             >
               <List.Item>
-                <Link href={ROUTES.gcoupons}>
+                <Link href={ROUTES.gpcoupons}>
                   <NavHeader>
                     Show All
                   </NavHeader>

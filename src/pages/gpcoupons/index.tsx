@@ -8,7 +8,7 @@ import Head from '@/modules/components/Head';
 import React from 'react';
 import Search from '@/modules/components/Search';
 import { Button, Paragraph, Spacer, StyledHeading } from '@growth-ui/react';
-import GcouponList from '@/components/g-coupon/GcouponList';
+import GcouponList from '@/components/gpcoupons/GpcouponList';
 import styled from 'styled-components';
 import ArrowUp from '@/components/arrowUp';
 
@@ -170,7 +170,7 @@ export default function Gcoupons() {
           </TextRow>
 
           <Paragraph fontWeight={700} fontSize={26}>
-            G-Coupons
+            GPcoupons
           </Paragraph>
           {/* <Search hideOnDesktop /> */}
           <Spacer size={30} />
