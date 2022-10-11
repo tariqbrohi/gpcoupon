@@ -4,6 +4,7 @@ import { AppContext, AppInitialProps } from 'next/app';
 import { parseCookies } from '@/lib/parse-cookies';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { Paragraph, Spacer } from '@growth-ui/react';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 type AppProps = AppInitialProps & {
   cookies: Record<string, string>;

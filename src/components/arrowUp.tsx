@@ -28,8 +28,8 @@ export default function ArrowUp() {
 
   const ArrowIcon = styled.i`
     position: relative;
-    bottom: 11px;
-    left: 8.5px;
+    bottom: 10px;
+    left: 11px;
     font-size: 36px !important;
   `;
 
@@ -58,7 +58,7 @@ export default function ArrowUp() {
   return (
     <>
     <ArrowBtn ref={ref}>
-      <ArrowIcon className='fa fa-arrow-up' aria-hidden='true' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
+      <ArrowIcon className='fa-solid fa-arrow-up' aria-hidden='true' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
     </ArrowBtn>
     </>
   )
