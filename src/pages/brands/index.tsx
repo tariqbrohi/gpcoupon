@@ -10,7 +10,6 @@ import Search from '@/modules/components/Search';
 import { Button, Paragraph, Spacer, StyledHeading } from '@growth-ui/react';
 import BrandList from '@/components/brands/BrandList';
 import styled from 'styled-components';
-import ArrowUp from '@/components/arrowUp';
 
 const Container = styled.div`
   background-image: url(/images/categories/mainbanner.png);
@@ -164,8 +163,6 @@ export default function Brands() {
       </AppMain>
       {/* <AppFooter /> */}
       <AppNav />
-
-      <ArrowUp />
     </>
   );
 }
