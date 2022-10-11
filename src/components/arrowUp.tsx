@@ -20,28 +20,10 @@ export default function ArrowUp() {
       color: #F3C4CE;
     }
 
-<<<<<<< HEAD
-    // ${({ theme }) => theme.media.s} {
-    //   & {
-    //     right: 30px;
-    //     bottom: 30px;
-    //   }
-    // }
-
-    // ${({ theme }) => theme.media.xs} {
-    //   & {
-    //     right: 15px;
-    //     bottom: 15px;
-    //     width: 40px;
-    //     height: 40px;
-    //   }
-    // }
-=======
     ${({ theme }) => theme.gui.media.mobile} {
       right: 20px;
       bottom: 100px;
     }
->>>>>>> test
   `;
 
   const ArrowIcon = styled.i`
@@ -49,17 +31,6 @@ export default function ArrowUp() {
     bottom: 11px;
     left: 8.5px;
     font-size: 36px !important;
-<<<<<<< HEAD
-
-    // ${({ theme }) => theme.media.xs} {
-    //   & {
-    //     font-size: 30px !important;
-    //     top: -18px;
-    //     left: 6px;
-    //   }
-    // }
-=======
->>>>>>> test
   `;
 
   const ref = useRef<HTMLDivElement>(null);
