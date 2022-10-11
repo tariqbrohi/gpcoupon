@@ -98,7 +98,7 @@ export default function GcouponList() {
         </GuiGrid.Col>
         <Spacer size={15} />
 
-        <GuiGrid.Col flex="1" style={{marginLeft: "40px", overflow: "auto"}}>
+        <GuiGrid.Col flex="1" style={{marginLeft: "20px", paddingLeft: "20px", overflow: "auto"}}>
           <Nav>
             <List 
               horizontal 
