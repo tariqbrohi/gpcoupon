@@ -148,6 +148,41 @@ export type GetAffiliateItemsQueryResult = Brand & {
 };
 
 /**
+ * GetAffiliateItemsForDashboard(accountId)
+ */
+export const useGetAffiliateItemsForDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
+) => {
+  return useQuery<
+  GetAffiliateItemsForDashboardQueryVariables,
+  GetAffiliateItemsForDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/items', baseOptions);
+};
+export const useGetAffiliateItemsForDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
+) => {
+  return useLazyQuery<
+  GetAffiliateItemsForDashboardQueryVariables,
+  GetAffiliateItemsForDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/items', baseOptions);
+};
+export type GetAffiliateItemsForDashboardQueryVariables = {
+  country?: string;
+  take?: number;
+  skip?: number;
+  sub: string;
+  sortBy?: string;
+};
+export type GetAffiliateItemsForDashboardQueryResult = Brand & {
+  total: {
+    count: number,
+    discount_sum: number
+  };
+  items: Item[];
+};
+
+
+/**
  * GetBrands
  */
 export const useGetBrandsQuery = (

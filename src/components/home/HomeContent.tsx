@@ -24,7 +24,7 @@ export default function HomeContent() {
       {/* <Search /> */}
       <Spacer size={15} />
       <Grid.Row>
-        <Link href={ROUTES.gcoupons}>
+        <Link href={ROUTES.gpcoupons}>
           <a>
             <Chip text="Categories" />
           </a>

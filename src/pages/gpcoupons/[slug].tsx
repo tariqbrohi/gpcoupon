@@ -4,7 +4,7 @@ import AppMain from '@/layouts/AppMain';
 import AppNav from '@/layouts/AppNav';
 import React from 'react';
 import { Spacer } from '@growth-ui/react';
-import CouponItemList from '@/components/g-coupon/ItemList';
+import CouponItemList from '@/components/gpcoupons/ItemList';
 
 export default function Gcoupon() {
   return (

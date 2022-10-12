@@ -11,7 +11,7 @@ export default function SearchPage() {
 
   return (
     <>
-      <Head title="GCoupon | Search" />
+      <Head title="GPcoupon | Search" />
       <main>
         <Padding all={1}>
           <SearchForm search={search} />

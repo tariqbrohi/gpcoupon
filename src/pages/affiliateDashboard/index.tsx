@@ -9,15 +9,13 @@ import CategoryList from '@/components/categories/CategoryList';
 import Head from '@/modules/components/Head';
 import Search from '@/modules/components/Search';
 import { Paragraph, Spacer } from '@growth-ui/react';
-// import BrandList from '@/components/brands/BrandList';
-// import DashboardList from '@/components/affiliateDashboard/DashboardList';
 import CouponList from '@/components/affiliateDashboard/CouponList';
 // import { useGetAffiliateItemsForDashboardQuery, useGetAffiliateItemsForDashboardLazyQuery} from '@/services';
 
-const TAKE = 10;
+// const TAKE = 10;
 
 export default function AffiliateDashboard() {
-  const { user, country } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const [ sortBy, setSortBy ] = useState('createdAt,desc');
   // const [ query, { data, loading }] = useGetAffiliateItemsForDashboardLazyQuery({});
 
@@ -25,9 +23,10 @@ export default function AffiliateDashboard() {
   //   if (user !== null) {
   //     query({
   //       data: {
-  //         country, 
+  //         take: TAKE,
   //         sub: user!.id,
   //         sortBy,
+  //         skip: 0,
   //       }
   //     });
   //   }

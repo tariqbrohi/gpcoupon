@@ -81,9 +81,15 @@ const BannerBtn = styled.button`
   border: none;
   background-color: #622AF3;
   color: #fff;
+  box-shadow: -4px 4px 4px 0px #00000040;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    background-color: #2D126D;
+  }
 `;
 
 const TextRow = styled.div`
@@ -92,16 +98,25 @@ const TextRow = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.gui.media.mobile} {
-    max-width: 180px;
+    max-width: 250px;
     flex-direction: column;
     margin: 0 auto;
+    padding: 30px 0 40px;
   }
 `;
 
 export default function Brands() {
+  const scrollToHere = (elementRef: any) => {
+    const refLocation: any = document.getElementById(elementRef)?.offsetTop;
+    window.scrollTo({
+        top: refLocation - 100,
+        behavior: "smooth",
+    });
+  };
+  
   return (
     <>
-      <Head title="GCoupon | Affiliates" />
+      <Head title="GPcoupon | Affiliates" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <Container>
@@ -113,8 +128,8 @@ export default function Brands() {
                 </h2>
                 <Spacer size={50} />
                 <div>
-                  <BannerBtn>
-                    Shop GCoupon
+                  <BannerBtn onClick={() => scrollToHere('affiliates')}>
+                    Shop GPcoupon
                   </BannerBtn>
                 </div>
               </Texts>
@@ -126,7 +141,7 @@ export default function Brands() {
           <TextRow>
             <Column>
               <Texts>
-                <h2 style={{fontSize: "36px"}}>
+                <h2 id='affiliates' style={{fontSize: "36px"}}>
                   Affiliates
                 </h2>
                 <Spacer size={20} />

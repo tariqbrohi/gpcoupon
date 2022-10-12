@@ -13,7 +13,6 @@ import TopBrands from '@/components/home/TopBrands';
 import { Spacer } from '@growth-ui/react';
 import { useContext } from 'react';
 import GPoints from '@/components/gpoints';
-import ArrowUp from '@/components/arrowUp';
 import styled from 'styled-components';
 
 const MobileNoSpacer = styled(Spacer)`
@@ -49,13 +48,11 @@ export default function Home() {
             <Spacer size={50} />
 
             <HowToUse />
-            <Spacer size={130} />
+            <MobileNoSpacer size={130} />
           </Section>
         </AppContainer>
       </AppMain>
       <AppNav />
-
-      <ArrowUp />
     </>
   );
 }
