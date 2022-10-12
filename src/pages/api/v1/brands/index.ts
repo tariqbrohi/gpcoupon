@@ -17,7 +17,7 @@ export default errorHandler(async function handler(req, res) {
 
   let where: Record<string, any> = {
     status,
-    ...(affiliate === 'true' ? { affiliate: true } : {}),
+    ...(affiliate === 'true' ? { affiliate: true } : { affiliate: false }),
   };
 
   if (status === 'ALL') {
