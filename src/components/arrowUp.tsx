@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { Icon } from "@growth-ui/react";
 
 export default function ArrowUp() {
   const ArrowBtn = styled.div`
@@ -10,15 +11,15 @@ export default function ArrowUp() {
     height: 50px;
     font-size: 50px;
     background-color: #F6F6F6;
-    color: #2D126D;
+    // color: #2D126D;
     border-radius: 50%;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.4s ease-in;
+    // transition: all 0.4s ease-in;
 
-    &:hover {
-      color: #F3C4CE;
-    }
+    // &:hover {
+    //   color: #F3C4CE;
+    // }
 
     ${({ theme }) => theme.gui.media.mobile} {
       right: 20px;
@@ -26,11 +27,16 @@ export default function ArrowUp() {
     }
   `;
 
-  const ArrowIcon = styled.i`
+  const ArrowIcon = styled(Icon)`
     position: relative;
-    bottom: 10px;
-    left: 11px;
-    font-size: 36px !important;
+    width: 50px;
+    height: auto;
+    color: #2D126D;
+    transition: all 0.4s ease-in;
+
+    &:hover {
+      color: #F3C4CE;
+    }
   `;
 
   const ref = useRef<HTMLDivElement>(null);
@@ -58,7 +64,7 @@ export default function ArrowUp() {
   return (
     <>
     <ArrowBtn ref={ref}>
-      <ArrowIcon className='fa-solid fa-arrow-up' aria-hidden='true' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
+      <ArrowIcon name={"chevron up"} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
     </ArrowBtn>
     </>
   )
