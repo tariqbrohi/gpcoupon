@@ -111,14 +111,17 @@ export const useGetAffiliateItemsForDashboardLazyQuery = (
   >('/api/v1/dashboard/affiliate/items', baseOptions);
 };
 export type GetAffiliateItemsForDashboardQueryVariables = {
-  country: string;
-  take?:number;
-  skip?:number;
+  country?: string;
+  take?: number;
+  skip?: number;
   sub: string;
   sortBy?: string;
 };
 export type GetAffiliateItemsForDashboardQueryResult = Brand & {
-  total: number;
+  total: {
+    count: number,
+    discount_sum: number
+  };
   items: Item[];
 };
 

@@ -9,16 +9,20 @@ export default errorHandler(async function handler(req, res) {
   if (method !== 'get') {
     throw new NotFoundError();
   }
-
   const {
-    country,
-    take = 500,
-    skip = 0,
-    sortBy = 'createdAt,desc',
+    sortBy,
     sub
   } = req.query as any;
 
-  if (!sub || !country) throw new BadRequestError('');
+  let {
+    take = 500,
+    skip = 0,
+  } = req.query as any;
+
+  if (typeof take !== 'number') take = Number(take);
+  if (typeof skip !== 'number') skip = Number(skip);
+
+  if (!sub ) throw new BadRequestError('No BusinessAccount Exists');
 
   let orderBy: Record<string, string> = {};
 
@@ -43,28 +47,23 @@ export default errorHandler(async function handler(req, res) {
     },
     select: {
       id: true,
-      name: true,
-      slug: true,
-      description: true,
-      backgroundUrl: true,
-      thumbnailUrl: true,
     },
-  })) as Record<string, any>;
+  })); 
 
+  if (!brand) throw new BadRequestError('No affiliate exists!');
+  
   const items = await prisma.item.findMany({
     take,
     skip,
     orderBy,
     where: {
-      brand: brand.id,
+      brandId: brand.id,
     },
     select: {
       id: true,
       affiliate: true,
       name: true,
-      slug: true,
       status: true,
-      couponImageUrl: true,
       expiresIn: true,
       originalPrice: true,
       amount: true,
@@ -76,15 +75,46 @@ export default errorHandler(async function handler(req, res) {
     },
   });
 
-  const total = await prisma.item.aggregate({
+  const totalItem = await prisma.item.findMany({
     where: {
-      brand: brand.id,
+      brandId: brand.id,
     },
-    _count: true,
+    select: {
+      price: true,
+    }
   });
 
-  brand.items = items;
-  brand.total = total._count;
+  const discount_sum = totalItem.reduce((tot, arr):any => {
+    return tot + arr.price.amount;
+  }, 0);
 
-  res.send(brand);
+  // const total = await prisma.item.aggregateRaw({
+  //   pipeline: [
+  //     {
+  //       $match: {
+  //         brandId: brand.id,
+  //       },
+  //     },
+  //     {
+  //       $group: {
+  //         _id: null,
+  //         sumPrice: {
+  //           $sum: "$price.amount",
+  //         },
+  //         count: {
+  //           $sum: 1,
+  //         }
+  //       },
+  //     },
+  //   ]
+  // });
+
+  // console.log(totalItem, sum, totalItem.length);
+
+  const total = {
+    count : totalItem.length,
+    discount_sum,
+  }
+
+  res.send({total: total, items: items });
 });
