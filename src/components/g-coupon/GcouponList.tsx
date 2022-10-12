@@ -15,7 +15,7 @@ import {
   Spacer,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsQuery } from '@/services';
+import { useGetAffsAndBrandsQuery, useGetBrandsQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
@@ -63,7 +63,7 @@ export default function GcouponList() {
   const { country } = useContext(AppContext);
   const [height, setHeight] = useState(155);
 
-  const { data, loading } = useGetBrandsQuery({
+  const { data, loading } = useGetAffsAndBrandsQuery({
     data: {
       country,
     },
