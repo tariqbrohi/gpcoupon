@@ -50,6 +50,20 @@ const Wrapper = styled.div`
   }
 `;
 
+const ImgListItem = styled(ImageList.Item)`
+  padding: 10px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
+    cursor: pointer;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding: 0;
+  }
+`;
+
 const Description = styled.div`
   margin-top: 15px;
   color: rgba(0, 0, 0, 0.5);
@@ -237,10 +251,9 @@ export default function GcouponList() {
               }}
             >
               {filteredBrands?.map((brand) => (
-                <ImageList.Item
+                <ImgListItem
                   key={brand.id}
                   onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
-                  style={{ cursor: 'pointer' }}
                 >
                   <Ref innerRef={ref}>
                     <ImageList.ItemBar
@@ -256,7 +269,7 @@ export default function GcouponList() {
                     }}
                   />
                   <Description>{brand.description}</Description>
-                </ImageList.Item>
+                </ImgListItem>
               ))}
             </ImageList>
           </Wrapper>

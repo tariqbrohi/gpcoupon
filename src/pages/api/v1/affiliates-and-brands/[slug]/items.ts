@@ -74,9 +74,17 @@ export default errorHandler(async function handler(req, res) {
     },
     _count: true,
   });
-
-  brand.items = itemsAff;
+  
   brand.total = total._count;
+  brand.items = itemsAff;
+
+//   if (itemsXoxo) {
+//     brand.total = itemsXoxo.length;
+//     brand.items = itemsXoxo.slice(+skip, +skip + +take);
+//   } else if (itemsAff) {
+//     brand.total = total._count;
+//     brand.items = itemsAff;
+//   }
 
   res.send(brand);
 });

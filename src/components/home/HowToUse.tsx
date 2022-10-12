@@ -22,6 +22,7 @@ const Title = styled(StyledParagraph)`
   text-align: center;
   // margin-bottom: 15px;
   padding: 10px 25px;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
   background-color: #FBD9D8;
   color: #BF7582;
   border-radius: 30px;

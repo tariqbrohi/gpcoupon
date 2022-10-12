@@ -1,7 +1,7 @@
 import AppContext from '@/modules/components/AppContext';
 import List from '@/modules/components/ItemList';
 import React, { useContext, useEffect, useState } from 'react';
-import { useGetBrandItemsLazyQuery } from '@/services';
+import { useGetAffAndBrandItemsLazyQuery, useGetBrandItemsLazyQuery } from '@/services';
 import { useRouter } from 'next/router';
 import { Grid, Image, Paragraph, Skeleton, Spacer } from '@growth-ui/react';
 import ItemListHeader from '@/modules/components/ItemListHeader';
@@ -12,7 +12,7 @@ export default function CouponItemList() {
   } = useRouter();
   const [sortBy, setSortBy] = useState('sales,desc');
   const { country } = useContext(AppContext);
-  const [query, { data, loading }] = useGetBrandItemsLazyQuery({
+  const [query, { data, loading }] = useGetAffAndBrandItemsLazyQuery({
     data: {
       slug,
       country,

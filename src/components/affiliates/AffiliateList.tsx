@@ -50,6 +50,20 @@ const Wrapper = styled.div`
   }
 `;
 
+const ImgListItem = styled(ImageList.Item)`
+  padding: 10px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
+    cursor: pointer;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding: 0;
+  }
+`;
+
 const Description = styled.div`
   margin-top: 15px;
   color: rgba(0, 0, 0, 0.5);
@@ -222,12 +236,9 @@ export default function BrandList() {
               }}
             >
               {filteredBrands?.map((brand) => (
-                <ImageList.Item
+                <ImgListItem
                   key={brand.id}
-                  onClick={() =>
-                    Router.push(`${ROUTES.affiliates}/${brand.slug}`)
-                  }
-                  style={{ cursor: 'pointer' }}
+                  onClick={() => Router.push(`${ROUTES.affiliates}/${brand.slug}`)}
                 >
                   <Ref innerRef={ref}>
                     <ImageList.ItemBar
@@ -243,7 +254,7 @@ export default function BrandList() {
                     }}
                   />
                   <Description>{brand.description}</Description>
-                </ImageList.Item>
+                </ImgListItem>
               ))}
             </ImageList>
           </Wrapper>
