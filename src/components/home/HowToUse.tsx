@@ -81,10 +81,6 @@ const Feature = styled.li`
   }
 `;
 
-const Container = styled.div`
-  display: flex;
-`;
-
 const Row = styled.div`
   display: flex;
 
@@ -149,48 +145,23 @@ const features = [
 ];
 
 export default function HowToUse() {
-  const scrollToHere = (elementRef: any) => {
-    const refLocation: any = document.getElementById(elementRef)?.offsetTop;
-    window.scrollTo({
-        top: refLocation - 100,
-        behavior: "smooth",
-    });
-  };
+  // const scrollToHere = (elementRef: any) => {
+  //   const refLocation: any = document.getElementById(elementRef)?.offsetTop;
+  //   window.scrollTo({
+  //       top: refLocation - 100,
+  //       behavior: "smooth",
+  //   });
+  // };
 
-  useEffect(() => {
-    console.log('ismobile: ', isMobile);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile]);
+  const [showContent, setShowContent] = useState(false);
 
-  return (
-    <section>
-      <Wrapper>
-        {features.map(({ imageUrl, title, description }) => (
-          <Feature key={title}>
-            <Image size="small" src={imageUrl} />
-            <TitleDiv>
-              <Title>
-                {title}
-              </Title>
-            </TitleDiv>
-            <Spacer size={15} />
-            <Description>
-              {description}
-            </Description>
-          </Feature>
-        ))}
-      </Wrapper>
-      <Spacer size={60} />
-      <div style={{ textAlign: 'center' }}>
-        <HowBtn rounded
-          onClick={() => scrollToHere('howtouse')}
-        >
-          How to use
-        </HowBtn>
-      </div>
-      <Spacer size={100} />
+  const onClickBtn = (e: any) => {
+    setShowContent(prevStatus => prevStatus ? false : true);
+  }
 
-      <Row id='howtouse'>
+  const HowToUseContent = () => (
+    <div>
+      <Row>
         <Column>
           <div
             style={{
@@ -276,6 +247,45 @@ export default function HowToUse() {
           </Texts>
         </Column>
       </Row>
+    </div>
+  );
+
+  useEffect(() => {
+    console.log('ismobile: ', isMobile);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
+
+  return (
+    <section>
+      <Wrapper>
+        {features.map(({ imageUrl, title, description }) => (
+          <Feature key={title}>
+            <Image size="small" src={imageUrl} />
+            <TitleDiv>
+              <Title>
+                {title}
+              </Title>
+            </TitleDiv>
+            <Spacer size={15} />
+            <Description>
+              {description}
+            </Description>
+          </Feature>
+        ))}
+      </Wrapper>
+      <Spacer size={60} />
+      <div style={{ textAlign: 'center' }}>
+        <HowBtn rounded
+          // onClick={() => scrollToHere('howtouse')}
+          onClick={onClickBtn}
+        >
+          How to use
+        </HowBtn>
+      </div>
+      <Spacer size={100} />
+
+      {showContent ? <HowToUseContent /> : '' }
+
     </section>
   );
 }

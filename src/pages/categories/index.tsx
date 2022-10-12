@@ -12,7 +12,7 @@ import { Spacer } from '@growth-ui/react';
 export default function Categories() {
   return (
     <>
-      <Head title="GCoupon | Categories" />
+      <Head title="GPcoupon | Categories" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>

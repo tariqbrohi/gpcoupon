@@ -97,11 +97,15 @@ export default function BrandList() {
           <CategoriesHorizontal cat={cat} setCat={setCat} />
         </GuiGrid.Col>
         <Spacer size={15} />
-        <GuiGrid.Col flex="1" style={{marginLeft: "40px"}}>
+
+        <GuiGrid.Col flex="1" style={{marginLeft: "20px", paddingLeft: "20px", overflow: "auto"}}>
           <Nav>
-            <List horizontal>
+            <List 
+              horizontal
+              style={{flexWrap: "nowrap", justifyContent: "center",}}  
+            >
               <List.Item>
-                <Link href={ROUTES.gcoupons}>
+                <Link href={ROUTES.gpcoupons}>
                   <NavHeader>
                     Show All
                   </NavHeader>
