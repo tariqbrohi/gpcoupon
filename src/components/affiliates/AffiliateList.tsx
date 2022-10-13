@@ -24,7 +24,13 @@ import Link from 'next/link';
 
 // Show affiliate coupons only when the user clicks Affiliate Brands nav
 
-const Nav = styled('nav')``;
+const Nav = styled('nav')`
+  padding-left: 10px;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding-left: 0;
+  }
+`;
 
 const NavHeader = styled.p`
   font-size: 22px;
@@ -40,13 +46,27 @@ const NavHeader = styled.p`
   }
 `;
 
+const TotalCountPara = styled(Paragraph)`
+  padding-left: 10px;
+  font-weight: 500;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding-left: 0;
+  }
+`;
+
 const Wrapper = styled.div`
   max-width: 100vw;
   overflow-x: auto;
   width: 100%;
+  padding: 10px;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding-left: 0;
   }
 `;
 
@@ -112,7 +132,7 @@ export default function BrandList() {
         </GuiGrid.Col>
         <Spacer size={15} />
 
-        <GuiGrid.Col flex="1" style={{marginLeft: "20px", paddingLeft: "20px", overflow: "auto"}}>
+        <GuiGrid.Col flex="1" style={{marginLeft: "30px", overflow: "auto"}}>
           <Nav>
             <List 
               horizontal
@@ -154,9 +174,9 @@ export default function BrandList() {
             {cat?.name || 'All'}
           </Paragraph>
           <Spacer size={15} /> */}
-          <Paragraph fontWeight={500}>
+          <TotalCountPara>
             Total {filteredBrands?.length || 0}
-          </Paragraph>
+          </TotalCountPara>
           <Spacer size={30} />
           <Wrapper>
             {loading && (

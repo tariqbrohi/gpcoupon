@@ -11,15 +11,9 @@ export default function ArrowUp() {
     height: 50px;
     font-size: 50px;
     background-color: #F6F6F6;
-    // color: #2D126D;
     border-radius: 50%;
     opacity: 0;
     pointer-events: none;
-    // transition: all 0.4s ease-in;
-
-    // &:hover {
-    //   color: #F3C4CE;
-    // }
 
     ${({ theme }) => theme.gui.media.mobile} {
       right: 20px;
