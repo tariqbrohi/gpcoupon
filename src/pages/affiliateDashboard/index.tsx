@@ -1,69 +1,58 @@
 import AppContext from '@/modules/components/AppContext';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppContainer from '@/layouts/AppContainer';
 import AppHeader from '@/layouts/AppHeader';
-import AppFooter from '@/layouts/AppFooter';
 import AppMain from '@/layouts/AppMain';
-import AppNav from '@/layouts/AppNav';
-import CategoryList from '@/components/categories/CategoryList';
 import Head from '@/modules/components/Head';
-import Search from '@/modules/components/Search';
-import { Paragraph, Spacer } from '@growth-ui/react';
+import { Paragraph, Spacer, Pagination } from '@growth-ui/react';
 import CouponList from '@/components/affiliateDashboard/CouponList';
-// import { useGetAffiliateItemsForDashboardQuery, useGetAffiliateItemsForDashboardLazyQuery} from '@/services';
+import { useGetAffiliateItemsForDashboardQuery, useGetAffiliateItemsForDashboardLazyQuery} from '@/services';
 
-// const TAKE = 10;
+const TAKE = 20;
 
 export default function AffiliateDashboard() {
   const { user } = useContext(AppContext);
   const [ sortBy, setSortBy ] = useState('createdAt,desc');
-  // const [ query, { data, loading }] = useGetAffiliateItemsForDashboardLazyQuery({});
+  const [ activePage, setActivePage ] = useState(1)
+  const [ query, { data, loading }] = useGetAffiliateItemsForDashboardLazyQuery({});
 
-  // useEffect(() => {
-  //   if (user !== null) {
-  //     query({
-  //       data: {
-  //         take: TAKE,
-  //         sub: user!.id,
-  //         sortBy,
-  //         skip: 0,
-  //       }
-  //     });
-  //   }
-  // }, [sortBy]);
+  useEffect(() => {
+    if (user !== null) {
+      query({
+        data: {
+          take: TAKE,
+          sub: user?.id,
+          sortBy,
+          skip: (activePage - 1) * TAKE,
+        }
+      });
+    }
+  }, [activePage, sortBy]);
 
+
+  const handlePageChange = (_: any, { activePage }: any) => {
+    setActivePage(activePage);
+  };
 
   return (
     <>
       <Head title="GCoupon | AffiliateDashboard" />
       <AppHeader bgTransition={false} />
-      {/* { data &&
-        console.log('api call', data)} */}
       <AppMain>
         <AppContainer>
           <Paragraph fontWeight={700} fontSize={26}>
             My Coupon
           </Paragraph>
-          <CouponList 
-            tmpData={tmpData}
+            <CouponList 
+            items={data}
+          />
+          <Pagination
+            totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
+            onPageChange={handlePageChange}
+            activePage={activePage}
           />
         </AppContainer>
       </AppMain>
     </>
   );
 }
-
-const tmpData = {
-  total: {
-    count: 1,
-    discount_sum: 80
-  },
-  data: [
-  {
-    name: "gyrodrop",
-    Description: "tmp",
-    creationDate: "07/08/2013",
-    ExpireDate: "07/08/2023",
-    originalPrice: 1000,
-    discountedPrice: 80,
-  }]};
