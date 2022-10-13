@@ -25,11 +25,12 @@ const responsive = {
 };
 
 const MarginWithHover = styled(Margin)`
-  transition: all 0.7s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  
 
   &:hover {
-    // text-decoration: underline;
-    background-color: #E7E0FF;
+    text-decoration: underline;
+    color: #BF7582;
   }
 `;
 
