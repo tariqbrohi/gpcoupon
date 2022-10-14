@@ -1,7 +1,6 @@
 import errorHandler from '@/pages/api/_middlewares/error-handler';
 import prisma from '@/prisma';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
-import xoxoday from '@/pages/api/_lib/xoxoday';
 
 export default errorHandler(async function handler(req, res) {
   const method = req.method;
@@ -9,6 +8,7 @@ export default errorHandler(async function handler(req, res) {
   if (method !== 'get') {
     throw new NotFoundError();
   }
+
   const {
     sortBy,
     sub
@@ -39,9 +39,6 @@ export default errorHandler(async function handler(req, res) {
   }
 
   const brand = (await prisma.brand.findFirst({
-    take,
-    skip,
-    orderBy,
     where: {
       sub,
     },
@@ -51,7 +48,7 @@ export default errorHandler(async function handler(req, res) {
   })); 
 
   if (!brand) throw new BadRequestError('No affiliate exists!');
-  
+
   const items = await prisma.item.findMany({
     take,
     skip,
@@ -88,33 +85,9 @@ export default errorHandler(async function handler(req, res) {
     return tot + arr.price.amount;
   }, 0);
 
-  // const total = await prisma.item.aggregateRaw({
-  //   pipeline: [
-  //     {
-  //       $match: {
-  //         brandId: brand.id,
-  //       },
-  //     },
-  //     {
-  //       $group: {
-  //         _id: null,
-  //         sumPrice: {
-  //           $sum: "$price.amount",
-  //         },
-  //         count: {
-  //           $sum: 1,
-  //         }
-  //       },
-  //     },
-  //   ]
-  // });
-
-  // console.log(totalItem, sum, totalItem.length);
-
   const total = {
     count : totalItem.length,
     discount_sum,
   }
-
   res.send({total: total, items: items });
 });
