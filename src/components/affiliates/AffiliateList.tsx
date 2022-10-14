@@ -148,24 +148,34 @@ export default function BrandList() {
               <Spacer size={30} />
     
               <List.Item>
-                {country === 'US' && (
+                <Link href={ROUTES.brands}>
+                  <NavHeader>
+                    Big Brands
+                  </NavHeader>
+                </Link>
+                {/* {country === 'US' && (
                   <Link href={ROUTES.brands}>
                     <NavHeader>
                       Big Brands
                     </NavHeader>
                   </Link>
-                )}
+                )} */}
               </List.Item>
               <Spacer size={30} />
                 
               <List.Item>
-                {country === 'US' && (
+                <Link href={ROUTES.affiliates}>
+                  <NavHeader style={{color: "#F6A2B1"}}>
+                    Affiliate Brands
+                  </NavHeader>
+                </Link>
+                {/* {country === 'US' && (
                   <Link href={ROUTES.affiliates}>
                     <NavHeader style={{color: "#F6A2B1"}}>
                       Affiliate Brands
                     </NavHeader>
                   </Link>
-                )}
+                )} */}
               </List.Item>
             </List>
           </Nav>
