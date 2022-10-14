@@ -148,24 +148,34 @@ export default function GcouponList() {
               <Spacer size={30} />
     
               <List.Item>
-                {country === 'US' && (
+                <Link href={ROUTES.brands}>
+                  <NavHeader>
+                    Big Brands
+                  </NavHeader>
+                </Link>
+                {/* {country === 'US' && (s
                   <Link href={ROUTES.brands}>
                     <NavHeader>
                       Big Brands
                     </NavHeader>
                   </Link>
-                )}
+                )} */}
               </List.Item>
               <Spacer size={30} />
                 
               <List.Item>
-                {country === 'US' && (
+                <Link href={ROUTES.affiliates}>
+                  <NavHeader>
+                    Affiliate Brands
+                  </NavHeader>
+                </Link>
+                {/* {country === 'US' && (
                   <Link href={ROUTES.affiliates}>
                     <NavHeader>
                       Affiliate Brands
                     </NavHeader>
                   </Link>
-                )}
+                )} */}
               </List.Item>
             </List>
           </Nav>
