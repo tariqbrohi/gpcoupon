@@ -20,7 +20,7 @@ export default errorHandler(async function handler(req, res) {
   } = req.query as any;
   if (country && slug) {
     let catIds = [] as string[];
-    console.log(slug);
+    // console.log(slug);
     if (slug === 'all') {
       const categories = (await prisma.category.findMany({
         select: {

@@ -64,19 +64,19 @@ export default withApiAuthRequired(
     );
 
     const qrcodes = await Promise.all(qrcodesPromises);
-    console.log({
-      quantity,
-      qrcodes,
-      recipientEmail: order.recipient.email,
-      name: item.name,
-      brandLogoUrl: item.brand?.thumbnailUrl!,
-      couponImageUrl: item.couponImageUrl!,
-      expiresIn: item.expiresIn!,
-      redemptionInstructions: item.redemptionInstructions,
-      termsAndConditionsInstructions: item.termsAndConditionsInstructions,
-      brandName: item.brand?.name!,
-      itemImage: item.imageUrls.medium,
-    });
+    // console.log({
+    //   quantity,
+    //   qrcodes,
+    //   recipientEmail: order.recipient.email,
+    //   name: item.name,
+    //   brandLogoUrl: item.brand?.thumbnailUrl!,
+    //   couponImageUrl: item.couponImageUrl!,
+    //   expiresIn: item.expiresIn!,
+    //   redemptionInstructions: item.redemptionInstructions,
+    //   termsAndConditionsInstructions: item.termsAndConditionsInstructions,
+    //   brandName: item.brand?.name!,
+    //   itemImage: item.imageUrls.medium,
+    // });
     sendOrder({
       quantity,
       qrcodes,

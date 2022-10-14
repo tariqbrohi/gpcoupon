@@ -93,7 +93,7 @@ export default isAuth(
           ? 'GPT'
           : xoxoItem?.price.currency
       )!;
-      console.log(currency);
+      // console.log(currency);
       const totalDiscountRate =
         xoxoItem?.discountRate || dbItem?.discountRate || 0;
       const customerDiscountRate = dbItem?.customerDiscountRate || 0;
@@ -168,7 +168,7 @@ export default isAuth(
 
         orderId = `${order.orderId}`;
       }
-      console.log('move on');
+      // console.log('move on');
       const data: Prisma.OrderCreateInput = {
         // status: order.orderStatus as any,
         status: 'approved',

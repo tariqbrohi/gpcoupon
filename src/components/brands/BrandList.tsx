@@ -115,7 +115,7 @@ export default function BrandList() {
 
   const handleResize = () => {
     if (ref.current) {
-      console.log(ref.current.clientWidth);
+      // console.log(ref.current.clientWidth);
       setHeight(ref.current.clientWidth * 0.564);
     }
   };

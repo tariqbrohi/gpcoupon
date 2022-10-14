@@ -21,7 +21,7 @@ export default isAuth(
 
       const paymentMethod = await stripe.paymentMethods.retrieve(pId);
 
-      console.log(paymentMethod.customer, customer.stripeId);
+      // console.log(paymentMethod.customer, customer.stripeId);
 
       if (paymentMethod.customer !== customer.stripeId) {
         throw new ForbiddenError();
