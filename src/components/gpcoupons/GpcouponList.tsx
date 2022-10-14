@@ -15,7 +15,7 @@ import {
   Spacer,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsQuery } from '@/services';
+import { useGetAffsAndBrandsQuery, useGetBrandsQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
@@ -24,7 +24,13 @@ import Link from 'next/link';
 
 // Show all coupons includes brands and affiliate when the user clicks G-Coupon on the Main page header
 
-const Nav = styled('nav')``;
+const Nav = styled('nav')`
+  padding-left: 10px;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding-left: 0;
+  }
+`;
 
 const NavHeader = styled.p`
   font-size: 22px;
@@ -40,13 +46,41 @@ const NavHeader = styled.p`
   }
 `;
 
+const TotalCountPara = styled(Paragraph)`
+  padding-left: 10px;
+  font-weight: 500;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding-left: 0;
+  }
+`;
+
 const Wrapper = styled.div`
   max-width: 100vw;
   overflow-x: auto;
   width: 100%;
+  padding: 10px;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding-left: 0;
+  }
+`;
+
+const ImgListItem = styled(ImageList.Item)`
+  padding: 10px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
+    cursor: pointer;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding: 0;
   }
 `;
 
@@ -63,7 +97,7 @@ export default function GcouponList() {
   const { country } = useContext(AppContext);
   const [height, setHeight] = useState(155);
 
-  const { data, loading } = useGetBrandsQuery({
+  const { data, loading } = useGetAffsAndBrandsQuery({
     data: {
       country,
     },
@@ -81,7 +115,7 @@ export default function GcouponList() {
 
   const handleResize = () => {
     if (ref.current) {
-      console.log(ref.current.clientWidth);
+      // console.log(ref.current.clientWidth);
       setHeight(ref.current.clientWidth * 0.564);
     }
   };
@@ -98,7 +132,7 @@ export default function GcouponList() {
         </GuiGrid.Col>
         <Spacer size={15} />
 
-        <GuiGrid.Col flex="1" style={{marginLeft: "20px", paddingLeft: "20px", overflow: "auto"}}>
+        <GuiGrid.Col flex="1" style={{marginLeft: "30px", overflow: "auto"}}>
           <Nav>
             <List 
               horizontal 
@@ -114,24 +148,34 @@ export default function GcouponList() {
               <Spacer size={30} />
     
               <List.Item>
-                {country === 'US' && (
+                <Link href={ROUTES.brands}>
+                  <NavHeader>
+                    Big Brands
+                  </NavHeader>
+                </Link>
+                {/* {country === 'US' && (s
                   <Link href={ROUTES.brands}>
                     <NavHeader>
                       Big Brands
                     </NavHeader>
                   </Link>
-                )}
+                )} */}
               </List.Item>
               <Spacer size={30} />
                 
               <List.Item>
-                {country === 'US' && (
+                <Link href={ROUTES.affiliates}>
+                  <NavHeader>
+                    Affiliate Brands
+                  </NavHeader>
+                </Link>
+                {/* {country === 'US' && (
                   <Link href={ROUTES.affiliates}>
                     <NavHeader>
                       Affiliate Brands
                     </NavHeader>
                   </Link>
-                )}
+                )} */}
               </List.Item>
             </List>
           </Nav>
@@ -154,9 +198,9 @@ export default function GcouponList() {
             {cat?.name || 'All'}
           </Paragraph>
           <Spacer size={15} /> */}
-          <Paragraph fontWeight={500}>
+          <TotalCountPara>
             Total {filteredBrands?.length || 0}
-          </Paragraph>
+          </TotalCountPara>
           <Spacer size={30} />
           <Wrapper>
             {loading && (
@@ -240,10 +284,10 @@ export default function GcouponList() {
               }}
             >
               {filteredBrands?.map((brand) => (
-                <ImageList.Item
+                <ImgListItem
                   key={brand.id}
-                  onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
-                  style={{ cursor: 'pointer' }}
+                  // onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
+                  onClick={() => Router.push(`${brand.affiliate ? `${ROUTES.affiliates}` : `${ROUTES.brands}`}/${brand.slug}`)}
                 >
                   <Ref innerRef={ref}>
                     <ImageList.ItemBar
@@ -259,7 +303,7 @@ export default function GcouponList() {
                     }}
                   />
                   <Description>{brand.description}</Description>
-                </ImageList.Item>
+                </ImgListItem>
               ))}
             </ImageList>
           </Wrapper>

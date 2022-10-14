@@ -56,7 +56,7 @@ export default function PayWithCard() {
         Router.push('/');
       })
       .catch((err) => {
-        console.log('HERE YOU GO', err);
+        // console.log('HERE YOU GO', err);
         alert(parseErrorMessage(err));
       });
   };

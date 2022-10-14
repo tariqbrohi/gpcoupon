@@ -6,6 +6,17 @@ import { Image, ImageList, Paragraph, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import Router from 'next/router';
 import { style } from '@mui/system';
+import styled from 'styled-components';
+
+const ImgListItem = styled(ImageList.Item)`
+  transition: all 0.7s ease-in-out;
+  border-radius: 16px 16px 0 0;
+
+  &:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+`;
 
 const TOP_BRANDS = [
   {
@@ -81,14 +92,13 @@ export default function TopBrands() {
         }}
       >
         {TOP_BRANDS.map((brand) => (
-          <ImageList.Item
+          <ImgListItem
             key={brand.name}
             onClick={() => Router.push(brand.link)}
-            style={{ cursor: 'pointer' }}
           >
-            <Image src={brand.backgroundUrl} />
+            <Image src={brand.backgroundUrl} alt={brand.name} />
             <ImageList.ItemBar title={brand.name} thumbnail={brand.logoUrl} />
-          </ImageList.Item>
+          </ImgListItem>
         ))}
       </ImageList>
     </section>

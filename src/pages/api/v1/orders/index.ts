@@ -106,12 +106,12 @@ export default withApiAuthRequired(
         totalDiscountRate - customerDiscountRate - influencerDiscountRate;
       // gpointwallet
       let charge;
-      console.log(
-        xoxoItem?.discountRate,
-        totalDiscountRate,
-        customerDiscountRate,
-        profitRate,
-      );
+      // console.log(
+      //   xoxoItem?.discountRate,
+      //   totalDiscountRate,
+      //   customerDiscountRate,
+      //   profitRate,
+      // );
       if (
         customerDiscountRate + influencerDiscountRate + profitRate >
         totalDiscountRate
@@ -145,7 +145,7 @@ export default withApiAuthRequired(
             confirm: true,
           });
         } catch (err: any) {
-          console.log('NOT HERE WHERE  IS IT');
+          // console.log('NOT HERE WHERE  IS IT');
           throw new BadRequestError(err.error?.error);
         }
       }

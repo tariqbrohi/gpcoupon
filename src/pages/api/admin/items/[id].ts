@@ -35,7 +35,7 @@ export default withApiAuthRequired(
       } = req.body;
       const { id } = req.query as any;
       const session = getSession(req, res);
-      console.log(id);
+      // console.log(id);
       const existingItem = await prisma.item.findUnique({
         where: {
           slug,
@@ -46,7 +46,7 @@ export default withApiAuthRequired(
         throw new BadRequestError('Slug exits');
 
       const timestamp = new Date().valueOf();
-      console.log(influencerDiscountRate, influencerId);
+      // console.log(influencerDiscountRate, influencerId);
       const item = await prisma.item.update({
         where: {
           id,

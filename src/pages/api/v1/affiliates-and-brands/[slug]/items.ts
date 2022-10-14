@@ -29,7 +29,7 @@ export default errorHandler(async function handler(req, res) {
   } else {
     orderBy.amount = 'asc';
   }
-  // console.log(req.query);
+
   const brand = (await prisma.brand.findFirst({
     where: {
       slug,
@@ -45,19 +45,46 @@ export default errorHandler(async function handler(req, res) {
     },
   })) as Record<string, any>;
 
-  const items = await xoxoday.vouchers.findMany({
+  const itemsXoxo = await xoxoday.vouchers.findMany({
     country,
     brand: slug,
   });
-  // console.log(items.length);
+  
   if (sortBy === 'amount,asc') {
-    items.sort((a, b) => a.price.amount - b.price.amount);
+    itemsXoxo.sort((a, b) => a.price.amount - b.price.amount);
   } else if (sortBy === 'amount,desc') {
-    items.sort((a, b) => b.price.amount - a.price.amount);
+    itemsXoxo.sort((a, b) => b.price.amount - a.price.amount);
   }
 
-  brand.total = items.length;
-  brand.items = items.slice(+skip, +skip + +take);
+  brand.total = itemsXoxo.length;
+  brand.items = itemsXoxo.slice(+skip, +skip + +take);
+
+  const itemsAff = await prisma.item.findMany({
+    take,
+    skip,
+    orderBy,
+    where: {
+      brandId: brand.id,
+    },
+  });
+
+  const total = await prisma.item.aggregate({
+    where: {
+      brandId: brand.id,
+    },
+    _count: true,
+  });
+  
+  brand.total = total._count;
+  brand.items = itemsAff;
+
+//   if (itemsXoxo) {
+//     brand.total = itemsXoxo.length;
+//     brand.items = itemsXoxo.slice(+skip, +skip + +take);
+//   } else if (itemsAff) {
+//     brand.total = total._count;
+//     brand.items = itemsAff;
+//   }
 
   res.send(brand);
 });

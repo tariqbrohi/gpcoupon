@@ -38,6 +38,62 @@ export const useGetCategoriesLazyQuery = (
 export type GetCategoriesQueryVariables = {};
 export type GetCategoriesQueryResult = Category[];
 
+
+/**
+ * GetAffsAndBrands
+ */
+ export const useGetAffsAndBrandsQuery = (
+  baseOptions?: QueryBaseOptions<GetAffsAndBrandsQueryVariables>,
+) => {
+  return useQuery<GetAffsAndBrandsQueryVariables, GetAffsAndBrandsQueryResult>(
+    '/api/v1/affiliates-and-brands',
+    baseOptions,
+  );
+};
+export const useGetAffsAndBrandsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffsAndBrandsQueryVariables>,
+) => {
+  return useLazyQuery<GetAffsAndBrandsQueryVariables, GetAffsAndBrandsQueryResult>(
+    '/api/v1/affiliates-and-brands',
+    baseOptions,
+  );
+};
+export type GetAffsAndBrandsQueryVariables = {
+  country?: string;
+  // affiliate?: boolean;
+  status?: 'AVAILABLE' | 'ALL';
+};
+export type GetAffsAndBrandsQueryResult = Brand[];
+
+/**
+ * GetAffAndBrandItems
+ */
+ export const useGetAffAndBrandItemsQuery = (
+  baseOptions?: QueryBaseOptions<GetAffAndBrandItemsQueryVariables>,
+) => {
+  return useQuery<GetAffAndBrandItemsQueryVariables, GetAffAndBrandItemsQueryResult>(
+    '/api/v1/affiliates-and-brands/:slug/items',
+    baseOptions,
+    ['slug'],
+  );
+};
+export const useGetAffAndBrandItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffAndBrandItemsQueryVariables>,
+) => {
+  return useLazyQuery<GetAffAndBrandItemsQueryVariables, GetAffAndBrandItemsQueryResult>(
+    '/api/v1/affiliates-and-brands/:slug/items',
+    baseOptions,
+    ['slug'],
+  );
+};
+export type GetAffAndBrandItemsQueryVariables = {
+  country: string;
+  slug: string | string[] | undefined;
+  sortBy?: string;
+};
+export type GetAffAndBrandItemsQueryResult = Brand & { total: number; items: Item[] };
+
+
 /**
  * GetAffiliates
  */
