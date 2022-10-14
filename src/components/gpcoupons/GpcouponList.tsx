@@ -276,7 +276,8 @@ export default function GcouponList() {
               {filteredBrands?.map((brand) => (
                 <ImgListItem
                   key={brand.id}
-                  onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
+                  // onClick={() => Router.push(`${ROUTES.brands}/${brand.slug}`)}
+                  onClick={() => Router.push(`${brand.affiliate ? `${ROUTES.affiliates}` : `${ROUTES.brands}`}/${brand.slug}`)}
                 >
                   <Ref innerRef={ref}>
                     <ImageList.ItemBar
