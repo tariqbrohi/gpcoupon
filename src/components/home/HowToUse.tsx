@@ -18,22 +18,37 @@ const TitleDiv = styled.div`
 
 const Title = styled(StyledParagraph)`
   font-weight: 600;
-  font-size: 14px;
+  font-size: 18px;
   text-align: center;
-  // margin-bottom: 15px;
   padding: 10px 25px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   background-color: #FBD9D8;
   color: #BF7582;
   border-radius: 30px;
   border: none;
+
+  ${({ theme }) => theme.gui.media.custom(1024)} {
+    font-size: 14px;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Description = styled(StyledParagraph)`
-  font-size: 12px;
+  font-size: 18px;
   color: rgba(0, 0, 0, 0.87);
   text-align: center;
   line-height: 1.5;
+
+  ${({ theme }) => theme.gui.media.custom(1024)} {
+    font-size: 14px;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Wrapper = styled.ul`
