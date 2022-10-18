@@ -44,8 +44,8 @@ export default function AffiliateDashboard() {
             My Coupon
           </Paragraph>
             <CouponList 
-            items={data}
-          />
+              orders={data}
+            />
           <Pagination
             totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
             onPageChange={handlePageChange}
