@@ -176,9 +176,9 @@ export type GetAffiliateItemsForDashboardQueryVariables = {
 export type GetAffiliateItemsForDashboardQueryResult = Brand & {
   total: {
     count: number,
-    discount_sum: number
+    profitSum: number,
   };
-  items: Item[];
+  orders: Order[];
 };
 
 

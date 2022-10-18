@@ -50,44 +50,56 @@ export default errorHandler(async function handler(req, res) {
   if (!brand) throw new BadRequestError('No affiliate exists!');
 
   const items = await prisma.item.findMany({
-    take,
-    skip,
-    orderBy,
     where: {
       brandId: brand.id,
     },
     select: {
       id: true,
-      affiliate: true,
-      name: true,
-      status: true,
-      expiresIn: true,
-      originalPrice: true,
-      amount: true,
-      price: true,
-      createdAt: true,
-      brand: true,
-      country: true,
-      categories: true
     },
   });
 
-  const totalItem = await prisma.item.findMany({
-    where: {
-      brandId: brand.id,
-    },
-    select: {
-      price: true,
+  const [orders, ordersAll] = await Promise.all([
+    prisma.order.findMany({
+      take,
+      skip,
+      orderBy,
+      where: {
+        itemId: {
+          in: items.map(({id}) => id)
+        },
+      },
+      select: {
+        id: true,
+        status: true,
+        item: true,
+        createdAt: true
+      }
+    }),
+    prisma.order.findMany({
+      where: {
+        itemId: {
+          in: items.map(({id}) => id)
+        },
+      },
+      select: {
+        item: true,
+      },
+    })
+  ]);
+
+
+  const profitSum = ordersAll.reduce((tot:number, order:any) => {
+    return tot + (order?.item?.amount);
+  }, 0);  
+
+  res.send(
+    {
+      total: 
+        {
+          count: ordersAll.length,
+          profitSum,
+        }, 
+      orders: orders,
     }
-  });
-
-  const discount_sum = totalItem.reduce((tot, arr):any => {
-    return tot + arr.price.amount;
-  }, 0);
-
-  const total = {
-    count : totalItem.length,
-    discount_sum,
-  }
-  res.send({total: total, items: items });
+  );
 });
