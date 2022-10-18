@@ -67,12 +67,58 @@ const Column = styled.div`
     flex: 50%;
 `;
 
+const ColumnAndImage = styled.div`
+    display: flex;
+    flex: 50%;
+    align-items: center;
+
+    ${({ theme }) => theme.gui.media.custom(1170)} {
+        flex-direction: column;
+    }
+
+    ${({ theme }) => theme.gui.media.mobile} {
+        flex-direction: row;
+        align-items: start;
+    }
+`;
+
+const ImageContainer = styled.div`
+    position: relative;
+    bottom: 45px;
+
+    // ${({ theme }) => theme.gui.media.mobile} {
+    //     bottom: 0;
+    // }
+
+    ${({ theme }) => theme.gui.media.custom(1170)} {
+        bottom: 0;
+    }
+`;
+
+const ImageContainerEven = styled.div`
+    position: relative;
+    bottom: 45px;
+
+    // ${({ theme }) => theme.gui.media.mobile} {
+    //     bottom: 0;
+    //     top: 5px;
+    // }
+
+    ${({ theme }) => theme.gui.media.custom(1170)} {
+        bottom: 0;
+    }
+
+    ${({ theme }) => theme.gui.media.mobile} {
+        top: 5px;
+    }
+`;
+
 const Texts = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-inline: 50px;
+    padding-inline: 30px;
     font-size: 14px;
 
     ${({ theme }) => theme.gui.media.mobile} {
@@ -107,37 +153,45 @@ export default function HowItWorksContent() {
 
             <Row>
                 <Column>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <div style={{ display: 'flex',flexDirection: 'row',justifyContent: 'center' }}>
                     <Image
                         src="/images/purchase.png"
                         size="large"
                         style={{ alignSelf: 'end' }}
                     />
                     </div>
-              </Column>
-              <Column>
-                <Texts>
-                    <ContentH2>1. Purchase your GPcoupon</ContentH2>
-                    <Spacer size={10} />
-                    <ContentPara>
-                        Browse our selection of local businesses to purchase your GPcoupon with cash, GPoints or wire transfer. 
-                        Receive your Coupon code via email and earn cash back rewards with your GPcoupon purchase.
-                    </ContentPara>
-                </Texts>
-              </Column>
+                </Column>
+                <ColumnAndImage>
+                    <ImageContainer>
+                        <Image
+                            src="/images/howtouse_one.png"
+                            size="tiny"
+                            style={{ alignSelf: 'start' }}
+                        />
+                    </ImageContainer>
+                    <Texts>
+                        <ContentH2>Purchase your GPcoupon</ContentH2>
+                        <Spacer size={10} />
+                        <ContentPara>
+                            Browse our selection of local businesses to purchase your GPcoupon with cash, GPoints or wire transfer. 
+                            Receive your Coupon code via email and earn cash back rewards with your GPcoupon purchase.
+                        </ContentPara>
+                    </Texts>
+              </ColumnAndImage>
             </Row>
             <Spacer size={100} />
 
             <RowReverse>
-                <Column>
+                <ColumnAndImage>
+                    <ImageContainerEven>
+                        <Image
+                            src="/images/howtouse_two.png"
+                            size="tiny"
+                            style={{ alignSelf: 'start' }}
+                        />
+                    </ImageContainerEven>
                     <Texts>
-                        <ContentH2>2. Load & Redeem your GPcoupon</ContentH2>
+                        <ContentH2>Load & Redeem your GPcoupon</ContentH2>
                         <Spacer size={10} />
                         <div>
                             <ContentPara>Download your GPoint Wallet to load your GPoint Reloadable coupon.</ContentPara>
@@ -145,15 +199,9 @@ export default function HowItWorksContent() {
                             <ContentPara>Pay for your purchase with your GPcoupon by heading to the brands's website and Redeeming your GPcoupon online.</ContentPara>
                         </div>
                     </Texts>
-                </Column>
+                </ColumnAndImage>
                 <Column>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     <Image
                         src="/images/redeem.png"
                         size="large"
@@ -166,13 +214,7 @@ export default function HowItWorksContent() {
 
             <Row>
                 <Column>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                        }}
-                    >
+                    <div style={{ display: 'flex',flexDirection: 'row',justifyContent: 'center' }}>
                     <Image
                         src="/images/earn.png"
                         size="large"
@@ -180,16 +222,23 @@ export default function HowItWorksContent() {
                     />
                     </div>
                 </Column>
-                <Column>
+                <ColumnAndImage>
+                    <ImageContainer>
+                        <Image
+                            src="/images/howtouse_three.png"
+                            size="tiny"
+                            style={{ alignSelf: 'start' }}
+                        />
+                    </ImageContainer>
                     <Texts>
-                        <ContentH2>3. Earn while you shop</ContentH2>
+                        <ContentH2>Earn while you shop</ContentH2>
                         <Spacer size={10} />
                         <div>
                             <ContentPara>Shop online or visit your GPoint Affiliate business to redeem your GPcoupon. </ContentPara>
                             <ContentPara>Earn cash back rewards after each and every one of your GPcoupon purchases.</ContentPara>
                         </div>
                     </Texts>
-                </Column>
+                </ColumnAndImage>
             </Row>
         </Container>
     );
