@@ -30,9 +30,15 @@ export default function HeaderNavBar() {
           </Link>
         </List.Item> */}
 
-        <List.Item style={{padding: "0"}}>
+        <List.Item>
           <Link href={ROUTES.gpcoupons}>
             <NavListAnchor>Categories</NavListAnchor>
+          </Link>
+        </List.Item>
+
+        <List.Item>
+          <Link href={ROUTES.howItWorks}>
+            <NavListAnchor>How it works</NavListAnchor>
           </Link>
         </List.Item>
 

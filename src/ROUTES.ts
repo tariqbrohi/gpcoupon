@@ -7,6 +7,7 @@ export const ROUTES = {
   brands: '/brands',
   categories: '/categories',
   affiliates: '/affiliates',
+  howItWorks: '/how-it-works',
   buy: '/buy',
   privacy: '/privacyPolicy',
   legal: '/termsOfUse',

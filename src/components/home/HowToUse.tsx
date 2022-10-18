@@ -27,6 +27,10 @@ const Title = styled(StyledParagraph)`
   border-radius: 30px;
   border: none;
 
+  ${({ theme }) => theme.gui.media.custom(1500)} {
+    font-size: 16px;
+  }
+
   ${({ theme }) => theme.gui.media.custom(1024)} {
     font-size: 14px;
   }
@@ -41,6 +45,10 @@ const Description = styled(StyledParagraph)`
   color: rgba(0, 0, 0, 0.87);
   text-align: center;
   line-height: 1.5;
+
+  ${({ theme }) => theme.gui.media.custom(1500)} {
+    font-size: 16px;
+  }
 
   ${({ theme }) => theme.gui.media.custom(1024)} {
     font-size: 14px;
@@ -139,6 +147,18 @@ const Texts = styled.div`
   }
 `;
 
+const ContentH2 = styled.h2`
+    color: #2D126D;
+`;
+
+const ContentPara = styled.p`
+    color: #404040;
+
+    &:not(:last-child) {
+        margin-bottom: 5px;
+    }
+`;
+
 const features = [
   {
     imageUrl: '/images/global.png',
@@ -195,12 +215,13 @@ export default function HowToUse() {
         </Column>
         <Column>
           <Texts>
-            <h2>1. Purchase your GPcoupon</h2>
-            <p>
+            <ContentH2>1. Purchase your GPcoupon</ContentH2>
+            <Spacer size={10} />
+            <ContentPara>
               Browse our selection of local businesses to purchase your GPcoupon
               with cash, GPoints or wire transfer. Receive your Coupon code via
               email and earn cash back rewards with your GPcoupon purchase.
-            </p>
+            </ContentPara>
           </Texts>
         </Column>
       </Row>
@@ -209,13 +230,18 @@ export default function HowToUse() {
       <RowReverse>
         <Column>
           <Texts>
-            <h2>2. Load & Redeem your GPcoupon</h2>
-            <p>
-              Download your GPoint Wallet to load your GPoint Reloadable
-              coupon. Redeem your affiliate GPcoupon at your designated
-              location. Pay for your purchase with your GPcoupon by heading
-              to the brands's website and Redeeming your GPcoupon online.
-            </p>
+            <ContentH2>2. Load & Redeem your GPcoupon</ContentH2>
+            <Spacer size={10} />
+            <div>
+              <ContentPara>Download your GPoint Wallet to load your GPoint Reloadable coupon.</ContentPara>
+              <ContentPara>Redeem your affiliate GPcoupon at your designated location.</ContentPara>
+              <ContentPara>Pay for your purchase with your GPcoupon by heading to the brands's website and Redeeming your GPcoupon online.</ContentPara>
+            </div>
+            {/* <ContentPara>
+              Download your GPoint Wallet to load your GPoint Reloadable coupon. 
+              Redeem your affiliate GPcoupon at your designated location. 
+              Pay for your purchase with your GPcoupon by heading to the brands's website and Redeeming your GPcoupon online.
+            </ContentPara> */}
           </Texts>
         </Column>
         <Column>
@@ -254,12 +280,16 @@ export default function HowToUse() {
         </Column>
         <Column>
           <Texts>
-            <h2>3. Earn while you shop</h2>
-            <p>
-              Shop online or visit your GPoint Affiliate business to redeem your
-              GPcoupon. Earn cash back rewards after each and every one of your
-              GPcoupon purchases.
-            </p>
+            <ContentH2>3. Earn while you shop</ContentH2>
+            <Spacer size={10} />
+            <div>
+              <ContentPara>Shop online or visit your GPoint Affiliate business to redeem your GPcoupon.</ContentPara>
+              <ContentPara>Earn cash back rewards after each and every one of your GPcoupon purchases.</ContentPara>
+            </div>
+            {/* <ContentPara>
+              Shop online or visit your GPoint Affiliate business to redeem your GPcoupon. 
+              Earn cash back rewards after each and every one of your GPcoupon purchases.
+            </ContentPara> */}
           </Texts>
         </Column>
       </Row>
@@ -267,7 +297,7 @@ export default function HowToUse() {
   );
 
   useEffect(() => {
-    console.log('ismobile: ', isMobile);
+    // console.log('ismobile: ', isMobile);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
