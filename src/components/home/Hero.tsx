@@ -78,7 +78,7 @@ const Texts = styled.div`
 
 const BannerH2 = styled.h2`
   color: #2d126d;
-  font-size: 32px;
+  font-size: 30px;
 
   ${({ theme }) => theme.gui.media.custom(1024)} {
     font-size: 26px;
@@ -91,7 +91,7 @@ const BannerH2 = styled.h2`
 
 const BannerPara = styled.p`
   color: #404040;
-  font-size: 22px;
+  font-size: 20px;
 
   ${({ theme }) => theme.gui.media.custom(1024)} {
     font-size: 18px;

@@ -27,11 +27,7 @@ const Title = styled(StyledParagraph)`
   border-radius: 30px;
   border: none;
 
-  ${({ theme }) => theme.gui.media.custom(1500)} {
-    font-size: 16px;
-  }
-
-  ${({ theme }) => theme.gui.media.custom(1024)} {
+  ${({ theme }) => theme.gui.media.custom(1920)} {
     font-size: 14px;
   }
 
@@ -46,11 +42,7 @@ const Description = styled(StyledParagraph)`
   text-align: center;
   line-height: 1.5;
 
-  ${({ theme }) => theme.gui.media.custom(1500)} {
-    font-size: 16px;
-  }
-
-  ${({ theme }) => theme.gui.media.custom(1024)} {
+  ${({ theme }) => theme.gui.media.custom(1920)} {
     font-size: 14px;
   }
 
