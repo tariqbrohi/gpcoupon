@@ -15,6 +15,10 @@ const FooterUrl = styled.footer`
     padding: 30px 0 40px 0;
     background: #f6f6f6;
     border-bottom: 0.2rem solid #f1f2f4;
+
+    ${({ theme }) => theme.gui.media.mobile} {
+        padding-bottom: 0;
+    }
 `;
 
 const UrlContainer = styled.div`
@@ -74,6 +78,7 @@ const EachUrlContainerLogo = styled.div`
 
 const ImageLogo = styled(Image)`
     max-width: 80%;
+    cursor: pointer;
 `;
 
 const LogoPara = styled.p`
@@ -152,6 +157,7 @@ const FooterText = styled.footer`
 `;
 
 const FooterTextAnchor = styled.a`
+    color: #4183c4;
     transition: all 0.4s ease-in-out;
 
     &: hover {
@@ -189,7 +195,7 @@ const Footer: FC = () => {
                 b: 'Terms of Use',
             },
             pageLink: {
-                a: '/legal/privacy',
+                a: '/privacy',
                 b: '/legal',
             },
         },
@@ -220,7 +226,9 @@ const Footer: FC = () => {
                     <ListAndIconContainer>
                         <UrlDiv>
                             <EachUrlContainerLogo>
-                                <ImageLogo src='/images/logo_with_rich.png' alt='GPcoupon Logo' />
+                                <Link href='/'>
+                                    <ImageLogo src='/images/logo_with_rich.png' alt='GPcoupon Logo' />
+                                </Link>
                                 <LogoPara>Give the gift of earning and save on all your purchases worldwide.</LogoPara>
                             </EachUrlContainerLogo>
 
@@ -295,11 +303,11 @@ const Footer: FC = () => {
                   
                 <GridRow textAlign="center" horizontalAlign="center">
                     <Link href="/legal">
-                        <FooterTextAnchor>{t('termsAndConditions')}</FooterTextAnchor>
+                        <FooterTextAnchor>Terms & Conditions</FooterTextAnchor>
                     </Link>
                     &nbsp;|&nbsp;
                     <Link href="/legal/privacy">
-                        <FooterTextAnchor>{t('privacyPolicy')}</FooterTextAnchor>
+                        <FooterTextAnchor>Privacy Policy</FooterTextAnchor>
                     </Link>
                 </GridRow>
                 <Spacer size={10} />

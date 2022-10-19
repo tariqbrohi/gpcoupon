@@ -48,7 +48,7 @@ export default function Home() {
             <Spacer size={50} />
 
             <HowToUse />
-            <MobileNoSpacer size={130} />
+            <MobileNoSpacer size={50} />
           </Section>
         </AppContainer>
       </AppMain>
