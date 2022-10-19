@@ -86,23 +86,27 @@ const ImageContainer = styled.div`
     position: relative;
     bottom: 45px;
 
-    // ${({ theme }) => theme.gui.media.mobile} {
-    //     bottom: 0;
-    // }
-
     ${({ theme }) => theme.gui.media.custom(1170)} {
         bottom: 0;
     }
 `;
 
-const ImageContainerEven = styled.div`
+const ImageContainerOne = styled.div`
+    position: relative;
+    bottom: 32px;
+
+    ${({ theme }) => theme.gui.media.custom(1170)} {
+        bottom: 0;
+    }
+
+    ${({ theme }) => theme.gui.media.custom(1170)} {
+        top: 8px;
+    }
+`;
+
+const ImageContainerTwo = styled.div`
     position: relative;
     bottom: 45px;
-
-    // ${({ theme }) => theme.gui.media.mobile} {
-    //     bottom: 0;
-    //     top: 5px;
-    // }
 
     ${({ theme }) => theme.gui.media.custom(1170)} {
         bottom: 0;
@@ -162,13 +166,13 @@ export default function HowItWorksContent() {
                     </div>
                 </Column>
                 <ColumnAndImage>
-                    <ImageContainer>
+                    <ImageContainerOne>
                         <Image
                             src="/images/howtouse_one.png"
-                            size="tiny"
+                            size="mini"
                             style={{ alignSelf: 'start' }}
                         />
-                    </ImageContainer>
+                    </ImageContainerOne>
                     <Texts>
                         <ContentH2>Purchase your GPcoupon</ContentH2>
                         <Spacer size={10} />
@@ -183,13 +187,13 @@ export default function HowItWorksContent() {
 
             <RowReverse>
                 <ColumnAndImage>
-                    <ImageContainerEven>
+                    <ImageContainerTwo>
                         <Image
                             src="/images/howtouse_two.png"
                             size="tiny"
                             style={{ alignSelf: 'start' }}
                         />
-                    </ImageContainerEven>
+                    </ImageContainerTwo>
                     <Texts>
                         <ContentH2>Load & Redeem your GPcoupon</ContentH2>
                         <Spacer size={10} />
