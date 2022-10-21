@@ -12,7 +12,7 @@ export default errorHandler(async function handler(req, res) {
         throw new NotFoundError();
     }
 
-    const { searchQuery } = req.query as any;
+    const { searchQuery, country } = req.query as any;
     // console.log('Your searchQuery', searchQuery);
 
     // if (searchQuery) {
@@ -24,7 +24,9 @@ export default errorHandler(async function handler(req, res) {
     //     return res.send(items);
     // }
 
-    const where: Record<string, any> = { searchQuery };
+    console.log('api', searchQuery, country);
+
+    const where: Record<string, any> = { searchQuery, country };
 
     const item = await prisma.item.findMany({
         where: {

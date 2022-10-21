@@ -325,7 +325,7 @@ export type GetOccasionItemsQueryResult = Item[];
   baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
 ) => {
   return useQuery<GetSearchResultItemQueryVariables, GetSearchResultItemQueryResult>(
-    '/api/v1/items/',
+    '/api/v1/items/searchbar',
     baseOptions,
     [],
   );
@@ -334,13 +334,14 @@ export const useGetSearchResultItemLazyQuery = (
   baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
 ) => {
   return useLazyQuery<GetSearchResultItemQueryVariables, GetSearchResultItemQueryResult>(
-    '/api/v1/items/',
+    '/api/v1/items/searchbar',
     baseOptions,
     [],
   );
 };
 export type GetSearchResultItemQueryVariables = {
   searchQuery: string;
+  country: string;
 };
 export type GetSearchResultItemQueryResult = Item[];
 
@@ -402,6 +403,31 @@ export type MyGiftsQueryResult = {
   message?: string;
   createdAt: number;
 }[];
+
+/**
+ * SearchResultItems
+ */
+ export const useSearchResultItemsQuery = (
+  baseOptions?: QueryBaseOptions<SearchResultItemsQueryVariables>,
+) => {
+  return useQuery<SearchResultItemsQueryVariables, SearchResultItemsQueryResult>(
+    '/api/v1/items/searchbar',
+    baseOptions,
+  );
+};
+export const useSearchResultItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<SearchResultItemsQueryVariables>,
+) => {
+  return useLazyQuery<SearchResultItemsQueryVariables, SearchResultItemsQueryResult>(
+    '/api/v1/items/searchbar',
+    baseOptions,
+  );
+};
+export type SearchResultItemsQueryVariables = {
+  country: string;
+  searchQuery: string;
+};
+export type SearchResultItemsQueryResult = Item[];
 
 /**
  * SearchItems

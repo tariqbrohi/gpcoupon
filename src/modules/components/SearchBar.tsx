@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import styled from 'styled-components';
-import { SetStateAction, useState } from 'react';
+import { KeyboardEvent, SetStateAction, SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { ROUTES } from '@/ROUTES';
 import Router from 'next/router';
+import { useSearchResultItemsLazyQuery } from '@/services';
+import AppContext from './AppContext';
 
 const Container = styled.div`
     display: flex;
@@ -33,17 +35,44 @@ const SearchInput = styled.input`
 `;
 
 export default function SearchBar() {
-    const [search, setSearch] = useState('');
+    const [search, { data, loading }] = useSearchResultItemsLazyQuery();
+    const [searchValue, setSearchValue] = useState('');
+    const { country } = useContext(AppContext);
 
-    const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setSearch(event.target.value);
-        // console.log('This value is:', event.target.value);
+    const handleClickSearch = async (e: SyntheticEvent) => {
+        e.preventDefault();
+
+        search({
+            data: {
+                country,
+                searchQuery: searchValue,
+            },
+        });
+        console.log('The searchValue is:', searchValue);
     };
 
+    const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleClickSearch(e);
+        }
+        console.log('You pressed Enter:', searchValue);
+    }
+
+    const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setSearchValue(event.target.value);
+    };
+
+    // useEffect(() => {
+    //     search({
+    //         data: {
+    //             searchQuery: searchValue,
+    //             country,
+    //         },
+    //     });
+    // }, [searchValue]);
+
     return (
-        <Container 
-            // onClick={() => Router.push('/search-result')}
-        >
+        <Container>
             <img
                 src="/svg/search.svg"
                 alt='searchbar'
@@ -51,12 +80,14 @@ export default function SearchBar() {
                     width: '20px',
                     marginRight: '5px',
                 }}
-                onClick={() => Router.push('/search-result')}
+                // onClick={() => Router.push('/search-result')}
+                onClick={handleClickSearch}
             />
             <SearchInput type="text" id='search' name='search' 
-                onChange={handleChange} 
-                value={search} 
                 placeholder="Search your Coupon here"
+                value={searchValue} 
+                onChange={handleChange}
+                onKeyPress={handleKeyPress} 
             />
         </Container>
     );
