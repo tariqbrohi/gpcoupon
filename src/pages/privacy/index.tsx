@@ -6,6 +6,16 @@ import { Box, Divider, Typography } from '@mui/material';
 import { Paragraph, Spacer } from '@growth-ui/react';
 import styled from 'styled-components';
 
+const SectionContainer = styled.div`
+    margin: 0;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+    margin-bottom: 0.35em;
+`;
+
 const Texts = styled.div`
     height: 100%;
     display: flex;
@@ -22,6 +32,10 @@ const Texts = styled.div`
         text-align: center;
         line-height: 1.5;
     }
+`;
+
+const SpanBold = styled.span`
+    font-weight: bold;
 `;
 
 const SpanBoldItalic = styled.span`
@@ -58,10 +72,13 @@ export default function Privacy () {
                 <Spacer size={10} />
 
                 <Typography gutterBottom>
-                    By clicking using our websites and services, you are accepting the practices described in this Privacy Policy.&nbsp;
-                    <Typography gutterBottom fontWeight="bold">
+                    By clicking using our websites and services, you are accepting the practices described in this Privacy Policy. <br />
+                    <SpanBold>
                         If you do not agree with our Terms of Use or this Privacy Statement, please discontinue the use of our websites and mobile applications immediately.
-                    </Typography>
+                    </SpanBold>
+                    {/* <Typography gutterBottom fontWeight="bold">
+                        If you do not agree with our Terms of Use or this Privacy Statement, please discontinue the use of our websites and mobile applications immediately.
+                    </Typography> */}
                 </Typography>
                 <Spacer size={10} />
 
@@ -103,7 +120,7 @@ export default function Privacy () {
                         2. INFORMATION WE COLLECT
                     </Typography>
                     <Spacer size={5} />
-                    <Typography gutterBottom>
+                    <SectionContainer>
                         <SpanBoldItalic>
                             Information you provide us.
                         </SpanBoldItalic>
@@ -173,7 +190,7 @@ export default function Privacy () {
                             For example, if you post your email address, you may receive unsolicited messages. 
                             We cannot control who views information (and what they do with information) you voluntarily post publicly.
                         </Typography>
-                    </Typography>
+                    </SectionContainer>
                 </section>
                 <Spacer size={30} />
 
@@ -183,7 +200,7 @@ export default function Privacy () {
                     </Typography>
                     <Spacer size={5} />
 
-                    <Typography gutterBottom>
+                    <SectionContainer>
                         We use the data we collect from you:
                         <Spacer size={5} />
                         <SpanBoldItalic>
@@ -316,7 +333,7 @@ export default function Privacy () {
                         <Typography gutterBottom>
                             Master & S INC. /GPoint  will not sell personal information to advertisers or other third parties without your consent.
                         </Typography>
-                    </Typography>
+                    </SectionContainer>
                 </section>
                 <Spacer size={30} />
 
