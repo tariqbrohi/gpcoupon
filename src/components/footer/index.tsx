@@ -217,18 +217,16 @@ const Footer: FC = () => {
 
     return (
         <>
-        <ArrowUp />
-
-        {/* <StyledFooter> */}
+            <ArrowUp />
         
             <FooterUrl>
                 <UrlContainer>
                     <ListAndIconContainer>
                         <UrlDiv>
                             <EachUrlContainerLogo>
-                                <Link href='/'>
-                                    <ImageLogo src='/images/logo_with_rich.png' alt='GPcoupon Logo' />
-                                </Link>
+                                {/* <Link href='/'> */}
+                                <ImageLogo src='/images/logo_with_rich.png' alt='GPcoupon Logo' />
+                                {/* </Link> */}
                                 <LogoPara>Give the gift of earning and save on all your purchases worldwide.</LogoPara>
                             </EachUrlContainerLogo>
 
@@ -315,8 +313,6 @@ const Footer: FC = () => {
                 <CrPara>&copy; 2022 GPoint. All Rights Reserved.</CrPara>
             </FooterText>
             <Spacer size={50} />
-            
-        {/* </StyledFooter> */}
         </>
     );
 };
