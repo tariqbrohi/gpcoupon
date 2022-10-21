@@ -18,9 +18,7 @@ export default errorHandler(async function handler(req, res) {
     brandName,
     email,
     couponInfo
-  } = req.query as any;
-
-  console.log(businessName, phoneNumber, gwalletBusinessUsername, brandName, email, couponInfo);
+  } = req.body as any;
 
   sendCouponRequest({
     recipientEmail,
@@ -32,9 +30,5 @@ export default errorHandler(async function handler(req, res) {
     couponInfo
   });
 
-  res.send(
-    {
-      result: 'ok'
-    }
-  );
+  res.send(true);
 });

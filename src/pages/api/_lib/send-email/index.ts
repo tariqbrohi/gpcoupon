@@ -169,6 +169,7 @@ export const sendCouponRequest = async ({
   email,
   couponInfo
 }: SendCouponRequest) => {
+
   return sendEmail<any>({
     to: recipientEmail,
     templateId: 'd-96914e65c9de454e8a5f7d209a06a0f8',

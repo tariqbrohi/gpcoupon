@@ -1,40 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Input, Spacer, TextArea } from "@growth-ui/react";
+import { useCouponRequestMutation } from "@/services";
+import parseErrorMessage from "@/lib/parse-error-message";
+import isEmail from 'validator/lib/isEmail';
 
 export default function CreateCouponRequest() {
   const [businessName, setBusinessName] = useState("");
-  const [businessPhoneNumber, setBusinessPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [gwalletBusinessUsername, setGwalletBusinessUsername ] = useState("");
   const [brandName, setBrandName] = useState("");
   const [email, setEmail] = useState("");
   const [couponInfo, setCouponInfo] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [create, { loading }] = useCouponRequestMutation();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>('');
 
-  const handleSubmit= (action: string) => {
-    console.log(action);
-
-    if (action === 'cancel') setOpenModal(false);
-
-    if (
-      businessName === "" || 
-      businessPhoneNumber === "" || 
-      gwalletBusinessUsername === "" || 
-      brandName === "" || couponInfo === ""
-    ) return;
-
-    console.log("businessName", businessName);
-    console.log("businessPhoneNumber", businessPhoneNumber);
-    console.log("gwalletBusinessUsername", gwalletBusinessUsername);
-    console.log("brandName", brandName);
-    console.log("couponInfo", couponInfo);
-
+  const resetStates = () => {
     setBusinessName("");
-    setBusinessPhoneNumber("");
+    setPhoneNumber("");
     setGwalletBusinessUsername("");
     setBrandName("");
     setEmail("");
     setCouponInfo("");
+  }
 
+  const handleSubmit= async (action: string) => {
+    if (action === 'cancel') {
+      resetStates();
+      setOpenModal(false);
+      return;
+    }
+
+    if (
+      businessName === "" || 
+      phoneNumber === "" || 
+      gwalletBusinessUsername === "" || 
+      brandName === "" || 
+      couponInfo === "" ||
+      email === "" ||
+      !isEmail(email)
+    ) return;
+
+    await create({
+      data: {
+        businessName,
+        phoneNumber,
+        gwalletBusinessUsername,
+        brandName,
+        email,
+        couponInfo
+      }
+    })
+      .then(() => {
+        setSuccess(true);
+        alert('Coupon request was submitted!');
+      })
+      .catch((err) => {
+        setError(parseErrorMessage(err));
+        alert('Something went wrong! Please try again!');
+      });
+
+    resetStates();
     setOpenModal(false);
   } 
 
@@ -51,6 +78,7 @@ export default function CreateCouponRequest() {
         </Button>
       }
       open={openModal}
+      onClose={() => resetStates()}
     >
       <Modal.Header
         subheader="Fill out the form to create a GPoint Affiliated Coupon. Any business owners can create a coupon if you are registered with GPoint Wallet Business account!"
@@ -68,8 +96,8 @@ export default function CreateCouponRequest() {
           <Input 
             fluid 
             label="Business Phone Number" 
-            onChange={(e, _) => setBusinessPhoneNumber(e.target.value)}
-            value={businessPhoneNumber}
+            onChange={(e, _) => setPhoneNumber(e.target.value)}
+            value={phoneNumber}
           />
           <Spacer size={30} />
           <Input 
