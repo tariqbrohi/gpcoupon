@@ -54,9 +54,11 @@ const Row = styled.div`
     margin: 0 auto;
   }
 `;
+
 const Column = styled.div`
   flex: 50%;
 `;
+
 const Texts = styled.div`
   height: 100%;
   display: flex;
@@ -71,6 +73,32 @@ const Texts = styled.div`
     color: rgba(0, 0, 0, 0.87);
     text-align: center;
     line-height: 1.5;
+  }
+`;
+
+const BannerH2 = styled.h2`
+  color: #2d126d;
+  font-size: 30px;
+
+  ${({ theme }) => theme.gui.media.custom(1024)} {
+    font-size: 26px;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    font-size: 20px;
+  }
+`;
+
+const BannerPara = styled.p`
+  color: #404040;
+  font-size: 20px;
+
+  ${({ theme }) => theme.gui.media.custom(1024)} {
+    font-size: 18px;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    font-size: 14px;
   }
 `;
 
@@ -103,16 +131,16 @@ export default function Hero() {
       <Row>
         <Column>
           <Texts>
-            <h2 style={{color: "#2D126D"}}>
+            <BannerH2>
               Celebrate special moments and earn real cash back on every
               purchase, anywhere around the world.
-            </h2>
+            </BannerH2>
             <Spacer size={20} />
-            <p style={{color: "#404040"}}>
+            <BannerPara>
               Browse a huge selection of popular brands or shop local with
               GPoint Affiliate brands. Buy a GPcoupon and earn cash back rewards
               every time you shop.
-            </p>
+            </BannerPara>
           </Texts>
         </Column>
         <Column>

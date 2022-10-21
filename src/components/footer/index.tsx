@@ -161,7 +161,7 @@ const Footer: FC = () => {
                 // b: 'Support',
             },
             pageLink: {
-                a: '/how-to-use',
+                a: '/how-it-works',
                 // b: '/support',
             },
         },
