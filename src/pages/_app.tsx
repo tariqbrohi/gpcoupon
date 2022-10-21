@@ -5,6 +5,7 @@ import { parseCookies } from '@/lib/parse-cookies';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { Paragraph, Spacer } from '@growth-ui/react';
 import ArrowUp from '@/components/arrowUp';
+import Footer from '@/components/footer';
 
 type AppProps = AppInitialProps & {
   cookies: Record<string, string>;
@@ -16,7 +17,9 @@ function MyApp({ Component, pageProps, cookies }: AppContext & AppProps) {
       <GrowthThemeProvider>
         <AppStateProvider cookies={cookies}>
           <Component {...pageProps} />
-          <ArrowUp />
+          <Footer />
+          {/* <ArrowUp /> */}
+          
           {/* <div>
             <Spacer size={50} />
             <div style={{}}>
