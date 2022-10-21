@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "@growth-ui/react";
+import { ROUTES } from '@/ROUTES';
+import Link from 'next/link';
 
 export default function CouponList(props: any) {
   const {orders} = props;
@@ -43,7 +45,11 @@ export default function CouponList(props: any) {
                     <Table.Row
                       key={idx}
                     >
-                      <Table.Cell>{order?.item.name}</Table.Cell>
+                      <Table.Cell>
+                        <Link href={`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`}>
+                          <a>{order?.item.name}</a>
+                        </Link>                        
+                      </Table.Cell>
                       <Table.Cell>{new Date(Number(order?.createdAt) * 1000).toLocaleDateString()}</Table.Cell>
                       <Table.Cell>{addDays(order?.createdAt * 1000, order?.item?.expiresIn)}</Table.Cell>
                       <Table.Cell>1</Table.Cell>
