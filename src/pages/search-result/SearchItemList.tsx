@@ -1,7 +1,7 @@
 import AppContext from "@/modules/components/AppContext";
 import ItemList from "@/modules/components/ItemList";
 import ItemListHeader from "@/modules/components/ItemListHeader";
-import { useGetAffAndBrandItemsLazyQuery } from "@/services";
+import { useGetAffAndBrandItemsLazyQuery, useGetSearchResultItemLazyQuery } from "@/services";
 import { Grid, Image, Paragraph, Skeleton, Spacer } from "@growth-ui/react";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";

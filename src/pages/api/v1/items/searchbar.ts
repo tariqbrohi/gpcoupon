@@ -39,7 +39,10 @@ export default errorHandler(async function handler(req, res) {
         },
     });
 
-    res.send({item});
+    console.log('api', item);
+
+    res.send(item);
+})
 
 
     // https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting#filtering

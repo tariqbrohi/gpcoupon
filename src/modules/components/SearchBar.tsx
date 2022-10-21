@@ -51,6 +51,7 @@ export default function SearchBar() {
                     width: '20px',
                     marginRight: '5px',
                 }}
+                onClick={() => Router.push('/search-result')}
             />
             <SearchInput type="text" id='search' name='search' 
                 onChange={handleChange} 

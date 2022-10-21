@@ -319,6 +319,32 @@ export type GetOccasionItemsQueryVariables = {
 export type GetOccasionItemsQueryResult = Item[];
 
 /**
+ * GetSearchResultItem
+ */
+ export const useGetSearchResultItemQuery = (
+  baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
+) => {
+  return useQuery<GetSearchResultItemQueryVariables, GetSearchResultItemQueryResult>(
+    '/api/v1/items/',
+    baseOptions,
+    [],
+  );
+};
+export const useGetSearchResultItemLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
+) => {
+  return useLazyQuery<GetSearchResultItemQueryVariables, GetSearchResultItemQueryResult>(
+    '/api/v1/items/',
+    baseOptions,
+    [],
+  );
+};
+export type GetSearchResultItemQueryVariables = {
+  searchQuery: string;
+};
+export type GetSearchResultItemQueryResult = Item[];
+
+/**
  * GetItem
  */
 export const useGetItemQuery = (
