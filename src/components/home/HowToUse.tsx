@@ -18,22 +18,37 @@ const TitleDiv = styled.div`
 
 const Title = styled(StyledParagraph)`
   font-weight: 600;
-  font-size: 14px;
+  font-size: 18px;
   text-align: center;
-  // margin-bottom: 15px;
   padding: 10px 25px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   background-color: #FBD9D8;
   color: #BF7582;
   border-radius: 30px;
   border: none;
+
+  ${({ theme }) => theme.gui.media.custom(1920)} {
+    font-size: 14px;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Description = styled(StyledParagraph)`
-  font-size: 12px;
+  font-size: 18px;
   color: rgba(0, 0, 0, 0.87);
   text-align: center;
   line-height: 1.5;
+
+  ${({ theme }) => theme.gui.media.custom(1920)} {
+    font-size: 14px;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const Wrapper = styled.ul`
@@ -124,6 +139,18 @@ const Texts = styled.div`
   }
 `;
 
+const ContentH2 = styled.h2`
+    color: #2D126D;
+`;
+
+const ContentPara = styled.p`
+    color: #404040;
+
+    &:not(:last-child) {
+        margin-bottom: 5px;
+    }
+`;
+
 const features = [
   {
     imageUrl: '/images/global.png',
@@ -180,12 +207,13 @@ export default function HowToUse() {
         </Column>
         <Column>
           <Texts>
-            <h2>1. Purchase your GPcoupon</h2>
-            <p>
+            <ContentH2>1. Purchase your GPcoupon</ContentH2>
+            <Spacer size={10} />
+            <ContentPara>
               Browse our selection of local businesses to purchase your GPcoupon
               with cash, GPoints or wire transfer. Receive your Coupon code via
               email and earn cash back rewards with your GPcoupon purchase.
-            </p>
+            </ContentPara>
           </Texts>
         </Column>
       </Row>
@@ -194,13 +222,18 @@ export default function HowToUse() {
       <RowReverse>
         <Column>
           <Texts>
-            <h2>2. Load & Redeem your GPcoupon</h2>
-            <p>
-              Download your GPoint Wallet to load your GPoint Reloadable
-              coupon. Redeem your affiliate GPcoupon at your designated
-              location. Pay for your purchase with your GPcoupon by heading
-              to the brands's website and Redeeming your GPcoupon online.
-            </p>
+            <ContentH2>2. Load & Redeem your GPcoupon</ContentH2>
+            <Spacer size={10} />
+            <div>
+              <ContentPara>Download your GPoint Wallet to load your GPoint Reloadable coupon.</ContentPara>
+              <ContentPara>Redeem your affiliate GPcoupon at your designated location.</ContentPara>
+              <ContentPara>Pay for your purchase with your GPcoupon by heading to the brands's website and Redeeming your GPcoupon online.</ContentPara>
+            </div>
+            {/* <ContentPara>
+              Download your GPoint Wallet to load your GPoint Reloadable coupon. 
+              Redeem your affiliate GPcoupon at your designated location. 
+              Pay for your purchase with your GPcoupon by heading to the brands's website and Redeeming your GPcoupon online.
+            </ContentPara> */}
           </Texts>
         </Column>
         <Column>
@@ -239,12 +272,16 @@ export default function HowToUse() {
         </Column>
         <Column>
           <Texts>
-            <h2>3. Earn while you shop</h2>
-            <p>
-              Shop online or visit your GPoint Affiliate business to redeem your
-              GPcoupon. Earn cash back rewards after each and every one of your
-              GPcoupon purchases.
-            </p>
+            <ContentH2>3. Earn while you shop</ContentH2>
+            <Spacer size={10} />
+            <div>
+              <ContentPara>Shop online or visit your GPoint Affiliate business to redeem your GPcoupon.</ContentPara>
+              <ContentPara>Earn cash back rewards after each and every one of your GPcoupon purchases.</ContentPara>
+            </div>
+            {/* <ContentPara>
+              Shop online or visit your GPoint Affiliate business to redeem your GPcoupon. 
+              Earn cash back rewards after each and every one of your GPcoupon purchases.
+            </ContentPara> */}
           </Texts>
         </Column>
       </Row>
@@ -252,7 +289,7 @@ export default function HowToUse() {
   );
 
   useEffect(() => {
-    console.log('ismobile: ', isMobile);
+    // console.log('ismobile: ', isMobile);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobile]);
 
