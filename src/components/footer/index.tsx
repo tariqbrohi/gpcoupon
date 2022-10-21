@@ -1,14 +1,10 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
-// import Spacer from 'ui/Spacer';
-// import { StyledFooter } from './style';
 import ArrowUp from '../arrowUp';
 import GridRow from '@growth-ui/react/collections/Grid/GridRow';
 import styled from 'styled-components';
-// import { Section } from 'components/section/Section';
-// import { FooterLinkList, LOGIN_URI } from 'src/constants';
-import { Button, Image, Spacer } from '@growth-ui/react';
+import { Image, Spacer } from '@growth-ui/react';
 import { useRouter } from 'next/router';
 
 const FooterUrl = styled.footer`
@@ -28,12 +24,6 @@ const UrlContainer = styled.div`
     ${({ theme }) => theme.gui.media.mobile} {
         width: 95%;
     }
-
-    // ${({ theme }) => theme.media.s} {
-    //   & {
-    //     width: 95%;
-    //   }
-    // }
 `;
 
 const ListAndIconContainer = styled.div`
@@ -42,18 +32,6 @@ const ListAndIconContainer = styled.div`
     ${({ theme }) => theme.gui.media.mobile} {
         flex-direction: column;
     }
-    
-    // ${({ theme }) => theme.media.l} {
-    //     & {
-    //       flex-wrap: wrap;
-    //     }
-    // }
-
-    // ${({ theme }) => theme.media.s} {
-    //     & {
-    //       flex-direction: row;
-    //     }
-    // }
 `;
 
 const UrlDiv = styled.div`
@@ -78,7 +56,7 @@ const EachUrlContainerLogo = styled.div`
 
 const ImageLogo = styled(Image)`
     max-width: 80%;
-    cursor: pointer;
+    // cursor: pointer;
 `;
 
 const LogoPara = styled.p`
@@ -180,11 +158,11 @@ const Footer: FC = () => {
             title: 'Help',
             pageName: {
                 a: 'How to Use',
-                b: 'Support',
+                // b: 'Support',
             },
             pageLink: {
                 a: '/how-to-use',
-                b: '/support',
+                // b: '/support',
             },
         },
         {
@@ -295,7 +273,7 @@ const Footer: FC = () => {
                   
             <FooterText>
                 <p>
-                  If you need any support, please contact support@gpointwallet.com
+                    If you need any support, please contact support@gpointwallet.com
                 </p>
                 <Spacer size={10} />
                   
