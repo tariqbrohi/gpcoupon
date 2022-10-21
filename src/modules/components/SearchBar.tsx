@@ -42,7 +42,7 @@ export default function SearchBar() {
 
     return (
         <Container 
-            onClick={() => Router.push(ROUTES.search)}
+            // onClick={() => Router.push('/search-result')}
         >
             <img
                 src="/svg/search.svg"
