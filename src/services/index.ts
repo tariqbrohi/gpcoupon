@@ -974,3 +974,33 @@ export type DeletePaymentCardMutationVariables = {
   id: string;
 };
 export type DeletePaymentCardMutationResult = boolean;
+
+/**
+ * Create Coupon Request
+ */
+ export const useCouponRequestMutation = () => {
+  return useMutation<CreateBrandMutationVariables, CouponRequestMutationResult>(
+    '/api/v1/dashboard/affiliate/couponRequest',
+    'post',
+    [''],
+    [
+      'businessName',
+      'phoneNumber',
+      'gwalletBusinessUsername',
+      'barndName',
+      'email',
+      'couponInfo'
+    ],
+  );
+};
+export type CouponRequestMutationVariables = {
+  businessName: string;
+  phoneNumber: string;
+  gwalletBusinessUsername: string;
+  barndName: string;
+  email: string;
+  couponInfo: string;
+};
+export type CouponRequestMutationResult = {
+  result: string;
+};

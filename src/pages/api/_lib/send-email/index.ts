@@ -149,3 +149,37 @@ export const gpointOrderDenied = async ({
     dynamicTemplateData,
   });
 };
+
+type SendCouponRequest = {
+  recipientEmail: string;
+  businessName: string;
+  phoneNumber: string;
+  gwalletBusinessUsername: string;
+  brandName: string;
+  email: string;
+  couponInfo: number;
+};
+
+export const sendCouponRequest = async ({
+  recipientEmail,
+  businessName,
+  phoneNumber,
+  gwalletBusinessUsername,
+  brandName,
+  email,
+  couponInfo
+}: SendCouponRequest) => {
+  return sendEmail<any>({
+    to: recipientEmail,
+    templateId: 'd-96914e65c9de454e8a5f7d209a06a0f8',
+    dynamicTemplateData :{
+      recipientEmail,
+      businessName,
+      phoneNumber,
+      gwalletBusinessUsername,
+      brandName,
+      email,
+      couponInfo
+    }
+  })
+};
