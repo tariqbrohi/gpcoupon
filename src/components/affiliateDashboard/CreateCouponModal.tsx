@@ -3,6 +3,15 @@ import { Modal, Button, Input, Spacer, TextArea } from "@growth-ui/react";
 import { useCouponRequestMutation } from "@/services";
 import parseErrorMessage from "@/lib/parse-error-message";
 import isEmail from 'validator/lib/isEmail';
+import styled from "styled-components";
+
+const ModalContainer = styled(Modal)`
+  top: 56%;
+  
+  ${({ theme }) => theme.gui.media.mobile} {
+    top: 45%;
+  }
+`;
 
 export default function CreateCouponRequest() {
   const [businessName, setBusinessName] = useState("");
@@ -66,7 +75,7 @@ export default function CreateCouponRequest() {
   } 
 
   return(
-    <Modal 
+    <ModalContainer 
       trigger={
         <Button 
           onClick={() => setOpenModal(true)}
@@ -167,6 +176,6 @@ export default function CreateCouponRequest() {
           Cancel
         </Button>
       </Modal.Actions>
-    </Modal>
+    </ModalContainer>
   );
 }
