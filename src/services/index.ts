@@ -426,6 +426,7 @@ export const useSearchResultItemsLazyQuery = (
 export type SearchResultItemsQueryVariables = {
   country: string;
   searchQuery: string;
+  // extendedName: string;
 };
 export type SearchResultItemsQueryResult = Item[];
 

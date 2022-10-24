@@ -1,8 +1,6 @@
-// Searchbar api
-
 import errorHandler from "../../_middlewares/error-handler";
 import prisma from "@/prisma";
-import xoxoday from "../../_lib/xoxoday";
+// import xoxoday from "../../_lib/xoxoday";
 import { NotFoundError } from "@/lib/errors";
 
 export default errorHandler(async function handler(req, res) {
@@ -12,17 +10,31 @@ export default errorHandler(async function handler(req, res) {
         throw new NotFoundError();
     }
 
-    const { searchQuery, country } = req.query as any;
-    // console.log('api', searchQuery, country);
+    const { 
+        searchQuery, 
+        country, 
+        // extendedName 
+    } = req.query as any;
 
-    const where: Record<string, any> = { searchQuery, country };
+    // console.log('api', searchQuery, country, extendedName);
+
+    const where: Record<string, any> = { 
+        searchQuery, 
+        country, 
+        // extendedName 
+    };
 
     const item = await prisma.item.findMany({
         where: {
             name: {
                 mode: 'insensitive',
                 contains: searchQuery,
+                // contains: searchQuery || extendedName,
             },
+            // extendedName: {
+            //     mode: 'insensitive',
+            //     contains: searchQuery,
+            // },
             country,
         },
     });

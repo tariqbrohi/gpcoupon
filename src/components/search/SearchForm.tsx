@@ -12,6 +12,7 @@ export default function SearchForm({ search }: Props) {
   const { country, searchHistories, setSearchHistories } =
     useContext(AppContext);
   const [searchValue, setSearchValue] = useState('');
+  // const [extendedNameValue, setExtendedNameValue] = useState('');
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ export default function SearchForm({ search }: Props) {
       data: {
         country,
         searchQuery: searchValue,
+        // extendedName: extendedNameValue,
       },
     });
   };

@@ -29,13 +29,13 @@ export default function SearchByCategory() {
             <CouponCategoryDiv>
                 <ButtonEffect>
                     <Link href={ROUTES.brands}>
-                        <a>Go to Brand Coupons</a>
+                        <a>Go to Brands</a>
                     </Link>
                 </ButtonEffect>
                 <Spacer size={50} />
                 <ButtonEffect>
                     <Link href={ROUTES.affiliates}>
-                        <a>Find Affiliates</a>
+                        <a>Go to Affiliates</a>
                     </Link>
                 </ButtonEffect>
             </CouponCategoryDiv>

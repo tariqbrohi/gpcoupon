@@ -45,7 +45,7 @@ export default function SearchHistory({ search }: Props) {
         </Grid.Col>
       </Grid.Row>
       <Spacer size={20} />
-
+      
       <List selection padded>
         {searchHistories.map((history, idx) => (
           <List.Item key={history}>
