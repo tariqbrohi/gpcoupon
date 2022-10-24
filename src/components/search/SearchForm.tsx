@@ -2,16 +2,7 @@ import AppContext from '@/modules/components/AppContext';
 import React, { SyntheticEvent, useContext, useState } from 'react';
 import Router from 'next/router';
 import { Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/react';
-import { useSearchItemsLazyQuery, useSearchResultItemsLazyQuery } from '@/services';
-import styled from 'styled-components';
-
-const SearchInput = styled(Input)`
-  
-`;
-
-// type Props = {
-//   search: ReturnType<typeof useSearchItemsLazyQuery>[0];
-// };
+import { useSearchResultItemsLazyQuery } from '@/services';
 
 type Props = {
   search: ReturnType<typeof useSearchResultItemsLazyQuery>[0];
@@ -20,7 +11,6 @@ type Props = {
 export default function SearchForm({ search }: Props) {
   const { country, searchHistories, setSearchHistories } =
     useContext(AppContext);
-  // const [q, setQ] = useState('');
   const [searchValue, setSearchValue] = useState('');
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -28,14 +18,12 @@ export default function SearchForm({ search }: Props) {
 
     setSearchHistories([
       ...searchHistories, 
-      // q,
       searchValue
     ]);
 
     search({
       data: {
         country,
-        // q,
         searchQuery: searchValue,
       },
     });
@@ -52,14 +40,12 @@ export default function SearchForm({ search }: Props) {
       </Grid.Col>
       <Grid.Col flex="1">
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-          <SearchInput
+          <Input
             fluid
             filled
             placeholder="Search for coupons"
             icon="search"
             size="sm"
-            // value={q}
-            // onChange={(e) => setQ(e.target.value)}
             value={searchValue}
             onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setSearchValue(e.target.value)}
           />

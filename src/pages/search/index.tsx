@@ -4,7 +4,7 @@ import React from 'react';
 import SearchForm from '@/components/search/SearchForm';
 import SearchHistory from '@/components/search/SearchHistory';
 import { Padding, Spacer } from '@growth-ui/react';
-import { useSearchItemsLazyQuery, useSearchResultItemsLazyQuery } from '@/services';
+import { useSearchResultItemsLazyQuery } from '@/services';
 import AppHeader from '@/layouts/AppHeader';
 import AppContainer from '@/layouts/AppContainer';
 import AppMain from '@/layouts/AppMain';
@@ -18,15 +18,12 @@ const AppContainerCustom = styled(AppContainer)`
 `;
 
 export default function SearchPage() {
-  // const [search, { data, loading }] = useSearchItemsLazyQuery();
   const [search, { data, loading }] = useSearchResultItemsLazyQuery();
-  // console.log(data);
 
   return (
     <>
       <Head title="GPcoupon | Search" />
       <AppHeader bgTransition hideOnMobile={false} />
-      {/* <main> */}
       <AppMain>
         <AppContainerCustom>
           {/* <Padding all={1}> */}
@@ -35,8 +32,8 @@ export default function SearchPage() {
             <SearchForm search={search} />
             <Spacer size={30} />
 
-            <SearchByCategory />
-            <Spacer size={30} />
+            {/* <SearchByCategory />
+            <Spacer size={30} /> */}
 
             <ItemList loading={loading} items={data || []} />
             <Spacer size={40} />
@@ -44,7 +41,6 @@ export default function SearchPage() {
             <SearchHistory search={search} />
           {/* </Padding> */}
         </AppContainerCustom>
-      {/* </main> */}
       </AppMain>
     </>
   );

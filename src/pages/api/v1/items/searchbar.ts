@@ -13,18 +13,7 @@ export default errorHandler(async function handler(req, res) {
     }
 
     const { searchQuery, country } = req.query as any;
-    // console.log('Your searchQuery', searchQuery);
-
-    // if (searchQuery) {
-    //     const items = await xoxoday.vouchers.findMany({
-    //         name: searchQuery,
-    //         searchQuery,
-    //     });
-
-    //     return res.send(items);
-    // }
-
-    console.log('api', searchQuery, country);
+    // console.log('api', searchQuery, country);
 
     const where: Record<string, any> = { searchQuery, country };
 
@@ -38,7 +27,7 @@ export default errorHandler(async function handler(req, res) {
         },
     });
 
-    console.log('api', item);
+    // console.log('api', item);
 
     res.send(item);
 })

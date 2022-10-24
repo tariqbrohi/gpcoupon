@@ -10,8 +10,6 @@ const CouponCategoryDiv = styled.div`
 `;
 
 const ButtonEffect = styled(Button)`
-    // color: #fff;
-    // border-radius: 30px;
     box-shadow: rgb(203 203 203) 4px 4px 8px;
     transition: all 0.4s ease-in-out;
 
@@ -31,7 +29,7 @@ export default function SearchByCategory() {
             <CouponCategoryDiv>
                 <ButtonEffect>
                     <Link href={ROUTES.brands}>
-                        <a>Find Brands</a>
+                        <a>Go to Brand Coupons</a>
                     </Link>
                 </ButtonEffect>
                 <Spacer size={50} />
