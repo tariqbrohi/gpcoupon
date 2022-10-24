@@ -9,6 +9,7 @@ import AppHeader from '@/layouts/AppHeader';
 import AppContainer from '@/layouts/AppContainer';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
+import SearchByCategory from '@/components/search/SearchByCategory';
 
 const AppContainerCustom = styled(AppContainer)`
   ${({ theme }) => theme.gui.media.mobile} {
@@ -28,15 +29,20 @@ export default function SearchPage() {
       {/* <main> */}
       <AppMain>
         <AppContainerCustom>
-          <Padding all={1}>
-            <SearchForm search={search} />
+          {/* <Padding all={1}> */}
+            <Spacer size={50} />
 
+            <SearchForm search={search} />
+            <Spacer size={30} />
+
+            <SearchByCategory />
             <Spacer size={30} />
 
             <ItemList loading={loading} items={data || []} />
             <Spacer size={40} />
+
             <SearchHistory search={search} />
-          </Padding>
+          {/* </Padding> */}
         </AppContainerCustom>
       {/* </main> */}
       </AppMain>

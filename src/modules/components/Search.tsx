@@ -35,7 +35,7 @@ export default function Search({ hideOnDesktop = false }: Props) {
           marginRight: '5px',
         }}
       />
-      <Paragraph fontSize="xs">Search for coupons</Paragraph>
+      <Paragraph fontSize="xs">Search for your coupons here!</Paragraph>
     </Container>
   );
 }

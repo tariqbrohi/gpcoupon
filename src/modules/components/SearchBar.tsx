@@ -48,14 +48,14 @@ export default function SearchBar() {
                 searchQuery: searchValue,
             },
         });
-        console.log('The searchValue is:', searchValue);
+        // console.log('The searchValue is:', searchValue);
     };
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             handleClickSearch(e);
         }
-        console.log('You pressed Enter:', searchValue);
+        // console.log('You pressed Enter:', searchValue);
     }
 
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {

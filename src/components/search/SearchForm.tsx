@@ -5,12 +5,8 @@ import { Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/react';
 import { useSearchItemsLazyQuery, useSearchResultItemsLazyQuery } from '@/services';
 import styled from 'styled-components';
 
-const GridRow = styled(Grid.Row)`
-  padding: 150px 0 20px;
-
-  ${({ theme }) => theme.gui.media.mobile} {
-    padding: 100px 0 0;
-  }
+const SearchInput = styled(Input)`
+  
 `;
 
 // type Props = {
@@ -56,7 +52,7 @@ export default function SearchForm({ search }: Props) {
       </Grid.Col>
       <Grid.Col flex="1">
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-          <Input
+          <SearchInput
             fluid
             filled
             placeholder="Search for coupons"
@@ -65,7 +61,7 @@ export default function SearchForm({ search }: Props) {
             // value={q}
             // onChange={(e) => setQ(e.target.value)}
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setSearchValue(e.target.value)}
           />
         </form>
       </Grid.Col>
