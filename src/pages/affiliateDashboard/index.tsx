@@ -37,7 +37,7 @@ export default function AffiliateDashboard() {
 
   return (
     <>
-      <Head title="GCoupon | AffiliateDashboard" />
+      <Head title="GPcoupon | Affiliate Dashboard" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
