@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Router from 'next/router';
 import styled from 'styled-components';
 import { Paragraph } from '@growth-ui/react';
@@ -28,12 +29,13 @@ export default function Search({ hideOnDesktop = false }: Props) {
     >
       <img
         src="/svg/search.svg"
+        alt='Search Icon'
         style={{
           width: '20px',
           marginRight: '5px',
         }}
       />
-      <Paragraph fontSize="xs">Search for coupons</Paragraph>
+      <Paragraph fontSize="xs">Search for your coupons here!</Paragraph>
     </Container>
   );
 }

@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import useUser from '@/auth/useUser';
 import { Button, Grid, Spacer, StyledGridRow } from '@growth-ui/react';
 import { color } from '@/modules/brandingTheme';
+import SearchBar from '@/modules/components/SearchBar';
+import Search from '@/modules/components/Search';
 
 const Container = styled(StyledGridRow)`
   padding: 16px 32px;
@@ -113,7 +115,10 @@ export default function AppHeader({
             <Spacer size={20} />
           </Grid.Row>
         </Grid.Col>
-        <Grid.Col flex="1">{/* <Search /> */}</Grid.Col>
+        <Grid.Col flex="1" style={{alignItems: "center"}}>
+          <Search />
+          {/* <SearchBar /> */}
+        </Grid.Col>
         <Grid.Col>
           <Grid.Row verticalAlign="middle">
             <Spacer size={20} />
