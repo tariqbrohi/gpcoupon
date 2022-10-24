@@ -2,26 +2,45 @@ import AppContext from '@/modules/components/AppContext';
 import React, { SyntheticEvent, useContext, useState } from 'react';
 import Router from 'next/router';
 import { Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/react';
-import { useSearchItemsLazyQuery } from '@/services';
+import { useSearchItemsLazyQuery, useSearchResultItemsLazyQuery } from '@/services';
+import styled from 'styled-components';
+
+const GridRow = styled(Grid.Row)`
+  padding: 150px 0 20px;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding: 100px 0 0;
+  }
+`;
+
+// type Props = {
+//   search: ReturnType<typeof useSearchItemsLazyQuery>[0];
+// };
 
 type Props = {
-  search: ReturnType<typeof useSearchItemsLazyQuery>[0];
+  search: ReturnType<typeof useSearchResultItemsLazyQuery>[0];
 };
 
 export default function SearchForm({ search }: Props) {
   const { country, searchHistories, setSearchHistories } =
     useContext(AppContext);
-  const [q, setQ] = useState('');
+  // const [q, setQ] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    setSearchHistories([...searchHistories, q]);
+    setSearchHistories([
+      ...searchHistories, 
+      // q,
+      searchValue
+    ]);
 
     search({
       data: {
         country,
-        q,
+        // q,
+        searchQuery: searchValue,
       },
     });
   };
@@ -43,8 +62,10 @@ export default function SearchForm({ search }: Props) {
             placeholder="Search for coupons"
             icon="search"
             size="sm"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
+            // value={q}
+            // onChange={(e) => setQ(e.target.value)}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </form>
       </Grid.Col>
@@ -52,7 +73,7 @@ export default function SearchForm({ search }: Props) {
       <Grid.Col>
         <Paragraph
           fontSize="sm"
-          style={{ fontWeight: 600 }}
+          style={{ fontWeight: 600, cursor: "pointer" }}
           onClick={() => Router.back()}
         >
           Cancel

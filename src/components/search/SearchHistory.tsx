@@ -1,10 +1,14 @@
 import AppContext from '@/modules/components/AppContext';
 import React, { useContext } from 'react';
 import { Grid, Icon, List, Paragraph, Spacer } from '@growth-ui/react';
-import { useSearchItemsLazyQuery } from '@/services';
+import { useSearchItemsLazyQuery, useSearchResultItemsLazyQuery } from '@/services';
+
+// type Props = {
+//   search: ReturnType<typeof useSearchItemsLazyQuery>[0];
+// };
 
 type Props = {
-  search: ReturnType<typeof useSearchItemsLazyQuery>[0];
+  search: ReturnType<typeof useSearchResultItemsLazyQuery>[0];
 };
 
 export default function SearchHistory({ search }: Props) {
@@ -17,11 +21,20 @@ export default function SearchHistory({ search }: Props) {
     setSearchHistories(searchHistories.filter((_, i) => i !== pos));
   };
 
-  const handleClickItem = (q: string) => () => {
+  // const handleClickItem = (q: string) => () => {
+  //   search({
+  //     data: {
+  //       country,
+  //       q,
+  //     },
+  //   });
+  // };
+
+  const handleClickItem = (searchQuery: string) => () => {
     search({
       data: {
         country,
-        q,
+        searchQuery,
       },
     });
   };
@@ -30,7 +43,9 @@ export default function SearchHistory({ search }: Props) {
     <>
       <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
         <Grid.Col>
-          <Paragraph style={{ fontWeight: 600 }}>Recent Searches</Paragraph>
+          <Paragraph style={{ fontWeight: 600 }}>
+            Recent Searches
+          </Paragraph>
         </Grid.Col>
         <Grid.Col>
           <Paragraph
@@ -59,6 +74,7 @@ export default function SearchHistory({ search }: Props) {
           </List.Item>
         ))}
       </List>
+      {/* <Spacer size={50} /> */}
     </>
   );
 }

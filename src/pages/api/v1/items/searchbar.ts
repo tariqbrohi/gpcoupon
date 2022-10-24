@@ -32,12 +32,9 @@ export default errorHandler(async function handler(req, res) {
         where: {
             name: {
                 mode: 'insensitive',
+                contains: searchQuery,
             },
-        },
-        select: {
-            name: true,
-            slug: true,
-            id: true,
+            country,
         },
     });
 
