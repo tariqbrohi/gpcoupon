@@ -989,7 +989,9 @@ export type DeletePaymentCardMutationResult = boolean;
       'gwalletBusinessUsername',
       'brandName',
       'email',
-      'couponInfo'
+      'couponInfo',
+      'brandLogoImage',
+      'itemImage'
     ], //req.body
   );
 };
@@ -1000,5 +1002,7 @@ export type CouponRequestMutationVariables = {
   brandName: string;
   email: string;
   couponInfo: string;
+  brandLogoImage: File;
+  itemImage: File;
 };
 export type CouponRequestMutationResult = boolean;
