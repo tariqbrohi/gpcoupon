@@ -130,7 +130,7 @@ const FooterText = styled.footer`
     font-size: 16px;
 
     ${({ theme }) => theme.gui.media.mobile} {
-        padding-bottom: 90px;
+        padding-bottom: 20px;
     }
 `;
 
