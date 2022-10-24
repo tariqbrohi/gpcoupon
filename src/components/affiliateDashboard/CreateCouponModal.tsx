@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Input, Spacer, TextArea } from "@growth-ui/react";
+import { Modal, Button, Input, Spacer, Paragraph, Image } from "@growth-ui/react";
 import { useCouponRequestMutation } from "@/services";
 import parseErrorMessage from "@/lib/parse-error-message";
 import isEmail from 'validator/lib/isEmail';
+import { FileUploader } from "react-drag-drop-files";
 
 export default function CreateCouponRequest() {
   const [businessName, setBusinessName] = useState("");
@@ -14,7 +15,11 @@ export default function CreateCouponRequest() {
   const [openModal, setOpenModal] = useState(false);
   const [create, { loading }] = useCouponRequestMutation();
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string | null>('');
+  const [error, setError] = useState<string | null>("");
+  // const [brandLogoImage, setBrandLogoImage] = useState<string | File>("");
+  const [brandLogoImage, setBrandLogoImage] = useState(null);
+  // const [itemImage, setItemImage] = useState<string | File>("");
+  const [itemImage, setItemImage] = useState(null);
 
   const resetStates = () => {
     setBusinessName("");
@@ -23,9 +28,12 @@ export default function CreateCouponRequest() {
     setBrandName("");
     setEmail("");
     setCouponInfo("");
+    setBrandLogoImage(null);
+    setItemImage(null);
   }
 
   const handleSubmit= async (action: string) => {
+    console.log('brandLogoImage', brandLogoImage);
     if (action === 'cancel') {
       resetStates();
       setOpenModal(false);
@@ -39,7 +47,9 @@ export default function CreateCouponRequest() {
       brandName === "" || 
       couponInfo === "" ||
       email === "" ||
-      !isEmail(email)
+      !isEmail(email) ||
+      brandLogoImage === null ||
+      itemImage === null
     ) return;
 
     await create({
@@ -49,7 +59,9 @@ export default function CreateCouponRequest() {
         gwalletBusinessUsername,
         brandName,
         email,
-        couponInfo
+        couponInfo,
+        brandLogoImage,
+        itemImage
       }
     })
       .then(() => {
@@ -149,6 +161,49 @@ export default function CreateCouponRequest() {
             }}
             value={couponInfo}
             onChange={(e) => setCouponInfo(e.target.value)}
+          />
+          <Spacer 
+            size={30}
+          />
+          <Paragraph>Brand Logo Image</Paragraph>
+          <FileUploader
+            types={['JPG', 'PNG', 'JPEG']}
+            name="file"
+            handleChange={(file: any) => {
+              setBrandLogoImage(file);
+            }}
+          />
+          {brandLogoImage && (
+            <Image
+              src={
+                typeof brandLogoImage !== 'string'
+                  ? URL.createObjectURL(brandLogoImage)
+                  : brandLogoImage
+              }
+            />
+          )}
+          <Spacer 
+            size={30}
+          />
+          <Paragraph>Coupon Item Image</Paragraph>
+          <FileUploader
+            types={['JPG', 'PNG', 'JPEG']}
+            name="file"
+            handleChange={(file: any) => {
+              setItemImage(file);
+            }}
+          />
+          {itemImage && (
+            <Image
+              src={
+                typeof itemImage !== 'string'
+                  ? URL.createObjectURL(itemImage)
+                  : itemImage
+              }
+            />
+          )}
+          <Spacer 
+            size={30}
           />
       </Modal.Content>
       <Modal.Actions>
