@@ -8,6 +8,7 @@ import { Paragraph, Spacer, Pagination, Button, Container } from '@growth-ui/rea
 import CouponList from '@/components/affiliateDashboard/CouponList';
 import { useGetAffiliateItemsForDashboardQuery, useGetAffiliateItemsForDashboardLazyQuery} from '@/services';
 import CreateCouponRequest from '@/components/affiliateDashboard/CreateCouponModal';
+import AppNav from '@/layouts/AppNav';
 
 const TAKE = 20;
 
@@ -64,6 +65,7 @@ export default function AffiliateDashboard() {
           />
         </AppContainer>
       </AppMain>
+      <AppNav />
     </>
   );
 }
