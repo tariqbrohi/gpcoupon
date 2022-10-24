@@ -6,7 +6,11 @@ import isEmail from 'validator/lib/isEmail';
 import styled from "styled-components";
 
 const ModalContainer = styled(Modal)`
-  top: 56%;
+  top: 43%;
+
+  ${({ theme }) => theme.gui.media.custom(1940)} {
+    top: 56%;
+  }
   
   ${({ theme }) => theme.gui.media.mobile} {
     top: 45%;
