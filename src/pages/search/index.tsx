@@ -8,6 +8,7 @@ import { useSearchResultItemsLazyQuery } from '@/services';
 import AppHeader from '@/layouts/AppHeader';
 import AppContainer from '@/layouts/AppContainer';
 import AppMain from '@/layouts/AppMain';
+import AppNav from '@/layouts/AppNav';
 import styled from 'styled-components';
 import SearchByCategory from '@/components/search/SearchByCategory';
 
@@ -42,6 +43,7 @@ export default function SearchPage() {
           {/* </Padding> */}
         </AppContainerCustom>
       </AppMain>
+      <AppNav />
     </>
   );
 }
