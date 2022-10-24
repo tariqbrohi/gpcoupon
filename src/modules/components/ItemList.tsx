@@ -131,7 +131,7 @@ export default function ItemList({ items, loading }: Props) {
             ) : null}
             <ImageWraper>
               <Image
-                src={item.imageUrls.medium}
+                src={item.imageUrls?.medium}
                 alt={item.name}
                 style={{
                   width: '100%',
