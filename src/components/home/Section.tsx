@@ -5,7 +5,7 @@ const Section = styled.section`
   width: 100%;
 
   ${({ theme }) => theme.gui.media.mobile} {
-    width: calc(100% + 32px);
+    width: calc(100% + 22px);
     max-width: calc(100% + 32px);
     margin: -25px 0 0 -16px;
     padding: 25px;

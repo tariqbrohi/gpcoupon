@@ -7,6 +7,17 @@ import AppContext from '@/modules/components/AppContext';
 
 const Nav = styled('nav')``;
 
+const NavListAnchor = styled.a`
+  font-size: 1rem !important;
+  color: #404040;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    color: #F6A2b1;
+    text-decoration: underline;
+  }
+`;
+
 export default function HeaderNavBar() {
   const { country } = useContext(AppContext);
 
@@ -18,7 +29,20 @@ export default function HeaderNavBar() {
             <a>Affiliates</a>
           </Link>
         </List.Item> */}
+
         <List.Item>
+          <Link href={ROUTES.gpcoupons}>
+            <NavListAnchor>Categories</NavListAnchor>
+          </Link>
+        </List.Item>
+
+        <List.Item>
+          <Link href={ROUTES.howItWorks}>
+            <NavListAnchor>How it works</NavListAnchor>
+          </Link>
+        </List.Item>
+
+        {/* <List.Item>
           <Link href={ROUTES.categories}>
             <a>Categories</a>
           </Link>
@@ -36,7 +60,7 @@ export default function HeaderNavBar() {
               <a>Affiliates</a>
             </Link>
           )}
-        </List.Item>
+        </List.Item> */}
       </List>
     </Nav>
   );

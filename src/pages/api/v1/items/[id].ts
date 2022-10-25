@@ -11,7 +11,7 @@ export default errorHandler(async function handler(req, res) {
   }
 
   const { id, amount } = req.query as any;
-  console.log(id, amount);
+  // console.log(id, amount);
   if (amount) {
     const item = await xoxoday.vouchers.findOne({
       itemId: id,

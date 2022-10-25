@@ -29,7 +29,7 @@ export default errorHandler(async function handler(req, res) {
   } else {
     orderBy.amount = 'asc';
   }
-  console.log(req.query);
+  // console.log(req.query);
   const brand = (await prisma.brand.findFirst({
     where: {
       slug,
@@ -49,7 +49,7 @@ export default errorHandler(async function handler(req, res) {
     country,
     brand: slug,
   });
-  console.log(items.length);
+  // console.log(items.length);
   if (sortBy === 'amount,asc') {
     items.sort((a, b) => a.price.amount - b.price.amount);
   } else if (sortBy === 'amount,desc') {

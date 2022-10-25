@@ -19,7 +19,7 @@ export const findMany = async ({
       value: countries(country),
     },
   ];
-  console.log(countries(country));
+  // console.log(countries(country));
   if (category && category !== 'all') {
     filters.push({
       key: 'voucher_category',

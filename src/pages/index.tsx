@@ -13,6 +13,13 @@ import TopBrands from '@/components/home/TopBrands';
 import { Spacer } from '@growth-ui/react';
 import { useContext } from 'react';
 import GPoints from '@/components/gpoints';
+import styled from 'styled-components';
+
+const MobileNoSpacer = styled(Spacer)`
+  ${({ theme }) => theme.gui.media.mobile} {
+    display: none;
+  }
+`;
 
 export default function Home() {
   const { country } = useContext(AppContext);
@@ -27,17 +34,21 @@ export default function Home() {
           <Section>
             <HomeContent />
             {country === 'KR' && <GPoints />}
-            <Spacer size={50} />
+            <MobileNoSpacer size={50} />
+
             <Categories />
-            <Spacer size={50} />
+            <MobileNoSpacer size={50} />
+
             {country === 'US' && (
               <>
                 <TopBrands />
                 <Spacer size={50} />
               </>
             )}
+            <Spacer size={50} />
+
             <HowToUse />
-            <Spacer size={130} />
+            <MobileNoSpacer size={50} />
           </Section>
         </AppContainer>
       </AppMain>
