@@ -26,12 +26,18 @@ const Nav = styled.nav`
   }
 `;
 
+const GridRow = styled(Grid.Row)`
+  ${({ theme }) => theme.gui.media.mobile} {
+    height: 67px;
+  }
+`;
+
 export default function AppNav() {
-  const user = useUser();
+  const { user } = useUser();
 
   return (
     <Nav>
-      <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
+      <GridRow horizontalAlign="space-between" verticalAlign="middle">
         <Grid.Col>
           <Link href="/">
             <a>
@@ -47,16 +53,16 @@ export default function AppNav() {
           </Link>
         </Grid.Col>
         <Grid.Col>
-          {!user && (
+          {!user ? (
             <Link href={ROUTES.login}>
               <a>
                 <IconButton name="user" color="black" size={18} />
               </a>
             </Link>
-          )}
-          {user && <Avatar upward />}
+          ) : 
+            <Avatar upward />}
         </Grid.Col>
-      </Grid.Row>
+      </GridRow>
     </Nav>
   );
 }
