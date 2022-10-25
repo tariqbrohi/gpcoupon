@@ -27,7 +27,7 @@ const Nav = styled.nav`
 `;
 
 export default function AppNav() {
-  const user = useUser();
+  const { user } = useUser();
 
   return (
     <Nav>
@@ -47,14 +47,14 @@ export default function AppNav() {
           </Link>
         </Grid.Col>
         <Grid.Col>
-          {!user && (
+          {!user ? (
             <Link href={ROUTES.login}>
               <a>
                 <IconButton name="user" color="black" size={18} />
               </a>
             </Link>
-          )}
-          {user && <Avatar upward />}
+          ) : 
+            <Avatar upward />}
         </Grid.Col>
       </Grid.Row>
     </Nav>
