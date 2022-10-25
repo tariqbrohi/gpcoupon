@@ -26,12 +26,18 @@ const Nav = styled.nav`
   }
 `;
 
+const GridRow = styled(Grid.Row)`
+  ${({ theme }) => theme.gui.media.mobile} {
+    height: 67px;
+  }
+`;
+
 export default function AppNav() {
   const { user } = useUser();
 
   return (
     <Nav>
-      <Grid.Row horizontalAlign="space-between" verticalAlign="middle">
+      <GridRow horizontalAlign="space-between" verticalAlign="middle">
         <Grid.Col>
           <Link href="/">
             <a>
@@ -56,7 +62,7 @@ export default function AppNav() {
           ) : 
             <Avatar upward />}
         </Grid.Col>
-      </Grid.Row>
+      </GridRow>
     </Nav>
   );
 }
