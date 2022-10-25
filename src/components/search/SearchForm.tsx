@@ -2,26 +2,31 @@ import AppContext from '@/modules/components/AppContext';
 import React, { SyntheticEvent, useContext, useState } from 'react';
 import Router from 'next/router';
 import { Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/react';
-import { useSearchItemsLazyQuery } from '@/services';
+import { useSearchResultItemsLazyQuery } from '@/services';
 
 type Props = {
-  search: ReturnType<typeof useSearchItemsLazyQuery>[0];
+  search: ReturnType<typeof useSearchResultItemsLazyQuery>[0];
 };
 
 export default function SearchForm({ search }: Props) {
   const { country, searchHistories, setSearchHistories } =
     useContext(AppContext);
-  const [q, setQ] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+  // const [extendedNameValue, setExtendedNameValue] = useState('');
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    setSearchHistories([...searchHistories, q]);
+    setSearchHistories([
+      ...searchHistories, 
+      searchValue
+    ]);
 
     search({
       data: {
         country,
-        q,
+        searchQuery: searchValue,
+        // extendedName: extendedNameValue,
       },
     });
   };
@@ -43,8 +48,8 @@ export default function SearchForm({ search }: Props) {
             placeholder="Search for coupons"
             icon="search"
             size="sm"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
+            value={searchValue}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setSearchValue(e.target.value)}
           />
         </form>
       </Grid.Col>
@@ -52,7 +57,7 @@ export default function SearchForm({ search }: Props) {
       <Grid.Col>
         <Paragraph
           fontSize="sm"
-          style={{ fontWeight: 600 }}
+          style={{ fontWeight: 600, cursor: "pointer" }}
           onClick={() => Router.back()}
         >
           Cancel

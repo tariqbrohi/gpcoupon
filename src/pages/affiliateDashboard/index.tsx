@@ -4,9 +4,11 @@ import AppContainer from '@/layouts/AppContainer';
 import AppHeader from '@/layouts/AppHeader';
 import AppMain from '@/layouts/AppMain';
 import Head from '@/modules/components/Head';
-import { Paragraph, Spacer, Pagination } from '@growth-ui/react';
+import { Paragraph, Spacer, Pagination, Button, Container } from '@growth-ui/react';
 import CouponList from '@/components/affiliateDashboard/CouponList';
 import { useGetAffiliateItemsForDashboardQuery, useGetAffiliateItemsForDashboardLazyQuery} from '@/services';
+import CreateCouponRequest from '@/components/affiliateDashboard/CreateCouponModal';
+import AppNav from '@/layouts/AppNav';
 
 const TAKE = 20;
 
@@ -36,16 +38,26 @@ export default function AffiliateDashboard() {
 
   return (
     <>
-      <Head title="GCoupon | AffiliateDashboard" />
+      <Head title="GPcoupon | Affiliate Dashboard" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
           <Paragraph fontWeight={700} fontSize={26}>
             My Coupon
           </Paragraph>
-            <CouponList 
-              orders={data}
-            />
+          {
+            user &&
+              <div
+                style={{
+                  display: "flex"
+                }}
+              >       
+                <CreateCouponRequest/>
+              </div>
+          }
+          <CouponList 
+            orders={data}
+          />
           <Pagination
             totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
             onPageChange={handlePageChange}
@@ -53,6 +65,7 @@ export default function AffiliateDashboard() {
           />
         </AppContainer>
       </AppMain>
+      <AppNav />
     </>
   );
 }

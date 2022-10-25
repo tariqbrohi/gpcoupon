@@ -13,7 +13,9 @@ import {
   Snackbar,
   Spacer,
 } from '@growth-ui/react';
-import { styled } from '@mui/material';
+import Head from '@/modules/components/Head';
+import AppNav from '@/layouts/AppNav';
+import styled from 'styled-components';
 
 const LoginBtn = styled(ThemeButton)`
   background-color: #F6A2B1 !important;
@@ -23,6 +25,14 @@ const LoginBtn = styled(ThemeButton)`
 
   &:hover {
     background-color: #2D126D !important;
+  }
+`;
+
+const GridRow = styled(Grid.Row)`
+  height: 100vh;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    height: 90vh;
   }
 `;
 
@@ -54,8 +64,9 @@ export default function Login() {
 
   return (
     <>
+      <Head title="GPcoupon | Log in" />
       <main>
-        <Grid.Row wrap="wrap" style={{ height: '100vh' }}>
+        <GridRow wrap="wrap">
           {/* <Grid.Col
             width={8}
             only={['computer', 'laptop', 'tablet', 'widescreen']}
@@ -106,7 +117,7 @@ export default function Login() {
               </Form>
             </div>
           </Grid.Col>
-        </Grid.Row>
+        </GridRow>
         {error && (
           <Snackbar
             error
@@ -117,6 +128,8 @@ export default function Login() {
           />
         )}
       </main>
+
+      <AppNav />
     </>
   );
 }

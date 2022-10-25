@@ -2,6 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Table } from "@growth-ui/react";
 import { ROUTES } from '@/ROUTES';
 import Link from 'next/link';
+import styled from "styled-components";
+
+const LinkAnchor = styled.a`
+  color: #4183c4;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    color: #2D126D;
+    text-decoration: underline;
+  }
+`;
 
 export default function CouponList(props: any) {
   const {orders} = props;
@@ -47,7 +58,7 @@ export default function CouponList(props: any) {
                     >
                       <Table.Cell>
                         <Link href={`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`}>
-                          <a>{order?.item.name}</a>
+                          <LinkAnchor>{order?.item.name}</LinkAnchor>
                         </Link>                        
                       </Table.Cell>
                       <Table.Cell>{new Date(Number(order?.createdAt) * 1000).toLocaleDateString()}</Table.Cell>
