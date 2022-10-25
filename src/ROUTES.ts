@@ -1,5 +1,5 @@
 export const ROUTES = {
-  login: '/api/auth/login',
+  login: '/login',
   logout: '/api/auth/logout',
   item: '/item',
   search: '/search',

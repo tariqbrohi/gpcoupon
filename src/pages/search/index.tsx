@@ -7,20 +7,20 @@ import { Padding, Spacer } from '@growth-ui/react';
 import { useSearchItemsLazyQuery } from '@/services';
 
 export default function SearchPage() {
-  const [search, { data, loading }] = useSearchItemsLazyQuery();
+  // const [search, { data, loading }] = useSearchItemsLazyQuery();
 
   return (
     <>
       <Head title="GCoupon | Search" />
       <main>
         <Padding all={1}>
-          <SearchForm search={search} />
+          {/* <SearchForm search={search} /> */}
 
           <Spacer size={30} />
 
           {/* <ItemList loading={loading} items={data} /> */}
           <Spacer size={40} />
-          <SearchHistory search={search} />
+          {/* <SearchHistory search={search} /> */}
         </Padding>
       </main>
     </>
