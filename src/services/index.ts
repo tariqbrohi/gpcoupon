@@ -38,11 +38,10 @@ export const useGetCategoriesLazyQuery = (
 export type GetCategoriesQueryVariables = {};
 export type GetCategoriesQueryResult = Category[];
 
-
 /**
  * GetAffsAndBrands
  */
- export const useGetAffsAndBrandsQuery = (
+export const useGetAffsAndBrandsQuery = (
   baseOptions?: QueryBaseOptions<GetAffsAndBrandsQueryVariables>,
 ) => {
   return useQuery<GetAffsAndBrandsQueryVariables, GetAffsAndBrandsQueryResult>(
@@ -53,10 +52,10 @@ export type GetCategoriesQueryResult = Category[];
 export const useGetAffsAndBrandsLazyQuery = (
   baseOptions?: QueryBaseOptions<GetAffsAndBrandsQueryVariables>,
 ) => {
-  return useLazyQuery<GetAffsAndBrandsQueryVariables, GetAffsAndBrandsQueryResult>(
-    '/api/v1/affiliates-and-brands',
-    baseOptions,
-  );
+  return useLazyQuery<
+    GetAffsAndBrandsQueryVariables,
+    GetAffsAndBrandsQueryResult
+  >('/api/v1/affiliates-and-brands', baseOptions);
 };
 export type GetAffsAndBrandsQueryVariables = {
   country?: string;
@@ -68,31 +67,31 @@ export type GetAffsAndBrandsQueryResult = Brand[];
 /**
  * GetAffAndBrandItems
  */
- export const useGetAffAndBrandItemsQuery = (
+export const useGetAffAndBrandItemsQuery = (
   baseOptions?: QueryBaseOptions<GetAffAndBrandItemsQueryVariables>,
 ) => {
-  return useQuery<GetAffAndBrandItemsQueryVariables, GetAffAndBrandItemsQueryResult>(
-    '/api/v1/affiliates-and-brands/:slug/items',
-    baseOptions,
-    ['slug'],
-  );
+  return useQuery<
+    GetAffAndBrandItemsQueryVariables,
+    GetAffAndBrandItemsQueryResult
+  >('/api/v1/affiliates-and-brands/:slug/items', baseOptions, ['slug']);
 };
 export const useGetAffAndBrandItemsLazyQuery = (
   baseOptions?: QueryBaseOptions<GetAffAndBrandItemsQueryVariables>,
 ) => {
-  return useLazyQuery<GetAffAndBrandItemsQueryVariables, GetAffAndBrandItemsQueryResult>(
-    '/api/v1/affiliates-and-brands/:slug/items',
-    baseOptions,
-    ['slug'],
-  );
+  return useLazyQuery<
+    GetAffAndBrandItemsQueryVariables,
+    GetAffAndBrandItemsQueryResult
+  >('/api/v1/affiliates-and-brands/:slug/items', baseOptions, ['slug']);
 };
 export type GetAffAndBrandItemsQueryVariables = {
   country: string;
   slug: string | string[] | undefined;
   sortBy?: string;
 };
-export type GetAffAndBrandItemsQueryResult = Brand & { total: number; items: Item[] };
-
+export type GetAffAndBrandItemsQueryResult = Brand & {
+  total: number;
+  items: Item[];
+};
 
 /**
  * GetAffiliates
@@ -154,16 +153,16 @@ export const useGetAffiliateItemsForDashboardQuery = (
   baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
 ) => {
   return useQuery<
-  GetAffiliateItemsForDashboardQueryVariables,
-  GetAffiliateItemsForDashboardQueryResult
+    GetAffiliateItemsForDashboardQueryVariables,
+    GetAffiliateItemsForDashboardQueryResult
   >('/api/v1/dashboard/affiliate/items', baseOptions);
 };
 export const useGetAffiliateItemsForDashboardLazyQuery = (
   baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
 ) => {
   return useLazyQuery<
-  GetAffiliateItemsForDashboardQueryVariables,
-  GetAffiliateItemsForDashboardQueryResult
+    GetAffiliateItemsForDashboardQueryVariables,
+    GetAffiliateItemsForDashboardQueryResult
   >('/api/v1/dashboard/affiliate/items', baseOptions);
 };
 export type GetAffiliateItemsForDashboardQueryVariables = {
@@ -175,12 +174,11 @@ export type GetAffiliateItemsForDashboardQueryVariables = {
 };
 export type GetAffiliateItemsForDashboardQueryResult = Brand & {
   total: {
-    count: number,
-    profitSum: number,
+    count: number;
+    profitSum: number;
   };
   orders: Order[];
 };
-
 
 /**
  * GetBrands
@@ -321,23 +319,21 @@ export type GetOccasionItemsQueryResult = Item[];
 /**
  * GetSearchResultItem
  */
- export const useGetSearchResultItemQuery = (
+export const useGetSearchResultItemQuery = (
   baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
 ) => {
-  return useQuery<GetSearchResultItemQueryVariables, GetSearchResultItemQueryResult>(
-    '/api/v1/items/searchbar',
-    baseOptions,
-    [],
-  );
+  return useQuery<
+    GetSearchResultItemQueryVariables,
+    GetSearchResultItemQueryResult
+  >('/api/v1/items/searchbar', baseOptions, []);
 };
 export const useGetSearchResultItemLazyQuery = (
   baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
 ) => {
-  return useLazyQuery<GetSearchResultItemQueryVariables, GetSearchResultItemQueryResult>(
-    '/api/v1/items/searchbar',
-    baseOptions,
-    [],
-  );
+  return useLazyQuery<
+    GetSearchResultItemQueryVariables,
+    GetSearchResultItemQueryResult
+  >('/api/v1/items/searchbar', baseOptions, []);
 };
 export type GetSearchResultItemQueryVariables = {
   searchQuery: string;
@@ -407,21 +403,21 @@ export type MyGiftsQueryResult = {
 /**
  * SearchResultItems
  */
- export const useSearchResultItemsQuery = (
+export const useSearchResultItemsQuery = (
   baseOptions?: QueryBaseOptions<SearchResultItemsQueryVariables>,
 ) => {
-  return useQuery<SearchResultItemsQueryVariables, SearchResultItemsQueryResult>(
-    '/api/v1/items/searchbar',
-    baseOptions,
-  );
+  return useQuery<
+    SearchResultItemsQueryVariables,
+    SearchResultItemsQueryResult
+  >('/api/v1/items/searchbar', baseOptions);
 };
 export const useSearchResultItemsLazyQuery = (
   baseOptions?: QueryBaseOptions<SearchResultItemsQueryVariables>,
 ) => {
-  return useLazyQuery<SearchResultItemsQueryVariables, SearchResultItemsQueryResult>(
-    '/api/v1/items/searchbar',
-    baseOptions,
-  );
+  return useLazyQuery<
+    SearchResultItemsQueryVariables,
+    SearchResultItemsQueryResult
+  >('/api/v1/items/searchbar', baseOptions);
 };
 export type SearchResultItemsQueryVariables = {
   country: string;
@@ -1031,8 +1027,11 @@ export type DeletePaymentCardMutationResult = boolean;
 /**
  * Create Coupon Request
  */
- export const useCouponRequestMutation = () => {
-  return useMutation<CouponRequestMutationVariables, CouponRequestMutationResult>(
+export const useCouponRequestMutation = () => {
+  return useMutation<
+    CouponRequestMutationVariables,
+    CouponRequestMutationResult
+  >(
     '/api/v1/dashboard/affiliate/couponRequest',
     'post',
     [], //req.query
@@ -1042,7 +1041,7 @@ export type DeletePaymentCardMutationResult = boolean;
       'gwalletBusinessUsername',
       'brandName',
       'email',
-      'couponInfo'
+      'couponInfo',
     ], //req.body
   );
 };

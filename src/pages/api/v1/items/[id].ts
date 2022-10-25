@@ -26,6 +26,12 @@ export default errorHandler(async function handler(req, res) {
   const item = await prisma.item.findFirst({
     where,
     select: {
+      brand: {
+        select: {
+          terms: true,
+          disclaimer: true,
+        },
+      },
       id: true,
       status: true,
       brandId: true,
@@ -53,5 +59,9 @@ export default errorHandler(async function handler(req, res) {
     },
   });
 
-  res.send(item);
+  res.send({
+    ...item,
+    redemptionInstructions: item?.brand?.disclaimer,
+    termsAndConditionsInstructions: item?.brand?.terms,
+  });
 });

@@ -59,8 +59,9 @@ export default function AppNav() {
                 <IconButton name="user" color="black" size={18} />
               </a>
             </Link>
-          ) : 
-            <Avatar upward />}
+          ) : (
+            <Avatar upward />
+          )}
         </Grid.Col>
       </GridRow>
     </Nav>
