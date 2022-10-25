@@ -6,6 +6,6 @@ export default styled.main`
   width: 100%;
 
   ${({ theme }) => theme.gui.media.mobile} {
-    margin-top: 50px;
+    margin: 50px 0;
   }
 `;

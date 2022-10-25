@@ -13,7 +13,7 @@ export default isAuth(
     }
 
     const { id, orderId } = req.query as any;
-    console.log(id, orderId);
+    // console.log(id, orderId);
     const order = await prisma.order.findUnique({
       where: {
         id: orderId,
@@ -35,11 +35,11 @@ export default isAuth(
     const item = order.item as any;
 
     if (!item.affiliate) {
-      console.log('xoxoday ', +(order.metadata as any)?.xoxoOrderId || 0);
+      // console.log('xoxoday ', +(order.metadata as any)?.xoxoOrderId || 0);
       const data = await xoxoday.orders.detail(
         +(order.metadata as any)?.xoxoOrderId || 0,
       );
-      console.log(JSON.stringify(data, null, 2));
+      // console.log(JSON.stringify(data, null, 2));
       return res.send('Ok');
     }
 
@@ -59,7 +59,7 @@ export default isAuth(
     );
 
     const qrcodes = await Promise.all(qrcodesPromises);
-    console.log('HERE ?? ? ? ?? ? ? ? ?? ? ? ? ? ?? ');
+    // console.log('HERE ?? ? ? ?? ? ? ? ?? ? ? ? ? ?? ');
     sendOrder({
       quantity,
       qrcodes,

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import Carousel from 'react-multi-carousel';
 import React from 'react';
 import Router from 'next/router';
@@ -22,6 +23,16 @@ const responsive = {
   //   items: 4,
   // },
 };
+
+const MarginWithHover = styled(Margin)`
+  transition: all 0.4s ease-in-out;
+  
+
+  &:hover {
+    text-decoration: underline;
+    color: #BF7582;
+  }
+`;
 
 const Image = styled.div<{ imageUrl: string }>`
   background-image: url(${({ imageUrl }) => imageUrl});
@@ -80,7 +91,7 @@ export default function Categories() {
           ))}
 
         {data?.map((cat, idx) => (
-          <Margin all={0.5} key={idx}>
+          <MarginWithHover all={0.5} key={idx}>
             <Image
               imageUrl={cat.imageUrls.medium}
               style={{ cursor: 'pointer' }}
@@ -90,7 +101,7 @@ export default function Categories() {
             <Paragraph fontSize="xs" style={{ fontWeight: 600 }}>
               {cat.name}
             </Paragraph>
-          </Margin>
+          </MarginWithHover>
         ))}
       </Carousel>
     </Wrapper>

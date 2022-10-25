@@ -9,6 +9,15 @@ import {
   Image,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
+import styled from 'styled-components';
+
+const AvatarImage = styled(Image)`
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    transform: scale(1.3);
+  }
+`;
 
 export default function Avatar(props: DropdownProps) {
   const { user } = useUser();
@@ -30,6 +39,10 @@ export default function Avatar(props: DropdownProps) {
     if (data.text === 'Payment methods') {
       Router.push(ROUTES.paymentCards);
     }
+
+    if (data.text === 'My dashboard') {
+      Router.push(ROUTES.affiliateDashboard);
+    }
   };
 
   return (
@@ -38,7 +51,7 @@ export default function Avatar(props: DropdownProps) {
       space
       direction="right"
       trigger={
-        <Image
+        <AvatarImage
           rounded
           alt="profile"
           size="mini"
@@ -56,6 +69,13 @@ export default function Avatar(props: DropdownProps) {
           text="Payment methods"
           onClick={handleClickDropdownItem}
         />
+        {
+          user?.type === 'BUSINESS' &&
+            <Dropdown.Item
+              text="My dashboard"
+              onClick={handleClickDropdownItem}
+            />
+        }
         <Dropdown.Item text="Logout" onClick={handleClickDropdownItem} />
       </Dropdown.Menu>
     </Dropdown>

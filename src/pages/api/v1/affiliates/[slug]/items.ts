@@ -42,6 +42,8 @@ export default errorHandler(async function handler(req, res) {
       description: true,
       backgroundUrl: true,
       thumbnailUrl: true,
+      disclaimer: true,
+      terms: true,
     },
   })) as Record<string, any>;
 

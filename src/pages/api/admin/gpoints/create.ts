@@ -6,7 +6,7 @@ import moment from 'moment';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
-    console.log('HERE ', req.method);
+    // console.log('HERE ', req.method);
     if (req.method !== 'post') {
       throw new NotFoundError();
     }

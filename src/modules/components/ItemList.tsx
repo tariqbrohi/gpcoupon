@@ -17,6 +17,16 @@ import {
   MinHeight,
 } from '@growth-ui/react';
 
+const GuiGridCol = styled(GuiGrid.Col)`
+  border-radius: 10px;
+  transition: all 0.4s ease-in-out;
+
+  &: hover {
+    transform: translateY(-10px);
+    box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
+  }
+`;
+
 const ImageWraper = styled.div`
   position: relative;
   padding-top: 100%;
@@ -106,7 +116,7 @@ export default function ItemList({ items, loading }: Props) {
             </GuiGrid.Col>
           ))}
         {items?.map((item: Item, idx) => (
-          <GuiGrid.Col key={idx}>
+          <GuiGridCol key={idx}>
             {item.customerDiscountRate ? (
               <Chip
                 color="yellow-500"
@@ -121,7 +131,8 @@ export default function ItemList({ items, loading }: Props) {
             ) : null}
             <ImageWraper>
               <Image
-                src={item.imageUrls.medium}
+                src={item.imageUrls?.medium}
+                alt={item.name}
                 style={{
                   width: '100%',
                   cursor: 'pointer',
@@ -143,7 +154,7 @@ export default function ItemList({ items, loading }: Props) {
               <Paragraph fontWeight={600}>{item.name}</Paragraph>
               {renderPrice(item)}
             </MinHeight>
-          </GuiGrid.Col>
+          </GuiGridCol>
         ))}
       </Grid>
     </>

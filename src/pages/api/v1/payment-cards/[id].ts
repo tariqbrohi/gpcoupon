@@ -28,7 +28,7 @@ export default withApiAuthRequired(
         req.query.id as string,
       );
 
-      console.log(paymentMethod.customer, customer.stripeId);
+      // console.log(paymentMethod.customer, customer.stripeId);
 
       if (paymentMethod.customer !== customer.stripeId) {
         throw new ForbiddenError();

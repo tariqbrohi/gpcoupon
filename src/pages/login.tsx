@@ -13,6 +13,28 @@ import {
   Snackbar,
   Spacer,
 } from '@growth-ui/react';
+import Head from '@/modules/components/Head';
+import AppNav from '@/layouts/AppNav';
+import styled from 'styled-components';
+
+const LoginBtn = styled(ThemeButton)`
+  background-color: #F6A2B1 !important;
+  color: #fff;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    background-color: #2D126D !important;
+  }
+`;
+
+const GridRow = styled(Grid.Row)`
+  height: 100vh;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    height: 90vh;
+  }
+`;
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -42,8 +64,9 @@ export default function Login() {
 
   return (
     <>
+      <Head title="GPcoupon | Log in" />
       <main>
-        <Grid.Row wrap="wrap" style={{ height: '100vh' }}>
+        <GridRow wrap="wrap">
           {/* <Grid.Col
             width={8}
             only={['computer', 'laptop', 'tablet', 'widescreen']}
@@ -59,7 +82,7 @@ export default function Login() {
             <Grid.Row>
               <Link href="/">
                 <a>
-                  <Image size="tiny" src="/images/gpoint-black-logo.png" />
+                  <Image size="small" src="/images/logo_with_rich.png" alt="GPoint Coupon with Rich" />
                 </a>
               </Link>
             </Grid.Row>
@@ -88,13 +111,13 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <ThemeButton fluid loading={loading}>
+                <LoginBtn fluid loading={loading}>
                   Login
-                </ThemeButton>
+                </LoginBtn>
               </Form>
             </div>
           </Grid.Col>
-        </Grid.Row>
+        </GridRow>
         {error && (
           <Snackbar
             error
@@ -105,6 +128,8 @@ export default function Login() {
           />
         )}
       </main>
+
+      <AppNav />
     </>
   );
 }

@@ -39,6 +39,61 @@ export type GetCategoriesQueryVariables = {};
 export type GetCategoriesQueryResult = Category[];
 
 /**
+ * GetAffsAndBrands
+ */
+export const useGetAffsAndBrandsQuery = (
+  baseOptions?: QueryBaseOptions<GetAffsAndBrandsQueryVariables>,
+) => {
+  return useQuery<GetAffsAndBrandsQueryVariables, GetAffsAndBrandsQueryResult>(
+    '/api/v1/affiliates-and-brands',
+    baseOptions,
+  );
+};
+export const useGetAffsAndBrandsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffsAndBrandsQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetAffsAndBrandsQueryVariables,
+    GetAffsAndBrandsQueryResult
+  >('/api/v1/affiliates-and-brands', baseOptions);
+};
+export type GetAffsAndBrandsQueryVariables = {
+  country?: string;
+  // affiliate?: boolean;
+  status?: 'AVAILABLE' | 'ALL';
+};
+export type GetAffsAndBrandsQueryResult = Brand[];
+
+/**
+ * GetAffAndBrandItems
+ */
+export const useGetAffAndBrandItemsQuery = (
+  baseOptions?: QueryBaseOptions<GetAffAndBrandItemsQueryVariables>,
+) => {
+  return useQuery<
+    GetAffAndBrandItemsQueryVariables,
+    GetAffAndBrandItemsQueryResult
+  >('/api/v1/affiliates-and-brands/:slug/items', baseOptions, ['slug']);
+};
+export const useGetAffAndBrandItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffAndBrandItemsQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetAffAndBrandItemsQueryVariables,
+    GetAffAndBrandItemsQueryResult
+  >('/api/v1/affiliates-and-brands/:slug/items', baseOptions, ['slug']);
+};
+export type GetAffAndBrandItemsQueryVariables = {
+  country: string;
+  slug: string | string[] | undefined;
+  sortBy?: string;
+};
+export type GetAffAndBrandItemsQueryResult = Brand & {
+  total: number;
+  items: Item[];
+};
+
+/**
  * GetAffiliates
  */
 export const useGetAffiliatesQuery = (
@@ -89,6 +144,40 @@ export type GetAffiliateItemsQueryVariables = {
 export type GetAffiliateItemsQueryResult = Brand & {
   total: number;
   items: Item[];
+};
+
+/**
+ * GetAffiliateItemsForDashboard(accountId)
+ */
+export const useGetAffiliateItemsForDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
+) => {
+  return useQuery<
+    GetAffiliateItemsForDashboardQueryVariables,
+    GetAffiliateItemsForDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/items', baseOptions);
+};
+export const useGetAffiliateItemsForDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetAffiliateItemsForDashboardQueryVariables,
+    GetAffiliateItemsForDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/items', baseOptions);
+};
+export type GetAffiliateItemsForDashboardQueryVariables = {
+  country?: string;
+  take?: number;
+  skip?: number;
+  sub: string;
+  sortBy?: string;
+};
+export type GetAffiliateItemsForDashboardQueryResult = Brand & {
+  total: {
+    count: number;
+    profitSum: number;
+  };
+  orders: Order[];
 };
 
 /**
@@ -228,6 +317,31 @@ export type GetOccasionItemsQueryVariables = {
 export type GetOccasionItemsQueryResult = Item[];
 
 /**
+ * GetSearchResultItem
+ */
+export const useGetSearchResultItemQuery = (
+  baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
+) => {
+  return useQuery<
+    GetSearchResultItemQueryVariables,
+    GetSearchResultItemQueryResult
+  >('/api/v1/items/searchbar', baseOptions, []);
+};
+export const useGetSearchResultItemLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetSearchResultItemQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetSearchResultItemQueryVariables,
+    GetSearchResultItemQueryResult
+  >('/api/v1/items/searchbar', baseOptions, []);
+};
+export type GetSearchResultItemQueryVariables = {
+  searchQuery: string;
+  country: string;
+};
+export type GetSearchResultItemQueryResult = Item[];
+
+/**
  * GetItem
  */
 export const useGetItemQuery = (
@@ -285,6 +399,32 @@ export type MyGiftsQueryResult = {
   message?: string;
   createdAt: number;
 }[];
+
+/**
+ * SearchResultItems
+ */
+export const useSearchResultItemsQuery = (
+  baseOptions?: QueryBaseOptions<SearchResultItemsQueryVariables>,
+) => {
+  return useQuery<
+    SearchResultItemsQueryVariables,
+    SearchResultItemsQueryResult
+  >('/api/v1/items/searchbar', baseOptions);
+};
+export const useSearchResultItemsLazyQuery = (
+  baseOptions?: QueryBaseOptions<SearchResultItemsQueryVariables>,
+) => {
+  return useLazyQuery<
+    SearchResultItemsQueryVariables,
+    SearchResultItemsQueryResult
+  >('/api/v1/items/searchbar', baseOptions);
+};
+export type SearchResultItemsQueryVariables = {
+  country: string;
+  searchQuery: string;
+  // extendedName: string;
+};
+export type SearchResultItemsQueryResult = Item[];
 
 /**
  * SearchItems
@@ -883,3 +1023,34 @@ export type DeletePaymentCardMutationVariables = {
   id: string;
 };
 export type DeletePaymentCardMutationResult = boolean;
+
+/**
+ * Create Coupon Request
+ */
+export const useCouponRequestMutation = () => {
+  return useMutation<
+    CouponRequestMutationVariables,
+    CouponRequestMutationResult
+  >(
+    '/api/v1/dashboard/affiliate/couponRequest',
+    'post',
+    [], //req.query
+    [
+      'businessName',
+      'phoneNumber',
+      'gwalletBusinessUsername',
+      'brandName',
+      'email',
+      'couponInfo',
+    ], //req.body
+  );
+};
+export type CouponRequestMutationVariables = {
+  businessName: string;
+  phoneNumber: string;
+  gwalletBusinessUsername: string;
+  brandName: string;
+  email: string;
+  couponInfo: string;
+};
+export type CouponRequestMutationResult = boolean;

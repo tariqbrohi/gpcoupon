@@ -206,7 +206,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             },
           ]}
           onChange={(_, data) => {
-            console.log(data.newValues);
+            // console.log(data.newValues);
             setItem({ ...item, type: data.newValues });
           }}
         />
