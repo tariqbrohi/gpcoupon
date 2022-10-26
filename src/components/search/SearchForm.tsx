@@ -3,6 +3,11 @@ import React, { SyntheticEvent, useContext, useState } from 'react';
 import Router from 'next/router';
 import { Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/react';
 import { useSearchResultItemsLazyQuery } from '@/services';
+import styled from 'styled-components';
+
+const Form = styled.form`
+  width: 100%;
+`;
 
 type Props = {
   search: ReturnType<typeof useSearchResultItemsLazyQuery>[0];
@@ -34,6 +39,10 @@ export default function SearchForm({ search }: Props) {
     });
   };
 
+  const handleClick = () => {
+    setSearchValue('');
+  }
+
   return (
     <Grid.Row verticalAlign="middle">
       <Grid.Col only={['mobile', 'minimobile']}>
@@ -44,7 +53,7 @@ export default function SearchForm({ search }: Props) {
         />
       </Grid.Col>
       <Grid.Col flex="1">
-        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <Form onSubmit={handleSubmit}>
           <Input
             fluid
             filled
@@ -53,8 +62,9 @@ export default function SearchForm({ search }: Props) {
             size="sm"
             value={searchValue}
             onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setSearchValue(e.target.value)}
+            onClick={handleClick}
           />
-        </form>
+        </Form>
       </Grid.Col>
       <Spacer size={10} />
       <Grid.Col>
