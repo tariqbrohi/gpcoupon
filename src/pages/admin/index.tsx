@@ -5,7 +5,7 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 export default withPageAuthRequired(function index() {
   return (
     <>
-      <AdminLayout>This is changed for sure</AdminLayout>
+      <AdminLayout>This is changed for sure!!!!!!</AdminLayout>
     </>
   );
 });
