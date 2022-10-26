@@ -64,7 +64,9 @@ export default function Detail() {
         return (
           <div
             dangerouslySetInnerHTML={{
-              __html: (item?.metadata as any)?.expiryAndValidity || '',
+              __html:
+                (item?.metadata as any)?.expiryAndValidity ||
+                `<p>${item?.expiresIn} days</p>`,
             }}
           ></div>
         );

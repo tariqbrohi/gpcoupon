@@ -14,7 +14,9 @@ import { Item } from '@prisma/client';
 export default errorHandler(
   grapherjs.withTracingHandler(async function handler(req, res) {
     const method = req.method;
-
+    prisma.item.aggregateRaw({
+      pipeline: [{ $match: { brandId: 'ckqj2q2xw0000jx9x9x9x9x9x' } }],
+    });
     if (method !== 'post') {
       throw new NotFoundError();
     }
