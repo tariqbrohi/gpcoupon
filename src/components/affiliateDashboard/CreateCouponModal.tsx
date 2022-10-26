@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Input, Spacer, Paragraph, Image } from "@growth-ui/react";
-import { useCouponRequestMutation } from "@/services";
+import { useCouponRequestMutation, useSignS3Mutation } from "@/services";
 import parseErrorMessage from "@/lib/parse-error-message";
 import isEmail from 'validator/lib/isEmail';
 import styled from "styled-components";
 import { FileUploader } from "react-drag-drop-files";
+import { sign } from "crypto";
+import axios from 'axios';
 
 const ModalContainer = styled(Modal)`
-  top: 43%;
+top: 56%;
 
-  ${({ theme }) => theme.gui.media.custom(1940)} {
-    top: 56%;
-  }
-  
-  ${({ theme }) => theme.gui.media.mobile} {
-    top: 45%;
-  }
+// ${({ theme }) => theme.gui.media.custom(1940)} {
+//   top: 56%;
+// }
+
+${({ theme }) => theme.gui.media.mobile} {
+  top: 45%;
+}
 `;
 
 export default function CreateCouponRequest() {
@@ -29,10 +31,9 @@ export default function CreateCouponRequest() {
   const [create, { loading }] = useCouponRequestMutation();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>("");
-  // const [brandLogoImage, setBrandLogoImage] = useState<string | File>("");
   const [brandLogoImage, setBrandLogoImage] = useState(null);
-  // const [itemImage, setItemImage] = useState<string | File>("");
   const [itemImage, setItemImage] = useState(null);
+  const [sign] = useSignS3Mutation();
 
   const resetStates = () => {
     setBusinessName("");
@@ -46,7 +47,6 @@ export default function CreateCouponRequest() {
   }
 
   const handleSubmit= async (action: string) => {
-    console.log('brandLogoImage', brandLogoImage);
     if (action === 'cancel') {
       resetStates();
       setOpenModal(false);
@@ -60,10 +60,39 @@ export default function CreateCouponRequest() {
       brandName === "" || 
       couponInfo === "" ||
       email === "" ||
-      !isEmail(email) ||
       brandLogoImage === null ||
       itemImage === null
-    ) return;
+    ) {
+      alert('Please fill out a form below to submit a request!');
+      return;
+    }
+
+    if (!isEmail(email)) {
+      alert('Please provide a correct email address.');
+    }
+
+    const { data:logoImgUrl } = await sign({
+      data: {
+        filename: (brandLogoImage! as File).name,
+        filetype: (brandLogoImage! as File).type,
+      },
+    });
+
+    const { data: itemImgUrl } = await sign({
+      data: {
+        filename: (itemImage! as File).name,
+        filetype: (itemImage! as File).type,
+      },
+    });
+
+    await Promise.all([
+      axios.put(logoImgUrl.signedUrl, brandLogoImage, {
+        headers: {'Content-Type': (brandLogoImage as File).type },
+      }),
+      axios.put(itemImgUrl.signedUrl, itemImage, {
+        headers: {'Content-Type': (itemImage as File).type },
+      }),
+    ]);
 
     await create({
       data: {
@@ -73,8 +102,8 @@ export default function CreateCouponRequest() {
         brandName,
         email,
         couponInfo,
-        brandLogoImage,
-        itemImage
+        logoImgUrl: logoImgUrl.url,
+        itemImgUrl: itemImgUrl.url
       }
     })
       .then(() => {

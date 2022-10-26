@@ -18,8 +18,8 @@ export default errorHandler(async function handler(req, res) {
     brandName,
     email,
     couponInfo,
-    brandLogoImage,
-    itemImage
+    logoImgUrl,
+    itemImgUrl
   } = req.body as any;
 
   sendCouponRequest({
@@ -29,7 +29,9 @@ export default errorHandler(async function handler(req, res) {
     gwalletBusinessUsername,
     brandName,
     email,
-    couponInfo
+    couponInfo,
+    logoImgUrl,
+    itemImgUrl
   });
 
   res.send(true);
