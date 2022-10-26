@@ -1,5 +1,5 @@
 export const ITEM_ID_TO_PURCHASE = 'ITEM_ID_TO_PURCHASE';
-
+//
 export const Categories = [
   {
     text: 'Apparel_Fashion & Accessories',
