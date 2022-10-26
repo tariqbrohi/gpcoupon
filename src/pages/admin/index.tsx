@@ -6,5 +6,6 @@ export default withPageAuthRequired(function index() {
   return (
     <>
       <AdminLayout>This is changed for sure!!!</AdminLayout>
+    </>
   );
 });
