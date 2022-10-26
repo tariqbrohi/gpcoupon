@@ -282,7 +282,7 @@ const Footer: FC = () => {
                         <FooterTextAnchor>Terms & Conditions</FooterTextAnchor>
                     </Link>
                     &nbsp;|&nbsp;
-                    <Link href="/legal/privacy">
+                    <Link href="/privacy">
                         <FooterTextAnchor>Privacy Policy</FooterTextAnchor>
                     </Link>
                 </GridRow>

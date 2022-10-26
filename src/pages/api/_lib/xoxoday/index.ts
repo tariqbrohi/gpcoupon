@@ -11,5 +11,5 @@ const xoxoday = {
     detail,
   },
 };
-
+//
 export default xoxoday;

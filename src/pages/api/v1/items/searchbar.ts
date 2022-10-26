@@ -1,7 +1,8 @@
 import errorHandler from "../../_middlewares/error-handler";
 import prisma from "@/prisma";
-// import xoxoday from "../../_lib/xoxoday";
-import { NotFoundError } from "@/lib/errors";
+import xoxoday from "../../_lib/xoxoday";
+import { NotFoundError, BadRequestError } from "@/lib/errors";
+import items from "../../admin/items";
 
 export default errorHandler(async function handler(req, res) {
     const method = req.method;
@@ -13,39 +14,107 @@ export default errorHandler(async function handler(req, res) {
     const { 
         searchQuery, 
         country, 
-        // extendedName 
     } = req.query as any;
 
-    // console.log('api', searchQuery, country, extendedName);
+    if (searchQuery.length < 4) {
+        throw new BadRequestError('Please use more than 4 letters for searchQuery');
+    }
 
-    const where: Record<string, any> = { 
-        searchQuery, 
-        country, 
-        // extendedName 
+    const brands = await prisma.brand.findMany({
+        where: {
+            OR: 
+            [
+                {
+                    name: {
+                    mode: 'insensitive',
+                    contains: searchQuery,
+                    }
+                },
+                {
+                    slug: {
+                        mode: 'insensitive',
+                        contains: searchQuery,
+                    },
+                },
+            ],
+            countries: {
+                has: country,
+            },
+            status: 'AVAILABLE',
+            affiliate: false,
+        },
+        select: {
+            slug: true,
+        },
+    });
+    // let itemsXoxo: any = [];
+    let itemsXoxo: any;
+    // console.log(brands.map(({slug}) => 
+    //     slug
+    // ));
+
+    // for (let i = 0 ; i < brands.length; i++) {
+    //     itemsXoxo.push(
+    //         xoxoday.vouchers.findMany({
+    //             country,
+    //             brand: brands[i].slug,
+    //         })
+    //     );
+    // }
+
+    if (brands.length > 0) {
+        itemsXoxo = await xoxoday.vouchers.findMany({
+            country,
+            brand: brands[0].slug,
+        })
     };
+    // console.log('bfitemsXoxo', itemsXoxo);
+
+    // await Promise.all(itemsXoxo)
+    // .then((result)=> {
+    //     console.log('result', result);
+    // });
+    // console.log('after', itemsXoxo);
 
     const item = await prisma.item.findMany({
-        where: {
-            name: {
-                mode: 'insensitive',
-                contains: searchQuery,
-                // contains: searchQuery || extendedName,
-            },
-            // extendedName: {
-            //     mode: 'insensitive',
-            //     contains: searchQuery,
-            // },
+        where: 
+        {
+            name: 
+                {
+                    mode: 'insensitive',
+                    contains: searchQuery,
+                },
             country,
         },
     });
 
-    // console.log('api', item);
+    // console.log('affiliate item', item);
+    // console.log(item.concat(itemsXoxo));
 
-    res.send(item);
+    if (items.length === 0) {
+        // console.log('1');
+        res.send(itemsXoxo);
+    } else if (items.length > 0 && itemsXoxo && itemsXoxo.length > 0){
+        // console.log('2');
+        res.send(item.concat(itemsXoxo));
+    } else {
+        // console.log('3');
+        res.send(item);
+    }
 })
 
 
-    // https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting#filtering
+    
+
+
+
+
+
+
+
+
+
+// https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting#filtering
     // Search by item name.
     // contains key field is way to go.
     // set mode to insensitive (https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting#case-insensitive-filtering)

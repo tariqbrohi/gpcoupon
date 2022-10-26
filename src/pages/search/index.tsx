@@ -28,18 +28,17 @@ export default function SearchPage() {
       <AppMain>
         <AppContainerCustom>
           {/* <Padding all={1}> */}
-            <Spacer size={50} />
+          <Spacer size={50} />
 
-            <SearchForm search={search} />
-            <Spacer size={30} />
-
-            {/* <SearchByCategory />
+          <SearchForm search={search} />
+          <Spacer size={30} />
+          {/* <SearchByCategory />
             <Spacer size={30} /> */}
 
-            <ItemList loading={loading} items={data || []} />
-            <Spacer size={40} />
+          <ItemList loading={loading} items={data || []} />
+          <Spacer size={40} />
 
-            <SearchHistory search={search} />
+          <SearchHistory search={search} />
           {/* </Padding> */}
         </AppContainerCustom>
       </AppMain>
