@@ -24,8 +24,10 @@ export default function SearchForm({ search }: Props) {
 
     if (searchValue.length < 4) {
       alert('Please write down at least 4 letters to search');
+      
       return;
     }
+    
     search({
       data: {
         country,
