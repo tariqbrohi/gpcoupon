@@ -25,8 +25,6 @@ export default errorHandler(async function handler(req, res) {
         country,
     });
 
-    // console.log('itemsXoxo: ', itemsXoxo);
-
     const item = await prisma.item.findMany({
         where: 
         {
@@ -39,17 +37,11 @@ export default errorHandler(async function handler(req, res) {
         },
     });
 
-    // console.log('affiliate item', item);
-    // console.log('all coupons: ', item.concat(itemsXoxo));
-
     if (items.length === 0) {
-        // console.log('1');
         res.send(itemsXoxo);
     } else if (items.length > 0 && itemsXoxo && itemsXoxo.length > 0){
-        // console.log('2');
         res.send(item.concat(itemsXoxo));
     } else {
-        // console.log('3');
         res.send(item);
     }
 })
