@@ -158,6 +158,8 @@ type SendCouponRequest = {
   brandName: string;
   email: string;
   couponInfo: number;
+  logoImgUrl: string;
+  itemImgUrl: string;
 };
 
 export const sendCouponRequest = async ({
@@ -167,7 +169,9 @@ export const sendCouponRequest = async ({
   gwalletBusinessUsername,
   brandName,
   email,
-  couponInfo
+  couponInfo,
+  logoImgUrl,
+  itemImgUrl
 }: SendCouponRequest) => {
 
   return sendEmail<any>({
@@ -180,7 +184,9 @@ export const sendCouponRequest = async ({
       gwalletBusinessUsername,
       brandName,
       email,
-      couponInfo
-    }
+      couponInfo,
+      logoImgUrl,
+      itemImgUrl
+    },
   })
 };
