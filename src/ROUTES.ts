@@ -23,6 +23,7 @@ export const ROUTES = {
     items: '/admin/items',
     brands: '/admin/brands',
     dashboard: '/admin/dashboard',
+    adminDashboard: '/admin/admindashboard',
     login: '/admin/login',
     logout: '/api/auth/logout',
     createCoupon: '/admin/create-coupon',
