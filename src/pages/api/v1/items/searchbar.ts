@@ -25,7 +25,7 @@ export default errorHandler(async function handler(req, res) {
         country,
     });
 
-    const item = await prisma.item.findMany({
+    const items = await prisma.item.findMany({
         where: 
         {
             name: 
@@ -36,13 +36,13 @@ export default errorHandler(async function handler(req, res) {
             country,
         },
     });
-
-    if (items.length === 0) {
+    
+    if (items.length > 0 && itemsXoxo && itemsXoxo.length > 0){
+        res.send(items.concat(itemsXoxo));
+    } else if (itemsXoxo && itemsXoxo.length > 0) {
         res.send(itemsXoxo);
-    } else if (items.length > 0 && itemsXoxo && itemsXoxo.length > 0){
-        res.send(item.concat(itemsXoxo));
     } else {
-        res.send(item);
+        res.send(items);
     }
 })
 
