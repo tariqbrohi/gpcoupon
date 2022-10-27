@@ -32,8 +32,9 @@ export default function SearchPage() {
 
           <SearchForm search={search} />
           <Spacer size={30} />
+
           {/* <SearchByCategory />
-            <Spacer size={30} /> */}
+          <Spacer size={30} /> */}
 
           <ItemList loading={loading} items={data || []} />
           <Spacer size={40} />
