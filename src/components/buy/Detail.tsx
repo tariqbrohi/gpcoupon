@@ -19,10 +19,11 @@ import Price from '@/modules/components/Price';
 import styled from 'styled-components';
 
 const DetailInfoDiv = styled.div`
-  padding: 10px;
   overflow: scroll;
-  text-align: justify;
-  text-indent: 5px;
+  padding: 10px;
+  text-align: start;
+  text-indent: 10px;
+  line-height: 1.3;
 `;
 
 export default function Detail() {
