@@ -1,8 +1,25 @@
 import AppContext from '@/modules/components/AppContext';
 import React, { SyntheticEvent, useContext, useState } from 'react';
 import Router from 'next/router';
-import { Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/react';
+import { Button, Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/react';
 import { useSearchResultItemsLazyQuery } from '@/services';
+import styled from 'styled-components';
+
+const Form = styled.form`
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+`;
+
+const ButtonCustom = styled(Button)`
+  padding: 10px 30px;
+  right: 8%;
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding: 10px;
+    right: 14%;
+  }
+`;
 
 type Props = {
   search: ReturnType<typeof useSearchResultItemsLazyQuery>[0];
@@ -24,8 +41,10 @@ export default function SearchForm({ search }: Props) {
 
     if (searchValue.length < 4) {
       alert('Please write down at least 4 letters to search');
+      
       return;
     }
+    
     search({
       data: {
         country,
@@ -33,6 +52,10 @@ export default function SearchForm({ search }: Props) {
       },
     });
   };
+
+  const handleClick = () => {
+    setSearchValue('');
+  }
 
   return (
     <Grid.Row verticalAlign="middle">
@@ -43,8 +66,9 @@ export default function SearchForm({ search }: Props) {
           onClick={() => Router.back()}
         />
       </Grid.Col>
+
       <Grid.Col flex="1">
-        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <Form onSubmit={handleSubmit}>
           <Input
             fluid
             filled
@@ -53,10 +77,13 @@ export default function SearchForm({ search }: Props) {
             size="sm"
             value={searchValue}
             onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setSearchValue(e.target.value)}
+            onClick={handleClick}
           />
-        </form>
+          <ButtonCustom icon='search outline' />
+        </Form>
       </Grid.Col>
       <Spacer size={10} />
+
       <Grid.Col>
         <Paragraph
           fontSize="sm"

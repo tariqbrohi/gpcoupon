@@ -16,6 +16,15 @@ import {
 } from '@growth-ui/react';
 import currencyFormat from '@/lib/currency-format';
 import Price from '@/modules/components/Price';
+import styled from 'styled-components';
+
+const DetailInfoDiv = styled.div`
+  overflow: scroll;
+  padding: 10px;
+  text-align: start;
+  text-indent: 10px;
+  line-height: 1.3;
+`;
 
 export default function Detail() {
   const {
@@ -52,6 +61,7 @@ export default function Detail() {
             }}
           ></div>
         );
+
       case 'termsAndConditionsInstructions':
         return (
           <div
@@ -60,6 +70,7 @@ export default function Detail() {
             }}
           ></div>
         );
+
       case 'expiryAndValidity':
         return (
           <div
@@ -78,7 +89,11 @@ export default function Detail() {
       <Grid.Row wrap="wrap">
         <Grid.Col padded width={8} mobile={16} minimobile={16}>
           {loading && <Skeleton width="100%" height="100%" />}
-          <Image rounded src={item?.imageUrls?.medium || ''} />
+          <Image 
+            rounded 
+            src={item?.imageUrls?.medium || ''} 
+            alt={item?.name}  
+          />
         </Grid.Col>
         <Grid.Col padded width={8} mobile={16} minimobile={16}>
           {loading && (
@@ -124,6 +139,7 @@ export default function Detail() {
               </Grid.Row> */}
             </>
           )}
+
           <Snackbar
             fluid
             info
@@ -132,6 +148,7 @@ export default function Detail() {
           <Spacer size={20} />
           <Paragraph fontWeight={500}>You can give up to 5</Paragraph>
           <Spacer size={15} />
+
           <Grid.Row wrap="wrap">
             <Button.Group rounded>
               <Button
@@ -171,6 +188,7 @@ export default function Detail() {
           </Grid.Row>
         </Grid.Col>
       </Grid.Row>
+
       <Menu secondary>
         <Menu.Item
           active={activeMenu === 'description'}
@@ -179,6 +197,7 @@ export default function Detail() {
         >
           Description
         </Menu.Item>
+
         <Menu.Item
           active={activeMenu === 'termsAndConditionsInstructions'}
           name="content"
@@ -186,6 +205,7 @@ export default function Detail() {
         >
           Refund & Policies
         </Menu.Item>
+
         <Menu.Item
           active={activeMenu === 'expiryAndValidity'}
           name="content"
@@ -195,7 +215,10 @@ export default function Detail() {
         </Menu.Item>
       </Menu>
       <Spacer size={20} />
-      <div>{renderMenu()}</div>
+
+      <DetailInfoDiv>
+        {renderMenu()}
+      </DetailInfoDiv>
     </>
   );
 }
