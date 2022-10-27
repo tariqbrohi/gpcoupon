@@ -20,63 +20,12 @@ export default errorHandler(async function handler(req, res) {
         throw new BadRequestError('Please use more than 4 letters for searchQuery');
     }
 
-    const brands = await prisma.brand.findMany({
-        where: {
-            OR: 
-            [
-                {
-                    name: {
-                    mode: 'insensitive',
-                    contains: searchQuery,
-                    }
-                },
-                {
-                    slug: {
-                        mode: 'insensitive',
-                        contains: searchQuery,
-                    },
-                },
-            ],
-            countries: {
-                has: country,
-            },
-            status: 'AVAILABLE',
-            affiliate: false,
-        },
-        select: {
-            slug: true,
-        },
+    const itemsXoxo = await xoxoday.vouchers.findMany({
+        brand: searchQuery,
+        country,
     });
-    // let itemsXoxo: any = [];
-    let itemsXoxo: any;
-    // console.log(brands.map(({slug}) => 
-    //     slug
-    // ));
 
-    // for (let i = 0 ; i < brands.length; i++) {
-    //     itemsXoxo.push(
-    //         xoxoday.vouchers.findMany({
-    //             country,
-    //             brand: brands[i].slug,
-    //         })
-    //     );
-    // }
-
-    if (brands.length > 0) {
-        itemsXoxo = await xoxoday.vouchers.findMany({
-            country,
-            brand: brands[0].slug,
-        })
-    };
-    // console.log('bfitemsXoxo', itemsXoxo);
-
-    // await Promise.all(itemsXoxo)
-    // .then((result)=> {
-    //     console.log('result', result);
-    // });
-    // console.log('after', itemsXoxo);
-
-    const item = await prisma.item.findMany({
+    const items = await prisma.item.findMany({
         where: 
         {
             name: 
@@ -87,27 +36,18 @@ export default errorHandler(async function handler(req, res) {
             country,
         },
     });
-
-    // console.log('affiliate item', item);
-    // console.log(item.concat(itemsXoxo));
-
-    if (items.length === 0) {
-        // console.log('1');
+    
+    if (items.length > 0 && itemsXoxo && itemsXoxo.length > 0){
+        res.send(items.concat(itemsXoxo));
+    } else if (itemsXoxo && itemsXoxo.length > 0) {
         res.send(itemsXoxo);
-    } else if (items.length > 0 && itemsXoxo && itemsXoxo.length > 0){
-        // console.log('2');
-        res.send(item.concat(itemsXoxo));
     } else {
-        // console.log('3');
-        res.send(item);
+        res.send(items);
     }
 })
 
 
     
-
-
-
 
 
 
