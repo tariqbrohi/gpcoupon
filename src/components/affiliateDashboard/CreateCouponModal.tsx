@@ -9,15 +9,15 @@ import { sign } from "crypto";
 import axios from 'axios';
 
 const ModalContainer = styled(Modal)`
-top: 56%;
+  z-index: 10001 !important;
 
-// ${({ theme }) => theme.gui.media.custom(1940)} {
-//   top: 56%;
-// }
+  ${({ theme }) => theme.gui.media.mobile} {
+    top: 45%;
+  }
 
-${({ theme }) => theme.gui.media.mobile} {
-  top: 45%;
-}
+  ${({ theme }) => theme.gui.media.minimobile} {
+    top: 48%;
+  }
 `;
 
 export default function CreateCouponRequest() {
