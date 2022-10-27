@@ -6,16 +6,23 @@ import AppNav from '@/layouts/AppNav';
 import Detail from '@/components/buy/Detail';
 import Head from '@/modules/components/Head';
 import React from 'react';
+import styled from 'styled-components';
+
+const AppContainerCustom = styled(AppContainer)`
+  ${({ theme }) => theme.gui.media.mobile} {
+    padding-bottom: 30px;
+  }
+`;
 
 export default function Buy() {
   return (
     <>
-      <Head title="" />
+      <Head />
       <AppHeader />
       <AppMain>
-        <AppContainer>
+        <AppContainerCustom>
           <Detail />
-        </AppContainer>
+        </AppContainerCustom>
       </AppMain>
       <AppNav />
     </>
