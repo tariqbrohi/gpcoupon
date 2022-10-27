@@ -1042,6 +1042,8 @@ export const useCouponRequestMutation = () => {
       'brandName',
       'email',
       'couponInfo',
+      'logoImgUrl',
+      'itemImgUrl'
     ], //req.body
   );
 };
@@ -1052,5 +1054,7 @@ export type CouponRequestMutationVariables = {
   brandName: string;
   email: string;
   couponInfo: string;
+  logoImgUrl: string;
+  itemImgUrl: string;
 };
 export type CouponRequestMutationResult = boolean;

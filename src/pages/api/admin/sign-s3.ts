@@ -16,8 +16,8 @@ const s3 = new aws.S3({
 
 const Bucket = S3_BUCKET;
 
-export default withApiAuthRequired(
-  errorHandler(async function handler(req, res) {
+// export default withApiAuthRequired( // temporary
+  export default errorHandler(async function handler(req, res) {
     if (req.method !== 'post') {
       throw new NotFoundError();
     }
@@ -43,5 +43,5 @@ export default withApiAuthRequired(
       signedUrl,
       url,
     });
-  }),
-);
+  });
+// );
