@@ -1,10 +1,11 @@
+import Head from '@/modules/components/Head';
 import AdminLayout from '@/layouts/AdminLayout';
 import Provider from '@/components/admin/items/Provider';
 import React, { useContext, useEffect, useState } from 'react';
 import { Heading, Pagination, Spacer } from '@growth-ui/react';
-import { useGetAffiliateItemsForDashboardLazyQuery } from '@/services';
+import { useGetAffiliateItemsForAdminDashboardLazyQuery, useGetAffiliateItemsForDashboardLazyQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import AdminDashboards from './dashboard';
+import AdminDashboards from './dashboards';
 import AppContext from '@/modules/components/AppContext';
 
 const TAKE = 20;
@@ -13,7 +14,9 @@ export default withPageAuthRequired(function AdminDashboard() {
     const { user } = useContext(AppContext);
     const [ sortBy, setSortBy ] = useState('createdAt,desc');
     const [ activePage, setActivePage ] = useState(1)
-    const [ query, { data, loading }] = useGetAffiliateItemsForDashboardLazyQuery({});
+    const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+
+    // Need to work on the API to able to bring right data !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     useEffect(() => {
         query({
@@ -33,6 +36,7 @@ export default withPageAuthRequired(function AdminDashboard() {
     
     return (
         <>
+            <Head title='GPcoupon | Admin Dashboard' />
             <AdminLayout>
                 <Provider>
                     <Heading as="h2">

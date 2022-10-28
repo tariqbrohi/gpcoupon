@@ -12,6 +12,7 @@ const TableCellLink = styled(Table.Cell)`
     &:hover {
         color: #2D126D;
         text-decoration: underline;
+    }
 `;
 
 export default function AdminDashboards(props: any) {
@@ -60,7 +61,8 @@ export default function AdminDashboards(props: any) {
                                 return (
                                     <Table.Row key={idx}>
                                         <Table.Cell>
-                                            {order?.item.id}
+                                            {/* {order?.item.id} */}
+                                            {order?.item.brandId}
                                         </Table.Cell>
                                         <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`)}>
                                             {order?.item.name}                       

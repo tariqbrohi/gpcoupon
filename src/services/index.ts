@@ -181,6 +181,40 @@ export type GetAffiliateItemsForDashboardQueryResult = Brand & {
 };
 
 /**
+ * GetAffiliateItemsForAdminDashboard(accountId)
+ */
+ export const useGetAffiliateItemsForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<
+    GetAffiliateItemsForAdminDashboardQueryVariables,
+    GetAffiliateItemsForAdminDashboardQueryResult
+  >('/api/admin/dashboard', baseOptions);
+};
+export const useGetAffiliateItemsForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetAffiliateItemsForAdminDashboardQueryVariables,
+    GetAffiliateItemsForAdminDashboardQueryResult
+  >('/api/admin/dashboard', baseOptions);
+};
+export type GetAffiliateItemsForAdminDashboardQueryVariables = {
+  country?: string;
+  take?: number;
+  skip?: number;
+  sub: string;
+  sortBy?: string;
+};
+export type GetAffiliateItemsForAdminDashboardQueryResult = Brand & {
+  total: {
+    count: number;
+    profitSum: number;
+  };
+  orders: Order[];
+};
+
+/**
  * GetBrands
  */
 export const useGetBrandsQuery = (
