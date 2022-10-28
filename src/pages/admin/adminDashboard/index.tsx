@@ -1,16 +1,41 @@
 import AdminLayout from '@/layouts/AdminLayout';
 import Provider from '@/components/admin/items/Provider';
-import React, { useState } from 'react';
-import Router from 'next/router';
-import stringSimilarity from 'string-similarity';
-import { Input, List, Heading, Spacer } from '@growth-ui/react';
-import { ROUTES } from '@/ROUTES';
-import { useGetItemsQuery } from '@/services';
+import React, { useContext, useEffect, useState } from 'react';
+import { Heading, Pagination, Spacer } from '@growth-ui/react';
+import { useGetAffiliateItemsForDashboardLazyQuery, useGetItemsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import AdminDashboards from './dashboard';
+import AppContext from '@/modules/components/AppContext';
 
-export default withPageAuthRequired(function AdminDashboards() {
-    const { data: items } = useGetItemsQuery();
-    const [search, setSearch] = useState('');
+const TAKE = 20;
+
+export default withPageAuthRequired(function AdminDashboard() {
+    const { user } = useContext(AppContext);
+    const [ sortBy, setSortBy ] = useState('createdAt,desc');
+    const [ activePage, setActivePage ] = useState(1)
+    const [ query, { data, loading }] = useGetAffiliateItemsForDashboardLazyQuery({});
+
+    useEffect(() => {
+        if (user !== null) {
+            query({
+                data: {
+                    take: TAKE,
+                    sub: user?.id,
+                    sortBy,
+                    skip: (activePage - 1) * TAKE,
+                }
+            });
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activePage, sortBy]);
+
+
+    const handlePageChange = (_: any, { activePage }: any) => {
+        setActivePage(activePage);
+    };
+
+    // const { data: items } = useGetItemsQuery();
+    // const [search, setSearch] = useState('');
     
     return (
         <>
@@ -19,8 +44,16 @@ export default withPageAuthRequired(function AdminDashboards() {
                     <Heading as="h2">
                         Admin Dashboard
                     </Heading>
-                    {/* <CreateItemForm /> */}
+                    <div style={{padding: "50px 0"}}>
+                        <AdminDashboards orders={data} />
+                    </div>
                     <Spacer size={20} />
+
+                    <Pagination
+                        totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
+                        onPageChange={handlePageChange}
+                        activePage={activePage}
+                    />
 
                 </Provider>
             </AdminLayout>
