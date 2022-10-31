@@ -38,7 +38,7 @@ export default withApiAuthRequired(
             orderBy.createdAt = 'asc';
         }
 
-        const brand = (await prisma.brand.findMany({
+        const brand: any = (await prisma.brand.findMany({
             where: {
                 affiliate,
             },
@@ -73,8 +73,9 @@ export default withApiAuthRequired(
                     id: true,
                     status: true,
                     item: true,
-                    createdAt: true
-                }
+                    createdAt: true,
+                    payment: true,
+                },
             }),
             prisma.order.findMany({
                 where: {
@@ -84,19 +85,24 @@ export default withApiAuthRequired(
                 },
                 select: {
                     item: true,
+                    payment: true,
                 },
             }),
         ]);
-    
+
         const profitSum = ordersAll.reduce((tot: number, order: any) => {
-            return tot + (order?.item?.amount);
-        }, 0);  
-    
+            return tot + (order?.item?.amount * Math.round(order?.payment?.totalAmount / order?.payment?.price.amount));
+        }, 0);
+        
+        const count = ordersAll.reduce((tot: number, order: any) => {
+            return tot + (Math.round(order?.payment?.totalAmount / order?.payment?.price.amount));
+        }, 0);
+        
         res.send(
             {
                 total: 
                     {
-                        count: ordersAll.length,
+                        count,
                         profitSum,
                     }, 
                 orders: orders,

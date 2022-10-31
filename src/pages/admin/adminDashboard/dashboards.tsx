@@ -25,6 +25,18 @@ export default function AdminDashboards(props: any) {
         return d.toLocaleDateString();
     }
 
+    const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
+        const qty = Math.round(totalAmount / oneAmount);
+        return (
+            <>
+                <Table.Cell>{qty}</Table.Cell> 
+                <Table.Cell>${originalPrice * qty}</Table.Cell>
+                <Table.Cell>${oneAmount * qty}</Table.Cell>
+                <Table.Cell>${amount * qty}</Table.Cell>
+            </>
+        );
+    }
+
     return (
         <>
             <Provider>
@@ -61,7 +73,7 @@ export default function AdminDashboards(props: any) {
                                 return (
                                     <Table.Row key={idx}>
                                         <Table.Cell>
-                                            {order?.item.brand?.name}
+                                            {order?.item?.brand?.name}
                                         </Table.Cell>
                                         <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`)}>
                                             {order?.item.name}                       
@@ -75,7 +87,9 @@ export default function AdminDashboards(props: any) {
                                         <Table.Cell>
                                             {addDays(order?.createdAt * 1000, order?.item?.expiresIn)}
                                         </Table.Cell>
-                                        <Table.Cell>
+                                        {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)}
+                                        
+                                        {/* <Table.Cell>
                                             1
                                         </Table.Cell>
                                         <Table.Cell>
@@ -86,7 +100,7 @@ export default function AdminDashboards(props: any) {
                                         </Table.Cell>
                                         <Table.Cell>
                                             ${order?.item?.amount}
-                                        </Table.Cell>
+                                        </Table.Cell> */}
                                     </Table.Row>
                                 )
                             })}
