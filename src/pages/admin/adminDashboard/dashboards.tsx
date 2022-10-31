@@ -18,7 +18,7 @@ const TableCellLink = styled(Table.Cell)`
 export default function AdminDashboards(props: any) {
     const { orders } = props;
 
-    const addDays = (date:any, days:any) => {
+    const addDays = (date: any, days: any) => {
         const d = new Date(date);
         d.setDate(d.getDate() + days);
         
@@ -29,10 +29,18 @@ export default function AdminDashboards(props: any) {
         const qty = Math.round(totalAmount / oneAmount);
         return (
             <>
-                <Table.Cell>{qty}</Table.Cell> 
-                <Table.Cell>${originalPrice * qty}</Table.Cell>
-                <Table.Cell>${oneAmount * qty}</Table.Cell>
-                <Table.Cell>${amount * qty}</Table.Cell>
+                <Table.Cell>
+                    {qty}
+                </Table.Cell> 
+                <Table.Cell>
+                    ${originalPrice * qty}
+                </Table.Cell>
+                <Table.Cell>
+                    ${oneAmount * qty}
+                </Table.Cell>
+                <Table.Cell>
+                    ${amount * qty}
+                </Table.Cell>
             </>
         );
     }
@@ -88,19 +96,6 @@ export default function AdminDashboards(props: any) {
                                             {addDays(order?.createdAt * 1000, order?.item?.expiresIn)}
                                         </Table.Cell>
                                         {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)}
-                                        
-                                        {/* <Table.Cell>
-                                            1
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            ${order?.item?.originalPrice}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            ${order?.item?.price?.amount}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            ${order?.item?.amount}
-                                        </Table.Cell> */}
                                     </Table.Row>
                                 )
                             })}
@@ -109,7 +104,6 @@ export default function AdminDashboards(props: any) {
                             <></>
                         )
                     }
-                    {console.log('orders: ', orders)}
                 </Table>
                 <Spacer size={20} />
                 
