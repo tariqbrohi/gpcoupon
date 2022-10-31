@@ -1,28 +1,23 @@
 import Head from '@/modules/components/Head';
 import AdminLayout from '@/layouts/AdminLayout';
 import Provider from '@/components/admin/items/Provider';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Heading, Pagination, Spacer } from '@growth-ui/react';
-import { useGetAffiliateItemsForAdminDashboardLazyQuery, useGetAffiliateItemsForDashboardLazyQuery } from '@/services';
+import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import AdminDashboards from './dashboards';
-import AppContext from '@/modules/components/AppContext';
 
 const TAKE = 20;
 
 export default withPageAuthRequired(function AdminDashboard() {
-    const { user } = useContext(AppContext);
-    const [ sortBy, setSortBy ] = useState('createdAt,desc');
+    const [ sortBy, setSortBy ] = useState('createdAt, desc');
     const [ activePage, setActivePage ] = useState(1)
     const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
-
-    // Need to work on the API to able to bring right data !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     useEffect(() => {
         query({
             data: {
                 take: TAKE,
-                sub: user?.id,
                 sortBy,
                 skip: (activePage - 1) * TAKE,
             }
@@ -52,7 +47,6 @@ export default withPageAuthRequired(function AdminDashboard() {
                         onPageChange={handlePageChange}
                         activePage={activePage}
                     />
-
                 </Provider>
             </AdminLayout>
         </>

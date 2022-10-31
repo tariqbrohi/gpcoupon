@@ -61,7 +61,6 @@ export default function AdminDashboards(props: any) {
                                 return (
                                     <Table.Row key={idx}>
                                         <Table.Cell>
-                                            {/* {order?.item.id} */}
                                             {order?.item.brandId}
                                         </Table.Cell>
                                         <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`)}>

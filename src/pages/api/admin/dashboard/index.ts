@@ -13,7 +13,7 @@ export default withApiAuthRequired(
     
         const {
             sortBy,
-            sub
+            affiliate,
         } = req.query as any;
     
         let {
@@ -23,8 +23,6 @@ export default withApiAuthRequired(
     
         if (typeof take !== 'number') take = Number(take);
         if (typeof skip !== 'number') skip = Number(skip);
-    
-        if (!sub ) throw new BadRequestError('No BusinessAccount Exists');
     
         let orderBy: Record<string, string> = {};
 
@@ -40,16 +38,16 @@ export default withApiAuthRequired(
             orderBy.createdAt = 'asc';
         }
 
-        const brand = (await prisma.brand.findFirst({
+        const brand = (await prisma.brand.findMany({
             where: {
-                sub,
+                affiliate,
             },
             select: {
                 id: true,
+                affiliate: true,
+                name: true,
             },
-        })); 
-
-        if (!brand) throw new BadRequestError('No affiliate exists!');
+        }));
 
         const items = await prisma.item.findMany({
             where: {
@@ -57,6 +55,7 @@ export default withApiAuthRequired(
             },
             select: {
                 id: true,
+                brand: true,
             },
         });
 
@@ -86,9 +85,9 @@ export default withApiAuthRequired(
                 select: {
                     item: true,
                 },
-            })
+            }),
         ]);
-    
+        // console.log('order: ', orders);
     
         const profitSum = ordersAll.reduce((tot: number, order: any) => {
             return tot + (order?.item?.amount);

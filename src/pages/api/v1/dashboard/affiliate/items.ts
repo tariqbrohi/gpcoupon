@@ -41,7 +41,7 @@ export default errorHandler(async function handler(req, res) {
   const brand = (await prisma.brand.findFirst({
     where: {
       sub,
-    },
+    },           
     select: {
       id: true,
     },

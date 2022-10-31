@@ -169,7 +169,8 @@ export type GetAffiliateItemsForDashboardQueryVariables = {
   country?: string;
   take?: number;
   skip?: number;
-  sub: string;
+  // sub: string;
+  affiliate?: boolean;
   sortBy?: string;
 };
 export type GetAffiliateItemsForDashboardQueryResult = Brand & {
@@ -203,7 +204,8 @@ export type GetAffiliateItemsForAdminDashboardQueryVariables = {
   country?: string;
   take?: number;
   skip?: number;
-  sub: string;
+  // sub: string;
+  affiliate?: boolean;
   sortBy?: string;
 };
 export type GetAffiliateItemsForAdminDashboardQueryResult = Brand & {
