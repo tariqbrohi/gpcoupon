@@ -87,7 +87,6 @@ export default withApiAuthRequired(
                 },
             }),
         ]);
-        // console.log('order: ', orders);
     
         const profitSum = ordersAll.reduce((tot: number, order: any) => {
             return tot + (order?.item?.amount);
