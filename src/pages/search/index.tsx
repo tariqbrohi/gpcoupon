@@ -12,6 +12,14 @@ import AppNav from '@/layouts/AppNav';
 import styled from 'styled-components';
 import SearchByCategory from '@/components/search/SearchByCategory';
 
+interface Props {
+  hideOnSearchPage?: boolean;
+}
+
+const AppHeaderSearchPage = styled(AppHeader)<Props>`
+  display: ${({ hideOnSearchPage }) => (hideOnSearchPage ? 'none' : 'flex')};
+`;
+
 const AppContainerCustom = styled(AppContainer)`
   ${({ theme }) => theme.gui.media.mobile} {
     padding-bottom: 0;
@@ -24,7 +32,7 @@ export default function SearchPage() {
   return (
     <>
       <Head title="GPcoupon | Search" />
-      <AppHeader bgTransition hideOnMobile={false} />
+      <AppHeaderSearchPage bgTransition hideOnMobile={false} hideOnSearchPage={true} />
       <AppMain>
         <AppContainerCustom>
           {/* <Padding all={1}> */}

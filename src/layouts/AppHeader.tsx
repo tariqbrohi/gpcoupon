@@ -45,6 +45,12 @@ const Header = styled('header')<Props>`
   }
 `;
 
+const SearchContainer = styled.div`
+  width: 100%;
+  display: ${({ hideOnSearchPage }) => (hideOnSearchPage ? 'none' : 'flex')};
+  justify-content: center;
+`;
+
 const LoginButton = styled.a`
   font-size: 1rem !important;
   transition: all 0.4s ease-in-out;
@@ -68,6 +74,7 @@ const SignUpButton = styled(Button)`
 
 export default function AppHeader({
   hideOnMobile = true,
+  hideOnSearchPage = false,
   bgTransition = false,
 }: Props) {
   const ref = useRef<HTMLHeadElement>(null);
@@ -116,7 +123,9 @@ export default function AppHeader({
           </Grid.Row>
         </Grid.Col>
         <Grid.Col flex="1" style={{alignItems: "center"}}>
-          <Search />
+          <SearchContainer hideOnSearchPage={hideOnSearchPage}>
+            <Search />
+          </SearchContainer>
           {/* <SearchBar /> */}
         </Grid.Col>
         <Grid.Col>
@@ -148,6 +157,9 @@ export default function AppHeader({
 interface Props {
   /** Hide on mobile devices. */
   hideOnMobile?: boolean;
+
+  /** Hide on the Search page. */
+  hideOnSearchPage?: boolean;
 
   /** Enable background color transition on scroll. */
   bgTransition?: boolean;
