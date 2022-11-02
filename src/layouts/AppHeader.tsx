@@ -10,6 +10,7 @@ import { Button, Grid, Spacer, StyledGridRow } from '@growth-ui/react';
 import { color } from '@/modules/brandingTheme';
 import SearchBar from '@/modules/components/SearchBar';
 import Search from '@/modules/components/Search';
+import { useSearchResultItemsLazyQuery } from '@/services';
 
 const Container = styled(StyledGridRow)`
   padding: 16px 32px;
@@ -45,11 +46,11 @@ const Header = styled('header')<Props>`
   }
 `;
 
-const SearchContainer = styled.div`
-  width: 100%;
-  display: ${({ hideOnSearchPage }) => (hideOnSearchPage ? 'none' : 'flex')};
-  justify-content: center;
-`;
+// const SearchContainer = styled.div`
+//   width: 100%;
+//   display: ${({ hideOnSearchPage }) => (hideOnSearchPage ? 'none' : 'flex')};
+//   justify-content: center;
+// `;
 
 const LoginButton = styled.a`
   font-size: 1rem !important;
@@ -79,6 +80,7 @@ export default function AppHeader({
 }: Props) {
   const ref = useRef<HTMLHeadElement>(null);
   const { user } = useUser();
+  const [search, { data, loading }] = useSearchResultItemsLazyQuery();
 
   useEffect(() => {
     if (bgTransition) {
@@ -123,10 +125,10 @@ export default function AppHeader({
           </Grid.Row>
         </Grid.Col>
         <Grid.Col flex="1" style={{alignItems: "center"}}>
-          <SearchContainer hideOnSearchPage={hideOnSearchPage}>
+          {/* <SearchContainer hideOnSearchPage={hideOnSearchPage}>
             <Search />
-          </SearchContainer>
-          {/* <SearchBar /> */}
+          </SearchContainer> */}
+          <SearchBar search={search} />
         </Grid.Col>
         <Grid.Col>
           <Grid.Row verticalAlign="middle">
