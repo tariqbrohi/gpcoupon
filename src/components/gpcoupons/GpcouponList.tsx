@@ -13,6 +13,7 @@ import {
   Ref,
   Skeleton,
   Spacer,
+  StyledGridCol,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetAffsAndBrandsQuery, useGetBrandsQuery } from '@/services';
@@ -81,6 +82,12 @@ const ImgListItem = styled(ImageList.Item)`
 
   ${({ theme }) => theme.gui.media.mobile} {
     padding: 0;
+  }
+`;
+
+const ImgListTitle = styled(ImageList.ItemBar)`
+  ${StyledGridCol} {
+    flex: 1;
   }
 `;
 
@@ -290,7 +297,7 @@ export default function GcouponList() {
                   onClick={() => Router.push(`${brand.affiliate ? `${ROUTES.affiliates}` : `${ROUTES.brands}`}/${brand.slug}`)}
                 >
                   <Ref innerRef={ref}>
-                    <ImageList.ItemBar
+                    <ImgListTitle
                       title={brand.name}
                       thumbnail={brand.thumbnailUrl}
                     />
