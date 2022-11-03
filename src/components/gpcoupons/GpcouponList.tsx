@@ -1,7 +1,7 @@
 import AppContext from '@/modules/components/AppContext';
 import CategoriesVertical from './CategoriesVertical';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import styled from 'styled-components';
 import {
   EventListener,
@@ -18,14 +18,12 @@ import {
   StyledParagraph,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetAffsAndBrandsQuery, useGetBrandsQuery } from '@/services';
+import { useGetAffsAndBrandsQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
 import Grid from '@/modules/components/Grid';
 import Link from 'next/link';
-
-// Show all coupons includes brands and affiliate when the user clicks G-Coupon on the Main page header
 
 const MobileNoSpacer = styled(Spacer)`
   ${({ theme }) => theme.gui.media.mobile} {
@@ -262,24 +260,6 @@ export default function GcouponList() {
             </List>
           </Nav>
 
-          {/* <div style={{display: "flex", alignItems: "center",}}>  
-            <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'All'}
-            </Paragraph>
-            <Spacer size={50} />
-            <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'Big Brands'}
-            </Paragraph>
-            <Spacer size={50} />
-            <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'Affiliate Brands'}
-            </Paragraph>
-          </div> */}
-
-          {/* <Paragraph fontWeight={700} fontSize={22}>
-            {cat?.name || 'All'}
-          </Paragraph>
-          <Spacer size={15} /> */}
           <TotalCountPara>
             Total {filteredBrands?.length || 0}
           </TotalCountPara>

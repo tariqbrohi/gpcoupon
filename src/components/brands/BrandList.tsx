@@ -1,7 +1,7 @@
 import AppContext from '@/modules/components/AppContext';
 import CategoriesVertical from './CategoriesVertical';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import styled from 'styled-components';
 import {
   EventListener,
@@ -24,8 +24,6 @@ import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
 import Grid from '@/modules/components/Grid';
 import Link from 'next/link';
-
-// Show brand coupons only when the user clicks Big Brands nav
 
 const MobileNoSpacer = styled(Spacer)`
   ${({ theme }) => theme.gui.media.mobile} {
@@ -262,10 +260,6 @@ export default function BrandList() {
             </List>
           </Nav>
 
-          {/* <Paragraph fontWeight={700} fontSize={22}>
-            {cat?.name || 'All'}
-          </Paragraph>
-          <Spacer size={15} /> */}
           <TotalCountPara>
             Total {filteredBrands?.length || 0}
           </TotalCountPara>

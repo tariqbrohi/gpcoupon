@@ -1,7 +1,7 @@
 import AppContext from '@/modules/components/AppContext';
 import CategoriesVertical from '../brands/CategoriesVertical';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import styled from 'styled-components';
 import {
   EventListener,
@@ -18,14 +18,12 @@ import {
   StyledParagraph,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetAffiliatesQuery, useGetBrandsQuery } from '@/services';
+import { useGetAffiliatesQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import Grid from '@/modules/components/Grid';
 import CategoriesHorizontal from '../brands/CategoriesHorizontal';
 import Link from 'next/link';
-
-// Show affiliate coupons only when the user clicks Affiliate Brands nav
 
 const MobileNoSpacer = styled(Spacer)`
   ${({ theme }) => theme.gui.media.mobile} {
@@ -261,11 +259,7 @@ export default function BrandList() {
               </List.Item>
             </List>
           </Nav>
-
-          {/* <Paragraph fontWeight={700} fontSize={22}>
-            {cat?.name || 'All'}
-          </Paragraph>
-          <Spacer size={15} /> */}
+          
           <TotalCountPara>
             Total {filteredBrands?.length || 0}
           </TotalCountPara>
