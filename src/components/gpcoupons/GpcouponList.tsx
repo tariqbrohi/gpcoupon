@@ -112,7 +112,7 @@ const ImgListItem = styled(ImageList.Item)`
   }
 `;
 
-const ImgListTitle = styled(ImageList.ItemBar)`
+const ImgListItemBar = styled(ImageList.ItemBar)`
   ${StyledGridRow} {
     // align-items: flex-start;
   }
@@ -372,7 +372,7 @@ export default function GcouponList() {
                   onClick={() => Router.push(`${brand.affiliate ? `${ROUTES.affiliates}` : `${ROUTES.brands}`}/${brand.slug}`)}
                 >
                   <Ref innerRef={ref}>
-                    <ImgListTitle
+                    <ImgListItemBar
                       title={brand.name}
                       thumbnail={brand.thumbnailUrl}
                     />
