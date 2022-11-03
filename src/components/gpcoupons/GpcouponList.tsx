@@ -14,6 +14,8 @@ import {
   Skeleton,
   Spacer,
   StyledGridCol,
+  StyledGridRow,
+  StyledParagraph,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetAffsAndBrandsQuery, useGetBrandsQuery } from '@/services';
@@ -24,6 +26,12 @@ import Grid from '@/modules/components/Grid';
 import Link from 'next/link';
 
 // Show all coupons includes brands and affiliate when the user clicks G-Coupon on the Main page header
+
+const MobileNoSpacer = styled(Spacer)`
+  ${({ theme }) => theme.gui.media.mobile} {
+    display: none;
+  }
+`;
 
 const Nav = styled('nav')`
   padding-left: 10px;
@@ -71,9 +79,20 @@ const Wrapper = styled.div`
   }
 `;
 
+const ImageListCustom = styled(ImageList)`
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 20px;
+
+  ${({ theme }) => theme.gui.media.custom(1155)} {
+    grid-template-columns: repeat(2,1fr);
+  }
+`;
+
 const ImgListItem = styled(ImageList.Item)`
   padding: 10px;
   transition: all 0.7s ease-in-out;
+  max-width: 250px;
+  max-height: 300px;
 
   &:hover {
     box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
@@ -86,13 +105,33 @@ const ImgListItem = styled(ImageList.Item)`
 `;
 
 const ImgListTitle = styled(ImageList.ItemBar)`
+  ${StyledGridRow} {
+    // align-items: flex-start;
+  }
+
   ${StyledGridCol} {
     flex: 1;
+  }
+
+  ${StyledParagraph} {
+    display: inline-block;
+    text-overflow: ellipsis;
+    position: relative;
+    max-width: 140px;
+    height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
   }
 `;
 
 const Description = styled.div`
-  margin-top: 15px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  position: relative;
+  max-width: 228px;
+  height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
   color: rgba(0, 0, 0, 0.5);
 
   ${({ theme }) => theme.gui.media.mobile} {
@@ -280,9 +319,9 @@ export default function GcouponList() {
                 </GuiGrid.Col>
               </>
             )}
-            <ImageList
-              cols={3}
-              gap={20}
+            <ImageListCustom
+              // cols={3}
+              // gap={20}
               responsive={{
                 mobile: {
                   breakpoint: 767,
@@ -302,6 +341,7 @@ export default function GcouponList() {
                       thumbnail={brand.thumbnailUrl}
                     />
                   </Ref>
+                  <MobileNoSpacer size={15} />
                   <Image
                     src={brand.backgroundUrl}
                     alt='Brands'
@@ -309,10 +349,13 @@ export default function GcouponList() {
                       height: `${height}px`,
                     }}
                   />
-                  <Description>{brand.description}</Description>
+                  <MobileNoSpacer size={15} />
+                  <Description>
+                    {brand.description}
+                  </Description>
                 </ImgListItem>
               ))}
-            </ImageList>
+            </ImageListCustom>
           </Wrapper>
         </GuiGrid.Col>
       </GuiGrid.Row>
