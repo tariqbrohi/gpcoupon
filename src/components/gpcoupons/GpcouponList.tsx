@@ -103,6 +103,10 @@ const ImgListItem = styled(ImageList.Item)`
     max-width: 200px;
   }
 
+  ${({ theme }) => theme.gui.media.custom(768)} {
+    max-width: 178px;
+  }
+
   ${({ theme }) => theme.gui.media.mobile} {
     padding: 0;
   }
@@ -116,14 +120,19 @@ const ImgListTitle = styled(ImageList.ItemBar)`
   ${StyledGridCol} {
     flex: 1;
     display: inline-block;
-    // text-overflow: ellipsis;
     max-width: 180px;
     max-height: 48px;
-    // overflow: hidden;
-    // white-space: nowrap;
 
     ${({ theme }) => theme.gui.media.custom(820)} {
       max-width: 180px;
+    }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+      max-width: 166px;
+    }
+
+    ${({ theme }) => theme.gui.media.mobile} {
+      max-height: 100%;
     }
   }
 
@@ -136,6 +145,10 @@ const ImgListTitle = styled(ImageList.ItemBar)`
 
     ${({ theme }) => theme.gui.media.custom(820)} {
       max-width: 180px;
+    }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+      max-width: 168px;
     }
   }
 `;
@@ -151,6 +164,10 @@ const Description = styled.div`
 
   ${({ theme }) => theme.gui.media.custom(820)} {
     max-width: 180px;
+  }
+
+  ${({ theme }) => theme.gui.media.custom(768)} {
+    max-width: 158px;
   }
 
   ${({ theme }) => theme.gui.media.mobile} {
