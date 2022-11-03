@@ -92,11 +92,15 @@ const ImgListItem = styled(ImageList.Item)`
   padding: 10px;
   transition: all 0.7s ease-in-out;
   max-width: 250px;
-  max-height: 300px;
+  max-height: 350px;
 
   &:hover {
     box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
     cursor: pointer;
+  }
+
+  ${({ theme }) => theme.gui.media.custom(820)} {
+    max-width: 200px;
   }
 
   ${({ theme }) => theme.gui.media.mobile} {
@@ -111,28 +115,43 @@ const ImgListTitle = styled(ImageList.ItemBar)`
 
   ${StyledGridCol} {
     flex: 1;
+    display: inline-block;
+    // text-overflow: ellipsis;
+    max-width: 180px;
+    max-height: 48px;
+    // overflow: hidden;
+    // white-space: nowrap;
+
+    ${({ theme }) => theme.gui.media.custom(820)} {
+      max-width: 180px;
+    }
   }
 
   ${StyledParagraph} {
-    display: inline-block;
     text-overflow: ellipsis;
-    position: relative;
-    max-width: 140px;
-    height: 24px;
+    max-width: 145px;
+    max-height: 24px;
     overflow: hidden;
     white-space: nowrap;
+
+    ${({ theme }) => theme.gui.media.custom(820)} {
+      max-width: 180px;
+    }
   }
 `;
 
 const Description = styled.div`
   display: inline-block;
   text-overflow: ellipsis;
-  position: relative;
   max-width: 228px;
   height: 24px;
   overflow: hidden;
   white-space: nowrap;
   color: rgba(0, 0, 0, 0.5);
+
+  ${({ theme }) => theme.gui.media.custom(820)} {
+    max-width: 180px;
+  }
 
   ${({ theme }) => theme.gui.media.mobile} {
     display: none;
