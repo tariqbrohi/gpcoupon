@@ -1,10 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import styled from 'styled-components';
-import { KeyboardEvent, SetStateAction, SyntheticEvent, useContext, useEffect, useState } from 'react';
+import { KeyboardEvent, SetStateAction, SyntheticEvent, useState } from 'react';
 import { ROUTES } from '@/ROUTES';
-import Router, { useRouter } from 'next/router';
-import { useSearchResultItemsLazyQuery } from '@/services';
-import AppContext from './AppContext';
+import { useRouter } from 'next/router';
 import { Button } from '@growth-ui/react';
 
 const Container = styled.div`
@@ -54,57 +52,37 @@ const ButtonCustom = styled(Button)`
     // }
 `;
 
-type Props = {
-    search: ReturnType<typeof useSearchResultItemsLazyQuery>[0];
-};
-
-export default function SearchBar({ search }: Props) {
-    // const [search, { data, loading }] = useSearchResultItemsLazyQuery();
+export default function SearchBar() {
     const [searchValue, setSearchValue] = useState('');
-    const { country, searchHistories, setSearchHistories } = useContext(AppContext);
     const router = useRouter();
-    const obj = { keyword: searchValue };
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-
-        setSearchHistories([
-            ...searchHistories, 
-            searchValue
-        ]);
 
         if (searchValue.length < 4) {
             alert('Please write down at least 4 letters to search');
 
             return;
         }
-      
-        search({
-            data: {
-                country,
-                searchQuery: searchValue,
-            },
-        });
 
         router.push({
             pathname: ROUTES.search,
             query: {
-                searchValue: JSON.stringify(obj),
+                searchValue
             },
         })
         
         // Router.push(ROUTES.search);
     };
 
-    useEffect(() => {
-        if (!router.isReady) return;
-        // console.log('router: ', router.query);
-    }, [router.isReady, router.query]);
+    // useEffect(() => {
+    //     if (!router.isReady) return;
+    // }, []);
 
-    console.log('Search Bar: ', searchValue);
+    console.log('Search Keyword: ', searchValue);
   
     const onReset = () => {
-      setSearchValue('');
+        setSearchValue('');
     }
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {

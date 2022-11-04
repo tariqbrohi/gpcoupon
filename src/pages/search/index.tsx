@@ -1,9 +1,9 @@
 import Head from '@/modules/components/Head';
 import ItemList from '@/modules/components/ItemList';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import SearchForm from '@/components/search/SearchForm';
 import SearchHistory from '@/components/search/SearchHistory';
-import { Padding, Spacer } from '@growth-ui/react';
+import { Spacer } from '@growth-ui/react';
 import { useSearchResultItemsLazyQuery } from '@/services';
 import AppHeader from '@/layouts/AppHeader';
 import AppContainer from '@/layouts/AppContainer';
@@ -30,21 +30,26 @@ const AppContainerCustom = styled(AppContainer)`
 
 export default function SearchPage() {
   const [search, { data, loading }] = useSearchResultItemsLazyQuery();
-  const [searchValue, setSearchValue] = useState('');
   const { country, searchHistories, setSearchHistories } = useContext(AppContext);
   const router = useRouter();
-  
-  // setSearchHistories([
-  //   ...searchHistories, 
-  //   searchValue
-  // ]);
 
-  // search({
-  //   data: {
-  //     country,
-  //     searchQuery: searchValue,
-  //   },
-  // });
+  const searchKeyword: any = router.query.searchValue;
+
+  useEffect(() => {
+    setSearchHistories([
+      ...searchHistories, 
+      searchKeyword
+    ]);
+  
+    search({
+      data: {
+        country,
+        searchQuery: searchKeyword,
+      },
+    });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchKeyword]);
 
   return (
     <>
@@ -52,9 +57,7 @@ export default function SearchPage() {
       <AppHeaderSearchPage bgTransition hideOnMobile={false} hideOnSearchPage={true} />
       <AppMain>
         <AppContainerCustom>
-          {/* <Padding all={1}> */}
           <Spacer size={50} />
-          {console.log('Search Page router.query: ', router.query)}
           
           {/* <SearchForm search={search} />
           <Spacer size={30} /> */}
@@ -67,7 +70,6 @@ export default function SearchPage() {
 
           <SearchHistory search={search} />
           
-          {/* </Padding> */}
         </AppContainerCustom>
       </AppMain>
       <AppNav />
