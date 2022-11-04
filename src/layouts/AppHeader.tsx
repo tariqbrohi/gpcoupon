@@ -128,7 +128,7 @@ export default function AppHeader({
           {/* <SearchContainer hideOnSearchPage={hideOnSearchPage}>
             <Search />
           </SearchContainer> */}
-          <SearchBar search={search} />
+          <SearchBar />
         </Grid.Col>
         <Grid.Col>
           <Grid.Row verticalAlign="middle">

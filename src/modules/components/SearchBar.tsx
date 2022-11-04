@@ -16,6 +16,10 @@ const Container = styled.div`
     max-width: 460px;
     cursor: pointer;
 
+    ${({ theme }) => theme.gui.media.custom(768)} {
+        padding-left: 15px;
+    }
+
     ${({ theme }) => theme.gui.media.mobile} {
         max-width: 100%;
         padding: 12px 18px;
@@ -37,19 +41,38 @@ const SearchInput = styled.input`
     &:focus {
         outline: none;
     }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+        padding: 8px 0;
+
+        &:: placeholder {
+            font-size: 10px;
+        }
+    }
 `;
 
-const ButtonCustom = styled(Button)`
-    // padding: 10px 30px;
-    // right: 8%;
+const ButtonSearch = styled(Button)`
     padding: 15px;
     left: 4.2%;
     border-radius: 30px;
 
-    // ${({ theme }) => theme.gui.media.mobile} {
-    //     padding: 10px;
-    //     right: 14%;
-    // }
+    ${({ theme }) => theme.gui.media.custom(1024)} {
+        left: 4.6%
+    }
+
+    ${({ theme }) => theme.gui.media.custom(912)} {
+        left: 6.8%
+    }
+
+    ${({ theme }) => theme.gui.media.custom(820)} {
+        padding: 8px;
+        left: 10.6%;
+    }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+        padding: 6px;
+        left: 14.6%;
+    }
 `;
 
 export default function SearchBar() {
@@ -68,18 +91,10 @@ export default function SearchBar() {
         router.push({
             pathname: ROUTES.search,
             query: {
-                searchValue
+                searchValue,
             },
         })
-        
-        // Router.push(ROUTES.search);
     };
-
-    // useEffect(() => {
-    //     if (!router.isReady) return;
-    // }, []);
-
-    console.log('Search Keyword: ', searchValue);
   
     const onReset = () => {
         setSearchValue('');
@@ -106,7 +121,7 @@ export default function SearchBar() {
                     onClick={onReset}
                     onKeyPress={handleKeyPress}
                 />
-                <ButtonCustom icon='search outline' />
+                <ButtonSearch icon='search outline' />
             </Form>
         </Container>
     );
