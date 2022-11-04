@@ -3,7 +3,7 @@ import ItemList from '@/modules/components/ItemList';
 import React, { useContext, useEffect, useState } from 'react';
 import SearchForm from '@/components/search/SearchForm';
 import SearchHistory from '@/components/search/SearchHistory';
-import { Spacer } from '@growth-ui/react';
+import { Heading, Spacer } from '@growth-ui/react';
 import { useSearchResultItemsLazyQuery } from '@/services';
 import AppHeader from '@/layouts/AppHeader';
 import AppContainer from '@/layouts/AppContainer';
@@ -58,6 +58,10 @@ export default function SearchPage() {
       <AppMain>
         <AppContainerCustom>
           <Spacer size={50} />
+
+          <Heading as='h1'>
+            Results for "{searchKeyword}".
+          </Heading>
           
           {/* <SearchForm search={search} />
           <Spacer size={30} /> */}
