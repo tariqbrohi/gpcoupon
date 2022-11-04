@@ -5,6 +5,14 @@ import { Button, Grid, IconButton, Input, Paragraph, Spacer } from '@growth-ui/r
 import { useSearchResultItemsLazyQuery } from '@/services';
 import styled from 'styled-components';
 
+const GridRow = styled(Grid.Row)`
+  display: none;
+
+  ${({ theme }) => theme.gui.media.custom(767)} {
+    display: flex;
+  }
+`;
+
 const Form = styled.form`
   width: 100%;
   display: flex;
@@ -17,7 +25,6 @@ const ButtonCustom = styled(Button)`
 
   ${({ theme }) => theme.gui.media.mobile} {
     padding: 10px;
-    right: 14%;
   }
 `;
 
@@ -57,7 +64,7 @@ export default function SearchForm({ search }: Props) {
   }
 
   return (
-    <Grid.Row verticalAlign="middle">
+    <GridRow verticalAlign="middle">
       <Grid.Col only={['mobile', 'minimobile']}>
         <IconButton
           name="chevron left"
@@ -92,6 +99,6 @@ export default function SearchForm({ search }: Props) {
           Cancel
         </Paragraph>
       </Grid.Col>
-    </Grid.Row>
+    </GridRow>
   );
 }

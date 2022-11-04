@@ -18,6 +18,14 @@ interface Props {
   hideOnSearchPage?: boolean;
 }
 
+const MobileSpacer = styled(Spacer)`
+  display: none;
+
+  ${({ theme }) => theme.gui.media.custom(767)} {
+    display: block;
+  }
+`;
+
 const AppHeaderSearchPage = styled(AppHeader)<Props>`
   display: ${({ hideOnSearchPage }) => (hideOnSearchPage ? 'none' : 'flex')};
 `;
@@ -25,6 +33,12 @@ const AppHeaderSearchPage = styled(AppHeader)<Props>`
 const AppContainerCustom = styled(AppContainer)`
   ${({ theme }) => theme.gui.media.mobile} {
     padding-bottom: 0;
+  }
+`;
+
+const HeadingCustom = styled(Heading)`
+  ${({ theme }) => theme.gui.media.mobile} {
+    display: none;
   }
 `;
 
@@ -59,12 +73,12 @@ export default function SearchPage() {
         <AppContainerCustom>
           <Spacer size={50} />
 
-          <Heading as='h1'>
+          <SearchForm search={search} />
+          <MobileSpacer size={30} />
+
+          <HeadingCustom as='h1'>
             Results for "{searchKeyword}".
-          </Heading>
-          
-          {/* <SearchForm search={search} />
-          <Spacer size={30} /> */}
+          </HeadingCustom>
 
           {/* <SearchByCategory />
           <Spacer size={30} /> */}
