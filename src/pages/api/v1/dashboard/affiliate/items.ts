@@ -72,7 +72,8 @@ export default errorHandler(async function handler(req, res) {
         id: true,
         status: true,
         item: true,
-        createdAt: true
+        createdAt: true,
+        payment: true
       }
     }),
     prisma.order.findMany({
@@ -83,20 +84,24 @@ export default errorHandler(async function handler(req, res) {
       },
       select: {
         item: true,
+        payment: true
       },
     })
   ]);
 
-
   const profitSum = ordersAll.reduce((tot:number, order:any) => {
-    return tot + (order?.item?.amount);
-  }, 0);  
+    return tot + (order?.item?.amount * Math.round(order?.payment?.totalAmount / order?.payment?.price.amount));
+  }, 0);
+  
+  const count = ordersAll.reduce((tot:number, order:any) => {
+    return tot + (Math.round(order?.payment?.totalAmount / order?.payment?.price.amount));
+  }, 0);
 
   res.send(
     {
       total: 
         {
-          count: ordersAll.length,
+          count,
           profitSum,
         }, 
       orders: orders,

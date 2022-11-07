@@ -23,6 +23,19 @@ export default function CouponList(props: any) {
     return d.toLocaleDateString();
   }
 
+  const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
+    const qty = Math.round(totalAmount / oneAmount);
+    return (
+      <>
+        <Table.Cell>{qty}</Table.Cell> 
+        <Table.Cell>${originalPrice * qty}</Table.Cell>
+        <Table.Cell>${oneAmount * qty}</Table.Cell>
+        <Table.Cell>${amount * qty}</Table.Cell>
+      </>
+    );
+  }
+  
+
   return (
     <>
       <Table celled>
@@ -63,10 +76,7 @@ export default function CouponList(props: any) {
                       </Table.Cell>
                       <Table.Cell>{new Date(Number(order?.createdAt) * 1000).toLocaleDateString()}</Table.Cell>
                       <Table.Cell>{addDays(order?.createdAt * 1000, order?.item?.expiresIn)}</Table.Cell>
-                      <Table.Cell>1</Table.Cell>
-                      <Table.Cell>${order?.item?.originalPrice}</Table.Cell>
-                      <Table.Cell>${order?.item?.price?.amount}</Table.Cell>
-                      <Table.Cell>${order?.item?.amount}</Table.Cell>
+                      {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)}
                     </Table.Row>
                   )
                 })
