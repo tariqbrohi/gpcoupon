@@ -59,7 +59,7 @@ export default function AdminDashboards(props: any) {
                             <Table.HeadCell>Qty</Table.HeadCell>
                             <Table.HeadCell>Original Price</Table.HeadCell>
                             <Table.HeadCell>Retail Price</Table.HeadCell>
-                            <Table.HeadCell>My Profit</Table.HeadCell>
+                            <Table.HeadCell>Merchant Profit</Table.HeadCell>
                         </Table.Row>
                     </Table.Head>
                     
