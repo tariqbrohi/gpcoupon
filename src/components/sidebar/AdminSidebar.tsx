@@ -1,7 +1,7 @@
 import React from 'react';
 import { ROUTES } from '@/ROUTES';
 import { useRouter } from 'next/router';
-import { Collapse, List, Sidebar, SidebarProps } from '@growth-ui/react';
+import { Collapse, Image, List, Sidebar, SidebarProps, Spacer } from '@growth-ui/react';
 
 export default function AdminSidebar(props: SidebarProps) {
   const { pathname, push } = useRouter();
@@ -91,6 +91,8 @@ export default function AdminSidebar(props: SidebarProps) {
             </List.Item>
           </List>
         </Collapse> */}
+        
+        
 
         {/* Admin Dashboard */}
         <List.Item active={activeItem === 'admin'} style={styles.listItem}>
@@ -109,7 +111,11 @@ export default function AdminSidebar(props: SidebarProps) {
         </Collapse>
 
         <List.Item active={activeItem === 'items'} style={styles.listItem}>
-          <List.Content>Coupon</List.Content>
+          <div style={{display: "flex", alignItems: "center"}}>
+            <Image src='/images/admin_list_icons/coupon.png' alt='coupon' style={{width: "30px"}} />
+            <Spacer size={10} />
+            <List.Content>Coupon</List.Content>
+          </div>
         </List.Item>
         <Collapse expanded>
           <List padded selection verticalAlign="middle">
@@ -192,6 +198,6 @@ const styles = {
     paddingRight: '160px',
   },
   collapseItem: {
-    paddingLeft: '2rem',
+    paddingLeft: '1.5rem',
   },
 };
