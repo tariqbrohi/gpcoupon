@@ -23,7 +23,6 @@
   "dependencies": {
     "@emotion/react": "11.9.0",
     "@emotion/styled": "11.8.1",
-    "@grapherjs/nextjs": "^0.0.7",
     "@growth-ui/react": "^1.41.0",
     "@mui/core": "5.0.0-alpha.54",
     "@mui/icons-material": "5.8.3",
