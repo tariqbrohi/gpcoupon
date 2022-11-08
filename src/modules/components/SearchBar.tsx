@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import styled from 'styled-components';
-import { KeyboardEvent, SetStateAction, SyntheticEvent, useState } from 'react';
+import { KeyboardEvent, SetStateAction, SyntheticEvent, useEffect, useState } from 'react';
 import { ROUTES } from '@/ROUTES';
 import { useRouter } from 'next/router';
 import { Button } from '@growth-ui/react';
@@ -78,6 +78,7 @@ const ButtonSearch = styled(Button)`
 export default function SearchBar() {
     const [searchValue, setSearchValue] = useState('');
     const router = useRouter();
+    const searchKeyword: any = router.query.searchValue;
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
@@ -109,6 +110,11 @@ export default function SearchBar() {
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearchValue(event.target.value);
     };
+
+    useEffect(() => {
+        setSearchValue(searchKeyword);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Container>
