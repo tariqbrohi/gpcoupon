@@ -1,7 +1,7 @@
 import AppContext from '@/modules/components/AppContext';
 import CategoriesVertical from './CategoriesVertical';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import styled from 'styled-components';
 import {
   EventListener,
@@ -13,16 +13,23 @@ import {
   Ref,
   Skeleton,
   Spacer,
+  StyledGridCol,
+  StyledGridRow,
+  StyledParagraph,
 } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetAffsAndBrandsQuery, useGetBrandsQuery } from '@/services';
+import { useGetAffsAndBrandsQuery } from '@/services';
 import { some } from 'lodash';
 import { Category } from '@prisma/client';
 import CategoriesHorizontal from './CategoriesHorizontal';
 import Grid from '@/modules/components/Grid';
 import Link from 'next/link';
 
-// Show all coupons includes brands and affiliate when the user clicks G-Coupon on the Main page header
+const MobileNoSpacer = styled(Spacer)`
+  ${({ theme }) => theme.gui.media.mobile} {
+    display: none;
+  }
+`;
 
 const Nav = styled('nav')`
   padding-left: 10px;
@@ -70,13 +77,32 @@ const Wrapper = styled.div`
   }
 `;
 
+const ImageListCustom = styled(ImageList)`
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 20px;
+
+  ${({ theme }) => theme.gui.media.custom(1155)} {
+    grid-template-columns: repeat(2,1fr);
+  }
+`;
+
 const ImgListItem = styled(ImageList.Item)`
   padding: 10px;
   transition: all 0.7s ease-in-out;
+  max-width: 250px;
+  max-height: 350px;
 
   &:hover {
     box-shadow: rgb(0 0 0 / 15%) -3px 3px 5px 2px;
     cursor: pointer;
+  }
+
+  ${({ theme }) => theme.gui.media.custom(820)} {
+    max-width: 200px;
+  }
+
+  ${({ theme }) => theme.gui.media.custom(768)} {
+    max-width: 178px;
   }
 
   ${({ theme }) => theme.gui.media.mobile} {
@@ -84,9 +110,63 @@ const ImgListItem = styled(ImageList.Item)`
   }
 `;
 
+const ImgListItemBar = styled(ImageList.ItemBar)`
+  ${StyledGridRow} {
+    // align-items: flex-start;
+  }
+
+  ${StyledGridCol} {
+    flex: 1;
+    display: inline-block;
+    max-width: 160px;
+    max-height: 48px;
+
+    ${({ theme }) => theme.gui.media.custom(820)} {
+      max-width: 120px;
+    }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+      max-width: 166px;
+    }
+
+    ${({ theme }) => theme.gui.media.mobile} {
+      max-height: 100%;
+    }
+  }
+
+  ${StyledParagraph} {
+    text-overflow: ellipsis;
+    max-width: 145px;
+    max-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+
+    ${({ theme }) => theme.gui.media.custom(820)} {
+      max-width: 180px;
+    }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+      max-width: 168px;
+    }
+  }
+`;
+
 const Description = styled.div`
-  margin-top: 15px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  max-width: 228px;
+  height: 24px;
+  overflow: hidden;
+  white-space: nowrap;
   color: rgba(0, 0, 0, 0.5);
+
+  ${({ theme }) => theme.gui.media.custom(820)} {
+    max-width: 180px;
+  }
+
+  ${({ theme }) => theme.gui.media.custom(768)} {
+    max-width: 158px;
+  }
 
   ${({ theme }) => theme.gui.media.mobile} {
     display: none;
@@ -180,24 +260,6 @@ export default function GcouponList() {
             </List>
           </Nav>
 
-          {/* <div style={{display: "flex", alignItems: "center",}}>  
-            <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'All'}
-            </Paragraph>
-            <Spacer size={50} />
-            <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'Big Brands'}
-            </Paragraph>
-            <Spacer size={50} />
-            <Paragraph fontWeight={700} fontSize={22}>
-              {cat?.name || 'Affiliate Brands'}
-            </Paragraph>
-          </div> */}
-
-          {/* <Paragraph fontWeight={700} fontSize={22}>
-            {cat?.name || 'All'}
-          </Paragraph>
-          <Spacer size={15} /> */}
           <TotalCountPara>
             Total {filteredBrands?.length || 0}
           </TotalCountPara>
@@ -273,9 +335,9 @@ export default function GcouponList() {
                 </GuiGrid.Col>
               </>
             )}
-            <ImageList
-              cols={3}
-              gap={20}
+            <ImageListCustom
+              // cols={3}
+              // gap={20}
               responsive={{
                 mobile: {
                   breakpoint: 767,
@@ -290,11 +352,12 @@ export default function GcouponList() {
                   onClick={() => Router.push(`${brand.affiliate ? `${ROUTES.affiliates}` : `${ROUTES.brands}`}/${brand.slug}`)}
                 >
                   <Ref innerRef={ref}>
-                    <ImageList.ItemBar
+                    <ImgListItemBar
                       title={brand.name}
                       thumbnail={brand.thumbnailUrl}
                     />
                   </Ref>
+                  <MobileNoSpacer size={15} />
                   <Image
                     src={brand.backgroundUrl}
                     alt='Brands'
@@ -302,10 +365,13 @@ export default function GcouponList() {
                       height: `${height}px`,
                     }}
                   />
-                  <Description>{brand.description}</Description>
+                  <MobileNoSpacer size={15} />
+                  <Description>
+                    {brand.description}
+                  </Description>
                 </ImgListItem>
               ))}
-            </ImageList>
+            </ImageListCustom>
           </Wrapper>
         </GuiGrid.Col>
       </GuiGrid.Row>
