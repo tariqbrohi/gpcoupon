@@ -169,7 +169,7 @@ export type GetAffiliateItemsForDashboardQueryVariables = {
   country?: string;
   take?: number;
   skip?: number;
-  // sub: string;
+  sub: string;
   affiliate?: boolean;
   sortBy?: string;
 };
@@ -182,7 +182,7 @@ export type GetAffiliateItemsForDashboardQueryResult = Brand & {
 };
 
 /**
- * GetAffiliateItemsForAdminDashboard(accountId)
+ * GetAffiliateItemsForAdminDashboard
  */
  export const useGetAffiliateItemsForAdminDashboardQuery = (
   baseOptions?: QueryBaseOptions<GetAffiliateItemsForAdminDashboardQueryVariables>,
@@ -204,7 +204,6 @@ export type GetAffiliateItemsForAdminDashboardQueryVariables = {
   country?: string;
   take?: number;
   skip?: number;
-  // sub: string;
   affiliate?: boolean;
   sortBy?: string;
 };
