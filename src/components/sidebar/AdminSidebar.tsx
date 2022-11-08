@@ -91,6 +91,22 @@ export default function AdminSidebar(props: SidebarProps) {
             </List.Item>
           </List>
         </Collapse>
+
+        {/* Admin Dashboard */}
+        <List.Item active={activeItem === 'admin'} style={styles.listItem}>
+          <List.Content>Admin</List.Content>
+        </List.Item>
+        <Collapse expanded>
+          <List padded selection verticalAlign="middle">
+            <List.Item
+              active={pathname === ROUTES.admin.adminDashboard}
+              onClick={handleClickItem(ROUTES.admin.adminDashboard)}
+              style={styles.collapseItem}
+            >
+              <List.Content>Admin Dashboard</List.Content>
+            </List.Item>
+          </List>
+        </Collapse>
       </List>
     </Sidebar>
   );

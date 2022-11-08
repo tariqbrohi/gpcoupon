@@ -70,9 +70,13 @@ export default function ItemList({ items, loading }: Props) {
             <Chip
               color="green-400"
               text={`${
-                100 -
-                +((item.price.amount / item.originalPrice) * 100).toFixed(2)
+                parseFloat((100 -
+                +((item.price.amount / item.originalPrice) * 100)).toFixed(2))
               }% OFF`}
+
+              // text={`${
+              //   +parseFloat(((item.originalPrice - item.price.amount) / item.originalPrice * 100).toFixed(2))
+              // }% OFF`}
             />
           )}
         </GuiGrid.Row>
@@ -126,7 +130,9 @@ export default function ItemList({ items, loading }: Props) {
                   right: '7px',
                   zIndex: 8000,
                 }}
-                text={`${item.customerDiscountRate}% Rewards`}
+                text={`${
+                  parseFloat((item.customerDiscountRate).toFixed(2))
+                }% Rewards`}
               />
             ) : null}
             <ImageWraper>

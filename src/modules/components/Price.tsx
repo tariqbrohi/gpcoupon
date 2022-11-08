@@ -36,9 +36,13 @@ export default function Price({
             <Chip
               color="green-400"
               text={`${
-                100 -
-                +((item.price.amount / item.originalPrice) * 100).toFixed(2)
+                parseFloat((100 -
+                +((item.price.amount / item.originalPrice) * 100)).toFixed(2))
               }% OFF`}
+
+              // text={`${
+              //   +parseFloat(((item.originalPrice - item.price.amount) / item.originalPrice * 100).toFixed(2))
+              // }% OFF`}
             />
           </>
         )}
