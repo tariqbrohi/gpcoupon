@@ -170,9 +170,44 @@ export type GetAffiliateItemsForDashboardQueryVariables = {
   take?: number;
   skip?: number;
   sub: string;
+  affiliate?: boolean;
   sortBy?: string;
 };
 export type GetAffiliateItemsForDashboardQueryResult = Brand & {
+  total: {
+    count: number;
+    profitSum: number;
+  };
+  orders: Order[];
+};
+
+/**
+ * GetAffiliateItemsForAdminDashboard
+ */
+ export const useGetAffiliateItemsForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<
+    GetAffiliateItemsForAdminDashboardQueryVariables,
+    GetAffiliateItemsForAdminDashboardQueryResult
+  >('/api/admin/dashboard', baseOptions);
+};
+export const useGetAffiliateItemsForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetAffiliateItemsForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetAffiliateItemsForAdminDashboardQueryVariables,
+    GetAffiliateItemsForAdminDashboardQueryResult
+  >('/api/admin/dashboard', baseOptions);
+};
+export type GetAffiliateItemsForAdminDashboardQueryVariables = {
+  country?: string;
+  take?: number;
+  skip?: number;
+  affiliate?: boolean;
+  sortBy?: string;
+};
+export type GetAffiliateItemsForAdminDashboardQueryResult = Brand & {
   total: {
     count: number;
     profitSum: number;

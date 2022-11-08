@@ -1,15 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import styled from 'styled-components';
-import { KeyboardEvent, SetStateAction, SyntheticEvent, useContext, useEffect, useState } from 'react';
+import { KeyboardEvent, SetStateAction, SyntheticEvent, useEffect, useState } from 'react';
 import { ROUTES } from '@/ROUTES';
-import Router from 'next/router';
-import { useSearchResultItemsLazyQuery } from '@/services';
-import AppContext from './AppContext';
+import { useRouter } from 'next/router';
+import { Button } from '@growth-ui/react';
 
 const Container = styled.div`
     display: flex;
     align-items: center;
-    padding: 8px 18px;
+    padding: 0 18px;
     background: #f4f4f4;
     border-radius: 30px;
     box-shadow: -2px 3px 4px 0px #0000001C;
@@ -17,10 +16,20 @@ const Container = styled.div`
     max-width: 460px;
     cursor: pointer;
 
+    ${({ theme }) => theme.gui.media.custom(768)} {
+        padding-left: 15px;
+    }
+
     ${({ theme }) => theme.gui.media.mobile} {
         max-width: 100%;
         padding: 12px 18px;
     }
+`;
+
+const Form = styled.form`
+    width: 100%;
+    display: flex;
+    align-items: stretch;
 `;
 
 const SearchInput = styled.input`
@@ -32,63 +41,94 @@ const SearchInput = styled.input`
     &:focus {
         outline: none;
     }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+        padding: 8px 0;
+
+        &:: placeholder {
+            font-size: 10px;
+        }
+    }
+`;
+
+const ButtonSearch = styled(Button)`
+    padding: 15px;
+    left: 4.2%;
+    border-radius: 30px;
+
+    ${({ theme }) => theme.gui.media.custom(1024)} {
+        left: 4.6%
+    }
+
+    ${({ theme }) => theme.gui.media.custom(912)} {
+        left: 6.8%
+    }
+
+    ${({ theme }) => theme.gui.media.custom(820)} {
+        padding: 8px;
+        left: 10.6%;
+    }
+
+    ${({ theme }) => theme.gui.media.custom(768)} {
+        padding: 6px;
+        left: 14.6%;
+    }
 `;
 
 export default function SearchBar() {
-    const [search, { data, loading }] = useSearchResultItemsLazyQuery();
     const [searchValue, setSearchValue] = useState('');
-    const { country } = useContext(AppContext);
+    const router = useRouter();
+    const searchKeyword: any = router.query.searchValue;
 
-    const handleClickSearch = async (e: SyntheticEvent) => {
+    const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        search({
-            data: {
-                country,
-                searchQuery: searchValue,
+        if (searchValue.length < 4) {
+            alert('Please write down at least 4 letters to search');
+
+            return;
+        }
+
+        router.push({
+            pathname: ROUTES.search,
+            query: {
+                searchValue,
             },
-        });
-        // console.log('The searchValue is:', searchValue);
+        })
     };
+  
+    const onReset = () => {
+        setSearchValue('');
+    }
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            handleClickSearch(e);
+            handleSubmit(e);
         }
-        // console.log('You pressed Enter:', searchValue);
     }
 
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearchValue(event.target.value);
     };
 
-    // useEffect(() => {
-    //     search({
-    //         data: {
-    //             searchQuery: searchValue,
-    //             country,
-    //         },
-    //     });
-    // }, [searchValue]);
+    useEffect(() => {
+        setSearchValue(searchKeyword);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Container>
-            <img
-                src="/svg/search.svg"
-                alt='searchbar'
-                style={{
-                    width: '20px',
-                    marginRight: '5px',
-                }}
-                // onClick={() => Router.push('/search-result')}
-                onClick={handleClickSearch}
-            />
-            <SearchInput type="text" id='search' name='search' 
-                placeholder="Search your Coupon here"
-                value={searchValue} 
-                onChange={handleChange}
-                onKeyPress={handleKeyPress} 
-            />
+            <Form onSubmit={handleSubmit}>
+                <SearchInput
+                    type="text"
+                    placeholder="Search for coupons"
+                    value={searchValue}
+                    onChange={handleChange}
+                    onClick={onReset}
+                    onKeyPress={handleKeyPress}
+                />
+                <ButtonSearch icon='search outline' />
+            </Form>
         </Container>
     );
 }
