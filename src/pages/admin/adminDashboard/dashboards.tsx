@@ -31,7 +31,7 @@ export default function AdminDashboards(props: any) {
             <>
                 <Table.Cell>
                     {qty}
-                </Table.Cell> 
+                </Table.Cell>
                 <Table.Cell>
                     ${originalPrice * qty}
                 </Table.Cell>
