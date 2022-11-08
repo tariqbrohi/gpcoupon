@@ -118,11 +118,11 @@ const ImgListItemBar = styled(ImageList.ItemBar)`
   ${StyledGridCol} {
     flex: 1;
     display: inline-block;
-    max-width: 180px;
+    max-width: 160px;
     max-height: 48px;
 
     ${({ theme }) => theme.gui.media.custom(820)} {
-      max-width: 180px;
+      max-width: 120px;
     }
 
     ${({ theme }) => theme.gui.media.custom(768)} {
