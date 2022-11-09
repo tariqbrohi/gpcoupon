@@ -11,7 +11,7 @@ const WrapperContainer = styled.div`
 
 const Wrapper = styled.div`
   min-width: 221.98px;
-  height: 150vh;
+  height: 100vh;
   background-color: #FFF;
   box-shadow: 2px 5px 10px #C0C0C0;
 `;

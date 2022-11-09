@@ -121,7 +121,7 @@ const styles: Record<string, CSSProperties> = {
   pusher: {
     // padding: '80px 26px',
     padding: '0 26px 30px',
-    maxHeight: "150vh",
+    maxHeight: "100vh",
   },
 };
 
