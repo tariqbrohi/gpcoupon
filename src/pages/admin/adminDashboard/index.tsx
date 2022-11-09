@@ -37,7 +37,7 @@ export default withPageAuthRequired(function AdminDashboard() {
                 <AdminLayout>
                     <Provider>
                         <Heading as="h2">
-                            Admin Dashboard
+                            Coupon Dashboard
                         </Heading>
                         <div style={{padding: "50px 0"}}>
                             <AdminDashboards orders={data} />
