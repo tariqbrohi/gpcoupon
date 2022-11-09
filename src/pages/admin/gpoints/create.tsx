@@ -62,7 +62,7 @@ export default withPageAuthRequired(function CreateItem() {
       <AppMain>
         <AdminLayout>
           <Provider>
-            <Heading as="h2">Create GPoint</Heading>
+            <Heading as="h2">Request GPoint</Heading>
             <Form onSubmit={handleSubmit}>
               <Form.Group>
                 <Form.Input

@@ -30,7 +30,7 @@ const Header = styled('header')<Props>`
   transition: background 200ms ease-in-out;
 
   & > ${StyledGridRow}:last-child {
-    max-width: ${({ theme }) => theme.size.headerMaxWidth}px;
+    max-width: ${({ theme }) => theme.size.headerMaxWidth + 100}px;
     margin: 0 auto;
   }
 
@@ -48,6 +48,11 @@ const Header = styled('header')<Props>`
       display: none;
     }
   }
+`;
+
+const AppContainerAdmin = styled(AppContainer)`
+  max-width: ${({ theme }) => theme.size.maxWidth + 100}px;
+  padding: 30px 32px 0px;
 `;
 
 export default function AdminLayout(prop: Prop, { hideOnMobile = true, bgTransition = false, }: Props) {
@@ -77,7 +82,7 @@ export default function AdminLayout(prop: Prop, { hideOnMobile = true, bgTransit
 
   return (
     <>
-      <Head />
+      {/* <Head title='GPcoupon | Admin' /> */}
       <Header ref={ref} hideOnMobile={hideOnMobile}>
         <Container verticalAlign="middle">
           <Grid.Col>
@@ -96,14 +101,14 @@ export default function AdminLayout(prop: Prop, { hideOnMobile = true, bgTransit
         </Container>
       </Header>
 
-      <AppContainer>
+      <AppContainerAdmin>
         <Sidebar.Pushable style={styles.pushable}>
           <AdminSidebar />
           <Sidebar.Pusher style={styles.pusher}>
             {prop.children}
           </Sidebar.Pusher>
         </Sidebar.Pushable>
-      </AppContainer>
+      </AppContainerAdmin>
     </>
   );
 }
