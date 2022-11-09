@@ -6,6 +6,7 @@ import { Heading, Pagination, Spacer } from '@growth-ui/react';
 import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import AdminDashboards from './dashboards';
+import AppMain from '@/layouts/AppMain';
 
 const TAKE = 20;
 
@@ -32,23 +33,25 @@ export default withPageAuthRequired(function AdminDashboard() {
     return (
         <>
             <Head title='GPcoupon | Admin Dashboard' />
-            <AdminLayout>
-                <Provider>
-                    <Heading as="h2">
-                        Admin Dashboard
-                    </Heading>
-                    <div style={{padding: "50px 0"}}>
-                        <AdminDashboards orders={data} />
-                    </div>
-                    <Spacer size={20} />
+            <AppMain>
+                <AdminLayout>
+                    <Provider>
+                        <Heading as="h2">
+                            Admin Dashboard
+                        </Heading>
+                        <div style={{padding: "50px 0"}}>
+                            <AdminDashboards orders={data} />
+                        </div>
+                        <Spacer size={20} />
 
-                    <Pagination
-                        totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
-                        onPageChange={handlePageChange}
-                        activePage={activePage}
-                    />
-                </Provider>
-            </AdminLayout>
+                        <Pagination
+                            totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
+                            onPageChange={handlePageChange}
+                            activePage={activePage}
+                        />
+                    </Provider>
+                </AdminLayout>
+            </AppMain>
         </>
     );
 });
