@@ -62,7 +62,7 @@ export default function CreateBrandFrom() {
 
   return (
     <>
-      <Heading>Request Brand</Heading>
+      <Heading>Create Brand</Heading>
       <BrandForm mode="create" onSubmit={handleSubmit} />
       {error && (
         <Snackbar

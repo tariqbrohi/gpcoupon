@@ -107,7 +107,7 @@ export default function AdminSidebar(props: SidebarProps) {
                     onClick={handleClickItem(ROUTES.admin.createBrand)}
                     style={styles.collapseItem}
                   >
-                    <List.Content>Request Brand</List.Content>
+                    <List.Content>Create Brand</List.Content>
                   </List.Item>
                   <List.Item
                     active={pathname === ROUTES.admin.listBrands}

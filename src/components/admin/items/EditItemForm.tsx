@@ -39,6 +39,7 @@ export default function EditItemForm() {
         brand: data.brandId!,
       } as any);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleSubmit = async () => {
@@ -101,7 +102,7 @@ export default function EditItemForm() {
 
   return (
     <>
-      <Heading>Update Item</Heading>
+      <Heading>Modify Coupon</Heading>
       <ItemForm mode="update" onSubmit={handleSubmit} />
       {error && (
         <Snackbar
