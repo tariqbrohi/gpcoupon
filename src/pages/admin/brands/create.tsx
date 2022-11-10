@@ -1,5 +1,5 @@
 import AdminLayout from '@/layouts/AdminLayout';
-import CreateBrandFrom from '@/components/admin/brands/CreateBrandForm';
+import CreateBrandForm from '@/components/admin/brands/CreateBrandForm';
 import Provider from '@/components/admin/brands/Provider';
 import React from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -13,7 +13,7 @@ export default withPageAuthRequired(function CreateBrand() {
       <AppMain>
         <AdminLayout>
           <Provider>
-            <CreateBrandFrom />
+            <CreateBrandForm />
           </Provider>
         </AdminLayout>
       </AppMain>

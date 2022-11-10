@@ -8,7 +8,7 @@ import { Heading, Snackbar, Spacer } from '@growth-ui/react';
 import { useCreateBrandMutation, useSignS3Mutation } from '@/services';
 import validate from './helpers/validate';
 
-export default function CreateBrandFrom() {
+export default function CreateBrandForm() {
   const [create, { loading }] = useCreateBrandMutation();
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
