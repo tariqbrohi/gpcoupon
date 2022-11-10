@@ -107,7 +107,7 @@ export default function UpdateBrandFrom() {
 
   return (
     <>
-      <Heading>Update Brand</Heading>
+      <Heading>Edit Brand</Heading>
       <BrandForm mode="update" onSubmit={handleSubmit} />
       {error && (
         <Snackbar

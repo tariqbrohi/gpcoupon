@@ -56,6 +56,7 @@ export default withApiAuthRequired(
             select: {
                 id: true,
                 brand: true,
+                couponImageUrl: true,
             },
         });
 
