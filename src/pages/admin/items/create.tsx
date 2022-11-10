@@ -5,18 +5,22 @@ import React from 'react';
 import { Heading, Spacer } from '@growth-ui/react';
 import ExcelToJson from '@/components/admin/ExcelToJson';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import Head from '@/modules/components/Head';
+import AppMain from '@/layouts/AppMain';
 
 export default withPageAuthRequired(function CreateItem() {
   return (
     <>
-      <AdminLayout>
-        <Provider>
-          <Heading as="h2">Create Item</Heading>
-          <CreateItemForm />
-          <Spacer size={20} />
-          <ExcelToJson />
-        </Provider>
-      </AdminLayout>
+      <Head title='GPcoupon | Request Coupon' />
+      <AppMain>
+        <AdminLayout>
+          <Provider>
+            <CreateItemForm />
+            <Spacer size={20} />
+            <ExcelToJson />
+          </Provider>
+        </AdminLayout>
+      </AppMain>
     </>
   );
 });

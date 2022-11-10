@@ -1,6 +1,7 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import Provider from '@/components/admin/items/Provider';
-import { Table, Spacer } from "@growth-ui/react";
+import { Table, Spacer, Image } from "@growth-ui/react";
 import { ROUTES } from '@/ROUTES';
 import styled from "styled-components";
 
@@ -31,7 +32,7 @@ export default function AdminDashboards(props: any) {
             <>
                 <Table.Cell>
                     {qty}
-                </Table.Cell> 
+                </Table.Cell>
                 <Table.Cell>
                     ${originalPrice * qty}
                 </Table.Cell>
@@ -51,9 +52,9 @@ export default function AdminDashboards(props: any) {
                 <Table celled>
                     <Table.Head>
                         <Table.Row>
-                            <Table.HeadCell>Merchant Name</Table.HeadCell>
+                            <Table.HeadCell>Logo</Table.HeadCell>
                             <Table.HeadCell>Coupon Name</Table.HeadCell>
-                            <Table.HeadCell>Extended Name</Table.HeadCell>
+                            <Table.HeadCell>Merchant Name</Table.HeadCell>
                             <Table.HeadCell>Creation Date</Table.HeadCell>
                             <Table.HeadCell>Expire Date</Table.HeadCell>
                             <Table.HeadCell>Qty</Table.HeadCell>
@@ -81,13 +82,13 @@ export default function AdminDashboards(props: any) {
                                 return (
                                     <Table.Row key={idx}>
                                         <Table.Cell>
-                                            {order?.item?.brand?.name}
+                                            <Image size='small' src={order?.item.couponImageUrl} />
                                         </Table.Cell>
                                         <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`)}>
                                             {order?.item.name}                       
                                         </TableCellLink>
                                         <Table.Cell>
-                                            {order?.item.extendedName}                     
+                                            {order?.item?.brand?.name}
                                         </Table.Cell>
                                         <Table.Cell>
                                             {new Date(Number(order?.createdAt) * 1000).toLocaleDateString()}

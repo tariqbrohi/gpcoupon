@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
 import CreateItemForm from '@/components/admin/items/CreateItemForm';
 import Provider from '@/components/admin/items/Provider';
@@ -8,6 +9,8 @@ import { useCreateGPointMutation, useSignS3Mutation } from '@/services';
 import Router from 'next/router';
 import axios from 'axios';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import Head from '@/modules/components/Head';
+import AppMain from '@/layouts/AppMain';
 
 export default withPageAuthRequired(function CreateItem() {
   const [state, setState] = useState<any>({});
@@ -55,60 +58,63 @@ export default withPageAuthRequired(function CreateItem() {
 
   return (
     <>
-      <AdminLayout>
-        <Provider>
-          <Heading as="h2">Create GPoint</Heading>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Input
-                label="Name"
-                name="name"
-                value={state.name}
-                onChange={handleChange}
-              />
-              <Form.Input
-                label="amount"
-                name="amount"
-                value={state.amount}
-                onChange={handleChange}
-              />
-              <Form.Input
-                label="Slug"
-                name="slug"
-                value={state.slug}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <span>Image</span>
-            <FileUploader
-              types={['JPG', 'PNG', 'JPEG']}
-              name="file"
-              handleChange={(file: File) =>
-                setState({ ...state, imageUrl: file })
-              }
-            />
-            <Spacer size={30} />
-            {state.imageUrl && (
-              <>
-                <br />
-                <Image
-                  src={
-                    typeof state.imageUrl !== 'string'
-                      ? URL.createObjectURL(state.imageUrl)
-                      : state.imageUrl
-                  }
+      <Head title='GPcoupon | Request GPoint' />
+      <AppMain>
+        <AdminLayout>
+          <Provider>
+            <Heading as="h2">Request GPoint</Heading>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group>
+                <Form.Input
+                  label="Name"
+                  name="name"
+                  value={state.name}
+                  onChange={handleChange}
                 />
-                <br />
-              </>
-            )}
+                <Form.Input
+                  label="amount"
+                  name="amount"
+                  value={state.amount}
+                  onChange={handleChange}
+                />
+                <Form.Input
+                  label="Slug"
+                  name="slug"
+                  value={state.slug}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
-            <Form.Button type="submit" loading={loading}>
-              Create
-            </Form.Button>
-          </Form>
-        </Provider>
-      </AdminLayout>
+              <span>Image</span>
+              <FileUploader
+                types={['JPG', 'PNG', 'JPEG']}
+                name="file"
+                handleChange={(file: File) =>
+                  setState({ ...state, imageUrl: file })
+                }
+              />
+              <Spacer size={30} />
+              {state.imageUrl && (
+                <>
+                  <br />
+                  <Image
+                    src={
+                      typeof state.imageUrl !== 'string'
+                        ? URL.createObjectURL(state.imageUrl)
+                        : state.imageUrl
+                    }
+                  />
+                  <br />
+                </>
+              )}
+
+              <Form.Button type="submit" loading={loading}>
+                Create
+              </Form.Button>
+            </Form>
+          </Provider>
+        </AdminLayout>
+      </AppMain>
     </>
   );
 });
