@@ -54,7 +54,7 @@ export default function AdminDashboards(props: any) {
                         <Table.Row>
                             <Table.HeadCell>Logo</Table.HeadCell>
                             <Table.HeadCell>Coupon Name</Table.HeadCell>
-                            <Table.HeadCell>Merchant Name</Table.HeadCell>
+                            <Table.HeadCell>Business Name</Table.HeadCell>
                             <Table.HeadCell>Creation Date</Table.HeadCell>
                             <Table.HeadCell>Expire Date</Table.HeadCell>
                             <Table.HeadCell>Qty</Table.HeadCell>

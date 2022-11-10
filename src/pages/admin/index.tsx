@@ -6,7 +6,7 @@ import AdminDashboard from './adminDashboard';
 import AppMain from '@/layouts/AppMain';
 import Head from '@/modules/components/Head';
 import Provider from '@/components/admin/items/Provider';
-import { Heading, Pagination, Spacer } from '@growth-ui/react';
+import { Dropdown, Heading, Pagination, Spacer } from '@growth-ui/react';
 import AdminDashboards from './adminDashboard/dashboards';
 import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import Input from '@growth-ui/react/elements/Input/Input';
@@ -21,9 +21,16 @@ const Label = styled.label`
   width: 100px;
 `;
 
+const status = [
+  {value: "All"},
+  {value: "Active"},
+  {value: "Inactive"},
+];
+
 const TAKE = 20;
 
 export default withPageAuthRequired(function index() {
+  const [search, setSearch] = useState('');
   const [ sortBy, setSortBy ] = useState('createdAt, desc');
   const [ activePage, setActivePage ] = useState(1)
   const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
@@ -56,20 +63,26 @@ export default withPageAuthRequired(function index() {
             <Spacer size={20} />
 
             <section>
-              <LabelContainer>
-                <Label>Merchant Name</Label>
-                <Spacer size={10} />
-                <Input style={{width: "50%"}} />
-              </LabelContainer>
+              {/* <LabelContainer> */}
+                {/* <Label>Merchant Name</Label>
+                <Spacer size={10} /> */}
+                <Input 
+                  label='Business Name' 
+                  icon="search outline"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  style={{width: "50%"}} 
+                />
+              {/* </LabelContainer> */}
               <Spacer size={20} />
 
               <LabelContainer>
-                <Label>Create Date</Label>
-                <Spacer size={10} />
+                {/* <Label>Create Date</Label>
+                <Spacer size={10} /> */}
                 <div style={{display: "flex", }}>
-                  <Input placeholder='From' icon="calendar" iconPosition='right' style={{width: "50%"}} />
+                  <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' style={{width: "50%"}} />
                   <Spacer size={46} />
-                  <Input placeholder='To' icon="calendar" iconPosition='right' style={{width: "50%"}} />
+                  <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' style={{width: "50%"}} />
                 </div>
               </LabelContainer>
               <Spacer size={20} />
@@ -77,10 +90,14 @@ export default withPageAuthRequired(function index() {
               <LabelContainer>
                 <Label>Status</Label>
                 <Spacer size={10} />
-                <Input style={{width: "50%"}} />
+                <Dropdown
+                  defaultValue={status[0].value}
+                  direction="left"
+                  options={status}
+                />
               </LabelContainer>
             </section>
-            <Spacer size={40} />
+            <Spacer size={30} />
 
             <div style={{border: "2px solid #D9D9D9"}}></div>
 

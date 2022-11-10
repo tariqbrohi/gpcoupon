@@ -24,6 +24,25 @@ const FormInputText = styled(Form.Input)`
 const ImgAndLogoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 442px;
+
+  & > label {
+    height: 100px;
+    flex-direction: column;
+    padding-top: 20px;
+  }
+`;
+
+const FormBtn = styled(Form.Button)`
+  background-color: #622AF3;
+  color: #fff;
+  border-radius: 25px;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
+  transition: all 0.7s ease-in-out;
+
+  &:hover {
+    background-color: #2D126D;
+  }
 `;
 
 export default function BrandForm({ mode, onSubmit }: Props) {
@@ -49,10 +68,7 @@ export default function BrandForm({ mode, onSubmit }: Props) {
     return false;
   };
 
-  const handleChange = (
-    // e: ChangeEvent<HTMLInputElement>
-    e: { target: { name: any; value: any; }; }
-    ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setBrand({
       ...brand,
       [e.target.name]: e.target.value,
@@ -197,7 +213,7 @@ export default function BrandForm({ mode, onSubmit }: Props) {
         <Spacer size={50} />
       </div>
 
-      <FormSection style={{display: "flex", justifyContent: "space-around"}}>
+      <FormSection style={{display: "flex", justifyContent: "space-evenly"}}>
         <ImgAndLogoContainer>
           <span>Brand background image</span>
           <Spacer size={10} />
@@ -223,6 +239,7 @@ export default function BrandForm({ mode, onSubmit }: Props) {
             </>
           )}
         </ImgAndLogoContainer>
+        <Spacer size={40} />
 
         <ImgAndLogoContainer>
           <span>Brand logo</span>
@@ -253,9 +270,9 @@ export default function BrandForm({ mode, onSubmit }: Props) {
 
       <div>
         <Spacer size={50} />
-        <Form.Button type="submit" loading={submitting}>
+        <FormBtn type="submit" loading={submitting}>
           {mode}
-        </Form.Button>
+        </FormBtn>
       </div>
     </Form>
   );
