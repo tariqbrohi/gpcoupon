@@ -2,7 +2,6 @@
 import AdminSidebar from '@/components/sidebar/AdminSidebar';
 import React, { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { Grid, Sidebar, StyledGridRow } from '@growth-ui/react';
-import Head from '@/modules/components/Head';
 import styled from 'styled-components';
 import { color } from '@/modules/brandingTheme';
 import Link from 'next/link';
@@ -82,7 +81,6 @@ export default function AdminLayout(prop: Prop, { hideOnMobile = true, bgTransit
 
   return (
     <>
-      {/* <Head title='GPcoupon | Admin' /> */}
       <Header ref={ref} hideOnMobile={hideOnMobile}>
         <Container verticalAlign="middle">
           <Grid.Col>

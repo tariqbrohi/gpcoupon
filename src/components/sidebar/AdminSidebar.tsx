@@ -121,7 +121,7 @@ export default function AdminSidebar(props: SidebarProps) {
               <Spacer size={30} />
             
               {/* GPOINTS */}
-              <List.Item active={activeItem === 'gpoints'} style={styles.listItem}>
+              {/* <List.Item active={activeItem === 'gpoints'} style={styles.listItem}>
                 <div style={{display: "flex", alignItems: "center"}}>
                   <Icon name='global' color='black' />
                   <Spacer size={10} />
@@ -153,7 +153,7 @@ export default function AdminSidebar(props: SidebarProps) {
                   </List.Item>
                 </List>
               </Collapse>
-              <Spacer size={30} />
+              <Spacer size={30} /> */}
             </List>
           </Sidebar>
         </Wrapper>
