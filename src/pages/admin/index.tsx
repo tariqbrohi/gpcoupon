@@ -6,7 +6,7 @@ import AdminDashboard from './adminDashboard';
 import AppMain from '@/layouts/AppMain';
 import Head from '@/modules/components/Head';
 import Provider from '@/components/admin/items/Provider';
-import { Heading, Pagination, Skeleton, Spacer } from '@growth-ui/react';
+import { Heading, Pagination, Spacer } from '@growth-ui/react';
 import AdminDashboards from './adminDashboard/dashboards';
 import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import Input from '@growth-ui/react/elements/Input/Input';
@@ -57,9 +57,9 @@ export default withPageAuthRequired(function index() {
 
             <section>
               <LabelContainer>
-                <Label>Search</Label>
+                <Label>Merchant Name</Label>
                 <Spacer size={10} />
-                <Input fluid icon="search outline" style={{width: "50%"}} />
+                <Input style={{width: "50%"}} />
               </LabelContainer>
               <Spacer size={20} />
 
@@ -75,13 +75,6 @@ export default withPageAuthRequired(function index() {
               <Spacer size={20} />
 
               <LabelContainer>
-                <Label>Merchant Name</Label>
-                <Spacer size={10} />
-                <Input style={{width: "50%"}} />
-              </LabelContainer>
-              <Spacer size={20} />
-
-              <LabelContainer>
                 <Label>Status</Label>
                 <Spacer size={10} />
                 <Input style={{width: "50%"}} />
@@ -89,7 +82,6 @@ export default withPageAuthRequired(function index() {
             </section>
             <Spacer size={40} />
 
-            {/* <Skeleton height="5px" /> */}
             <div style={{border: "2px solid #D9D9D9"}}></div>
 
             <div style={{padding: "30px 0"}}>
