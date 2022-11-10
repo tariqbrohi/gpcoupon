@@ -87,14 +87,14 @@ export default function AdminSidebar(props: SidebarProps) {
                     onClick={handleClickItem(ROUTES.admin.createItem)}
                     style={styles.collapseItem}
                   >
-                    <List.Content>Request Coupon</List.Content>
+                    <List.Content>Create Coupon</List.Content>
                   </List.Item>
                   <List.Item
                     active={pathname === ROUTES.admin.items}
                     onClick={handleClickItem(ROUTES.admin.items)}
                     style={styles.collapseItem}
                   >
-                    <List.Content>List Coupon</List.Content>
+                    <List.Content>List Request Coupon</List.Content>
                   </List.Item>
                 </List>
               </Collapse>
@@ -137,7 +137,7 @@ export default function AdminSidebar(props: SidebarProps) {
                   <ListContent>GPoints</ListContent>
                 </ListTitleContainer>
               </List.Item>
-              
+
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
@@ -176,6 +176,6 @@ const styles = {
     // paddingRight: '160px',
   },
   collapseItem: {
-    paddingLeft: '2rem',
+    paddingLeft: '1.8rem',
   },
 };
