@@ -4,7 +4,7 @@ import parseErrorMessage from '@/lib/parse-error-message';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import { Brand } from './Context';
-import { Heading, Snackbar } from '@growth-ui/react';
+import { Heading, Snackbar, Spacer } from '@growth-ui/react';
 import { useCreateBrandMutation, useSignS3Mutation } from '@/services';
 import validate from './helpers/validate';
 
@@ -62,7 +62,9 @@ export default function CreateBrandFrom() {
 
   return (
     <>
-      <Heading>Create Brand</Heading>
+      <Heading style={{color: "#2D126D"}}>Create Brand</Heading>
+      <Spacer size={20} />
+
       <BrandForm mode="create" onSubmit={handleSubmit} />
       {error && (
         <Snackbar
