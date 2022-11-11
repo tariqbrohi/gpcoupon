@@ -47,7 +47,7 @@ export default withPageAuthRequired(function Brands() {
 
               <Input
                 label="Brand Name"
-                icon="search outline"
+                icon="search menu"
                 value={searchBrand}
                 onChange={(e) => setSearchBrand(e.target.value)}
                 style={{width: "50%"}}
