@@ -18,6 +18,7 @@ import React, {
   ChangeEvent,
   SyntheticEvent,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import styled from 'styled-components';
@@ -68,6 +69,18 @@ export default function ItemForm({ mode, onSubmit }: Props) {
     await onSubmit();
     setSubmitting(false);
   };
+
+  if (item.originalPrice > 0 && item.price > 0) {
+    const totDiscountRate = ((item.originalPrice - item.price) / item.originalPrice * 100);
+
+    item.totDiscountRate = totDiscountRate;
+  }
+
+  if (item.price > 0) {
+    const merchantProfitRate = item.price - (item.price * 0.2);
+
+    item.amount = merchantProfitRate;
+  }
 
   const customSearchFunction = (searchQuery: any, item: any) => {
     const string = item.text;
@@ -136,16 +149,17 @@ export default function ItemForm({ mode, onSubmit }: Props) {
           />
           <Form.Input
             adornment="$"
-            label="Discount Price"
-            name="amount"
-            value={item.amount}
-            onChange={handleChange}
-          />
-          <Form.Input
-            adornment="$"
             label="Retail Price"
             name="price"
             value={item.price}
+            onChange={handleChange}
+          />
+          <Form.Input
+            label="Currency"
+            name="currency"
+            disabled={mode === 'update'}
+            placeholder="GPT, KRW, etc... "
+            value={item.currency}
             onChange={handleChange}
           />
           {/* <Form.Input
@@ -157,28 +171,49 @@ export default function ItemForm({ mode, onSubmit }: Props) {
         </Form.Group>
 
         <Form.Group>
-          <Form.Input
+          {/* <Form.Input
             adornment="%"
             adornmentPosition='right'
-            label="Total Discount Rate"
+            // label="Total Discount Rate" 이름변경 기록용.. 추후 지워둘 예정
+            label="Total Cashback Rate"
             name="discountRate"
             value={item.discountRate}
             onChange={handleChange}
-          />
-          <Form.Input
+            disabled={mode === 'create' || mode === 'update'}
+          /> */}
+          {/* <Form.Input
             adornment="%"
             adornmentPosition='right'
-            label="Customer Discount Rate"
+            // label="Customer Discount Rate" 이름변경 기록용.. 추후 지워둘 예정
+            label="Reward Cashback Rate"
             name="customerDiscountRate"
             value={item.customerDiscountRate}
             onChange={handleChange}
+          /> */}
+          <Form.Input
+            adornment="%"
+            adornmentPosition='right'
+            label="Discount Rate"
+            name="totDiscountRate"
+            value={item.totDiscountRate}
+            onChange={handleChange}
+            disabled={mode === 'create' || mode === 'update'}
+            filled
           />
           <Form.Input
-            label="Currency"
-            name="currency"
-            disabled={mode === 'update'}
-            placeholder="GPT, KRW, etc... "
-            value={item.currency}
+            adornment="$"
+            // label="Discount Price" 이름변경 기록용.. 추후 지워둘 예정
+            label="Merchant Profit"
+            name="amount"
+            value={item.amount}
+            onChange={handleChange}
+            disabled={mode === 'create' || mode === 'update'}
+            filled
+          />
+          <Form.Input
+            label="Expiry"
+            name="expiresIn"
+            value={item.expiresIn}
             onChange={handleChange}
           />
         </Form.Group>
@@ -194,12 +229,6 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             label="Sort Order (0 to 10)"
             name="sortOrder"
             value={item.sortOrder}
-            onChange={handleChange}
-          />
-          <Form.Input
-            label="Expiry"
-            name="expiresIn"
-            value={item.expiresIn}
             onChange={handleChange}
           />
         </Form.Group>
