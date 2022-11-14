@@ -46,8 +46,6 @@ export default function AdminSidebar(props: SidebarProps) {
 
               {/* Admin Dashboard */}
               <List.Item 
-                // active={pathname === ROUTES.admin.adminDashboard}
-                // onClick={handleClickItem(ROUTES.admin.adminDashboard)}
                 active={activeItem === 'admin'} 
                 style={styles.listItem && {margin: "0"}}
               >
