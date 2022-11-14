@@ -7,13 +7,19 @@ import styled from 'styled-components';
 const WrapperContainer = styled.div`
   padding: 30px 20px;
   background-color: #F6F6F6;
+  height: 100%;
 `;
 
 const Wrapper = styled.div`
   min-width: 221.98px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #FFF;
   box-shadow: 2px 5px 10px #C0C0C0;
+`;
+
+const ListTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const ListContent = styled(List.Content)`
@@ -45,12 +51,13 @@ export default function AdminSidebar(props: SidebarProps) {
                 active={activeItem === 'admin'} 
                 style={styles.listItem && {margin: "0"}}
               >
-                <div style={{display: "flex", alignItems: "center"}}>
+                <ListTitleContainer>
                   <Icon name='newspaper' color='black' />
                   <Spacer size={10} />
                   <ListContent>Dashboard</ListContent>
-                </div>
+                </ListTitleContainer>
               </List.Item>
+
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
@@ -66,12 +73,13 @@ export default function AdminSidebar(props: SidebarProps) {
 
               {/* Coupon */}
               <List.Item active={activeItem === 'items'} style={styles.listItem}>
-                <div style={{display: "flex", alignItems: "center"}}>
+                <ListTitleContainer>
                   <Icon name='confirmation number' color='black' />
                   <Spacer size={10} />
                   <ListContent>Coupon</ListContent>
-                </div>
+                </ListTitleContainer>
               </List.Item>
+
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
@@ -79,14 +87,14 @@ export default function AdminSidebar(props: SidebarProps) {
                     onClick={handleClickItem(ROUTES.admin.createItem)}
                     style={styles.collapseItem}
                   >
-                    <List.Content>Request Coupon</List.Content>
+                    <List.Content>Create Coupon</List.Content>
                   </List.Item>
                   <List.Item
                     active={pathname === ROUTES.admin.items}
                     onClick={handleClickItem(ROUTES.admin.items)}
                     style={styles.collapseItem}
                   >
-                    <List.Content>List Coupon</List.Content>
+                    <List.Content>List Request Coupon</List.Content>
                   </List.Item>
                 </List>
               </Collapse>
@@ -94,12 +102,13 @@ export default function AdminSidebar(props: SidebarProps) {
             
               {/* Brand */}
               <List.Item active={activeItem === 'brands'} style={styles.listItem}>
-                <div style={{display: "flex", alignItems: "center"}}>
+                <ListTitleContainer>
                   <Icon name='price tag' color='black' />
                   <Spacer size={10} />
                   <ListContent>Brand</ListContent>
-                </div>
+                </ListTitleContainer>
               </List.Item>
+
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
@@ -122,12 +131,13 @@ export default function AdminSidebar(props: SidebarProps) {
             
               {/* GPOINTS */}
               {/* <List.Item active={activeItem === 'gpoints'} style={styles.listItem}>
-                <div style={{display: "flex", alignItems: "center"}}>
+                <ListTitleContainer>
                   <Icon name='global' color='black' />
                   <Spacer size={10} />
                   <ListContent>GPoints</ListContent>
-                </div>
+                </ListTitleContainer>
               </List.Item>
+
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
@@ -166,6 +176,6 @@ const styles = {
     // paddingRight: '160px',
   },
   collapseItem: {
-    paddingLeft: '2rem',
+    paddingLeft: '1.8rem',
   },
 };

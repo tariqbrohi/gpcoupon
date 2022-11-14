@@ -11,7 +11,7 @@ import AppMain from '@/layouts/AppMain';
 export default withPageAuthRequired(function CreateItem() {
   return (
     <>
-      <Head title='GPcoupon | Request Coupon' />
+      <Head title='GPcoupon | Create Coupon' />
       <AppMain>
         <AdminLayout>
           <Provider>
