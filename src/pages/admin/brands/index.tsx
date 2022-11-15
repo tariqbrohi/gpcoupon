@@ -2,17 +2,41 @@ import AdminLayout from '@/layouts/AdminLayout';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Heading, Input, List, Select, Spacer } from '@growth-ui/react';
+import { Button, Heading, Input, List, Select, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
+import Link from 'next/link';
 
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const BtnCreate = styled(Button)`
+  font-weight: 600;
+  font-size: 18px;
+  padding: 10px 35px;
+  border-radius: 30px;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
+  background-color: #FBD9D8;
+  color: #BF7582;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    background-color: #f4b2b0;
+  }
+
+  ${({ theme }) => theme.gui.media.custom(1920)} {
+    font-size: 14px;
+  }
+
+  ${({ theme }) => theme.gui.media.mobile} {
+    font-size: 12px;
+  }
 `;
 
 const status = [
@@ -53,13 +77,20 @@ export default withPageAuthRequired(function Brands() {
               <Heading style={{color: "#2D126D"}}>List Brand</Heading>
               <Spacer size={20} />
 
-              <Input
-                label="Brand Name"
-                icon="search menu"
-                value={searchBrand}
-                onChange={(e) => setSearchBrand(e.target.value)}
-                style={{width: "50%"}}
-              />
+              <LabelContainer style={{justifyContent: "space-between"}}>
+                <Input
+                  label="Brand Name"
+                  icon="search menu"
+                  value={searchBrand}
+                  onChange={(e) => setSearchBrand(e.target.value)}
+                  style={{width: "50%"}}
+                />
+
+                <Link href={ROUTES.admin.createBrand}>
+                  <BtnCreate>Create Brand</BtnCreate>
+                </Link>   
+
+              </LabelContainer>
               <Spacer size={20} />
 
               <Input
