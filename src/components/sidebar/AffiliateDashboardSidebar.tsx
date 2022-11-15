@@ -25,10 +25,12 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
   const { pathname, push } = useRouter();
 
   const handleClickItem = (route: string) => () => {
+    console.log('click', route); //remove later
     push(route);
   };
 
   const activeItem = pathname.split('/')[2];
+  const activeSubItem = pathname.split('/')[3];
 
   return (
     <>
@@ -40,9 +42,7 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
 
               {/* Affiliate Dashboard */}
               <List.Item 
-                // active={pathname === ROUTES.admin.adminDashboard}
-                // onClick={handleClickItem(ROUTES.admin.adminDashboard)}
-                active={activeItem === 'admin'} 
+                active={activeItem === 'affiliateDashboard'} 
                 style={styles.listItem && {margin: "0"}}
               >
                 <div style={{display: "flex", alignItems: "center"}}>
@@ -54,39 +54,39 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
-                    active={pathname === ROUTES.admin.adminDashboard}
-                    onClick={handleClickItem(ROUTES.admin.adminDashboard)}
+                    active={pathname === ROUTES.affiliateDashboard}
+                    onClick={handleClickItem(ROUTES.affiliateDashboard)}
                     style={styles.collapseItem}
                   >
-                    <List.Content>Admin Dashboard</List.Content>
+                    <List.Content>My Coupons</List.Content>
                   </List.Item>
                 </List>
               </Collapse>
               <Spacer size={30} />
 
-              {/* Coupon */}
-              <List.Item active={activeItem === 'items'} style={styles.listItem}>
+              {/* Coupon Reaquests*/}
+              <List.Item active={activeItem === 'coupons'} style={styles.listItem}>
                 <div style={{display: "flex", alignItems: "center"}}>
                   <Icon name='confirmation number' color='black' />
                   <Spacer size={10} />
-                  <ListContent>Coupon</ListContent>
+                  <ListContent>Coupon Requests</ListContent>
                 </div>
               </List.Item>
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
-                    active={pathname === ROUTES.admin.createItem}
-                    onClick={handleClickItem(ROUTES.admin.createItem)}
+                    // active={pathname === ROUTES.affiliateDashboard.couponRequestList}
+                    // onClick={handleClickItem(ROUTES.affiliateDashboard.couponRequestList)}
+                    style={styles.collapseItem}
+                  >
+                    <List.Content>My Coupon Requests</List.Content>
+                  </List.Item>
+                  <List.Item
+                    // active={pathname === ROUTES.affiliateDashboard.couponRequest}
+                    // onClick={handleClickItem(ROUTES.affiliateDashboard.couponRequest)}
                     style={styles.collapseItem}
                   >
                     <List.Content>Request Coupon</List.Content>
-                  </List.Item>
-                  <List.Item
-                    active={pathname === ROUTES.admin.items}
-                    onClick={handleClickItem(ROUTES.admin.items)}
-                    style={styles.collapseItem}
-                  >
-                    <List.Content>List Coupon</List.Content>
                   </List.Item>
                 </List>
               </Collapse>
@@ -103,18 +103,18 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
-                    active={pathname === ROUTES.admin.createBrand}
-                    onClick={handleClickItem(ROUTES.admin.createBrand)}
+                    // active={pathname === ROUTES.affiliateDashboard.brandsList}
+                    // onClick={handleClickItem(ROUTES.affiliateDashboard.brandsList)}
+                    style={styles.collapseItem}
+                  >
+                    <List.Content>My Brand</List.Content>
+                  </List.Item>
+                  <List.Item
+                    // active={pathname === ROUTES.affiliateDashboard.createBrands}
+                    // onClick={handleClickItem(ROUTES.affiliateDashboard.createBrands)}
                     style={styles.collapseItem}
                   >
                     <List.Content>Create Brand</List.Content>
-                  </List.Item>
-                  <List.Item
-                    active={pathname === ROUTES.admin.listBrands}
-                    onClick={handleClickItem(ROUTES.admin.listBrands)}
-                    style={styles.collapseItem}
-                  >
-                    <List.Content>List Brand</List.Content>
                   </List.Item>
                 </List>
               </Collapse>
