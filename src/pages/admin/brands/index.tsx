@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Heading, Input, List, Select, Spacer } from '@growth-ui/react';
+import { Button, Heading, Image, Input, List, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -10,6 +11,7 @@ import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
 import Link from 'next/link';
+import Provider from '@/components/admin/brands/Provider';
 
 const LabelContainer = styled.div`
   display: flex;
@@ -39,23 +41,16 @@ const BtnCreate = styled(Button)`
   }
 `;
 
-const status = [
-  {
-    key: "All",
-    value: "All",
-    text: "All",
-  },
-  {
-    key: "Active",
-    value: "Active",
-    text: "Active",
-  },
-  {
-    key: "Inactive",
-    value: "Inactive",
-    text: "Inactive",
-  },
-];
+const TableCellLink = styled(Table.Cell)`
+  cursor: pointer;
+  color: #4183c4;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+      color: #2D126D;
+      text-decoration: underline;
+  }
+`;
 
 export default withPageAuthRequired(function Brands() {
   const { data: brands } = useGetBrandsQuery({
@@ -67,6 +62,24 @@ export default withPageAuthRequired(function Brands() {
 
   const [searchBrand, setSearchBrand] = useState('');
   const [searchBusiness, setSearchBusiness] = useState('');
+
+  const statusOption = [
+    {
+      key: "All",
+      value: "All",
+      text: "All",
+    },
+    {
+      key: "Active",
+      value: "Active",
+      text: "Active",
+    },
+    {
+      key: "Inactive",
+      value: "Inactive",
+      text: "Inactive",
+    },
+  ];
 
   return (
     <>
@@ -113,8 +126,8 @@ export default withPageAuthRequired(function Brands() {
 
               <Select 
                 label='Status'
-                value={status[0].value}
-                options={status}
+                value={statusOption[0].value}
+                options={statusOption}
               />
             </section>
             <Spacer size={30} />
@@ -122,36 +135,90 @@ export default withPageAuthRequired(function Brands() {
             <div style={{border: "2px solid #D9D9D9"}}></div>
             <Spacer size={30} />
 
-            <List selection verticalAlign="middle">
-              {brands
-                ?.filter(({ name }) => {
-                  if (!searchBrand) return true;
-                
-                  const similarity = stringSimilarity.compareTwoStrings(
-                    name,
-                    searchBrand,
-                  );
-                  
-                  if (similarity > 0.25) return true;
-                  
-                  return false;
-                })
-                .map((brand) => (
-                  <List.Item
-                    key={brand.id}
-                    onClick={() =>
-                      Router.push(`${ROUTES.admin.brands}/${brand.id}`)
-                    }
-                  >
-                    <List.Image rounded src={brand.thumbnailUrl} size="mini" />
-                    <List.Content>
-                      <List.Heading>{brand.name}</List.Heading>
-                      <List.Heading>{brand.countries}</List.Heading>
-                    </List.Content>
-                  </List.Item>
-                ))
-              }
-            </List>
+            {/* <List selection verticalAlign="middle"> */}
+
+            <Provider>
+            
+              <Table celled>
+                <Table.Head>
+                  <Table.Row>
+                    <Table.HeadCell>Logo</Table.HeadCell>
+                    <Table.HeadCell>Brand Name</Table.HeadCell>
+                    <Table.HeadCell>Merchant Name</Table.HeadCell>
+                    <Table.HeadCell>GP Wallet Business Username</Table.HeadCell>
+                    <Table.HeadCell>Countries</Table.HeadCell>
+                    <Table.HeadCell>Categories</Table.HeadCell>
+                    <Table.HeadCell>Status</Table.HeadCell>
+                    <Table.HeadCell>Create Date</Table.HeadCell>
+                  </Table.Row>
+                </Table.Head>
+
+                <Table.Body>
+                  {brands
+                    ?.filter(({ name }) => {
+                      if (!searchBrand) return true;
+                    
+                      const similarity = stringSimilarity.compareTwoStrings(
+                        name,
+                        searchBrand,
+                      );
+                      
+                      if (similarity > 0.25) return true;
+                      
+                      return false;
+                    })
+                    .map((brand) => (
+                      <>
+                        <Table.Row key={brand.id}>
+                          <Table.Cell>
+                            <Image size='mini' src={brand.thumbnailUrl} />
+                          </Table.Cell>
+                          <TableCellLink 
+                            onClick={() => window.open(`${ROUTES.admin.brands}/${brand.id}`)}
+                          >
+                            {brand.name}                       
+                          </TableCellLink>
+                          <Table.Cell>
+                            Merchant Name
+                          </Table.Cell>
+                          <Table.Cell>
+                            GP Wallet Business Username
+                          </Table.Cell>
+                          <Table.Cell>
+                            {brand.countries}
+                          </Table.Cell>
+                          <Table.Cell>
+                            Categories
+                            {/* {brand.categories} */}
+                          </Table.Cell>
+                          <Table.Cell>
+                            {brand.status}
+                          </Table.Cell>
+                          <Table.Cell>
+                            {new Date(Number(brand.createdAt) * 1000).toLocaleDateString()}
+                          </Table.Cell>
+                        </Table.Row>
+
+                      {/* <List.Item
+                        key={brand.id}
+                        onClick={() =>
+                          Router.push(`${ROUTES.admin.brands}/${brand.id}`)
+                        }
+                      >
+                        <List.Image rounded src={brand.thumbnailUrl} size="mini" />
+                        <List.Content>
+                          <List.Heading>{brand.name}</List.Heading>
+                          <List.Heading>{brand.countries}</List.Heading>
+                        </List.Content>
+                      </List.Item> */}
+
+                      </>
+                    ))
+                  }
+                </Table.Body>
+              </Table>
+            </Provider>
+            {/* </List> */}
           </AdminLayout>
         </AppMain>
     </>
