@@ -2,7 +2,7 @@ import AdminLayout from '@/layouts/AdminLayout';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Dropdown, Heading, Input, List, Spacer } from '@growth-ui/react';
+import { Heading, Input, List, Select, Spacer } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -15,14 +15,22 @@ const LabelContainer = styled.div`
   align-items: center;
 `;
 
-const Label = styled.label`
-  width: 100px;
-`;
-
 const status = [
-  {value: "All"},
-  {value: "Active"},
-  {value: "Inactive"},
+  {
+    key: "All",
+    value: "All",
+    text: "All",
+  },
+  {
+    key: "Active",
+    value: "Active",
+    text: "Active",
+  },
+  {
+    key: "Inactive",
+    value: "Inactive",
+    text: "Inactive",
+  },
 ];
 
 export default withPageAuthRequired(function Brands() {
@@ -72,15 +80,11 @@ export default withPageAuthRequired(function Brands() {
               </LabelContainer>
               <Spacer size={20} />
 
-              <LabelContainer>
-                <Label>Status</Label>
-                <Spacer size={10} />
-                <Dropdown
-                  defaultValue={status[0].value}
-                  direction="left"
-                  options={status}
-                />
-              </LabelContainer>
+              <Select 
+                label='Status'
+                value={status[0].value}
+                options={status}
+              />
             </section>
             <Spacer size={30} />
 
