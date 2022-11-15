@@ -15,7 +15,7 @@ export default withPageAuthRequired(function Items() {
 
   return (
     <>
-      <Head title='GPcoupon | List Coupon' />
+      <Head title='GPcoupon | List Request Coupon' />
       <AppMain>
         <AdminLayout>
           <Input

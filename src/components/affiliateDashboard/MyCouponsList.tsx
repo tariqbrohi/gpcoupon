@@ -16,7 +16,7 @@ const TableCellLink = styled(Table.Cell)`
     }
 `;
 
-export default function AdminDashboards(props: any) {
+export default function MyCouponList(props: any) {
     const { orders } = props;
 
     const addDays = (date: any, days: any) => {
@@ -54,13 +54,11 @@ export default function AdminDashboards(props: any) {
                         <Table.Row>
                             <Table.HeadCell>Logo</Table.HeadCell>
                             <Table.HeadCell>Coupon Name</Table.HeadCell>
-                            <Table.HeadCell>Business Name</Table.HeadCell>
-                            <Table.HeadCell>Creation Date</Table.HeadCell>
-                            <Table.HeadCell>Expire Date</Table.HeadCell>
                             <Table.HeadCell>Qty</Table.HeadCell>
                             <Table.HeadCell>Original Price</Table.HeadCell>
                             <Table.HeadCell>Retail Price</Table.HeadCell>
-                            <Table.HeadCell>Merchant Profit</Table.HeadCell>
+                            <Table.HeadCell>My Profit</Table.HeadCell>
+                            <Table.HeadCell>My Total Profit</Table.HeadCell>
                         </Table.Row>
                     </Table.Head>
                     
@@ -71,8 +69,6 @@ export default function AdminDashboards(props: any) {
                                 <Table.Cell positive>-</Table.Cell>
                                 <Table.Cell positive>-</Table.Cell>
                                 <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>{orders?.total.count || 0}</Table.Cell>
                                 <Table.Cell positive>-</Table.Cell>
                                 <Table.Cell positive>-</Table.Cell>
                                 <Table.Cell positive>${orders?.total.profitSum || 0}</Table.Cell>
@@ -87,16 +83,8 @@ export default function AdminDashboards(props: any) {
                                         <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`)}>
                                             {order?.item.name}                       
                                         </TableCellLink>
-                                        <Table.Cell>
-                                            {order?.item?.brand?.name}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {new Date(Number(order?.createdAt) * 1000).toLocaleDateString()}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {addDays(order?.createdAt * 1000, order?.item?.expiresIn)}
-                                        </Table.Cell>
                                         {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)}
+                                        <Table.Cell>totalProfit</Table.Cell>
                                     </Table.Row>
                                 )
                             })}

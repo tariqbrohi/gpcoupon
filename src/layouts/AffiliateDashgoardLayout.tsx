@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import AdminSidebar from '@/components/sidebar/AdminSidebar';
+import AffiliateDashboardSidebar from '@/components/sidebar/AffiliateDashboardSidebar';
 import React, { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { Grid, Sidebar, StyledGridRow } from '@growth-ui/react';
 import styled from 'styled-components';
@@ -49,12 +49,12 @@ const Header = styled('header')<Props>`
   }
 `;
 
-const AppContainerAdmin = styled(AppContainer)`
+const AppContainerAffiliateDashboard = styled(AppContainer)`
   max-width: ${({ theme }) => theme.size.maxWidth + 100}px;
   padding: 30px 32px 0px;
 `;
 
-export default function AdminLayout(prop: Prop, { hideOnMobile = true, bgTransition = false, }: Props) {
+export default function AffiliateDashboardLayout(prop: Prop, { hideOnMobile = true, bgTransition = false, }: Props) {
   const ref = useRef<HTMLHeadElement>(null);
 
   useEffect(() => {
@@ -81,11 +81,11 @@ export default function AdminLayout(prop: Prop, { hideOnMobile = true, bgTransit
 
   return (
     <>
-      <Header ref={ref} hideOnMobile={hideOnMobile}>
+      {/* <Header ref={ref} hideOnMobile={hideOnMobile}>
         <Container verticalAlign="middle">
           <Grid.Col>
             <Grid.Row verticalAlign="middle">
-              <Link href="/admin">
+              <Link href="/">
                 <a>
                   <img
                     src="/images/logo_with_rich.png"
@@ -97,16 +97,16 @@ export default function AdminLayout(prop: Prop, { hideOnMobile = true, bgTransit
             </Grid.Row>
           </Grid.Col>
         </Container>
-      </Header>
+      </Header> */}
 
-      <AppContainerAdmin>
+      <AppContainerAffiliateDashboard>
         <Sidebar.Pushable style={styles.pushable}>
-          <AdminSidebar />
+          <AffiliateDashboardSidebar />
           <Sidebar.Pusher style={styles.pusher}>
             {prop.children}
           </Sidebar.Pusher>
         </Sidebar.Pushable>
-      </AppContainerAdmin>
+      </AppContainerAffiliateDashboard>
     </>
   );
 }

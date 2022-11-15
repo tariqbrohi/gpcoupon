@@ -65,7 +65,7 @@ export default function CreateBrandFrom() {
 
   return (
     <>
-      <Heading>Request Coupon</Heading>
+      <Heading>Create Coupon</Heading>
       <ItemForm mode="create" onSubmit={handleSubmit} />
       {error && (
         <Snackbar
