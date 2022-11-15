@@ -18,7 +18,6 @@ import React, {
   ChangeEvent,
   SyntheticEvent,
   useContext,
-  useEffect,
   useState,
 } from 'react';
 import styled from 'styled-components';
@@ -60,6 +59,56 @@ export default function ItemForm({ mode, onSubmit }: Props) {
       affiliate: true,
     },
   });
+
+  const currencyList = [
+    {
+      key: 'GPT',
+      value: 'GPT',
+      text: 'GPT',
+    },
+    {
+      key: 'USD',
+      value: 'USD',
+      text: 'USD',
+    },
+    {
+      key: 'KRW',
+      value: 'KRW',
+      text: 'KRW',
+    },
+    {
+      key: 'CAD',
+      value: 'CAD',
+      text: 'CAD',
+    },
+    {
+      key: 'EUR',
+      value: 'EUR',
+      text: 'EUR',
+    },
+    {
+      key: 'AED',
+      value: 'AED',
+      text: 'AED',
+    },
+    {
+      key: 'AFN',
+      value: 'AFN',
+      text: 'AFN',
+    },
+    {
+      key: 'ALL',
+      value: 'ALL',
+      text: 'ALL',
+    },
+    {
+      key: 'AMD',
+      value: 'AMD',
+      text: 'AMD',
+    },
+
+  ];
+  
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: SyntheticEvent) => {
@@ -71,7 +120,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
   };
 
   if (item.originalPrice > 0 && item.price > 0) {
-    const totDiscountRate = ((item.originalPrice - item.price) / item.originalPrice * 100);
+    const totDiscountRate = parseFloat(((item.originalPrice - item.price) / item.originalPrice * 100).toFixed(2));
 
     item.totDiscountRate = totDiscountRate;
   }
@@ -144,6 +193,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             adornment="$"
             label="Original Price"
             name="originalPrice"
+            type='number'
             value={item.originalPrice}
             onChange={handleChange}
           />
@@ -151,17 +201,31 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             adornment="$"
             label="Retail Price"
             name="price"
+            type='number'
             value={item.price}
             onChange={handleChange}
           />
-          <Form.Input
+          {/* <Form.Input
             label="Currency"
             name="currency"
             disabled={mode === 'update'}
             placeholder="GPT, KRW, etc... "
             value={item.currency}
             onChange={handleChange}
+          /> */}
+
+          <Form.Select
+            search
+            scrolling
+            clearable
+            label="Currency"
+            value={item?.currency || 'GPT'}
+            options={currencyList}
+            onChange={(_, data) => {
+              setItem({ ...item, currency: data.newValues });
+            }}
           />
+
           {/* <Form.Input
             label="Influencer Discount Rate"
             name="influencerDiscountRate"
