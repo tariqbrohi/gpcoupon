@@ -18,6 +18,12 @@ export const ROUTES = {
   occasions: '/occasions',
   paymentCards: '/account/payment-cards',
   affiliateDashboard: '/affiliateDashboard',
+  affiiateCouponDetails: '/affiliateDashboard/details',
+  affiliateCouponRequestList: '/affiliateDashboard/coupon/requestList',
+  affiliateCouponRequest: '/affiliateDashboard/coupon/request',
+  affiliateBrands: '/affiliateDashboard/brands',
+  affiliatebrandsList: '/affiliateDashboard/brands/list',
+  affiliateCreateBrands: '/affiliateDashboard/brands/create',
   admin: {
     createItem: '/admin/items/create',
     items: '/admin/items',
