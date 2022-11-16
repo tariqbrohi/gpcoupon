@@ -65,19 +65,19 @@ export default withPageAuthRequired(function Brands() {
 
   const statusOption = [
     {
-      key: "All",
-      value: "All",
-      text: "All",
+      key: "ALL",
+      value: "ALL",
+      text: "ALL",
     },
     {
-      key: "Available",
-      value: "Available",
-      text: "Available",
+      key: "AVAILABLE",
+      value: "AVAILABLE",
+      text: "AVAILABLE",
     },
     {
-      key: "Unavailable",
-      value: "Unavailable",
-      text: "Unavailable",
+      key: "UNAVAILABLE",
+      value: "UNAVAILABLE",
+      text: "UNAVAILABLE",
     },
   ];
 
@@ -106,13 +106,15 @@ export default withPageAuthRequired(function Brands() {
               </LabelContainer>
               <Spacer size={20} />
 
-              <Input
-                label="Business Name"
-                icon="search outline"
-                value={searchBusiness}
-                onChange={(e) => setSearchBusiness(e.target.value)}
-                style={{width: "50%"}}
-              />
+              <LabelContainer>
+                <Input
+                  label="Business Name"
+                  icon="search outline"
+                  value={searchBusiness}
+                  onChange={(e) => setSearchBusiness(e.target.value)}
+                  style={{width: "50%"}}
+                />
+              </LabelContainer>
               <Spacer size={20} />
 
               <LabelContainer>
@@ -124,11 +126,13 @@ export default withPageAuthRequired(function Brands() {
               </LabelContainer>
               <Spacer size={20} />
 
-              <Select 
-                label='Status'
-                value={statusOption[0].value}
-                options={statusOption}
-              />
+              <LabelContainer>
+                <Select 
+                  label='Status'
+                  value={statusOption[0].value}
+                  options={statusOption}
+                />
+              </LabelContainer>
             </section>
             <Spacer size={30} />
 
