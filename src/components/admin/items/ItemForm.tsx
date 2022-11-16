@@ -148,6 +148,17 @@ export default function ItemForm({ mode, onSubmit }: Props) {
     });
   };
 
+  const handleChangePrice = (e: ChangeEvent<HTMLInputElement>) => {
+    const regex = /^[0-9\b]+$/;
+
+    if (e.target.value === '' || regex.test(e.target.value)) {
+      setItem({
+        ...item,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
   if (!item) return null;
 
   return (
@@ -193,19 +204,15 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             adornment="$"
             label="Original Price"
             name="originalPrice"
-            type='number'
             value={item.originalPrice === 0 ? '' : item.originalPrice}
-            // value={item.originalPrice}
-            onChange={handleChange}
+            onChange={handleChangePrice}
           />
           <Form.Input
             adornment="$"
             label="Retail Price"
             name="price"
-            type='number'
             value={item.price === 0 ? '' : item.price}
-            // value={item.price}
-            onChange={handleChange}
+            onChange={handleChangePrice}
           />
           {/* <Form.Input
             label="Currency"
@@ -262,7 +269,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             label="Discount Rate"
             name="totDiscountRate"
             value={item.totDiscountRate === 0 ? '' : item.totDiscountRate}
-            onChange={handleChange}
+            onChange={handleChangePrice}
             disabled={mode === 'create' || mode === 'update'}
             filled
           />
@@ -272,8 +279,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             label="Merchant Profit"
             name="amount"
             value={item.amount === 0 ? '' : item.amount}
-            // value={item.amount}
-            onChange={handleChange}
+            onChange={handleChangePrice}
             disabled={mode === 'create' || mode === 'update'}
             filled
           />
@@ -281,7 +287,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             label="Expiry"
             name="expiresIn"
             value={item.expiresIn}
-            onChange={handleChange}
+            onChange={handleChangePrice}
           />
         </Form.Group>
 
