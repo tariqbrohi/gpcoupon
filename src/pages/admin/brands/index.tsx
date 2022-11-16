@@ -195,7 +195,7 @@ export default withPageAuthRequired(function Brands() {
                             {brand.status}
                           </Table.Cell>
                           <Table.Cell>
-                            {new Date(Number(brand.createdAt) * 1000).toLocaleDateString()}
+                            {new Date(Number(brand.createdAt)).toLocaleDateString()}
                           </Table.Cell>
                         </Table.Row>
 
