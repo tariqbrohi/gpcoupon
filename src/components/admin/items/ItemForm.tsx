@@ -194,7 +194,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             label="Original Price"
             name="originalPrice"
             type='number'
-            value={item.originalPrice}
+            value={item.originalPrice === 0 ? '' : item.originalPrice}
+            // value={item.originalPrice}
             onChange={handleChange}
           />
           <Form.Input
@@ -202,7 +203,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             label="Retail Price"
             name="price"
             type='number'
-            value={item.price}
+            value={item.price === 0 ? '' : item.price}
+            // value={item.price}
             onChange={handleChange}
           />
           {/* <Form.Input
@@ -259,7 +261,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             adornmentPosition='right'
             label="Discount Rate"
             name="totDiscountRate"
-            value={item.totDiscountRate}
+            value={item.totDiscountRate === 0 ? '' : item.totDiscountRate}
             onChange={handleChange}
             disabled={mode === 'create' || mode === 'update'}
             filled
@@ -269,7 +271,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             // label="Discount Price" 이름변경 기록용.. 추후 지워둘 예정
             label="Merchant Profit"
             name="amount"
-            value={item.amount}
+            value={item.amount === 0 ? '' : item.amount}
+            // value={item.amount}
             onChange={handleChange}
             disabled={mode === 'create' || mode === 'update'}
             filled
@@ -292,7 +295,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
           <Form.Input
             label="Sort Order (0 to 10)"
             name="sortOrder"
-            value={item.sortOrder}
+            value={item.sortOrder === 0 ? '' : item.sortOrder}
+            // value={item.sortOrder}
             onChange={handleChange}
           />
         </Form.Group>
