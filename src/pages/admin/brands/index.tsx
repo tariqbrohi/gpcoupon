@@ -70,14 +70,14 @@ export default withPageAuthRequired(function Brands() {
       text: "All",
     },
     {
-      key: "Active",
-      value: "Active",
-      text: "Active",
+      key: "Available",
+      value: "Available",
+      text: "Available",
     },
     {
-      key: "Inactive",
-      value: "Inactive",
-      text: "Inactive",
+      key: "Unavailable",
+      value: "Unavailable",
+      text: "Unavailable",
     },
   ];
 
