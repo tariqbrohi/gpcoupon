@@ -10,6 +10,7 @@ import AdminDashboards from './adminDashboard/dashboards';
 import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import Input from '@growth-ui/react/elements/Input/Input';
 import styled from 'styled-components';
+import DashboardGroupBy from './adminDashboard/dashboardGroupBy';
 
 const LabelContainer = styled.div`
   display: flex;
@@ -103,14 +104,15 @@ export default withPageAuthRequired(function index() {
             <div style={{border: "2px solid #D9D9D9"}}></div>
 
             <div style={{padding: "30px 0"}}>
-                <AdminDashboards orders={data} />
+              <DashboardGroupBy orders={data} />
+              {/* <AdminDashboards orders={data} /> */}
             </div>
             <Spacer size={20} />
 
             <Pagination
-                totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
-                onPageChange={handlePageChange}
-                activePage={activePage}
+              totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
+              onPageChange={handlePageChange}
+              activePage={activePage}
             />
           </Provider>
         </AdminLayout>
