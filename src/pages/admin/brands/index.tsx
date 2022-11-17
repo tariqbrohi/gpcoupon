@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
 import React, { useState } from 'react';
-import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
 import { Button, Chip, Heading, Image, Input, List, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
@@ -112,7 +111,9 @@ export default withPageAuthRequired(function Brands() {
                 />
 
                 <Link href={ROUTES.admin.createBrand}>
-                  <BtnCreate>Create Brand</BtnCreate>
+                  <a>
+                    <BtnCreate>Create Brand</BtnCreate>
+                  </a>
                 </Link>   
 
               </LabelContainer>
@@ -154,7 +155,6 @@ export default withPageAuthRequired(function Brands() {
             {/* <List selection verticalAlign="middle"> */}
 
             <Provider>
-            
               <Table celled>
                 <Table.Head>
                   <Table.Row>
