@@ -3,7 +3,7 @@ import AdminLayout from '@/layouts/AdminLayout';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Heading, Image, Input, List, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, Heading, Image, Input, List, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -41,9 +41,18 @@ const BtnCreate = styled(Button)`
   }
 `;
 
+const TableHeadCell = styled(Table.HeadCell)`
+  text-align: center;
+`;
+
+const TableCell = styled(Table.Cell)`
+  text-align: center;
+`;
+
 const TableCellLink = styled(Table.Cell)`
   cursor: pointer;
   color: #4183c4;
+  text-align: center;
   transition: all 0.4s ease-in-out;
 
   &:hover {
@@ -148,14 +157,14 @@ export default withPageAuthRequired(function Brands() {
               <Table celled>
                 <Table.Head>
                   <Table.Row>
-                    <Table.HeadCell>Logo</Table.HeadCell>
-                    <Table.HeadCell>Brand Name</Table.HeadCell>
-                    <Table.HeadCell>Merchant Name</Table.HeadCell>
-                    <Table.HeadCell>GP Wallet Business Username</Table.HeadCell>
-                    <Table.HeadCell>Countries</Table.HeadCell>
-                    <Table.HeadCell>Categories</Table.HeadCell>
-                    <Table.HeadCell>Status</Table.HeadCell>
-                    <Table.HeadCell>Create Date</Table.HeadCell>
+                    <TableHeadCell>Logo</TableHeadCell>
+                    <TableHeadCell>Brand Name</TableHeadCell>
+                    <TableHeadCell>Merchant Name</TableHeadCell>
+                    <TableHeadCell>GP Wallet Business Username</TableHeadCell>
+                    <TableHeadCell>Countries</TableHeadCell>
+                    <TableHeadCell>Categories</TableHeadCell>
+                    <TableHeadCell>Status</TableHeadCell>
+                    <TableHeadCell>Create Date</TableHeadCell>
                   </Table.Row>
                 </Table.Head>
 
@@ -176,33 +185,33 @@ export default withPageAuthRequired(function Brands() {
                     .map((brand) => (
                       <>
                         <Table.Row key={brand.id}>
-                          <Table.Cell>
+                          <TableCell>
                             <Image size='mini' src={brand.thumbnailUrl} />
-                          </Table.Cell>
+                          </TableCell>
                           <TableCellLink 
                             onClick={() => window.open(`${ROUTES.admin.brands}/${brand.id}`)}
                           >
                             {brand.name}                       
                           </TableCellLink>
-                          <Table.Cell>
+                          <TableCell>
                             Merchant Name
-                          </Table.Cell>
-                          <Table.Cell>
+                          </TableCell>
+                          <TableCell>
                             GP Wallet Business Username
-                          </Table.Cell>
-                          <Table.Cell>
+                          </TableCell>
+                          <TableCell>
                             {brand.countries}
-                          </Table.Cell>
-                          <Table.Cell>
-                            Categories
+                          </TableCell>
+                          <TableCell>
+                            <Chip text='Categories' />
                             {/* {brand.categories} */}
-                          </Table.Cell>
-                          <Table.Cell>
-                            {brand.status}
-                          </Table.Cell>
-                          <Table.Cell>
+                          </TableCell>
+                          <TableCell>
+                            <Chip text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
+                          </TableCell>
+                          <TableCell>
                             {new Date(Number(brand.createdAt)).toLocaleDateString()}
-                          </Table.Cell>
+                          </TableCell>
                         </Table.Row>
 
                       {/* <List.Item
