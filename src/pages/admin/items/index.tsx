@@ -159,7 +159,9 @@ export default withPageAuthRequired(function Items() {
               />
 
               <Link href={ROUTES.admin.createItem}>
-                <BtnCreateCpn>Create Coupon</BtnCreateCpn>
+                <a>
+                  <BtnCreateCpn>Create Coupon</BtnCreateCpn>
+                </a>
               </Link>   
             </LabelContainer>
             <Spacer size={20} />
@@ -174,7 +176,9 @@ export default withPageAuthRequired(function Items() {
               />
 
               <Link href={ROUTES.admin.createBrand}>
-                <BtnCreateBrd>Create Brand</BtnCreateBrd>
+                <a>
+                  <BtnCreateBrd>Create Brand</BtnCreateBrd>
+                </a>
               </Link>   
             </LabelContainer>
             <Spacer size={20} />
