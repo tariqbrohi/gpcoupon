@@ -24,14 +24,15 @@ const BtnCreateCpn = styled(Button)`
   font-size: 18px;
   padding: 10px 35px;
   border-radius: 30px;
+  border 1px solid transparent;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   background-color: #FBD9D8;
   color: #BF7582;
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #fff;
-    border: 1px solid #BF7582;
+    background-color: #F6A5A5;
+    color: #fff;
   }
 
   ${({ theme }) => theme.gui.media.custom(1920)} {
@@ -56,7 +57,8 @@ const BtnCreateBrd = styled(Button)`
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #fbd9d8;
+    background-color: #F6A5A5;
+    color: #fff;
   }
 
   ${({ theme }) => theme.gui.media.custom(1920)} {
@@ -157,7 +159,6 @@ export default withPageAuthRequired(function Items() {
               />
 
               <Link href={ROUTES.admin.createItem}>
-                {/* <Button size='small' rounded active color='indigo-200'>Create Coupon</Button> */}
                 <BtnCreateCpn>Create Coupon</BtnCreateCpn>
               </Link>   
             </LabelContainer>
@@ -173,7 +174,6 @@ export default withPageAuthRequired(function Items() {
               />
 
               <Link href={ROUTES.admin.createBrand}>
-                {/* <Button size='small' rounded active color='purple-200'>Create Brand</Button> */}
                 <BtnCreateBrd>Create Brand</BtnCreateBrd>
               </Link>   
             </LabelContainer>
@@ -195,7 +195,6 @@ export default withPageAuthRequired(function Items() {
                   options={statusOption}
                   style={{minWidth: "13em"}}
                 />
-                {/* <Spacer size={46} /> */}
                 <Select 
                   label='Request Status'
                   value={rqStatusOption[0].value}
