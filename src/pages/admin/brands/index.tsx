@@ -19,17 +19,20 @@ const LabelContainer = styled.div`
 `;
 
 const BtnCreate = styled(Button)`
+  min-width: 172px;
   font-weight: 600;
   font-size: 18px;
   padding: 10px 35px;
   border-radius: 30px;
+  border 1px solid transparent;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   background-color: #FBD9D8;
   color: #BF7582;
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #f4b2b0;
+    background-color: #F6A5A5;
+    color: #fff;
   }
 
   ${({ theme }) => theme.gui.media.custom(1920)} {
@@ -103,7 +106,6 @@ export default withPageAuthRequired(function Brands() {
                 <Input
                   label="Brand Name"
                   icon="search outline"
-                  // icon="search menu"
                   value={searchBrand}
                   onChange={(e) => setSearchBrand(e.target.value)}
                   style={{width: "50%"}}
@@ -120,7 +122,6 @@ export default withPageAuthRequired(function Brands() {
                 <Input
                   label="Merchant Name"
                   icon="people"
-                  // icon="search outline"
                   value={searchMerchant}
                   onChange={(e) => setSearchMerchant(e.target.value)}
                   style={{width: "50%"}}
@@ -129,10 +130,9 @@ export default withPageAuthRequired(function Brands() {
               <Spacer size={20} />
 
               <LabelContainer>
-                <div style={{display: "flex", }}>
-                  <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' style={{width: "50%"}} />
-                  <Spacer size={46} />
-                  <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' style={{width: "50%"}} />
+                <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
+                  <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
+                  <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
                 </div>
               </LabelContainer>
               <Spacer size={20} />
@@ -142,6 +142,7 @@ export default withPageAuthRequired(function Brands() {
                   label='Status'
                   value={statusOption[0].value}
                   options={statusOption}
+                  style={{minWidth: "13em"}}
                 />
               </LabelContainer>
             </section>
