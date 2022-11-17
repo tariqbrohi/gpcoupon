@@ -203,10 +203,13 @@ export type GetItemsByAffiliateForDashboardQueryVariables = {
   take?: number;
   skip?: number;
   sub: string;
-  sortBy?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
 };
 export type GetItemsByAffiliateForDashboardQueryResult = Brand & {
   total: {
+    count: number;
     profitSum: number;
   };
   orders: Order[];
