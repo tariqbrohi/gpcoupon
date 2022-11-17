@@ -61,7 +61,7 @@ export default withPageAuthRequired(function Brands() {
   });
 
   const [searchBrand, setSearchBrand] = useState('');
-  const [searchBusiness, setSearchBusiness] = useState('');
+  const [searchMerchant, setSearchMerchant] = useState('');
 
   const statusOption = [
     {
@@ -93,7 +93,8 @@ export default withPageAuthRequired(function Brands() {
               <LabelContainer style={{justifyContent: "space-between"}}>
                 <Input
                   label="Brand Name"
-                  icon="search menu"
+                  icon="search outline"
+                  // icon="search menu"
                   value={searchBrand}
                   onChange={(e) => setSearchBrand(e.target.value)}
                   style={{width: "50%"}}
@@ -108,10 +109,11 @@ export default withPageAuthRequired(function Brands() {
 
               <LabelContainer>
                 <Input
-                  label="Business Name"
-                  icon="search outline"
-                  value={searchBusiness}
-                  onChange={(e) => setSearchBusiness(e.target.value)}
+                  label="Merchant Name"
+                  icon="people"
+                  // icon="search outline"
+                  value={searchMerchant}
+                  onChange={(e) => setSearchMerchant(e.target.value)}
                   style={{width: "50%"}}
                 />
               </LabelContainer>
