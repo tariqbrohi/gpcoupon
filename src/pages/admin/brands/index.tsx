@@ -181,37 +181,35 @@ export default withPageAuthRequired(function Brands() {
                       return false;
                     })
                     .map((brand) => (
-                      <>
-                        <Table.Row key={brand.id}>
-                          <TableCell>
-                            <Image size='mini' src={brand.thumbnailUrl} />
-                          </TableCell>
-                          <TableCellLink 
-                            onClick={() => window.open(`${ROUTES.admin.brands}/${brand.id}`)}
-                          >
-                            {brand.name}                       
-                          </TableCellLink>
-                          <TableCell>
-                            Merchant Name
-                          </TableCell>
-                          <TableCell>
-                            GP Wallet Business Username
-                          </TableCell>
-                          <TableCell>
-                            {brand.countries}
-                          </TableCell>
-                          <TableCell>
-                            <Chip text='Categories' />
-                            {/* {brand.categories} */}
-                          </TableCell>
-                          <TableCell>
-                            <Chip text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
-                          </TableCell>
-                          <TableCell>
-                            {new Date(Number(brand.createdAt)).toLocaleDateString()}
-                          </TableCell>
-                        </Table.Row>
-                      </>
+                      <Table.Row key={brand.id}>
+                        <TableCell>
+                          <Image size='mini' src={brand.thumbnailUrl} />
+                        </TableCell>
+                        <TableCellLink 
+                          onClick={() => window.open(`${ROUTES.admin.brands}/${brand.id}`)}
+                        >
+                          {brand.name}                       
+                        </TableCellLink>
+                        <TableCell>
+                          Merchant Name
+                        </TableCell>
+                        <TableCell>
+                          GP Wallet Business Username
+                        </TableCell>
+                        <TableCell>
+                          {brand.countries}
+                        </TableCell>
+                        <TableCell>
+                          <Chip text='Categories' />
+                          {/* {brand.categories} */}
+                        </TableCell>
+                        <TableCell>
+                          <Chip text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
+                        </TableCell>
+                        <TableCell>
+                          {new Date(Number(brand.createdAt)).toLocaleDateString()}
+                        </TableCell>
+                      </Table.Row>
                     ))
                   }
                 </Table.Body>
