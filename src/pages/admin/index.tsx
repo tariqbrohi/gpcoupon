@@ -83,10 +83,9 @@ export default withPageAuthRequired(function index() {
               <Spacer size={20} />
 
               <LabelContainer>
-                <div style={{display: "flex", }}>
-                  <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' style={{width: "50%"}} />
-                  <Spacer size={46} />
-                  <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' style={{width: "50%"}} />
+                <div style={{display: "flex", justifyContent: "space-between", width: "50%"}}>
+                  <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
+                  <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
                 </div>
               </LabelContainer>
               <Spacer size={20} />
@@ -96,6 +95,7 @@ export default withPageAuthRequired(function index() {
                   label='Status'
                   value={statusOption[0].value}
                   options={statusOption}
+                  style={{minWidth: "13em"}}
                 />
               </LabelContainer>
             </section>
