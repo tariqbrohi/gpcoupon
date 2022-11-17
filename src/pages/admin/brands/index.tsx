@@ -2,7 +2,7 @@
 import AdminLayout from '@/layouts/AdminLayout';
 import React, { useState } from 'react';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Heading, Image, Input, List, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, Heading, Image, Input, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -115,7 +115,6 @@ export default withPageAuthRequired(function Brands() {
                     <BtnCreate>Create Brand</BtnCreate>
                   </a>
                 </Link>   
-
               </LabelContainer>
               <Spacer size={20} />
 
@@ -151,8 +150,6 @@ export default withPageAuthRequired(function Brands() {
 
             <div style={{border: "2px solid #D9D9D9"}}></div>
             <Spacer size={30} />
-
-            {/* <List selection verticalAlign="middle"> */}
 
             <Provider>
               <Table celled>
@@ -214,27 +211,12 @@ export default withPageAuthRequired(function Brands() {
                             {new Date(Number(brand.createdAt)).toLocaleDateString()}
                           </TableCell>
                         </Table.Row>
-
-                      {/* <List.Item
-                        key={brand.id}
-                        onClick={() =>
-                          Router.push(`${ROUTES.admin.brands}/${brand.id}`)
-                        }
-                      >
-                        <List.Image rounded src={brand.thumbnailUrl} size="mini" />
-                        <List.Content>
-                          <List.Heading>{brand.name}</List.Heading>
-                          <List.Heading>{brand.countries}</List.Heading>
-                        </List.Content>
-                      </List.Item> */}
-
                       </>
                     ))
                   }
                 </Table.Body>
               </Table>
             </Provider>
-            {/* </List> */}
           </AdminLayout>
         </AppMain>
     </>
