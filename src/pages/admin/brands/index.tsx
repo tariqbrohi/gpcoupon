@@ -76,19 +76,19 @@ export default withPageAuthRequired(function Brands() {
 
   const statusOption = [
     {
-      key: "ALL",
+      key: "All",
       value: "ALL",
-      text: "ALL",
+      text: "All",
     },
     {
-      key: "AVAILABLE",
+      key: "Available",
       value: "AVAILABLE",
-      text: "AVAILABLE",
+      text: "Available",
     },
     {
-      key: "UNAVAILABLE",
+      key: "Unavailable",
       value: "UNAVAILABLE",
-      text: "UNAVAILABLE",
+      text: "Unavailable",
     },
   ];
 
@@ -106,7 +106,13 @@ export default withPageAuthRequired(function Brands() {
                   label="Brand Name"
                   icon="search outline"
                   value={searchBrand}
-                  onChange={(e) => setSearchBrand(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value.length === 0) {
+                      setSearchBrand('');
+                    }
+                    setSearchBrand(e.target.value);
+                  }}
+                  // onChange={(e) => setSearchBrand(e.target.value)}
                   style={{width: "50%"}}
                 />
 
@@ -123,7 +129,13 @@ export default withPageAuthRequired(function Brands() {
                   label="Merchant Name"
                   icon="people"
                   value={searchMerchant}
-                  onChange={(e) => setSearchMerchant(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value.length === 0) {
+                      setSearchMerchant('');
+                    }
+                    setSearchMerchant(e.target.value);
+                  }}
+                  // onChange={(e) => setSearchMerchant(e.target.value)}
                   style={{width: "50%"}}
                 />
               </LabelContainer>
