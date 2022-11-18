@@ -107,6 +107,13 @@ export default withPageAuthRequired(function Items() {
   const [searchCoupon, setSearchCoupon] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
 
+  const addDays = (date: any, days: any) => {
+    const d = new Date(date);
+    d.setDate(d.getDate() + days);
+    
+    return d.toLocaleDateString();
+  }
+
   const statusOption = [
     {
       key: "ALL",
@@ -228,7 +235,7 @@ export default withPageAuthRequired(function Items() {
                   <TableHeadCell>Coupon Name</TableHeadCell>
                   <TableHeadCell>Merchant Name</TableHeadCell>
                   <TableHeadCell>Create Date</TableHeadCell>
-                  <TableHeadCell>Expiry Date</TableHeadCell>
+                  <TableHeadCell>Expire Date</TableHeadCell>
                   <TableHeadCell>Original Price</TableHeadCell>
                   <TableHeadCell>Retail Price</TableHeadCell>
                   <TableHeadCell>Merchant Profit</TableHeadCell>
@@ -267,16 +274,16 @@ export default withPageAuthRequired(function Items() {
                         {new Date(Number(item.createdAt)).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        {new Date(Number(item.expiresIn)).toLocaleDateString()}
+                        {addDays(item.createdAt, item.expiresIn)}
                       </TableCell>
                       <TableCell>
-                        {item.originalPrice}
+                        ${item.originalPrice}
                       </TableCell>
                       <TableCell>
-                        Retail Price
+                        $Retail Price
                       </TableCell>
                       <TableCell>
-                        Merchant Profit
+                        $Merchant Profit
                       </TableCell>
                       <TableCell>
                         Request Status
