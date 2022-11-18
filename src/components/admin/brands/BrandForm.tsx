@@ -38,7 +38,7 @@ const FormBtn = styled(Form.Button)`
   color: #fff;
   border-radius: 25px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
-  transition: all 0.7s ease-in-out;
+  transition: all 0.4s ease-in-out;
 
   &:hover {
     background-color: #2D126D;
@@ -113,7 +113,7 @@ export default function BrandForm({ mode, onSubmit }: Props) {
 
         <Form.Group>
           <Form.Input
-            label="Name"
+            label="Brand Name"
             name="name"
             value={brand.name}
             onChange={handleChange}

@@ -95,11 +95,11 @@ export default withPageAuthRequired(function Brands() {
   return (
     <>
       <Head title='GPcoupon | List Brand' />
-        <AppMain>
-          <AdminLayout>
-            <section>
-              <Heading style={{color: "#2D126D"}}>List Brand</Heading>
-              <Spacer size={20} />
+      <AppMain>
+        <AdminLayout>
+          <section>
+            <Heading style={{color: "#2D126D"}}>List Brand</Heading>
+            <Spacer size={20} />
 
               <LabelContainer style={{justifyContent: "space-between"}}>
                 <Input

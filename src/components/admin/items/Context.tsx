@@ -12,6 +12,7 @@ export type Item = {
   influencerDiscountRate?: number;
   influencerId?: string;
   discountRate: number;
+  totDiscountRate: number;
   amount: number;
   price: number;
   country: Country;

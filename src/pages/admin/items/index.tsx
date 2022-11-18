@@ -3,7 +3,7 @@ import AdminLayout from '@/layouts/AdminLayout';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Heading, Icon, Input, List, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, Heading, Icon, Input, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetItemsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -20,6 +20,7 @@ const LabelContainer = styled.div`
 
 const BtnCreateCpn = styled(Button)`
   min-width: 172px;
+  max-width: 205px;
   font-weight: 600;
   font-size: 18px;
   padding: 10px 35px;
@@ -46,6 +47,7 @@ const BtnCreateCpn = styled(Button)`
 
 const BtnCreateBrd = styled(Button)`
   min-width: 172px;
+  max-width: 205px;
   font-weight: 600;
   font-size: 18px;
   padding: 10px 35px;
@@ -68,6 +70,12 @@ const BtnCreateBrd = styled(Button)`
   ${({ theme }) => theme.gui.media.mobile} {
     font-size: 12px;
   }
+`;
+
+const GroupInputContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
 `;
 
 const TableHeadCell = styled(Table.HeadCell)`
@@ -184,15 +192,15 @@ export default withPageAuthRequired(function Items() {
             <Spacer size={20} />
 
             <LabelContainer>
-              <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
+              <GroupInputContainer>
                 <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
                 <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
-              </div>
+              </GroupInputContainer>
             </LabelContainer>
             <Spacer size={20} />
 
             <LabelContainer>
-              <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
+              <GroupInputContainer>
                 <Select 
                   label='Status'
                   value={statusOption[0].value}
@@ -205,7 +213,7 @@ export default withPageAuthRequired(function Items() {
                   options={rqStatusOption}
                   style={{minWidth: "13em"}}
                 />
-              </div>
+              </GroupInputContainer>
             </LabelContainer>
           </section>
           <Spacer size={30} />
@@ -288,33 +296,6 @@ export default withPageAuthRequired(function Items() {
               </Table.Body>
             </Table>
           </Provider>
-
-          {/* <List selection verticalAlign="middle">
-            {items
-              ?.filter(({ name }) => {
-                if (!search) return true;
-
-                const similarity = stringSimilarity.compareTwoStrings(
-                  name,
-                  search,
-                );
-
-                if (similarity > 0.25) return true;
-
-                return false;
-              })
-              .map((item) => (
-                <List.Item
-                  key={item.id}
-                  onClick={() => Router.push(`${ROUTES.admin.items}/${item.id}`)}
-                >
-                  <List.Image rounded src={item.imageUrls.small} size="mini" />
-                  <List.Content>
-                    <List.Heading>{item.name}</List.Heading>
-                  </List.Content>
-                </List.Item>
-              ))}
-          </List> */}
         </AdminLayout>
       </AppMain>
     </>
