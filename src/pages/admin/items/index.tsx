@@ -290,8 +290,9 @@ export default withPageAuthRequired(function Items() {
                         ${item.originalPrice}
                       </TableCell>
                       <TableCell>
+                        ${item?.price?.amount}
                         {/* ${item.price} */}
-                        $Retail Price
+                        {/* $Retail Price */}
                       </TableCell>
                       <TableCell>
                         ${item.amount}
