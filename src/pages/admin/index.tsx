@@ -19,19 +19,19 @@ const LabelContainer = styled.div`
 
 const statusOption = [
   {
-    key: "ALL",
+    key: "All",
     value: "ALL",
-    text: "ALL",
+    text: "All",
   },
   {
-    key: "AVAILABLE",
+    key: "Available",
     value: "AVAILABLE",
-    text: "AVAILABLE",
+    text: "Available",
   },
   {
-    key: "UNAVAILABLE",
+    key: "Unavailable",
     value: "UNAVAILABLE",
-    text: "UNAVAILABLE",
+    text: "Unavailable",
   },
 ];
 
