@@ -5,7 +5,7 @@ import parseErrorMessage from '@/lib/parse-error-message';
 import React, { useContext, useState } from 'react';
 import Router from 'next/router';
 import validate from './helpers/validate';
-import { Heading, Snackbar } from '@growth-ui/react';
+import { Heading, Snackbar, Spacer } from '@growth-ui/react';
 import { useCreateItemMutation, useSignS3Mutation } from '@/services';
 
 export default function CreateBrandFrom() {
@@ -65,7 +65,9 @@ export default function CreateBrandFrom() {
 
   return (
     <>
-      <Heading>Create Coupon</Heading>
+      <Heading style={{color: "#2D126D"}}>Create Coupon</Heading>
+      <Spacer size={20} />
+
       <ItemForm mode="create" onSubmit={handleSubmit} />
       {error && (
         <Snackbar

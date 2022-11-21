@@ -25,18 +25,19 @@ const TableCellLink = styled(Table.Cell)`
     }
 `;
 
-export default function AdminDashboards(props: any) {
+export default function DashboardGroupBy(props: any) {
     const { orders } = props;
 
-    const addDays = (date: any, days: any) => {
-        const d = new Date(date);
-        d.setDate(d.getDate() + days);
+    // const addDays = (date: any, days: any) => {
+    //     const d = new Date(date);
+    //     d.setDate(d.getDate() + days);
         
-        return d.toLocaleDateString();
-    }
+    //     return d.toLocaleDateString();
+    // }
 
-    const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
+    const calcQtyOpRpMp = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
         const qty = Math.round(totalAmount / oneAmount);
+
         return (
             <>
                 <TableCell>
@@ -64,12 +65,11 @@ export default function AdminDashboards(props: any) {
                             <TableHeadCell>Logo</TableHeadCell>
                             <TableHeadCell>Coupon Name</TableHeadCell>
                             <TableHeadCell>Business Name (Should be changed to Merchant Name)</TableHeadCell>
-                            <TableHeadCell>Creation Date</TableHeadCell>
-                            <TableHeadCell>Expire Date</TableHeadCell>
                             <TableHeadCell>Qty</TableHeadCell>
                             <TableHeadCell>Original Price</TableHeadCell>
                             <TableHeadCell>Retail Price</TableHeadCell>
                             <TableHeadCell>Merchant Profit</TableHeadCell>
+                            <TableHeadCell>Merchant Total Profit</TableHeadCell>
                         </Table.Row>
                     </Table.Head>
                     
@@ -79,12 +79,11 @@ export default function AdminDashboards(props: any) {
                                 <TableCell positive>Total</TableCell>
                                 <TableCell positive>-</TableCell>
                                 <TableCell positive>-</TableCell>
-                                <TableCell positive>-</TableCell>
-                                <TableCell positive>-</TableCell>
                                 <TableCell positive>{orders?.total.count || 0}</TableCell>
                                 <TableCell positive>-</TableCell>
                                 <TableCell positive>-</TableCell>
                                 <TableCell positive>${orders?.total.profitSum || 0}</TableCell>
+                                <TableCell positive>-</TableCell>
                             </Table.Row>
                             
                             {orders?.orders?.map((order: any, idx: number) => {
@@ -99,13 +98,10 @@ export default function AdminDashboards(props: any) {
                                         <TableCell>
                                             {order?.item?.brand?.name}
                                         </TableCell>
+                                        {calcQtyOpRpMp(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)}
                                         <TableCell>
-                                            {new Date(Number(order?.createdAt) * 1000).toLocaleDateString()}
+                                            Merchant Total Profit Value
                                         </TableCell>
-                                        <TableCell>
-                                            {addDays(order?.createdAt * 1000, order?.item?.expiresIn)}
-                                        </TableCell>
-                                        {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)}
                                     </Table.Row>
                                 )
                             })}
