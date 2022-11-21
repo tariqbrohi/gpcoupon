@@ -26,7 +26,7 @@ const TableCellLink = styled(Table.Cell)`
 `;
 
 export default function AdminDashboards(props: any) {
-    const { orders } = props;
+    const { total, orders } = props;
 
     const addDays = (date: any, days: any) => {
         const d = new Date(date);
@@ -39,7 +39,13 @@ export default function AdminDashboards(props: any) {
         const qty = Math.round(totalAmount / oneAmount);
         return (
             <>
-                <TableCell>
+                <TableCell>{qty}</TableCell>
+                <TableCell>${originalPrice}</TableCell>
+                <TableCell>${oneAmount}</TableCell>
+                <TableCell>${amount}</TableCell>
+                <TableCell>${amount * qty}</TableCell>
+                
+                {/* <TableCell>
                     {qty}
                 </TableCell>
                 <TableCell>
@@ -50,7 +56,7 @@ export default function AdminDashboards(props: any) {
                 </TableCell>
                 <TableCell>
                     ${amount * qty}
-                </TableCell>
+                </TableCell> */}
             </>
         );
     }
@@ -63,17 +69,61 @@ export default function AdminDashboards(props: any) {
                         <Table.Row>
                             <TableHeadCell>Logo</TableHeadCell>
                             <TableHeadCell>Coupon Name</TableHeadCell>
+                            <TableHeadCell>Merchant Name</TableHeadCell>
+                            <TableHeadCell>Qty</TableHeadCell>
+                            <TableHeadCell>Original Price</TableHeadCell>
+                            <TableHeadCell>Retail Price</TableHeadCell>
+                            <TableHeadCell>Merchant Profit</TableHeadCell>
+                            <TableHeadCell>Merchant Total Profit</TableHeadCell>
+
+                            {/* <TableHeadCell>Logo</TableHeadCell>
+                            <TableHeadCell>Coupon Name</TableHeadCell>
                             <TableHeadCell>Business Name (Should be changed to Merchant Name)</TableHeadCell>
                             <TableHeadCell>Creation Date</TableHeadCell>
                             <TableHeadCell>Expire Date</TableHeadCell>
                             <TableHeadCell>Qty</TableHeadCell>
                             <TableHeadCell>Original Price</TableHeadCell>
                             <TableHeadCell>Retail Price</TableHeadCell>
-                            <TableHeadCell>Merchant Profit</TableHeadCell>
+                            <TableHeadCell>Merchant Profit</TableHeadCell> */}
                         </Table.Row>
                     </Table.Head>
+
+                    {total ? (
+                        <Table.Body>
+                            <Table.Row>
+                                <TableCell positive>Total</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>${total?.profitSum || 0}</TableCell>
+                            </Table.Row>
+
+                            {orders?.map((order: any, idx: number) => {
+                                return (
+                                    <Table.Row key={idx}>
+                                        <TableCell>
+                                            <Image size='small' src={order?._id.couponImageUrl} />
+                                        </TableCell>
+                                        <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?._id.slug}/${order?._id.id}`)}>
+                                            {order?._id.name}                       
+                                        </TableCellLink>
+                                        <TableCell>
+                                            Merchant Name
+                                            {/* {order?.item?.brand?.name} */}
+                                        </TableCell>
+                                        {calculateAmount(order?.sum, order?._id?.price.amount, order?._id?.originalPrice, order?._id?.amount)}
+                                    </Table.Row>
+                                )
+                            })}
+                        </Table.Body>
+                    ) : (
+                        <></>
+                    )}
                     
-                    {orders ? (
+                    {/* {orders ? (
                         <Table.Body>
                             <Table.Row>
                                 <TableCell positive>Total</TableCell>
@@ -113,7 +163,7 @@ export default function AdminDashboards(props: any) {
                     ) : (
                             <></>
                         )
-                    }
+                    } */}
                 </Table>
                 <Spacer size={20} />
                 

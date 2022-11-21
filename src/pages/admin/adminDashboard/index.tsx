@@ -2,17 +2,23 @@ import Head from '@/modules/components/Head';
 import AdminLayout from '@/layouts/AdminLayout';
 import Provider from '@/components/admin/items/Provider';
 import React, { useEffect, useState } from 'react';
-import { Heading, Input, Pagination, Select, Spacer } from '@growth-ui/react';
-import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
+import { Button, DateInput, Heading, Input, Pagination, Select, Spacer } from '@growth-ui/react';
+import { useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery, useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import AdminDashboards from './dashboards';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
+import stringSimilarity from 'string-similarity';
 
 const LabelContainer = styled.div`
-
     display: flex;
     align-items: center;
+`;
+
+const InputContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 50%:
 `;
 
 const statusOption = [
@@ -38,19 +44,44 @@ const TAKE = 20;
 export default withPageAuthRequired(function AdminDashboard() {
     const [search, setSearch] = useState('');
     const [ sortBy, setSortBy ] = useState('createdAt, desc');
-    const [ activePage, setActivePage ] = useState(1)
-    const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+    const [ activePage, setActivePage ] = useState(1);
+    const [ startDate, setStartDate ] = useState('');
+    const [ endDate, setEndDate ] = useState('');
+    const [ status, setStatus ] = useState('ALL');
+    const [ couponName, setCouponName ] = useState('');
+    // const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+    const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery({});
 
     useEffect(() => {
         query({
             data: {
                 take: TAKE,
-                sortBy,
+                // sortBy,
                 skip: (activePage - 1) * TAKE,
+                startDate,
+                endDate,
+                status
             }
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activePage, sortBy]);
+    }, [activePage, status]);
+
+    const handleSearchButton = () => {
+        if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== '')) {
+            alert('Please submit From date and To date');
+            return;
+        }
+    
+        query({
+            data: {
+                take: TAKE,
+                skip: (activePage - 1) * TAKE,
+                startDate,
+                endDate,
+                status
+            }
+        });
+    }
 
     const handlePageChange = (_: any, { activePage }: any) => {
         setActivePage(activePage);
@@ -72,36 +103,95 @@ export default withPageAuthRequired(function AdminDashboard() {
                                 <Input 
                                     label='Business Name' 
                                     icon="search outline"
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
+                                    value={couponName}
+                                    onChange={(e) => setCouponName(e.target.value)}
                                     style={{width: "50%"}} 
                                 />
                             </LabelContainer>
                             <Spacer size={20} />
 
-                            <LabelContainer>
+                            {/* <LabelContainer>
                                 <div style={{display: "flex", justifyContent: "space-between", width: "50%"}}>
                                     <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
                                     <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
                                 </div>
                             </LabelContainer>
-                            <Spacer size={20} />
+                            <Spacer size={20} /> */}
 
                             <LabelContainer>
                                 <Select 
                                     label='Status'
                                     value={statusOption[0].value}
                                     options={statusOption}
-                                    style={{minWidth: "13em"}}
+                                    onChange={(_, data) => setStatus(data.newValues)}
+                                    // style={{minWidth: "13em"}}
+                                    style={{width: "50%"}}
                                 />
                             </LabelContainer>
+                            <Spacer size={20} />
+
+                            <LabelContainer>
+                                <InputContainer>
+                                    <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                                        <DateInput
+                                            mask="yyyy-mm-dd"
+                                            renderInput={(params) => 
+                                                <Input 
+                                                    {...params} 
+                                                    placeholder="yyyy-mm-dd" 
+                                                    label='From'
+                                                    // icon="calendar" 
+                                                    // iconPosition='right' 
+                                                    style={{width: "30%"}}
+                                                />
+                                            }
+                                            onChange={(_, date) => setStartDate(date)}
+                                        />
+                                        {/* <Spacer size={46} /> */}
+                                        <DateInput
+                                            mask="yyyy-mm-dd"
+                                            renderInput={(params) => 
+                                                <Input 
+                                                    {...params} 
+                                                    placeholder="yyyy-mm-dd" 
+                                                    label='To'
+                                                    // icon="calendar" 
+                                                    // iconPosition='right' 
+                                                    style={{width: "30%"}}
+                                                />
+                                            }
+                                            onChange={(_, date) => setEndDate(date)}
+                                        />
+                                        <Button rounded onClick={() => handleSearchButton()}>
+                                            Search
+                                        </Button>
+                                    </div>
+                                </InputContainer>
+                            </LabelContainer>
+
                         </section>
                         <Spacer size={30} />
 
                         <div style={{border: "2px solid #D9D9D9"}}></div>
 
                         <div style={{padding: "30px 0"}}>
-                            <AdminDashboards orders={data} />
+                            <AdminDashboards 
+                                total={data?.total}
+                                orders={data?.orders
+                                    ?.filter((o: any) => {
+                                        if (!couponName) return true;
+
+                                        const similarity = stringSimilarity.compareTwoStrings(
+                                            o._id.name,
+                                            couponName,
+                                        );
+                                          
+                                        if (similarity > 0.25) return true;
+                                          
+                                        return false;
+                                    })
+                                }
+                            />
                         </div>
                         <Spacer size={20} />
 

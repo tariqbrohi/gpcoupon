@@ -216,6 +216,40 @@ export type GetItemsByAffiliateForDashboardQueryResult = Brand & {
 };
 
 /**
+ * GetItemsByAffiliateForAdminDashboard
+ */
+ export const useGetAffiliateItemsByAffiliateForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<
+    GetItemsByAffiliateForAdminDashboardQueryVariables,
+    GetItemsByAffiliateForAdminDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+};
+export const useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetItemsByAffiliateForAdminDashboardQueryVariables,
+    GetItemsByAffiliateForAdminDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+};
+export type GetItemsByAffiliateForAdminDashboardQueryVariables = {
+  take?: number;
+  skip?: number;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+};
+export type GetItemsByAffiliateForAdminDashboardQueryResult = Brand & {
+  total: {
+    count: number;
+    profitSum: number;
+  };
+  orders: Order[];
+};
+
+/**
  * GetAffiliateItemsForAdminDashboard
  */
  export const useGetAffiliateItemsForAdminDashboardQuery = (
