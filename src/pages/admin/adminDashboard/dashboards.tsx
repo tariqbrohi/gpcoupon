@@ -4,6 +4,8 @@ import Provider from '@/components/admin/items/Provider';
 import { Table, Spacer, Image } from "@growth-ui/react";
 import { ROUTES } from '@/ROUTES';
 import styled from "styled-components";
+import Router from 'next/router';
+import { useGetItemsQuery } from '@/services';
 
 const TableHeadCell = styled(Table.HeadCell)`
   text-align: center;
@@ -26,6 +28,7 @@ const TableCellLink = styled(Table.Cell)`
 `;
 
 export default function AdminDashboards(props: any) {
+    const { data: items } = useGetItemsQuery();
     const { total, orders } = props;
 
     const addDays = (date: any, days: any) => {
@@ -107,7 +110,10 @@ export default function AdminDashboards(props: any) {
                                         <TableCell>
                                             <Image size='small' src={order?._id.couponImageUrl} />
                                         </TableCell>
-                                        <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?._id.slug}/${order?._id.id}`)}>
+                                        <TableCellLink 
+                                            // onClick={() => window.open(`${ROUTES.buy}/${order?._id.slug}/${order?._id.id}`)}
+                                            onClick={() => Router.push(`${ROUTES.admin.items}/${order?._id.id}`)}
+                                        >
                                             {order?._id.name}                       
                                         </TableCellLink>
                                         <TableCell>
