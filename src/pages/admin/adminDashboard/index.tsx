@@ -85,7 +85,6 @@ export default withPageAuthRequired(function AdminDashboard() {
         query({
             data: {
                 take: TAKE,
-                // sortBy,
                 skip: (activePage - 1) * TAKE,
                 startDate,
                 endDate,

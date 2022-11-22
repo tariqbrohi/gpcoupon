@@ -82,8 +82,8 @@ export default function DashboardGroupBy(props: any) {
                                 <TableCell positive>{orders?.total.count || 0}</TableCell>
                                 <TableCell positive>-</TableCell>
                                 <TableCell positive>-</TableCell>
-                                <TableCell positive>${orders?.total.profitSum || 0}</TableCell>
                                 <TableCell positive>-</TableCell>
+                                <TableCell positive>${orders?.total.profitSum || 0}</TableCell>
                             </Table.Row>
                             
                             {orders?.orders?.map((order: any, idx: number) => {
