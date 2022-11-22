@@ -39,6 +39,34 @@ const statusOption = [
     },
 ];
 
+const useStatusOption = [
+    {
+        key: "All",
+        value: "ALL",
+        text: "All",
+    },
+    {
+        key: "Available",
+        value: "available",
+        text: "Available",
+    },
+    {
+        key: "Used",
+        value: "used",
+        text: "Used",
+    },
+    // {
+    //     key: "Unused",
+    //     value: "UNUSED",
+    //     text: "Unused",
+    // },
+    {
+        key: "Expired",
+        value: "expired",
+        text: "Expired",
+    },
+];
+
 const TAKE = 20;
 
 export default withPageAuthRequired(function AdminDashboard() {
@@ -48,6 +76,7 @@ export default withPageAuthRequired(function AdminDashboard() {
     const [ startDate, setStartDate ] = useState('');
     const [ endDate, setEndDate ] = useState('');
     const [ status, setStatus ] = useState('ALL');
+    const [ useStatus, setUseStatus ] = useState('ALL');
     const [ couponName, setCouponName ] = useState('');
     // const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
     const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery({});
@@ -60,11 +89,11 @@ export default withPageAuthRequired(function AdminDashboard() {
                 skip: (activePage - 1) * TAKE,
                 startDate,
                 endDate,
-                status
+                status,
             }
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activePage, status]);
+    }, [activePage, status, useStatus]);
 
     const handleSearchButton = () => {
         if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== '')) {
@@ -78,7 +107,7 @@ export default withPageAuthRequired(function AdminDashboard() {
                 skip: (activePage - 1) * TAKE,
                 startDate,
                 endDate,
-                status
+                status,
             }
         });
     }
@@ -101,7 +130,8 @@ export default withPageAuthRequired(function AdminDashboard() {
                         <section>
                             <LabelContainer>
                                 <Input 
-                                    label='Business Name' 
+                                    label='Coupon Name' 
+                                    // label='Merchant Name'        // Should changed to this search
                                     icon="search outline"
                                     value={couponName}
                                     onChange={(e) => setCouponName(e.target.value)}
@@ -129,6 +159,18 @@ export default withPageAuthRequired(function AdminDashboard() {
                                 />
                             </LabelContainer>
                             <Spacer size={20} />
+
+                            {/* <LabelContainer>
+                                <Select 
+                                    label='Use Status'
+                                    value={useStatusOption[0].value}
+                                    options={useStatusOption}
+                                    onChange={(_, data) => setUseStatus(data.newValues)}
+                                    // style={{minWidth: "13em"}}
+                                    style={{width: "50%"}}
+                                />
+                            </LabelContainer>
+                            <Spacer size={20} /> */}
 
                             <LabelContainer>
                                 <InputContainer>

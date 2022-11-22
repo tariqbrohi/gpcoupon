@@ -31,9 +31,14 @@ export default function AdminDashboards(props: any) {
 
     const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
         const qty = Math.round(totalAmount / oneAmount);
+
         return (
             <>
-                <TableCell>{qty}</TableCell>
+                <TableCellLink 
+                    // onClick={() => Router.push(`${ROUTES.admin.items}/${orders?._id.id}`)}
+                >
+                    {qty}
+                </TableCellLink>
                 <TableCell>${originalPrice}</TableCell>
                 <TableCell>${oneAmount}</TableCell>
                 <TableCell>${amount}</TableCell>
