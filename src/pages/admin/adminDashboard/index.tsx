@@ -2,7 +2,7 @@ import Head from '@/modules/components/Head';
 import AdminLayout from '@/layouts/AdminLayout';
 import Provider from '@/components/admin/items/Provider';
 import React, { useEffect, useState } from 'react';
-import { Button, DateInput, Heading, Input, Pagination, Select, Spacer } from '@growth-ui/react';
+import { Button, Calendar, DateInput, Heading, Input, Pagination, Select, Spacer } from '@growth-ui/react';
 import { useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery, useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import AdminDashboards from './dashboards';
@@ -19,6 +19,11 @@ const InputContainer = styled.div`
     display: flex;
     justify-content: space-between;
     width: 50%:
+`;
+
+const CalendarCustom = styled(Calendar)`
+    position: absolute;
+    z-index: 999;
 `;
 
 const statusOption = [
@@ -94,6 +99,38 @@ export default withPageAuthRequired(function AdminDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activePage, status, useStatus]);
 
+    const [viewCalFrom, setViewCalFrom] = useState(false);
+    const [viewCalTo, setViewCalTo] = useState(false);
+
+    const [calInputFrom, setCalInputFrom] = useState('');
+    const [calInputTo, setCalInputTo] = useState('');
+    const [calFrom, setCalFrom] = useState(new Date());
+    const [calTo, setCalTo] = useState(new Date());
+    
+    const [dateFrom, setDateFrom] = useState(new Date());
+    const [dateTo, setDateTo] = useState(new Date());
+    
+
+    const onChangeCalInputFrom = (e: any) => {
+        setCalInputFrom(e.target.value);
+    }
+
+    const onChangeCalInputTo = (e: any) => {
+        setCalInputTo(e.target.value);
+    }
+
+    const onChangeCalFrom = (newDate: React.SetStateAction<Date>) => {
+        setCalFrom(newDate);
+
+        // setStartDate(date);
+    }
+
+    const onChangeCalTo = (newDate: React.SetStateAction<Date>, _: any, date: any) => {
+        setCalTo(newDate);
+        
+        handleSearchButton();
+    }
+
     const handleSearchButton = () => {
         if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== '')) {
             alert('Please submit From date and To date');
@@ -141,8 +178,50 @@ export default withPageAuthRequired(function AdminDashboard() {
 
                             {/* <LabelContainer>
                                 <div style={{display: "flex", justifyContent: "space-between", width: "50%"}}>
-                                    <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
-                                    <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
+                                    <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' 
+                                        onClick={() => {
+                                            setDateFrom('');
+                                            setViewCalFrom(!viewCalFrom);
+                                        }} 
+                                        onClickIcon={() => {
+                                            setViewCalFrom(!viewCalFrom);
+                                        }}
+                                        onChange={onChangeCalInputFrom}
+                                        // value={dateFrom}
+                                    />
+                                    <div>
+                                        {viewCalFrom && 
+                                            <CalendarCustom indicateWeekend="blue-300" 
+                                                // onChange={(newDate: React.SetStateAction<Date>) => {
+                                                //     setDateFrom(newDate);
+                                                //     console.log('From: ', setDateFrom(new Date));
+                                                // }} 
+                                                // value={dateFrom}
+                                            />
+                                        }
+                                    </div>
+                                    <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right'
+                                        onClick={() => {
+                                            setDateTo('');
+                                            setViewCalTo(!viewCalTo);
+                                        }} 
+                                        onClickIcon={() => {
+                                            setViewCalTo(!viewCalTo);
+                                        }}
+                                        onChange={onChangeCalInputTo}
+                                        // value={dateTo}
+                                    />
+                                    <div>
+                                        {viewCalTo && 
+                                            <CalendarCustom indicateWeekend="red-300" 
+                                                // onChange={(newDate: React.SetStateAction<Date>) => {
+                                                //     setDateTo(newDate); 
+                                                //     console.log('To: ', dateTo);
+                                                // }}
+                                                // value={dateTo}
+                                            />
+                                        }
+                                    </div>
                                 </div>
                             </LabelContainer>
                             <Spacer size={20} /> */}
@@ -247,3 +326,7 @@ export default withPageAuthRequired(function AdminDashboard() {
         </>
     );
 });
+function e(e: any) {
+    throw new Error('Function not implemented.');
+}
+
