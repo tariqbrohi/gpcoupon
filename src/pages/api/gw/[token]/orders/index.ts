@@ -238,41 +238,46 @@ export default isAuth(
       orderId = `${id}-${orderId}`;
 
       if (dbItem?.affiliate) {
-        const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
-          QRCode.toDataURL(
-            btoa(
-              JSON.stringify({
-                code: codes[i],
-                pin: pins[i],
-                orderId,
-                sub: dbItem.brand?.sub,
-                isGP: true,
-                originalPrice: dbItem.originalPrice,
-                name: dbItem.name,
-                extednedName: dbItem.extendedName,
-                brandName: dbItem?.brand?.name!,
-                amount: dbItem.amount,
-              }),
+        try {
+          const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
+            QRCode.toDataURL(
+              btoa(
+                JSON.stringify({
+                  code: codes[i],
+                  pin: pins[i],
+                  orderId,
+                  sub: dbItem.brand?.sub,
+                  isGP: true,
+                  originalPrice: dbItem.originalPrice,
+                  name: dbItem.name,
+                  extednedName: dbItem.extendedName,
+                  brandName: dbItem?.brand?.name!,
+                  amount: dbItem.amount,
+                }),
+              ),
             ),
-          ),
-        );
+          );
 
-        const qrcodes = await Promise.all(qrcodesPromises);
+          const qrcodes = await Promise.all(qrcodesPromises);
 
-        sendOrder({
-          quantity,
-          qrcodes,
-          recipientEmail: recipient.email,
-          name: dbItem.name,
-          brandLogoUrl: dbItem.brand?.thumbnailUrl!,
-          couponImageUrl: dbItem.couponImageUrl!,
-          expiresIn: dbItem.expiresIn!,
-          redemptionInstructions: dbItem.redemptionInstructions,
-          termsAndConditionsInstructions: dbItem.termsAndConditionsInstructions,
-          brandName: dbItem.brand?.name!,
-          itemImage: dbItem.imageUrls.medium,
-          message,
-        });
+          sendOrder({
+            quantity,
+            qrcodes,
+            recipientEmail: recipient.email,
+            name: dbItem.name,
+            brandLogoUrl: dbItem.brand?.thumbnailUrl!,
+            couponImageUrl: dbItem.couponImageUrl!,
+            expiresIn: dbItem.expiresIn!,
+            redemptionInstructions: dbItem.redemptionInstructions,
+            termsAndConditionsInstructions:
+              dbItem.termsAndConditionsInstructions,
+            brandName: dbItem.brand?.name!,
+            itemImage: dbItem.imageUrls.medium,
+            message,
+          });
+        } catch (err) {
+          console.log(JSON.stringify(err, null, 2));
+        }
       }
 
       res.send(orderId);
