@@ -238,6 +238,7 @@ export default isAuth(
       orderId = `${id}-${orderId}`;
 
       if (dbItem?.affiliate) {
+        console.log(codes, pins, dbItem, ' dalk dalk aldk lakdlka l');
         try {
           console.log(
             btoa(
@@ -297,6 +298,8 @@ export default isAuth(
             console.log(JSON.stringify(err, null, 2));
           });
         } catch (err) {
+          console.log(err);
+          console.log('SHIT BRO');
           console.log(JSON.stringify(err, null, 2));
         }
       }
