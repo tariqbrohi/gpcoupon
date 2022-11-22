@@ -238,29 +238,24 @@ export default isAuth(
       orderId = `${id}-${orderId}`;
 
       if (dbItem?.affiliate) {
-        console.log(codes, pins, dbItem, ' dalk dalk aldk lakdlka l');
+        console.log(
+          JSON.stringify({
+            code: codes[0],
+            pin: pins[0],
+            orderId,
+            sub: dbItem.brand?.sub,
+            isGP: true,
+            originalPrice: dbItem.originalPrice,
+            name: dbItem.name,
+            extednedName: dbItem.extendedName,
+            brandName: dbItem?.brand?.name!,
+            amount: dbItem.amount,
+          }),
+        );
         try {
-          console.log(
-            btoa(
-              JSON.stringify({
-                code: codes[0],
-                pin: pins[0],
-                orderId,
-                sub: dbItem.brand?.sub,
-                isGP: true,
-                originalPrice: dbItem.originalPrice,
-                name: dbItem.name,
-                extednedName: dbItem.extendedName,
-                brandName: dbItem?.brand?.name!,
-                amount: dbItem.amount,
-              }),
-            ),
-            ' b to a',
-          );
-
           const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
             QRCode.toDataURL(
-              btoa(
+              Buffer.from(
                 JSON.stringify({
                   code: codes[i],
                   pin: pins[i],
@@ -273,7 +268,7 @@ export default isAuth(
                   brandName: dbItem?.brand?.name!,
                   amount: dbItem.amount,
                 }),
-              ),
+              ).toString('base64'),
             ),
           );
 
