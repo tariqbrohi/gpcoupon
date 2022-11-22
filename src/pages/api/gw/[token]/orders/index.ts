@@ -239,6 +239,24 @@ export default isAuth(
 
       if (dbItem?.affiliate) {
         try {
+          console.log(
+            btoa(
+              JSON.stringify({
+                code: codes[0],
+                pin: pins[0],
+                orderId,
+                sub: dbItem.brand?.sub,
+                isGP: true,
+                originalPrice: dbItem.originalPrice,
+                name: dbItem.name,
+                extednedName: dbItem.extendedName,
+                brandName: dbItem?.brand?.name!,
+                amount: dbItem.amount,
+              }),
+            ),
+            ' b to a',
+          );
+
           const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
             QRCode.toDataURL(
               btoa(
@@ -259,8 +277,8 @@ export default isAuth(
           );
 
           const qrcodes = await Promise.all(qrcodesPromises);
-
-          sendOrder({
+          console.log(qrcodes, ' man qrcodes ');
+          await sendOrder({
             quantity,
             qrcodes,
             recipientEmail: recipient.email,
@@ -274,6 +292,9 @@ export default isAuth(
             brandName: dbItem.brand?.name!,
             itemImage: dbItem.imageUrls.medium,
             message,
+          }).catch((err) => {
+            console.log('sendgrid error');
+            console.log(JSON.stringify(err, null, 2));
           });
         } catch (err) {
           console.log(JSON.stringify(err, null, 2));
