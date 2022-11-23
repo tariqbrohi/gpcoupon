@@ -9,6 +9,13 @@ import AdminDashboards from './dashboards';
 import AppMain from '@/layouts/AppMain';
 import Link from 'next/link';
 import { ROUTES } from '@/ROUTES';
+import styled from 'styled-components';
+
+const DetailBtn = styled(Button)`
+  min-width: 172px;
+  max-width: 205px;
+  box-shadow: rgb(203 203 203) 4px 4px 8px;
+`;
 
 const TAKE = 20;
 
@@ -38,14 +45,23 @@ export default withPageAuthRequired(function AdminDashboard() {
             <AppMain>
                 <AdminLayout>
                     <Provider>
-                        <Heading as="h2">
+                        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                            <Heading as="h2" style={{color: "#2D126D", marginBottom: "0"}}>
+                                Coupon Dashboard
+                            </Heading>
+                            <Link href={ROUTES.admin.adminDashboardDetails}>
+                                <a>
+                                    <DetailBtn rounded>To Detail</DetailBtn>
+                                </a>
+                            </Link>
+                        </div>
+                        <Spacer size={30} />
+                        
+                        {/* <Heading as="h2">
                             Coupon Dashboard
                         </Heading>
-                        <Link href={ROUTES.admin.adminDashboardDetails}>
-                            <a>
-                                <Button>Detail 임시버튼</Button>
-                            </a>
-                        </Link>
+                        <Spacer size={30} /> */}
+                        
                         <div style={{padding: "50px 0"}}>
                             <AdminDashboards orders={data} />
                         </div>
