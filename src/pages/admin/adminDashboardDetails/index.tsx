@@ -67,8 +67,8 @@ export default withPageAuthRequired(function Details() {
             <AppMain>
                 <AdminLayout>
                     <Provider>
-                        <div style={{display: "flex", justifyContent: "space-between"}}>
-                            <Heading as="h2" style={{color: "#2D126D"}}>
+                        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                            <Heading as="h2" style={{color: "#2D126D", marginBottom: "0"}}>
                                 Coupon Dashboard Details
                             </Heading>
                             <BackBtn onClick={() => router.back()}>

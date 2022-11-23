@@ -26,6 +26,7 @@ export default function DashboardDetails(props: any) {
                         <TableHeadCell>Retail Price</TableHeadCell>
                         <TableHeadCell>Merchant Profit</TableHeadCell>
                         <TableHeadCell>Use Status</TableHeadCell>
+                        {/* <TableHeadCell>GPartner</TableHeadCell> */}
                     </Table.Row>
                 </Table.Head>
 
@@ -40,6 +41,7 @@ export default function DashboardDetails(props: any) {
                         <TableCell positive>-</TableCell>
                         <TableCell positive>$</TableCell>
                         <TableCell positive>-</TableCell>
+                        {/* <TableCell positive>-</TableCell> */}
                     </Table.Row>
 
                     <Table.Row>
@@ -52,6 +54,7 @@ export default function DashboardDetails(props: any) {
                         <TableCell>$Retail Price</TableCell>
                         <TableCell>$Merchant Profit</TableCell>
                         <TableCell>Use Status</TableCell>
+                        {/* <TableCell>GPartner</TableCell> */}
                     </Table.Row>
                 </Table.Body>
 
