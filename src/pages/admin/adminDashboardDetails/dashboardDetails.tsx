@@ -45,12 +45,12 @@ export default function DashboardDetails(props: any) {
                     <Table.Row>
                         <TableCell>Coupon Name</TableCell>
                         <TableCell>Merchant Name</TableCell>
-                        <TableCell>Create Date</TableCell>
-                        <TableCell>Expire Date</TableCell>
+                        <TableCell>mm/dd/yyyy</TableCell>
+                        <TableCell>mm/dd/yyyy</TableCell>
                         <TableCell>1</TableCell>
-                        <TableCell>Original Price</TableCell>
-                        <TableCell>Retail Price</TableCell>
-                        <TableCell>Merchant Profit</TableCell>
+                        <TableCell>$Original Price</TableCell>
+                        <TableCell>$Retail Price</TableCell>
+                        <TableCell>$Merchant Profit</TableCell>
                         <TableCell>Use Status</TableCell>
                     </Table.Row>
                 </Table.Body>
