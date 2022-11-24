@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "@growth-ui/react";
-import { ROUTES } from '@/ROUTES';
-import Link from 'next/link';
-import styled from "styled-components";
 
 export default function CouponList(props: any) {
-  const { gifts } = props;
+  const { result } = props;
 
   const getExpireDate = (date:any, days:any) => {
     const d = new Date(date);
@@ -13,19 +10,6 @@ export default function CouponList(props: any) {
     
     return d.toLocaleDateString();
   }
-
-  // const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
-  //   const qty = Math.round(totalAmount / oneAmount);
-  //   return (
-  //     <>
-  //       <Table.Cell>{qty}</Table.Cell> 
-  //       <Table.Cell>${originalPrice * qty}</Table.Cell>
-  //       <Table.Cell>${oneAmount * qty}</Table.Cell>
-  //       <Table.Cell>${amount * qty}</Table.Cell>
-  //     </>
-  //   );
-  // }
-  
 
   return (
     <>
@@ -43,22 +27,21 @@ export default function CouponList(props: any) {
           </Table.Row>
         </Table.Head>
         {
-          gifts? 
+          result? 
           (
             <Table.Body>
               <Table.Row>
-                {console.log('detail coupon list', gifts)}
                 <Table.Cell positive>Total</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
-                <Table.Cell positive>{gifts.length}</Table.Cell>
+                <Table.Cell positive>{result.gifts.length}</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
-                <Table.Cell positive>$</Table.Cell>
+                <Table.Cell positive>${result.totalProfit}</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
               </Table.Row>
               {
-                gifts?.map((gift: any, idx: number) =>{
+                result.gifts?.map((gift: any, idx: number) =>{
                   return (
                     <Table.Row
                       key={idx}
@@ -71,10 +54,10 @@ export default function CouponList(props: any) {
                         {getExpireDate(gift?.createdAt * 1000, gift?.order?.item?.expiresIn)}
                       </Table.Cell>
                       <Table.Cell>1</Table.Cell>
-                      <Table.Cell>{gift?.order?.item?.originalPrice}</Table.Cell>
-                      <Table.Cell>{gift?.order?.item?.price.amount}</Table.Cell>
-                      <Table.Cell>{gift?.order?.item?.amount}</Table.Cell>
-                      <Table.Cell>{gift.status}</Table.Cell>
+                      <Table.Cell>${gift?.order?.item?.originalPrice}</Table.Cell>
+                      <Table.Cell>${gift?.order?.item?.price.amount}</Table.Cell>
+                      <Table.Cell>${gift?.status === "used"? gift?.order?.item?.amount : 0}</Table.Cell>
+                      <Table.Cell>{gift?.status === "available"? "unused": gift.status}</Table.Cell>
                     </Table.Row>
                   )
                 })

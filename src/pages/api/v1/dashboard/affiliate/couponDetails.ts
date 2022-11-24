@@ -13,7 +13,8 @@ export default errorHandler(async function handler(req, res) {
   const {
     slug,
     startDate='',
-    endDate=''
+    endDate='',
+    status='all'
   } = req.query as any;
 
   let {
@@ -38,8 +39,6 @@ export default errorHandler(async function handler(req, res) {
     itemId: itemId!.id,
   };
 
-  console.log('where', where);
-
   if (startDate !== '' && endDate !== '') {
     where.createdAt= {
       lte: convertDateToUnix(endDate.replace("/", "-")),
@@ -56,23 +55,53 @@ export default errorHandler(async function handler(req, res) {
 
   if (!orders) throw new BadRequestError('No order exists!');
 
+  let giftWhere: Record<string, any>= {
+    orderId: {
+      in: orders.map(({id}) => id),
+    }
+  }
+
+  if (status !== 'all') {
+    giftWhere.status = status;
+  }
+
   const gifts = await prisma.gift.findMany({
-    where: {
-      orderId: {
-        in: orders.map(({id}) => id),
-      }, 
-    },
+    where: giftWhere,
     select: {
       status: true,
       createdAt: true,
       order: true,
-    }
+    },
+    skip,
+    take
   });
+
+  let totalProfit = 0;
+
+  if (status === 'all' || status === 'used') {
+    const giftProfit = await prisma.gift.findMany({
+      where: {
+        status: "used",
+        orderId: {
+          in: orders.map(({id})=> id),
+        },
+      },
+      select: {
+        status: true,
+        order: true,
+      },
+    });
+    
+    totalProfit = giftProfit.reduce((tot: number, gift: any) => {
+      return tot + (gift?.order?.item?.amount);
+    }, 0);
+  }
 
   if (!gifts) throw new BadRequestError('No coupon exists!');
   
   res.send(
     {
+      totalProfit,
       gifts,
     }
   );

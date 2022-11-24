@@ -14,19 +14,11 @@ import { useRouter } from 'next/router';
 
 const TAKE = 20;
 
-const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Label = styled.label`
-  width: 100px;
-`;
-
-const InputContainer = styled.div`
+const DetailContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: end;
@@ -35,11 +27,33 @@ const ButtonContainer = styled.div`
 export default function CouponDetails() {
   const { user } = useContext(AppContext);
   const [ activePage, setActivePage ] = useState(1);
-  const [ status, setStatus ] = useState('ALL');
+  const [ status, setStatus ] = useState('all');
   const [ query, { data, loading }] = useGetItemForCouponDetailDashboardLazyQuery({});
-  const [ couponName, setCouponName ] = useState('');
   const router = useRouter();
   const {startDate, endDate, slug } = router.query;
+  
+  const statusOption = [
+    {
+      key: "all",
+      value: "all",
+      text: "all",
+    },
+    {
+      key: "used",
+      value: "used",
+      text: "used",
+    },
+    {
+      key: "expired",
+      value: "expired",
+      text: "expired",
+    },
+    {
+      key: "available",
+      value: "available",
+      text: "unused",
+    }
+  ];
 
   useEffect(() => {
     if (user !== null) {
@@ -50,10 +64,11 @@ export default function CouponDetails() {
           slug: slug as string,
           startDate: startDate as string,
           endDate: endDate as string,
+          status
         }
       });
     }
-  }, [activePage]);
+  }, [activePage, status]);
 
   const handlePageChange = (_: any, { activePage }: any) => {
     setActivePage(activePage);
@@ -70,16 +85,23 @@ export default function CouponDetails() {
               Coupon Details
             </Heading>
             <Spacer size={20} />
-            <ButtonContainer>
-              <Button onClick={() => router.back()}>Back</Button>
-            </ButtonContainer>
+            <DetailContainer>
+              <Select 
+                label='Status'
+                value={statusOption[0].value}
+                options={statusOption}
+                onChange={(_, data)=>setStatus(data.newValues)}
+              />
+              <ButtonContainer>
+                <Button onClick={() => router.back()}>Back</Button>
+              </ButtonContainer>
+            </DetailContainer>
             <Spacer size={20} />
             <div style={{border: "2px solid #D9D9D9"}}></div>
             <div style={{padding: "30px 0"}}>
-                <CouponList 
-                  // total = {data?.total}
-                  gifts = {data?.gifts}
-                />
+              <CouponList 
+                result = {data}
+              />
             </div>
             <Spacer size={20} />
             <Pagination

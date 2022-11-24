@@ -241,12 +241,10 @@ export type GetItemForCouponDetailDashboardQueryVariables = {
   slug: string;
   startDate?: string;
   endDate?: string;
+  status: string;
 };
 export type GetItemForCouponDetailDashboardQueryResult = {
-  // total: {
-  //   count: number;
-  //   profitSum: number;
-  // };
+  totalProfit: number,
   gifts: [{
     status: string,
     createdAt: string,
