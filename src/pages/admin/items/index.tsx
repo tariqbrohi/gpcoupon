@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
 import { Button, Chip, Heading, Icon, Input, Select, Spacer, Table } from '@growth-ui/react';
@@ -12,6 +12,7 @@ import AppMain from '@/layouts/AppMain';
 import Provider from '@/components/admin/items/Provider';
 import styled from 'styled-components';
 import Link from 'next/link';
+import Context from '@/components/admin/items/Context';
 
 const LabelContainer = styled.div`
   display: flex;
@@ -103,48 +104,62 @@ const ChipCustom = styled(Chip)`
 `;
 
 export default withPageAuthRequired(function Items() {
+  const { item, setItem } = useContext(Context);
   const { data: items } = useGetItemsQuery();
   const [searchCoupon, setSearchCoupon] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
 
+  const addDays = (date: any, days: any) => {
+    const d = new Date(date);
+    d.setDate(d.getDate() + days);
+    
+    return d.toLocaleDateString();
+  }
+
+  if (item?.price > 0) {
+    const merchantProfitRate = item.price - (item.price * 0.2);
+
+    item.amount = merchantProfitRate;
+  }
+
   const statusOption = [
     {
-      key: "ALL",
+      key: "All",
       value: "ALL",
-      text: "ALL",
+      text: "All",
     },
     {
-      key: "AVAILABLE",
+      key: "Available",
       value: "AVAILABLE",
-      text: "AVAILABLE",
+      text: "Available",
     },
     {
-      key: "UNAVAILABLE",
+      key: "Unavailable",
       value: "UNAVAILABLE",
-      text: "UNAVAILABLE",
+      text: "Unavailable",
     },
   ];
 
   const rqStatusOption = [
     {
-      key: "ALL",
+      key: "All",
       value: "ALL",
-      text: "ALL",
+      text: "All",
     },
     {
-      key: "APPROVED",
+      key: "Approved",
       value: "APPROVED",
-      text: "APPROVED",
+      text: "Approved",
     },
     {
-      key: "REJECTED",
+      key: "Rejected",
       value: "REJECTED",
-      text: "REJECTED",
+      text: "Rejected",
     },
     {
-      key: "REQUESTED",
+      key: "Requested",
       value: "REQUESTED",
-      text: "REQUESTED",
+      text: "Requested",
     },
   ];
 
@@ -228,7 +243,7 @@ export default withPageAuthRequired(function Items() {
                   <TableHeadCell>Coupon Name</TableHeadCell>
                   <TableHeadCell>Merchant Name</TableHeadCell>
                   <TableHeadCell>Create Date</TableHeadCell>
-                  <TableHeadCell>Expiry Date</TableHeadCell>
+                  <TableHeadCell>Expire Date</TableHeadCell>
                   <TableHeadCell>Original Price</TableHeadCell>
                   <TableHeadCell>Retail Price</TableHeadCell>
                   <TableHeadCell>Merchant Profit</TableHeadCell>
@@ -267,16 +282,21 @@ export default withPageAuthRequired(function Items() {
                         {new Date(Number(item.createdAt)).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        {new Date(Number(item.expiresIn)).toLocaleDateString()}
+                        {addDays(item.createdAt, item.expiresIn)}
+                      </TableCell>
+                      {/* {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)} */}
+                      
+                      <TableCell>
+                        ${item.originalPrice}
                       </TableCell>
                       <TableCell>
-                        {item.originalPrice}
+                        ${item?.price?.amount}
+                        {/* ${item.price} */}
+                        {/* $Retail Price */}
                       </TableCell>
                       <TableCell>
-                        Retail Price
-                      </TableCell>
-                      <TableCell>
-                        Merchant Profit
+                        ${item.amount}
+                        {/* $Merchant Profit */}
                       </TableCell>
                       <TableCell>
                         Request Status

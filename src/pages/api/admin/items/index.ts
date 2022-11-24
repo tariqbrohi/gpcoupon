@@ -20,7 +20,7 @@ export default withApiAuthRequired(
         items.map(({ _id, categoryIDs, brandId, ...rest }: any) => ({
           ...rest,
           id: _id['$oid'],
-          brandId: brandId['$oid'],
+          brandId: brandId?.['$oid'],
           categoryIDs: categoryIDs.map(({ $oid }: any) => $oid),
         })),
       );
