@@ -158,6 +158,7 @@ export default isAuth(
           // remove this and implement custom email
           notifyReceiverEmail: 1,
           email: recipient.email,
+          poNumber: transactionId,
         });
 
         if (!order) {

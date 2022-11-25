@@ -12,6 +12,7 @@ export type FindOneVoucherInput = {
 export type PlaceOrderInput = {
   productId: number;
   quantity: number;
+  poNumber?: string;
   denomination: number;
   email?: string;
   notifyAdminEmail?: number;

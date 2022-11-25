@@ -184,8 +184,7 @@ export default withApiAuthRequired(
           productId: +xoxoItem.id,
           quantity,
           denomination: +price,
-          // todo
-          // remove this and implement custom email
+          poNumber: charge.id,
           notifyReceiverEmail: 1,
           email: recipient.email,
         });
