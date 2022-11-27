@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table } from "@growth-ui/react";
 
 export default function CouponList(props: any) {
-  const { result } = props;
+  const { result, status } = props;
 
   const getExpireDate = (date:any, days:any) => {
     const d = new Date(date);
@@ -34,11 +34,11 @@ export default function CouponList(props: any) {
                 <Table.Cell positive>Total</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
-                <Table.Cell positive>{result.gifts.length}</Table.Cell>
+                <Table.Cell positive>{result.totalCount}</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
                 <Table.Cell positive>${result.totalProfit}</Table.Cell>
-                <Table.Cell positive>-</Table.Cell>
+                <Table.Cell positive>{status === "available"? "unused": status}</Table.Cell>
               </Table.Row>
               {
                 result.gifts?.map((gift: any, idx: number) =>{

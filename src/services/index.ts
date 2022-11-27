@@ -244,6 +244,7 @@ export type GetItemForCouponDetailDashboardQueryVariables = {
   status: string;
 };
 export type GetItemForCouponDetailDashboardQueryResult = {
+  totalCount: number,
   totalProfit: number,
   gifts: [{
     status: string,

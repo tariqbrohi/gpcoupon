@@ -1,10 +1,9 @@
 import AppContext from '@/modules/components/AppContext';
 import React, { useContext, useEffect, useState } from 'react';
-import { Paragraph, Spacer, Pagination, Button, Container, Dropdown, Heading, Input, Select, DateInput } from '@growth-ui/react';
+import { Spacer, Pagination, Button, Heading, Select } from '@growth-ui/react';
 import { useGetItemForCouponDetailDashboardLazyQuery} from '@/services';
 import styled from 'styled-components';
 import CouponList from '@/components/affiliateDashboard/DetailCouponList';
-import stringSimilarity from 'string-similarity';
 import AppHeader from '@/layouts/AppHeader';
 import AppContainer from '@/layouts/AppContainer';
 import Head from '@/modules/components/Head';
@@ -36,22 +35,22 @@ export default function CouponDetails() {
     {
       key: "all",
       value: "all",
-      text: "all",
+      text: "All",
     },
     {
       key: "used",
       value: "used",
-      text: "used",
+      text: "Used",
     },
     {
       key: "expired",
       value: "expired",
-      text: "expired",
+      text: "Expired",
     },
     {
       key: "available",
       value: "available",
-      text: "unused",
+      text: "Unused",
     }
   ];
 
@@ -101,11 +100,12 @@ export default function CouponDetails() {
             <div style={{padding: "30px 0"}}>
               <CouponList 
                 result = {data}
+                status = {status}
               />
             </div>
             <Spacer size={20} />
             <Pagination
-              totalPages={Math.ceil((data?.gifts.length || 1) / TAKE) }
+              totalPages={Math.ceil((data?.totalCount || 1) / TAKE) }
               onPageChange={handlePageChange}
               activePage={activePage}
             />
