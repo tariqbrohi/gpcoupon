@@ -161,6 +161,8 @@ export default function MyCoupon() {
 
       <div style={{padding: "30px 0"}}>
           <MyCouponList 
+            startDate = {startDate}
+            endDate = {endDate}
             total = {data?.total}
             orders = {data?.orders
               ?.filter((o:any) => {

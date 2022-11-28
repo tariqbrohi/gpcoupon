@@ -18,7 +18,7 @@ export const ROUTES = {
   occasions: '/occasions',
   paymentCards: '/account/payment-cards',
   affiliateDashboard: '/affiliateDashboard',
-  affiiateCouponDetails: '/affiliateDashboard/details',
+  affiliateCouponDetails: '/affiliateDashboard/couponDashboard/details',
   affiliateCouponRequestList: '/affiliateDashboard/coupon/requestList',
   affiliateCouponRequest: '/affiliateDashboard/coupon/request',
   affiliateBrands: '/affiliateDashboard/brands',
