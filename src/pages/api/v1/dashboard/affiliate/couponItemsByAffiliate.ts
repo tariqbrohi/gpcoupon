@@ -17,7 +17,7 @@ export default errorHandler(async function handler(req, res) {
     status
   } = req.query as any;
 
-  if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== ''))
+  if ((startDate !== '' && endDate === '') || (startDate === '' && endDate !== ''))
   {
     throw(new BadRequestError('Missing data'));
   }
