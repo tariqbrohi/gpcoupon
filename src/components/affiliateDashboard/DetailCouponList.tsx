@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Table } from "@growth-ui/react";
 
 export default function CouponList(props: any) {
@@ -38,7 +38,7 @@ export default function CouponList(props: any) {
                 <Table.Cell positive>-</Table.Cell>
                 <Table.Cell positive>-</Table.Cell>
                 <Table.Cell positive>${result.totalProfit}</Table.Cell>
-                <Table.Cell positive>{status === "available"? "unused": status}</Table.Cell>
+                <Table.Cell positive>{status === "available"? "UNUSED": status.toUpperCase()}</Table.Cell>
               </Table.Row>
               {
                 result.gifts?.map((gift: any, idx: number) =>{
@@ -57,7 +57,7 @@ export default function CouponList(props: any) {
                       <Table.Cell>${gift?.order?.item?.originalPrice}</Table.Cell>
                       <Table.Cell>${gift?.order?.item?.price.amount}</Table.Cell>
                       <Table.Cell>${gift?.status === "used"? gift?.order?.item?.amount : 0}</Table.Cell>
-                      <Table.Cell>{gift?.status === "available"? "unused": gift.status}</Table.Cell>
+                      <Table.Cell>{gift?.status === "available"? "UNUSED": gift.status.toUpperCase()}</Table.Cell>
                     </Table.Row>
                   )
                 })

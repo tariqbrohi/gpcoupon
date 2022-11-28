@@ -35,22 +35,22 @@ export default function CouponDetails() {
     {
       key: "all",
       value: "all",
-      text: "All",
+      text: "ALL",
     },
     {
       key: "used",
       value: "used",
-      text: "Used",
+      text: "USED",
     },
     {
       key: "expired",
       value: "expired",
-      text: "Expired",
+      text: "EXPIRED",
     },
     {
       key: "available",
       value: "available",
-      text: "Unused",
+      text: "UNUSED",
     }
   ];
 
