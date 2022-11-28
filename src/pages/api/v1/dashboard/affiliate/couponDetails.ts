@@ -35,6 +35,10 @@ export default errorHandler(async function handler(req, res) {
     }
   });
 
+  const orderBy: Record<string, any> = {
+    createdAt: 'desc',
+  };
+
   let where: Record<string, any> = {
     itemId: itemId!.id,
   };
@@ -65,44 +69,59 @@ export default errorHandler(async function handler(req, res) {
     giftWhere.status = status;
   }
 
-  const gifts = await prisma.gift.findMany({
-    where: giftWhere,
-    select: {
-      status: true,
-      createdAt: true,
-      order: true,
-    },
-    skip,
-    take
-  });
-
-  let totalProfit = 0;
-
-  if (status === 'all' || status === 'used') {
-    const giftProfit = await prisma.gift.findMany({
-      where: {
-        status: "used",
-        orderId: {
-          in: orders.map(({id})=> id),
-        },
-      },
+  const giftPromises = [
+    prisma.gift.findMany({
+      where: giftWhere,
       select: {
         status: true,
+        createdAt: true,
         order: true,
       },
-    });
-    
-    totalProfit = giftProfit.reduce((tot: number, gift: any) => {
-      return tot + (gift?.order?.item?.amount);
-    }, 0);
+      skip,
+      take,
+      orderBy
+    }), //data
+    prisma.gift.findMany({
+      where: giftWhere,
+      select: {
+        status: true,
+        createdAt: true,
+        order: true,
+      },
+    }), //totalCount
+  ]
+
+  if (status === 'all' || status === 'used') {
+    giftPromises.push(
+      prisma.gift.findMany({
+        where: {
+          status: "used",
+          orderId: {
+            in: orders.map(({id}) => id),
+          },
+        },
+        select: {
+          status: true,
+          order: true,
+          createdAt: true,
+        },
+      })// totalProfit
+    );
   }
 
-  if (!gifts) throw new BadRequestError('No coupon exists!');
-  
+  const gifts = await Promise.all(giftPromises);
+    
+    const totalProfit = gifts[2]?.reduce((tot: number, gift: any) => {
+      return tot + (gift?.order?.item?.amount);
+    }, 0) || 0;
+
+  if (!gifts[0]) throw new BadRequestError('No coupon exists!');
+
   res.send(
     {
+      totalCount : gifts[1].length, 
       totalProfit,
-      gifts,
+      gifts: gifts[0],
     }
   );
 });
