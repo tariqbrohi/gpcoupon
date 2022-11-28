@@ -11,6 +11,7 @@ import {
   Payment,
   Recipient,
   Status,
+  Gift
 } from '@prisma/client';
 import { useLazyQuery } from './useLazyQuery';
 import { useMutation } from './useMutation';
@@ -145,45 +146,47 @@ export type GetAffiliateItemsQueryResult = Brand & {
   items: Item[];
 };
 
+// Affiliate Dashboard
+
 /**
  * GetAffiliateItemsForDashboard(accountId)
  */
-export const useGetAffiliateItemsForDashboardQuery = (
-  baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
-) => {
-  return useQuery<
-    GetAffiliateItemsForDashboardQueryVariables,
-    GetAffiliateItemsForDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/items', baseOptions);
-};
-export const useGetAffiliateItemsForDashboardLazyQuery = (
-  baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
-) => {
-  return useLazyQuery<
-    GetAffiliateItemsForDashboardQueryVariables,
-    GetAffiliateItemsForDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/items', baseOptions);
-};
-export type GetAffiliateItemsForDashboardQueryVariables = {
-  country?: string;
-  take?: number;
-  skip?: number;
-  sub: string;
-  affiliate?: boolean;
-  sortBy?: string;
-};
-export type GetAffiliateItemsForDashboardQueryResult = Brand & {
-  total: {
-    count: number;
-    profitSum: number;
-  };
-  orders: Order[];
-};
+// export const useGetAffiliateItemsForDashboardQuery = (
+//   baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
+// ) => {
+//   return useQuery<
+//     GetAffiliateItemsForDashboardQueryVariables,
+//     GetAffiliateItemsForDashboardQueryResult
+//   >('/api/v1/dashboard/affiliate/items', baseOptions);
+// };
+// export const useGetAffiliateItemsForDashboardLazyQuery = (
+//   baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
+// ) => {
+//   return useLazyQuery<
+//     GetAffiliateItemsForDashboardQueryVariables,
+//     GetAffiliateItemsForDashboardQueryResult
+//   >('/api/v1/dashboard/affiliate/items', baseOptions);
+// };
+// export type GetAffiliateItemsForDashboardQueryVariables = {
+//   country?: string;
+//   take?: number;
+//   skip?: number;
+//   sub: string;
+//   affiliate?: boolean;
+//   sortBy?: string;
+// };
+// export type GetAffiliateItemsForDashboardQueryResult = Brand & {
+//   total: {
+//     count: number;
+//     profitSum: number;
+//   };
+//   orders: Order[];
+// };
 
 /**
  * GetItemsByAffiliateForDashboard
  */
- export const useGetAffiliateItemsByAffiliateForDashboardQuery = (
+export const useGetAffiliateItemsByAffiliateForDashboardQuery = (
   baseOptions?: QueryBaseOptions<GetItemsByAffiliateForDashboardQueryVariables>,
 ) => {
   return useQuery<
@@ -216,37 +219,71 @@ export type GetItemsByAffiliateForDashboardQueryResult = Brand & {
 };
 
 /**
- * GetItemsByAffiliateForAdminDashboard
+ * GetItemForCouponDetailDashboard
  */
- export const useGetAffiliateItemsByAffiliateForAdminDashboardQuery = (
-  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+ export const useGetItemForCouponDetailDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetItemForCouponDetailDashboardQueryVariables>,
 ) => {
   return useQuery<
-    GetItemsByAffiliateForAdminDashboardQueryVariables,
-    GetItemsByAffiliateForAdminDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+    GetItemForCouponDetailDashboardQueryVariables,
+    GetItemForCouponDetailDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/couponDetails', baseOptions);
 };
-export const useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery = (
-  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+export const useGetItemForCouponDetailDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetItemForCouponDetailDashboardQueryVariables>,
 ) => {
   return useLazyQuery<
-    GetItemsByAffiliateForAdminDashboardQueryVariables,
-    GetItemsByAffiliateForAdminDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+  GetItemForCouponDetailDashboardQueryVariables,
+  GetItemForCouponDetailDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/couponDetails', baseOptions);
 };
-export type GetItemsByAffiliateForAdminDashboardQueryVariables = {
+export type GetItemForCouponDetailDashboardQueryVariables = {
+  take?: number;
+  skip?: number;
+  slug: string;
+  startDate?: string;
+  endDate?: string;
+  status: string;
+};
+export type GetItemForCouponDetailDashboardQueryResult = {
+  totalCount: number,
+  totalProfit: number,
+  gifts: [{
+    status: string,
+    createdAt: string,
+    orders: Order
+  }];
+};
+
+/**
+ * GetBrandsByAffiliate
+ */
+ export const useGetBrandsByAffiliateQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateQueryVariables>,
+) => {
+  return useQuery<
+    GetBrandsByAffiliateQueryVariables,
+    GetBrandsByAffiliateQueryResult
+  >('/api/v1/dashboard/affiliate/brandList', baseOptions);
+};
+export const useGetBrandsByAffiliateLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetBrandsByAffiliateQueryVariables,
+    GetBrandsByAffiliateQueryResult
+  >('/api/v1/dashboard/affiliate/brandList', baseOptions);
+};
+export type GetBrandsByAffiliateQueryVariables = {
   take?: number;
   skip?: number;
   startDate?: string;
   endDate?: string;
-  status?: string;
+  status: string;
+  sub: string;
 };
-export type GetItemsByAffiliateForAdminDashboardQueryResult = Brand & {
-  total: {
-    count: number;
-    profitSum: number;
-  };
-  orders: Order[];
+export type GetBrandsByAffiliateQueryResult = {
+  brands: Brand[]
 };
 
 /**

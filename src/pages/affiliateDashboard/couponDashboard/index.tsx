@@ -10,25 +10,6 @@ import AppMain from '@/layouts/AppMain';
 const TAKE = 20;
 
 export default function CouponDashboard() {
-  const [ sortBy, setSortBy ] = useState('createdAt, desc');
-  const [ activePage, setActivePage ] = useState(1)
-  // const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
-
-  // useEffect(() => {
-  //     query({
-  //         data: {
-  //             take: TAKE,
-  //             sortBy,
-  //             skip: (activePage - 1) * TAKE,
-  //         }
-  //     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activePage, sortBy]);
-
-  const handlePageChange = (_: any, { activePage }: any) => {
-      setActivePage(activePage);
-  };
-  
   return (
     <MyCoupon />
   );

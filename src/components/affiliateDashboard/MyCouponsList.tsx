@@ -3,6 +3,7 @@ import React from 'react';
 import { Table, Spacer, Image } from "@growth-ui/react";
 import { ROUTES } from '@/ROUTES';
 import styled from "styled-components";
+import { useRouter } from 'next/router';
 
 const TableCellLink = styled(Table.Cell)`
     cursor: pointer;
@@ -15,14 +16,40 @@ const TableCellLink = styled(Table.Cell)`
     }
 `;
 
+const LinkAnchor = styled.a`
+  color: #4183c4;
+  transition: all 0.4s ease-in-out;
+
+  &:hover {
+    color: #2D126D;
+    text-decoration: underline;
+  }
+`;
+
 export default function MyCouponList(props: any) {
     const { total, orders } = props;
+    const router = useRouter();
 
-    const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
+    const calculateAmount = (slug: string, totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
         const qty = Math.round(totalAmount / oneAmount);
         return (
             <>
-              <Table.Cell>{qty}</Table.Cell>
+              <Table.Cell>
+                <div 
+                  onClick={() => {
+                    router.push({
+                      pathname: ROUTES.affiliateCouponDetails,
+                      query: {
+                        startDate: props.startDate,
+                        endDate: props.endDate,
+                        slug
+                      },
+                    })
+                  }}
+                >
+                  <LinkAnchor>{qty}</LinkAnchor>
+                </div>
+                </Table.Cell>
               <Table.Cell>${originalPrice}</Table.Cell>
               <Table.Cell>${oneAmount}</Table.Cell>
               <Table.Cell>${amount}</Table.Cell>
@@ -67,7 +94,7 @@ export default function MyCouponList(props: any) {
                               <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?._id.slug}/${order?._id.id}`)}>
                                   {order?._id.name}                       
                               </TableCellLink>
-                              {calculateAmount(order?.sum, order?._id?.price.amount, order?._id?.originalPrice, order?._id?.amount)}
+                              {calculateAmount(order?._id.slug, order?.sum, order?._id?.price.amount, order?._id?.originalPrice, order?._id?.amount)}
                             </Table.Row>
                         )
                     })}

@@ -84,7 +84,8 @@ export default errorHandler(async function handler(req, res) {
       },
       select: {
         item: true,
-        payment: true
+        payment: true,
+        gifts: true,
       },
     })
   ]);
