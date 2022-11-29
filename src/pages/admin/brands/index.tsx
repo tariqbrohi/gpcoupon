@@ -1,16 +1,17 @@
 /* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Heading, Image, Input, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, Heading, Image, Input, Pagination, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsQuery } from '@/services';
+import { useGetBrandsByAffiliateForAdminDashboardQuery, useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Provider from '@/components/admin/brands/Provider';
+import { useRouter } from 'next/router';
 
 const LabelContainer = styled.div`
   display: flex;
@@ -63,16 +64,28 @@ const TableCellLink = styled(Table.Cell)`
   }
 `;
 
-export default withPageAuthRequired(function Brands() {
-  const { data: brands } = useGetBrandsQuery({
-    data: {
-      affiliate: true,
-      status: 'ALL',
-    },
-  });
+const ChipCustom = styled(Chip)`
+  text-align: center;
+  margin: 0 auto;
+`;
 
+const ChipCategories = styled(Chip)`
+  text-align: center;
+
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+`;
+
+const TAKE = 20;
+
+export default withPageAuthRequired(function Brands() {
+  const [sortBy, setSortBy] = useState('createdAt, desc');
+  // const [activePage, setActivePage] = useState(1);
   const [searchBrand, setSearchBrand] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
+  const router = useRouter();
+  const {startDate, endDate } = router.query;
 
   const statusOption = [
     {
@@ -91,6 +104,26 @@ export default withPageAuthRequired(function Brands() {
       text: "Unavailable",
     },
   ];
+
+  // const { data: brands } = useGetBrandsQuery({
+  //   data: {
+  //     affiliate: true,
+  //     status: 'ALL',
+  //   },
+  // });
+
+  const { data: brands } = useGetBrandsByAffiliateForAdminDashboardQuery({
+    data: {
+      startDate: startDate as string,
+      endDate: endDate as string,
+      affiliate: true,
+      status: 'ALL',
+    }
+  });
+
+  // const handlePageChange = (_: any, { activePage }: any) => {
+  //   setActivePage(activePage);
+  // };
 
   return (
     <>
@@ -180,7 +213,7 @@ export default withPageAuthRequired(function Brands() {
 
                 <Table.Body>
                   {brands
-                    ?.filter(({ name }) => {
+                    ?.filter(({ name }:any) => {
                       if (!searchBrand) return true;
                     
                       const similarity = stringSimilarity.compareTwoStrings(
@@ -192,7 +225,7 @@ export default withPageAuthRequired(function Brands() {
                       
                       return false;
                     })
-                    .map((brand) => (
+                    .map((brand: any) => (
                       <Table.Row key={brand.id}>
                         <TableCell>
                           <Image size='mini' src={brand.thumbnailUrl} />
@@ -209,14 +242,15 @@ export default withPageAuthRequired(function Brands() {
                           GP Wallet Business Username
                         </TableCell>
                         <TableCell>
-                          {brand.countries}
+                          <ChipCustom text={brand.countries.join(', ')} />
                         </TableCell>
                         <TableCell>
-                          <Chip text='Categories' />
-                          {/* {brand.categories} */}
+                          {brand.categories.map((c: any, index:number) => (
+                            <ChipCategories key={index} text={c.name} />
+                          ))}
                         </TableCell>
                         <TableCell>
-                          <Chip text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
+                          <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
                         </TableCell>
                         <TableCell>
                           {new Date(Number(brand.createdAt)).toLocaleDateString()}
@@ -227,6 +261,13 @@ export default withPageAuthRequired(function Brands() {
                 </Table.Body>
               </Table>
             </Provider>
+            <Spacer size={20} />
+            
+            {/* <Pagination
+              totalPages={Math.ceil((brands?.brands || 1) / TAKE) }
+              onPageChange={handlePageChange}
+              activePage={activePage}
+            /> */}
           </AdminLayout>
         </AppMain>
     </>

@@ -287,6 +287,41 @@ export type GetBrandsByAffiliateQueryResult = {
 };
 
 /**
+ * GetBrandsByAffiliateForAdminDashboard
+ */
+ export const useGetBrandsByAffiliateForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
+    '/api/v1/dashboard/admin/brandList',
+    baseOptions,
+  );
+};
+export const useGetBrandsByAffiliateForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
+    '/api/v1/dashboard/admin/brandList',
+    baseOptions,
+  );
+};
+export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
+  take?: number;
+  skip?: number;
+  startDate?: string;
+  endDate?: string;
+  country?: string;
+  affiliate?: boolean;
+  status?: 'ALL';
+
+  // status?: 'AVAILABLE' | 'ALL';
+};
+// export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
+//   brands: Brand[]
+// };
+export type GetBrandsByAffiliateForAdminDashboardQueryResult = Brand[];
+
+/**
  * GetAffiliateItemsForAdminDashboard
  */
  export const useGetAffiliateItemsForAdminDashboardQuery = (
