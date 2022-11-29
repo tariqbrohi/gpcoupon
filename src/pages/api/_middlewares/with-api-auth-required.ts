@@ -7,6 +7,7 @@ const withApiAuthRequired = (
   apiHandler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
+    console.log('not even here');
     try {
       const { jid } = parseCookies(req);
 
