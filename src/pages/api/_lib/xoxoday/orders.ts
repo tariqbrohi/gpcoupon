@@ -15,6 +15,7 @@ export const place = async (
 
     return data.data.placeOrder.data;
   } catch (err: any) {
+    console.log(JSON.stringify(err, null, 2), ' error while placing order');
     console.error(err?.response?.data);
 
     return null;

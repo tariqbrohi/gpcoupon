@@ -190,6 +190,7 @@ export default withApiAuthRequired(
         });
 
         if (!order) {
+          console.log('SHIT');
           // todo
           // slack notify with gpointwallet transaction id and etc...
           throw new InternalServerError();
