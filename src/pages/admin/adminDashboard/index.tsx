@@ -11,9 +11,15 @@ import Link from 'next/link';
 import { ROUTES } from '@/ROUTES';
 import styled from 'styled-components';
 
+const LabelContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
 const DetailBtn = styled(Button)`
   min-width: 172px;
   max-width: 205px;
+  margin-bottom: 10px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
 `;
 
@@ -45,8 +51,8 @@ export default withPageAuthRequired(function AdminDashboard() {
             <AppMain>
                 <AdminLayout>
                     <Provider>
-                        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                            <Heading as="h2" style={{color: "#2D126D", marginBottom: "0"}}>
+                        <LabelContainer style={{justifyContent: "space-between"}}>
+                            <Heading as="h2" style={{color: "#2D126D"}}>
                                 Coupon Dashboard
                             </Heading>
                             <Link href={ROUTES.admin.adminDashboardDetails}>
@@ -54,7 +60,7 @@ export default withPageAuthRequired(function AdminDashboard() {
                                     <DetailBtn rounded>To Detail</DetailBtn>
                                 </a>
                             </Link>
-                        </div>
+                        </LabelContainer>
                         <Spacer size={30} />
                         
                         {/* <Heading as="h2">
