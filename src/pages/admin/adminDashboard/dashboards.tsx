@@ -4,7 +4,7 @@ import Provider from '@/components/admin/items/Provider';
 import { Table, Spacer, Image } from "@growth-ui/react";
 import { ROUTES } from '@/ROUTES';
 import styled from "styled-components";
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 const TableHeadCell = styled(Table.HeadCell)`
   text-align: center;
@@ -28,13 +28,24 @@ const TableCellLink = styled(Table.Cell)`
 
 export default function AdminDashboards(props: any) {
     const { total, orders } = props;
+    const router = useRouter();
 
-    const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
+    const calculateAmount = (slug: string, totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
         const qty = Math.round(totalAmount / oneAmount);
 
         return (
             <>
                 <TableCellLink 
+                    onClick={() => {
+                        router.push({
+                            pathname: ROUTES.admin.adminDashboardDetails,
+                            query: {
+                                startDate: props.startDate,
+                                endDate: props.endDate,
+                                slug
+                            },
+                        })
+                    }}
                     // onClick={() => Router.push(`${ROUTES.admin.items}/${orders?._id.id}`)}
                 >
                     {qty}
@@ -90,7 +101,7 @@ export default function AdminDashboards(props: any) {
                                             Merchant Name
                                             {/* {order?.item?.brand?.name} */}
                                         </TableCell>
-                                        {calculateAmount(order?.sum, order?._id?.price.amount, order?._id?.originalPrice, order?._id?.amount)}
+                                        {calculateAmount(order?._id.slug, order?.sum, order?._id?.price.amount, order?._id?.originalPrice, order?._id?.amount)}
                                         {/* {calculateAmount(order?.sum, order?._id?.price.amount, order?._id?.originalPrice, (order?._id?.price.amount - (order?._id?.price.amount * 0.2)))} */}
                                     </Table.Row>
                                 )

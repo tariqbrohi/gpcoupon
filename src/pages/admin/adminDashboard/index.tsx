@@ -201,6 +201,8 @@ export default withPageAuthRequired(function AdminDashboard() {
 
                         <div style={{padding: "30px 0"}}>
                             <AdminDashboards 
+                                startDate={startDate}
+                                endDate={endDate}
                                 total={data?.total}
                                 orders={data?.orders
                                     ?.filter((o: any) => {

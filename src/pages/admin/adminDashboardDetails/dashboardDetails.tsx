@@ -1,4 +1,4 @@
-import { Table } from "@growth-ui/react";
+import { Chip, Table } from "@growth-ui/react";
 import styled from "styled-components";
 
 const TableHeadCell = styled(Table.HeadCell)`
@@ -9,8 +9,19 @@ const TableCell = styled(Table.Cell)`
     text-align: center;
 `;
 
+const ChipCustom = styled(Chip)`
+    margin: 0 auto;
+`;
+
 export default function DashboardDetails(props: any) {
-    const { gifts } = props;
+    const { result, status } = props;
+
+    const getExpireDate = (date:any, days:any) => {
+        const d = new Date(date);
+        d.setDate(d.getDate() + days);
+        
+        return d.toLocaleDateString();
+    }
 
     return (
         <>
@@ -30,67 +41,74 @@ export default function DashboardDetails(props: any) {
                     </Table.Row>
                 </Table.Head>
 
-                <Table.Body>
-                    <Table.Row>
-                        <TableCell positive>Total</TableCell>
-                        <TableCell positive>-</TableCell>
-                        <TableCell positive>-</TableCell>
-                        <TableCell positive>-</TableCell>
-                        <TableCell positive>-</TableCell>
-                        <TableCell positive>-</TableCell>
-                        <TableCell positive>-</TableCell>
-                        <TableCell positive>$</TableCell>
-                        <TableCell positive>-</TableCell>
-                        {/* <TableCell positive>-</TableCell> */}
-                    </Table.Row>
-
-                    <Table.Row>
-                        <TableCell>Coupon Name</TableCell>
-                        <TableCell>Merchant Name</TableCell>
-                        <TableCell>mm/dd/yyyy</TableCell>
-                        <TableCell>mm/dd/yyyy</TableCell>
-                        <TableCell>1</TableCell>
-                        <TableCell>$Original Price</TableCell>
-                        <TableCell>$Retail Price</TableCell>
-                        <TableCell>$Merchant Profit</TableCell>
-                        <TableCell>Use Status</TableCell>
-                        {/* <TableCell>GPartner</TableCell> */}
-                    </Table.Row>
-                </Table.Body>
-
-                {/* {gifts ? (
+                {result ? (
                     <Table.Body>
                         <Table.Row>
                             <TableCell positive>Total</TableCell>
                             <TableCell positive>-</TableCell>
                             <TableCell positive>-</TableCell>
                             <TableCell positive>-</TableCell>
+                            <TableCell positive>{result.totalCount}</TableCell>
                             <TableCell positive>-</TableCell>
                             <TableCell positive>-</TableCell>
-                            <TableCell positive>-</TableCell>
-                            <TableCell positive>$</TableCell>
-                            <TableCell positive>-</TableCell>
+                            <TableCell positive>${result.totalProfit}</TableCell>
+                            <TableCell positive>
+                                {status === "available" ? (
+                                    <ChipCustom text="UNUSED" outlined color={'primary'} />
+                                ) : status === "used" ? (
+                                    <ChipCustom text="USED" outlined color={'yellow-400'} />
+                                ) : status === "expired" ? (
+                                    <ChipCustom text="EXPIRED" outlined color={'red-400'} />
+                                ) : (
+                                    <ChipCustom text="ALL" outlined color={'green-400'} />
+                                )}
+                            </TableCell>
+                            {/* <TableCell positive>-</TableCell> */}
                         </Table.Row>
-                        {gifts?.map((gift: any, idx: number) => {
+                        
+                        {result.gifts?.map((gift: any, idx: number) => {
                             return (
                                 <Table.Row key={idx}>
-                                    <TableCell>Coupon Name</TableCell>
-                                    <TableCell>Merchant Name</TableCell>
-                                    <TableCell>Create Date</TableCell>
-                                    <TableCell>Expire Date</TableCell>
+                                    <TableCell>
+                                        {gift.order.item.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        Merchant Name
+                                    </TableCell>
+                                    <TableCell>
+                                        {new Date(Number(gift?.createdAt) * 1000).toLocaleDateString()}
+                                    </TableCell>
+                                    <TableCell>
+                                        {getExpireDate(gift?.createdAt * 1000, gift?.order?.item?.expiresIn)}
+                                    </TableCell>
                                     <TableCell>1</TableCell>
-                                    <TableCell>Original Price</TableCell>
-                                    <TableCell>Retail Price</TableCell>
-                                    <TableCell>Merchant Profit</TableCell>
-                                    <TableCell>Use Status</TableCell>
+                                    <TableCell>
+                                        ${gift?.order?.item?.originalPrice}
+                                    </TableCell>
+                                    <TableCell>
+                                        ${gift?.order?.item?.price.amount}
+                                    </TableCell>
+                                    <TableCell>
+                                        ${gift?.status === "used" ? gift?.order?.item?.amount : 0}
+                                    </TableCell>
+                                    <TableCell>
+                                        {gift?.status === "available" ? (
+                                            <ChipCustom text="UNUSED" outlined color={'primary'} />
+                                        ) : gift?.status === "used" ? (
+                                            <ChipCustom text="USED" outlined color={'yellow-400'} />
+                                        ) : (
+                                            <ChipCustom text="EXPIRED" outlined color={'red-400'} />
+                                        )}
+                                        {/* {gift?.status === "available" ? "UNUSED" : gift.status.toUpperCase()} */}
+                                    </TableCell>
+                                    {/* <TableCell>GPartner</TableCell> */}
                                 </Table.Row>
                             );
                         })}
                     </Table.Body>
                 ) : (
                     <></>
-                )} */}
-
+                )}
             </Table>
         </>
     );
