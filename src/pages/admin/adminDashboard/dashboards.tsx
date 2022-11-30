@@ -91,6 +91,7 @@ export default function AdminDashboards(props: any) {
                                             {/* {order?.item?.brand?.name} */}
                                         </TableCell>
                                         {calculateAmount(order?.sum, order?._id?.price.amount, order?._id?.originalPrice, order?._id?.amount)}
+                                        {/* {calculateAmount(order?.sum, order?._id?.price.amount, order?._id?.originalPrice, (order?._id?.price.amount - (order?._id?.price.amount * 0.2)))} */}
                                     </Table.Row>
                                 )
                             })}
