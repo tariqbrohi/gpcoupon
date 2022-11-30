@@ -2,7 +2,7 @@ import Provider from "@/components/admin/items/Provider";
 import AdminLayout from "@/layouts/AdminLayout";
 import AppMain from "@/layouts/AppMain";
 import Head from "@/modules/components/Head";
-import { useGetAffiliateItemsForAdminDashboardLazyQuery } from "@/services";
+import { useGetAffiliateItemsForAdminDashboardLazyQuery, useGetItemForCouponDetailDashboardLazyQuery } from "@/services";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { Button, Heading, Pagination, Select, Spacer } from "@growth-ui/react";
 import { useRouter } from "next/router";
@@ -50,7 +50,9 @@ export default withPageAuthRequired(function Details() {
     const [ activePage, setActivePage ] = useState(1);
     const [ status, setStatus ] = useState('all');
     const router = useRouter();
-    const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+    // const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+    const [ query, { data, loading }] = useGetItemForCouponDetailDashboardLazyQuery({});
+    const { startDate, endDate, slug } = router.query;
 
     const statusOption = [
         {
@@ -79,12 +81,15 @@ export default withPageAuthRequired(function Details() {
         query({
             data: {
                 take: TAKE,
-                sortBy,
                 skip: (activePage - 1) * TAKE,
+                slug: slug as string,
+                startDate: startDate as string,
+                endDate: endDate as string,
+                status
             }
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activePage, sortBy]);
+    }, [activePage, status]);
 
     const handlePageChange = (_: any, { activePage }: any) => {
         setActivePage(activePage);
@@ -120,12 +125,13 @@ export default withPageAuthRequired(function Details() {
                         <div style={{border: "2px solid #D9D9D9"}}></div>
 
                         <div style={{padding: "50px 0"}}>
-                            <DashboardDetails orders={data} />
+                            {/* <DashboardDetails orders={data} /> */}
+                            <DashboardDetails result={data} status={status} />
                         </div>
                         <Spacer size={20} />
 
                         <Pagination
-                            totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
+                            totalPages={Math.ceil((data?.totalCount || 1) / TAKE)}
                             onPageChange={handlePageChange}
                             activePage={activePage}
                         />
