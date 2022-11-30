@@ -103,7 +103,7 @@ export default withPageAuthRequired(function Details() {
                     <Provider>
                         <LabelContainer style={{justifyContent: "space-between"}}>
                             <Heading as="h2" style={{color: "#2D126D"}}>
-                                Coupon Dashboard Details
+                                Coupon Details
                             </Heading>
                             <BackBtn onClick={() => router.back()}>
                                 Back
