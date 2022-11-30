@@ -56,24 +56,24 @@ export default withPageAuthRequired(function Details() {
         {
             key: "all",
             value: "all",
-            text: "ALL",
+            text: "All",
         },
         {
             key: "available",
             value: "available",
-            text: "UNUSED",
+            text: "Unused",
         },
         {
             key: "used",
             value: "used",
-            text: "USED",
+            text: "Used",
         },
         {
             key: "expired",
             value: "expired",
-            text: "EXPIRED",
+            text: "Expired",
         },
-      ];
+    ];
 
     useEffect(() => {
         query({
