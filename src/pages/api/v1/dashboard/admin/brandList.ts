@@ -15,7 +15,7 @@ export default errorHandler(async function handler(req, res) {
         endDate = '',
         country,
         affiliate = 'false',
-        status = 'ALL',
+        status,
     } = req.query as any;
 
     if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== '')) {
@@ -70,6 +70,23 @@ export default errorHandler(async function handler(req, res) {
             countries: true,
         },
     });
+
+    // const match : any = [];
+    
+    // if (status !== 'ALL') {
+    //     match.push({ "brand.status": status })
+    // }
+
+    // match.push(
+    //   {
+    //     $expr: {
+    //       $in: [
+    //         "$brand.id",
+    //         brand.map(({id}) => id),
+    //       ],
+    //     },
+    //   }
+    // );
 
     if (!brand) throw new BadRequestError('No affiliate exists!');
 

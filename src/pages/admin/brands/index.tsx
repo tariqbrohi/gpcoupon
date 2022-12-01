@@ -2,9 +2,9 @@
 import AdminLayout from '@/layouts/AdminLayout';
 import React, { useEffect, useState } from 'react';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Heading, Image, Input, Pagination, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, DateInput, Heading, Image, Input, Pagination, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsByAffiliateForAdminDashboardQuery, useGetBrandsQuery } from '@/services';
+import { useGetBrandsByAffiliateForAdminDashboardLazyQuery, useGetBrandsByAffiliateForAdminDashboardQuery, useGetBrandsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
@@ -16,6 +16,12 @@ import { useRouter } from 'next/router';
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const DateContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 50%:
 `;
 
 const BtnCreate = styled(Button)`
@@ -81,11 +87,14 @@ const TAKE = 20;
 
 export default withPageAuthRequired(function Brands() {
   const [sortBy, setSortBy] = useState('createdAt, desc');
-  // const [activePage, setActivePage] = useState(1);
+  const [activePage, setActivePage] = useState(1);
   const [searchBrand, setSearchBrand] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
   const router = useRouter();
+  const [ status, setStatus ] = useState('ALL');
   const {startDate, endDate } = router.query;
+  // const [ startDate, setStartDate ] = useState('');
+  // const [ endDate, setEndDate ] = useState('');
 
   const statusOption = [
     {
@@ -117,9 +126,40 @@ export default withPageAuthRequired(function Brands() {
       startDate: startDate as string,
       endDate: endDate as string,
       affiliate: true,
-      status: 'ALL',
+      status,
     }
   });
+
+  // const [query, { data, loading }] = useGetBrandsByAffiliateForAdminDashboardLazyQuery({});
+
+  // useEffect(() => {
+  //   query({
+  //     data: {
+  //       startDate: startDate as string,
+  //       endDate: endDate as string,
+  //       affiliate: true,
+  //       status,
+  //     }
+  //   })
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // },[status]);
+
+  // const handleSearchButton = () => {
+  //   if ((startDate !== '' && endDate) === '' || (startDate === '' && endDate !== '')) {
+  //     alert('Please submit From date and To date');
+
+  //     return;
+  //   }
+
+  //   query({
+  //     data: {
+  //       startDate: startDate as string,
+  //       endDate: endDate as string,
+  //       affiliate: true,
+  //       status,
+  //     }
+  //   });
+  // }
 
   // const handlePageChange = (_: any, { activePage }: any) => {
   //   setActivePage(activePage);
@@ -175,21 +215,60 @@ export default withPageAuthRequired(function Brands() {
               <Spacer size={20} />
 
               <LabelContainer>
+                <Select 
+                  label='Status'
+                  value={statusOption[0].value}
+                  options={statusOption}
+                  onChange={(_, data) => setStatus(data.newValues)}
+                  // style={{minWidth: "13em"}}
+                  style={{width: "50%"}}
+                />
+              </LabelContainer>
+              <Spacer size={20} />
+
+              <LabelContainer>
                 <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
                   <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
                   <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
                 </div>
               </LabelContainer>
-              <Spacer size={20} />
 
-              <LabelContainer>
-                <Select 
-                  label='Status'
-                  value={statusOption[0].value}
-                  options={statusOption}
-                  style={{minWidth: "13em"}}
-                />
-              </LabelContainer>
+              {/* <DateContainer>
+                <LabelContainer style={{justifyContent: "space-between"}}>
+                  <DateInput
+                    mask="yyyy-mm-dd"
+                    renderInput={(params) => 
+                      <Input 
+                        {...params} 
+                        placeholder="yyyy-mm-dd" 
+                        label='From'
+                        // icon="calendar" 
+                        // iconPosition='right' 
+                        style={{width: "30%"}}
+                      />
+                    }
+                    onChange={(_, date) => setStartDate(date)}
+                  />
+
+                  <DateInput
+                    mask="yyyy-mm-dd"
+                    renderInput={(params) => 
+                      <Input 
+                        {...params} 
+                        placeholder="yyyy-mm-dd" 
+                        label='To'
+                        // icon="calendar" 
+                        // iconPosition='right' 
+                        style={{width: "30%"}}
+                      />
+                    }
+                    onChange={(_, date) => setEndDate(date)}
+                  />
+                  <Button rounded onClick={() => handleSearchButton()}>
+                    Search
+                  </Button>
+                </LabelContainer>
+              </DateContainer> */}
             </section>
             <Spacer size={30} />
 

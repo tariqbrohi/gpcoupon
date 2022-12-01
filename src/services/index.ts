@@ -312,9 +312,9 @@ export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
   endDate?: string;
   country?: string;
   affiliate?: boolean;
-  status?: 'ALL';
+  // status?: 'ALL';
 
-  // status?: 'AVAILABLE' | 'ALL';
+  status?: string;
 };
 // export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
 //   brands: Brand[]
