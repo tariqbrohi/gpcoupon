@@ -60,7 +60,7 @@ export default function DashboardDetails(props: any) {
                                 ) : status === "expired" ? (
                                     <ChipCustom text="EXPIRED" outlined color={'red-400'} />
                                 ) : (
-                                    <ChipCustom text="ALL" outlined color={'green-400'} />
+                                    <ChipCustom text="ALL" outlined color={'green-600'} />
                                 )}
                             </TableCell>
                             {/* <TableCell positive>-</TableCell> */}

@@ -67,6 +67,7 @@ export default function CouponDetails() {
         }
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePage, status]);
 
   const handlePageChange = (_: any, { activePage }: any) => {
