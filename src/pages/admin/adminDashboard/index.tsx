@@ -42,14 +42,11 @@ const statusOption = [
 const TAKE = 20;
 
 export default withPageAuthRequired(function AdminDashboard() {
-    // const [search, setSearch] = useState('');
-    // const [ sortBy, setSortBy ] = useState('createdAt, desc');
     const [ activePage, setActivePage ] = useState(1);
     const [ startDate, setStartDate ] = useState('');
     const [ endDate, setEndDate ] = useState('');
     const [ couponName, setCouponName ] = useState('');
     const [ status, setStatus ] = useState('ALL');
-    // const [ useStatus, setUseStatus ] = useState('ALL');
     // const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
     const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery({});
 
