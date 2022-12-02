@@ -3,7 +3,7 @@ import AdminLayout from '@/layouts/AdminLayout';
 import React, { useContext, useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Heading, Icon, Input, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, Dropdown, DropdownItemProps, DropdownProps, Heading, Icon, Input, Modal, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetItemsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -103,7 +103,15 @@ const ChipCustom = styled(Chip)`
   margin: 0 auto;
 `;
 
-export default withPageAuthRequired(function Items() {
+const DropdownCustom = styled(Dropdown)`
+  width: auto;
+
+  & > span {
+    display: none;
+  }
+`;
+
+export default withPageAuthRequired(function Items(props: DropdownProps) {
   const { item, setItem } = useContext(Context);
   const { data: items } = useGetItemsQuery();
   const [searchCoupon, setSearchCoupon] = useState('');
@@ -162,6 +170,32 @@ export default withPageAuthRequired(function Items() {
       text: "Requested",
     },
   ];
+
+  const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
+    if (data.text === 'Approve') {
+      return (
+        alert('You clicked Approve')
+      );
+    }
+
+    if (data.text === 'Reject') {
+      return (
+        alert('You clicked Reject')
+      );
+    }
+
+    if (data.text === 'Change Publishable') {
+      return (
+        alert('You clicked Change Publishable')
+      );
+    }
+
+    if (data.text === 'Delete') {
+      return (
+        alert('You clicked Delete')
+      );
+    }
+  };
 
   return (
     <>
@@ -299,7 +333,8 @@ export default withPageAuthRequired(function Items() {
                         {/* $Merchant Profit */}
                       </TableCell>
                       <TableCell>
-                        Request Status
+                        {/* Request Status */}
+                        <ChipCustom text="REQUESTED" color={rqStatusOption[0].value === 'APPROVED' ? 'primary' : rqStatusOption[0].value === 'REJECTED' ? 'red-400' : 'green-400'} />
                       </TableCell>
                       <TableCell>
                         <ChipCustom text={item.status} outlined color={item.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
@@ -308,7 +343,21 @@ export default withPageAuthRequired(function Items() {
                         Approver
                       </TableCell>
                       <TableCell>
-                        <Icon name='edit' />
+                        {/* <Icon name='edit' /> */}
+                        {/* <Dropdown space direction='right' icon={{name: 'edit'}} options={actionOption} /> */}
+                        <DropdownCustom space direction='right' icon={null}
+                          trigger={
+                            <ChipCustom icon={{name: 'edit'}} size="big" outlined />
+                          }
+                          {...props}
+                        >
+                          <Dropdown.Menu>
+                            <Dropdown.Item text="Approve" onClick={handleClickDropdownItem} />
+                            <Dropdown.Item text="Reject" onClick={handleClickDropdownItem} />
+                            <Dropdown.Item text="Change Publishable" onClick={handleClickDropdownItem} />
+                            <Dropdown.Item text="Delete" onClick={handleClickDropdownItem} />
+                          </Dropdown.Menu>
+                        </DropdownCustom>
                       </TableCell>
                     </Table.Row>
                   ))
