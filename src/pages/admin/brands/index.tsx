@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import stringSimilarity from 'string-similarity';
 import { Button, Chip, DateInput, Heading, Image, Input, Pagination, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsByAffiliateForAdminDashboardLazyQuery, useGetBrandsByAffiliateForAdminDashboardQuery, useGetBrandsQuery } from '@/services';
+import { useGetBrandsByAffiliateForAdminDashboardLazyQuery, useGetBrandsByAffiliateForAdminDashboardQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
@@ -114,35 +114,28 @@ export default withPageAuthRequired(function Brands() {
     },
   ];
 
-  // const { data: brands } = useGetBrandsQuery({
+  // const { data: brands } = useGetBrandsByAffiliateForAdminDashboardQuery({
   //   data: {
+  //     startDate: startDate as string,
+  //     endDate: endDate as string,
   //     affiliate: true,
-  //     status: 'ALL',
-  //   },
+  //     status,
+  //   }
   // });
 
-  const { data: brands } = useGetBrandsByAffiliateForAdminDashboardQuery({
-    data: {
-      startDate: startDate as string,
-      endDate: endDate as string,
-      affiliate: true,
-      status,
-    }
-  });
+  const [query, { data, loading }] = useGetBrandsByAffiliateForAdminDashboardLazyQuery({});
 
-  // const [query, { data, loading }] = useGetBrandsByAffiliateForAdminDashboardLazyQuery({});
-
-  // useEffect(() => {
-  //   query({
-  //     data: {
-  //       startDate: startDate as string,
-  //       endDate: endDate as string,
-  //       affiliate: true,
-  //       status,
-  //     }
-  //   })
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // },[status]);
+  useEffect(() => {
+    query({
+      data: {
+        startDate: startDate as string,
+        endDate: endDate as string,
+        affiliate: true,
+        status,
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[status]);
 
   // const handleSearchButton = () => {
   //   if ((startDate !== '' && endDate) === '' || (startDate === '' && endDate !== '')) {
@@ -179,13 +172,7 @@ export default withPageAuthRequired(function Brands() {
                   label="Brand Name"
                   icon="search outline"
                   value={searchBrand}
-                  onChange={(e) => {
-                    if (e.target.value.length === 0) {
-                      setSearchBrand('');
-                    }
-                    setSearchBrand(e.target.value);
-                  }}
-                  // onChange={(e) => setSearchBrand(e.target.value)}
+                  onChange={(e) => setSearchBrand(e.target.value)}
                   style={{width: "50%"}}
                 />
 
@@ -202,13 +189,7 @@ export default withPageAuthRequired(function Brands() {
                   label="Merchant Name"
                   icon="people"
                   value={searchMerchant}
-                  onChange={(e) => {
-                    if (e.target.value.length === 0) {
-                      setSearchMerchant('');
-                    }
-                    setSearchMerchant(e.target.value);
-                  }}
-                  // onChange={(e) => setSearchMerchant(e.target.value)}
+                  onChange={(e) => setSearchMerchant(e.target.value)}
                   style={{width: "50%"}}
                 />
               </LabelContainer>
@@ -291,7 +272,7 @@ export default withPageAuthRequired(function Brands() {
                 </Table.Head>
 
                 <Table.Body>
-                  {brands
+                  {data
                     ?.filter(({ name }:any) => {
                       if (!searchBrand) return true;
                     
@@ -307,7 +288,7 @@ export default withPageAuthRequired(function Brands() {
                     .map((brand: any) => (
                       <Table.Row key={brand.id}>
                         <TableCell>
-                          <Image size='mini' src={brand.thumbnailUrl} />
+                          <Image size='small' src={brand.thumbnailUrl} />
                         </TableCell>
                         <TableCellLink 
                           onClick={() => window.open(`${ROUTES.admin.brands}/${brand.id}`)}

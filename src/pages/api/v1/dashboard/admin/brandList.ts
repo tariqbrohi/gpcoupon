@@ -15,10 +15,10 @@ export default errorHandler(async function handler(req, res) {
         endDate = '',
         country,
         affiliate = 'false',
-        status,
+        status = 'ALL',
     } = req.query as any;
 
-    if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== '')) {
+    if ((startDate !== '' && endDate === '') || (startDate === '' && endDate !== '')) {
         throw(new BadRequestError('Missing data'));
     }
 
@@ -31,17 +31,12 @@ export default errorHandler(async function handler(req, res) {
     if (typeof skip !== 'number') skip = Number(skip);
 
     let where: Record<string, any> = {
-        status,
         ...(affiliate === 'true' ? { affiliate: true } : { affiliate: false }),
         // sub,
     }
 
-    // if (status !== 'ALL') {
-    //     where.status = status;
-    // }
-
-    if (status === 'ALL') {
-        delete where.status;
+    if (status !== 'ALL') {
+        where.status = status;
     }
     
     if (country) {
@@ -70,23 +65,6 @@ export default errorHandler(async function handler(req, res) {
             countries: true,
         },
     });
-
-    // const match : any = [];
-    
-    // if (status !== 'ALL') {
-    //     match.push({ "brand.status": status })
-    // }
-
-    // match.push(
-    //   {
-    //     $expr: {
-    //       $in: [
-    //         "$brand.id",
-    //         brand.map(({id}) => id),
-    //       ],
-    //     },
-    //   }
-    // );
 
     if (!brand) throw new BadRequestError('No affiliate exists!');
 
