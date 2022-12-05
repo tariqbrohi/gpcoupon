@@ -3,7 +3,7 @@ import AdminLayout from '@/layouts/AdminLayout';
 import React, { useContext, useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Dropdown, DropdownItemProps, DropdownProps, Heading, Icon, Input, Modal, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, Dropdown, DropdownItemProps, DropdownProps, Heading, Icon, Input, Modal, Select, Spacer, Table, TextArea } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetItemsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -111,11 +111,55 @@ const DropdownCustom = styled(Dropdown)`
   }
 `;
 
+const ModalHeader = styled(Modal.Header)`
+  text-align: center;
+`;
+
+const ModalTextArea = styled(TextArea)`
+  width: 50%;
+  margin: 0 auto;
+`;
+
+const ModalBtnContainer = styled.div`
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+`;
+
 export default withPageAuthRequired(function Items(props: DropdownProps) {
   const { item, setItem } = useContext(Context);
   const { data: items } = useGetItemsQuery();
   const [searchCoupon, setSearchCoupon] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // const showModal = () => {
+  //   setModalOpen(!modalOpen);
+
+  //   return(
+  //     <Modal>
+  //       <ModalHeader subheader="Please write the reason for rejection in the comment column">
+  //         Reject
+  //       </ModalHeader>
+  //       <Modal.Content>
+  //         <ModalTextArea
+  //           rows={10} 
+  //           label="Comment"
+  //           placeholder="Please leave a comment..."
+  //           id="comment" 
+  //           name="comment"
+  //         />
+  //       </Modal.Content>
+  //       <ModalBtnContainer>
+  //         <Button rounded primary>Reject</Button>
+  //         <Button rounded onClick={() => setModalOpen(false)}>Close</Button>
+  //       </ModalBtnContainer>
+  //       <Spacer size={20} />
+  //     </Modal>
+  //   );
+  // }
 
   const addDays = (date: any, days: any) => {
     const d = new Date(date);
@@ -174,25 +218,51 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
   const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
     if (data.text === 'Approve') {
       return (
-        alert('You clicked Approve')
+        confirm('The coupon request status will change to Approved if you click the OK button.')
+        // confirm('Click OK to change this coupon's request status to Approved.')
       );
     }
 
-    if (data.text === 'Reject') {
-      return (
-        alert('You clicked Reject')
-      );
-    }
+    // if (data.text === 'Reject') {
+    //   // showModal();
+    //   setModalOpen(!modalOpen);
+      
+    //   {modalOpen === true ? (
+    //     <Modal>
+    //       <ModalHeader subheader="Please write the reason for rejection in the comment column">
+    //         Reject
+    //       </ModalHeader>
+    //       <Modal.Content>
+    //         <ModalTextArea
+    //           rows={10} 
+    //           label="Comment"
+    //           placeholder="Please leave a comment..."
+    //           id="comment" 
+    //           name="comment"
+    //         />
+    //       </Modal.Content>
+    //       <ModalBtnContainer>
+    //         <Button rounded primary>Reject</Button>
+    //         <Button rounded onClick={() => setModalOpen(false)}>Close</Button>
+    //       </ModalBtnContainer>
+    //       <Spacer size={20} />
+    //     </Modal>
+    //   ) : (null)}
+
+    //   // return (
+    //   //   confirm('You clicked Reject')
+    //   // );
+    // }
 
     if (data.text === 'Change Publishable') {
       return (
-        alert('You clicked Change Publishable')
+        confirm('Click the OK button to change the current coupon status.')
       );
     }
 
     if (data.text === 'Delete') {
       return (
-        alert('You clicked Delete')
+        confirm('Are you sure you want to delete this coupon request?')
       );
     }
   };
@@ -344,7 +414,6 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                       </TableCell>
                       <TableCell>
                         {/* <Icon name='edit' /> */}
-                        {/* <Dropdown space direction='right' icon={{name: 'edit'}} options={actionOption} /> */}
                         <DropdownCustom space direction='right' icon={null}
                           trigger={
                             <ChipCustom icon={{name: 'edit'}} size="big" outlined />
@@ -353,7 +422,31 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                         >
                           <Dropdown.Menu>
                             <Dropdown.Item text="Approve" onClick={handleClickDropdownItem} />
-                            <Dropdown.Item text="Reject" onClick={handleClickDropdownItem} />
+                            {/* <Dropdown.Item text="Reject" onClick={handleClickDropdownItem} /> */}
+                            <Modal
+                              trigger={
+                                <Dropdown.Item text="Reject" onClick={() => setModalOpen(true)} />
+                              }
+                              open={modalOpen}
+                            >
+                              <ModalHeader subheader="Please write the reason for rejection in the comment column">
+                                Reject
+                              </ModalHeader>
+                              <Modal.Content>
+                                <ModalTextArea 
+                                  rows={10} 
+                                  label="Comment"
+                                  placeholder="Please leave a comment..."
+                                  id="comment" 
+                                  name="comment"
+                                />
+                              </Modal.Content>
+                              <ModalBtnContainer>
+                                <Button rounded primary>Reject</Button>
+                                <Button rounded onClick={() => setModalOpen(false)}>Close</Button>
+                              </ModalBtnContainer>
+                              <Spacer size={20} />
+                            </Modal>
                             <Dropdown.Item text="Change Publishable" onClick={handleClickDropdownItem} />
                             <Dropdown.Item text="Delete" onClick={handleClickDropdownItem} />
                           </Dropdown.Menu>
@@ -370,3 +463,15 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
     </>
   );
 });
+
+
+export function RejectModal() {
+  return (
+    <Modal>
+      <Modal.Header subheader="I know that you clicked Reject button">Clicked Reject</Modal.Header>
+      <Modal.Content>
+        You clicked Reject!
+      </Modal.Content>
+    </Modal>
+  );
+}
