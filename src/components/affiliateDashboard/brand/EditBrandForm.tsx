@@ -10,7 +10,8 @@ import {
   useUpdateBrandByAffiliateMutation,
   useSignS3Mutation,
 } from '@/services';
-// import validate from './helpers/validate';
+import AppContext from '@/modules/components/AppContext';
+import validate from './validate';
 
 export default function UpdateBrandForm() {
   const {
@@ -23,6 +24,7 @@ export default function UpdateBrandForm() {
     },
   });
 
+  const { user } = useContext(AppContext);
   const [ myBrand, setMyBrand ] = useState<any>({});
   const [update, { loading }] = useUpdateBrandByAffiliateMutation();
   const [sign] = useSignS3Mutation();
@@ -46,11 +48,12 @@ export default function UpdateBrandForm() {
   }
 
   const handleSubmit = async (brand: any) => {
-    // const errMessage = validate(brand);
+    const errMessage = validate(brand);
 
-    // if (errMessage || loading) {
-    //   return setError(errMessage);
-    // }
+    if (errMessage || loading) {
+      alert(errMessage);
+      return setError(errMessage);
+    }
 
     const promises: any = [];
 
@@ -105,6 +108,7 @@ export default function UpdateBrandForm() {
     })
       .then(() => {
         setSuccess(true);
+        alert('Successfully Updated!');
       })
       .catch((err) => {
         setError(parseErrorMessage(err));
@@ -119,6 +123,7 @@ export default function UpdateBrandForm() {
         brand={myBrand}
         onSubmit={handleSubmit} 
         onUpdate={handleUpdate}
+        user={user}
       />
       {error && (
         <Snackbar
