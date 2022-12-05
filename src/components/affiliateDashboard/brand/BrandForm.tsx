@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/alt-text */
-import AppContext from '@/modules/components/AppContext';
 import stringSimilarity from 'string-similarity';
 import { countryOptions, Form, Image, Spacer, StyledContainer } from '@growth-ui/react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -7,7 +6,6 @@ import { useGetCategoriesQuery } from '@/services';
 import React, {
   ChangeEvent,
   SyntheticEvent,
-  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -58,11 +56,10 @@ const FormTextArea = styled(Form.TextArea)`
   }
 `;
 
-export default function BrandForm({mode , brand, onSubmit, onUpdate }: Props) {
+export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Props) {
   const [ myBrand, setMyBrand ] = useState<any>(brand);
   const { data: categories } = useGetCategoriesQuery();
   const [ submitting, setSubmitting ] = useState(false);
-  const { user } = useContext(AppContext);
 
   useEffect(() => {
     setMyBrand(brand);
@@ -72,6 +69,7 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate }: Props) {
     if (mode === 'create') {
       myBrand.slug = getSlug();
     }
+
     onUpdate(myBrand);
     
     e.preventDefault();
@@ -307,4 +305,5 @@ type Props = {
   brand: any;
   onSubmit: (data: any) => Promise<void>;
   onUpdate: (data: any) => void;
+  user: any;
 };
