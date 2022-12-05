@@ -226,12 +226,12 @@ export default withPageAuthRequired(function Brands() {
               </LabelContainer>
               <Spacer size={20} />
 
-              <LabelContainer>
+              {/* <LabelContainer>
                 <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
                   <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
                   <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
                 </div>
-              </LabelContainer>
+              </LabelContainer> */}
 
               {/* <DateContainer>
                 <LabelContainer style={{justifyContent: "space-between"}}>
@@ -286,7 +286,7 @@ export default withPageAuthRequired(function Brands() {
                     <TableHeadCell>Countries</TableHeadCell>
                     <TableHeadCell>Categories</TableHeadCell>
                     <TableHeadCell>Status</TableHeadCell>
-                    <TableHeadCell>Create Date</TableHeadCell>
+                    {/* <TableHeadCell>Create Date</TableHeadCell> */}
                   </Table.Row>
                 </Table.Head>
 
@@ -331,9 +331,9 @@ export default withPageAuthRequired(function Brands() {
                         <TableCell>
                           <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
                         </TableCell>
-                        <TableCell>
+                        {/* <TableCell>
                           {new Date(Number(brand.createdAt)).toLocaleDateString()}
-                        </TableCell>
+                        </TableCell> */}
                       </Table.Row>
                     ))
                   }
