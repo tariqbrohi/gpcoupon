@@ -332,6 +332,7 @@ export type GetBrandByAffiliateQueryResult = Brand;
       'terms',
       'categories',
       'countries',
+      'locale'
     ],
   );
 };
@@ -347,6 +348,7 @@ export type CreateBrandByAffiliateMutationVariables = {
   terms: string;
   categories: string[];
   countries: string[];
+  locale: string;
 };
 export type CreateBrandByAffiliateMutationResult = {
   brand: Brand[];
@@ -371,6 +373,7 @@ export type CreateBrandByAffiliateMutationResult = {
       'terms',
       'categories',
       'countries',
+      'locale'
     ],
   );
 };
@@ -386,6 +389,7 @@ export type UpdateBrandByAffiliateMutationVariables = {
   terms: string;
   categories: string[];
   countries: string[];
+  locale: string;
 };
 export type UpdateBrandByAffiliateMutationResult = Brand;
 

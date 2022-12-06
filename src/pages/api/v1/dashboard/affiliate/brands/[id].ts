@@ -32,10 +32,10 @@ export default errorHandler(async function handler(req, res) {
       categories,
       disclaimer,
       countries,
+      locale
     } = req.body;
-    const { id } = req.query as any;
-    const session = gpointwallet.getSession(req);
 
+    const { id } = req.query as any;
     const existingBrand = await prisma.brand.findFirst({
       where: {
         id: {
@@ -48,6 +48,21 @@ export default errorHandler(async function handler(req, res) {
     });
 
     if (existingBrand) throw new BadRequestError('Slug exist');
+
+    const session = gpointwallet.getSession(req);
+    const updatedBy = {
+      given_name: session?.user.profile.firstName,
+      family_name: session?.user.profile.lastName,
+      nickname: session?.user.username,
+      name: `${session?.user.profile.firstName} ${session?.user.profile.lastName}`,
+      picture: session?.user.profile.avatarUrl,
+      locale,
+      created_at: new Date().toISOString(),
+      email: session?.user.profile.contact.email,
+      email_verified: session?.user.confirmed === 0? false: true,
+      sub: session?.user.id,
+      sid: null,
+    }
 
     const timestamp = new Date().valueOf();
 
@@ -70,7 +85,7 @@ export default errorHandler(async function handler(req, res) {
         countries,
         updatedAt: timestamp,
         metadata: {
-          updatedBy: session?.user,
+          updatedBy,
         },
       },
     });

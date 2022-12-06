@@ -11,7 +11,8 @@ import {
   useSignS3Mutation,
 } from '@/services';
 import AppContext from '@/modules/components/AppContext';
-import validate from './validate';
+import validate from './helper/validate';
+import userLocale from './helper/getLocale';
 
 export default function UpdateBrandForm() {
   const {
@@ -104,6 +105,7 @@ export default function UpdateBrandForm() {
         id: data!.id,
         backgroundUrl: backgroundUrl as string,
         thumbnailUrl: thumbnailUrl as string,
+        locale: userLocale({languageCodeOnly: true})[0]
       },
     })
       .then(() => {

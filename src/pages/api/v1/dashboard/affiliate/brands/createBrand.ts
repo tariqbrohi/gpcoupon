@@ -2,7 +2,6 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import prisma from '@/prisma';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
 import gpointwallet from '@/pages/api/_lib/gpointwallet';
-import { isNil } from 'lodash';
 
 export default errorHandler(async function handler(req, res) {
     const method = req.method;
@@ -22,9 +21,10 @@ export default errorHandler(async function handler(req, res) {
       status='AVAILABLE',
       terms,
       categories,
-      countries  
+      countries,
+      locale
     } = req.body as any;
-    
+
     const session = gpointwallet.getSession(req);
 
     const createdBy = {
@@ -33,12 +33,12 @@ export default errorHandler(async function handler(req, res) {
       nickname: session?.user.username,
       name: `${session?.user.profile.firstName} ${session?.user.profile.lastName}`,
       picture: session?.user.profile.avatarUrl,
-      locale: 'en',
+      locale,
       created_at: new Date().toISOString(),
       email: session?.user.profile.contact.email,
       email_verified: session?.user.confirmed === 0? false: true,
       sub: session?.user.id,
-      sid: 'none',
+      sid: null,
     }
 
     if (!sub ) throw new BadRequestError('No BusinessAccount Exists');

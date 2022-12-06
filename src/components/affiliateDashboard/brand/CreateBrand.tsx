@@ -6,7 +6,8 @@ import Router from 'next/router';
 import { Heading, Snackbar, Spacer } from '@growth-ui/react';
 import { useCreateBrandByAffiliateMutation, useSignS3Mutation } from '@/services';
 import AppContext from '@/modules/components/AppContext';
-import validate from './validate';
+import validate from './helper/validate';
+import userLocale from './helper/getLocale';
 
 export default function CreateBrandForm() {
   const { user } = useContext(AppContext);
@@ -14,6 +15,8 @@ export default function CreateBrandForm() {
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>('');
+
+
   const [myBrand, setMyBrand] = useState<any>({
     sub: user?.id,
     name: '',
@@ -25,7 +28,8 @@ export default function CreateBrandForm() {
     status: 'AVAILABLE',
     terms: '',
     categories: [],
-    countries: []
+    countries: [],
+    locale: '',
   });
 
   const handleUpdate = (brand: any) => {
@@ -62,12 +66,13 @@ export default function CreateBrandForm() {
         headers: { 'Content-Type': (data.thumbnailUrl as File).type },
       }),
     ]);
-
+    
     await create({
       data: {
         ...data,
         backgroundUrl: backgroundUrl.url,
         thumbnailUrl: thumbnailUrl.url,
+        locale: userLocale({languageCodeOnly: true})[0]
       },
     })
       .then(() => {
