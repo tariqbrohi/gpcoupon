@@ -9,3 +9,7 @@ export type ChargeInput = {
   profitRate: number;
   t: string;
 };
+
+export type GetUsersInfoInput = {
+  accountIds: string[];
+};
