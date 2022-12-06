@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import { ChargeInput, GetUsersInfoInput } from './types';
+import { ChargeInput, GetInfoByAccIdInput } from './types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { parseCookies } from '@/lib/parse-cookies';
 
@@ -109,8 +109,8 @@ export default class GPointWallet {
     return data;
   }
 
-  async getUsersInfo(input: GetUsersInfoInput) {
-    const { data } = await this.request.post('/v2/getUsersInfo', input);
+  async getInfoByAccId(input: GetInfoByAccIdInput) {
+    const { data } = await this.request.post('/v2/getInfoByAccId', input);
 
     return data;
   }

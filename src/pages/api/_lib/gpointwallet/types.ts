@@ -10,6 +10,6 @@ export type ChargeInput = {
   t: string;
 };
 
-export type GetUsersInfoInput = {
+export type GetInfoByAccIdInput = {
   accountIds: string[];
 };
