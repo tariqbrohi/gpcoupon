@@ -15,8 +15,6 @@ export default function CreateBrandForm() {
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>('');
-
-
   const [myBrand, setMyBrand] = useState<any>({
     sub: user?.id,
     name: '',
