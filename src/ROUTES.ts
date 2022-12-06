@@ -9,8 +9,6 @@ export const ROUTES = {
   affiliates: '/affiliates',
   howItWorks: '/how-it-works',
   buy: '/buy',
-  // privacy: '/privacyPolicy',
-  // legal: '/termsOfUse',
   legal: '/legal',
   privacy: '/privacy',
   orders: '/orders',
@@ -22,7 +20,6 @@ export const ROUTES = {
   affiliateCouponRequestList: '/affiliateDashboard/coupon/requestList',
   affiliateCouponRequest: '/affiliateDashboard/coupon/request',
   affiliateBrands: '/affiliateDashboard/brands',
-  affiliatebrandsList: '/affiliateDashboard/brands/list',
   affiliateCreateBrands: '/affiliateDashboard/brands/create',
   admin: {
     createItem: '/admin/items/create',
