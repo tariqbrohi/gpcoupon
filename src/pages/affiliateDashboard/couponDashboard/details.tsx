@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Spacer, Pagination, Button, Heading, Select } from '@growth-ui/react';
 import { useGetItemForCouponDetailDashboardLazyQuery} from '@/services';
 import styled from 'styled-components';
-import CouponList from '@/components/affiliateDashboard/DetailCouponList';
+import CouponList from '@/components/affiliateDashboard/coupon/DetailCouponList';
 import AppHeader from '@/layouts/AppHeader';
 import AppContainer from '@/layouts/AppContainer';
 import Head from '@/modules/components/Head';
