@@ -15,6 +15,7 @@ export default function Provider({ children }: Props) {
     amount: 0,
     influencerDiscountRate: 0,
     customerDiscountRate: 0,
+    totDiscountRate: 0,
     originalPrice: 0,
     couponImageUrl: '',
     categories: [],
