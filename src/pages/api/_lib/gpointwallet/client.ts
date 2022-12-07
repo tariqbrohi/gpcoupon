@@ -110,8 +110,22 @@ export default class GPointWallet {
   }
 
   async getInfoByAccId(input: GetInfoByAccIdInput) {
-    const { data } = await this.request.post('/v2/getInfoByAccId', input);
+    try {
+      const { data } = await this.request.post('/v2/getInfoByAccId', input);
 
-    return data;
+      return data;
+    } catch(err) {
+      return null;
+    }
+  }
+
+  async getInfoByUsername(username: string) {
+    try {
+      const { data } = await this.request.post('/v2/getInfoByUsername', { username });
+
+      return data;
+    } catch(err) {
+      return null;
+    }
   }
 }
