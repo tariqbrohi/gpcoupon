@@ -109,7 +109,7 @@ export default withPageAuthRequired(function AdminDashboard() {
               </LabelContainer>
               <Spacer size={20} />
 
-              <LabelContainer>
+              {/* <LabelContainer>
                 <Select 
                   label='Status'
                   value={statusOption[0].value}
@@ -118,7 +118,7 @@ export default withPageAuthRequired(function AdminDashboard() {
                   style={{width: "50%"}}
                 />
               </LabelContainer>
-              <Spacer size={20} />
+              <Spacer size={20} /> */}
 
               <DateContainer>
                 <LabelContainer style={{justifyContent: "space-between"}}>
