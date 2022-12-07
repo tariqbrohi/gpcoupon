@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Paragraph, Spacer, Pagination, Button, Container, Dropdown, Heading, Input, Select, DateInput } from '@growth-ui/react';
 import { useGetAffiliateItemsByAffiliateForDashboardLazyQuery} from '@/services';
 import styled from 'styled-components';
-import MyCouponList from '@/components/affiliateDashboard/MyCouponsList';
+import MyCouponList from '@/components/affiliateDashboard/coupon/MyCouponsList';
 import stringSimilarity from 'string-similarity';
 
 const TAKE = 20;

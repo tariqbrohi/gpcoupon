@@ -54,6 +54,7 @@ export default errorHandler(async function handler(req, res) {
       name: true,
       backgroundUrl: true,
       thumbnailUrl: true,
+      countries: true,
       status: true,
       categories: true,
       createdAt: true,
@@ -62,5 +63,7 @@ export default errorHandler(async function handler(req, res) {
 
   if (!brand) throw new BadRequestError('No affiliate exists!');
 
-  res.send(brand);
+  res.send({
+    brands: brand
+  });
 });

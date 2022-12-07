@@ -192,7 +192,7 @@ export const useGetAffiliateItemsByAffiliateForDashboardQuery = (
   return useQuery<
     GetItemsByAffiliateForDashboardQueryVariables,
     GetItemsByAffiliateForDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/couponItemsByAffiliate', baseOptions);
+  >('/api/v1/dashboard/affiliate/coupons/couponItemsByAffiliate', baseOptions);
 };
 export const useGetAffiliateItemsByAffiliateForDashboardLazyQuery = (
   baseOptions?: QueryBaseOptions<GetItemsByAffiliateForDashboardQueryVariables>,
@@ -200,7 +200,7 @@ export const useGetAffiliateItemsByAffiliateForDashboardLazyQuery = (
   return useLazyQuery<
     GetItemsByAffiliateForDashboardQueryVariables,
     GetItemsByAffiliateForDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/couponItemsByAffiliate', baseOptions);
+  >('/api/v1/dashboard/affiliate/coupons/couponItemsByAffiliate', baseOptions);
 };
 export type GetItemsByAffiliateForDashboardQueryVariables = {
   take?: number;
@@ -227,7 +227,7 @@ export type GetItemsByAffiliateForDashboardQueryResult = Brand & {
   return useQuery<
     GetItemForCouponDetailDashboardQueryVariables,
     GetItemForCouponDetailDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/couponDetails', baseOptions);
+  >('/api/v1/dashboard/affiliate/coupons/couponDetails', baseOptions);
 };
 export const useGetItemForCouponDetailDashboardLazyQuery = (
   baseOptions?: QueryBaseOptions<GetItemForCouponDetailDashboardQueryVariables>,
@@ -235,7 +235,7 @@ export const useGetItemForCouponDetailDashboardLazyQuery = (
   return useLazyQuery<
   GetItemForCouponDetailDashboardQueryVariables,
   GetItemForCouponDetailDashboardQueryResult
-  >('/api/v1/dashboard/affiliate/couponDetails', baseOptions);
+  >('/api/v1/dashboard/affiliate/coupons/couponDetails', baseOptions);
 };
 export type GetItemForCouponDetailDashboardQueryVariables = {
   take?: number;
@@ -264,7 +264,7 @@ export type GetItemForCouponDetailDashboardQueryResult = {
   return useQuery<
     GetBrandsByAffiliateQueryVariables,
     GetBrandsByAffiliateQueryResult
-  >('/api/v1/dashboard/affiliate/brandList', baseOptions);
+  >('/api/v1/dashboard/affiliate/brands/brandList', baseOptions);
 };
 export const useGetBrandsByAffiliateLazyQuery = (
   baseOptions?: QueryBaseOptions<GetBrandsByAffiliateQueryVariables>,
@@ -272,7 +272,7 @@ export const useGetBrandsByAffiliateLazyQuery = (
   return useLazyQuery<
     GetBrandsByAffiliateQueryVariables,
     GetBrandsByAffiliateQueryResult
-  >('/api/v1/dashboard/affiliate/brandList', baseOptions);
+  >('/api/v1/dashboard/affiliate/brands/brandList', baseOptions);
 };
 export type GetBrandsByAffiliateQueryVariables = {
   take?: number;
@@ -285,6 +285,113 @@ export type GetBrandsByAffiliateQueryVariables = {
 export type GetBrandsByAffiliateQueryResult = {
   brands: Brand[]
 };
+
+/**
+ * GetBrandByAffiliate
+ */
+ export const useGetBrandByAffiliateQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandQueryVariables>,
+) => {
+  return useQuery<GetBrandByAffiliateQueryVariables, GetBrandByAffiliateQueryResult>(
+    '/api/v1/dashboard/affiliate/brands/:id',
+    baseOptions,
+    ['id'],
+  );
+};
+export const useGetBrandByAffiliateLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandByAffiliateQueryVariables>,
+) => {
+  return useLazyQuery<GetBrandByAffiliateQueryVariables, GetBrandByAffiliateQueryResult>(
+    '/api/v1/dashboard/affiliate/brands/:id',
+    baseOptions,
+    ['id'],
+  );
+};
+export type GetBrandByAffiliateQueryVariables = {
+  id: string;
+};
+export type GetBrandByAffiliateQueryResult = Brand;
+
+/**
+ * CreateBrandByAffiliate
+ */
+ export const useCreateBrandByAffiliateMutation = () => {
+  return useMutation<CreateBrandByAffiliateMutationVariables, CreateBrandByAffiliateMutationResult>(
+    '/api/v1/dashboard/affiliate/brands/createBrand',
+    'post',
+    [''],
+    [
+      'name',
+      'description',
+      'slug',
+      'disclaimer',
+      'backgroundUrl',
+      'sub',
+      'thumbnailUrl',
+      'status',
+      'terms',
+      'categories',
+      'countries',
+      'locale'
+    ],
+  );
+};
+export type CreateBrandByAffiliateMutationVariables = {
+  name: string;
+  description: string;
+  sub: string;
+  slug: string;
+  disclaimer: string;
+  backgroundUrl: string;
+  thumbnailUrl: string;
+  status: string;
+  terms: string;
+  categories: string[];
+  countries: string[];
+  locale: string;
+};
+export type CreateBrandByAffiliateMutationResult = {
+  brand: Brand[];
+};
+
+/**
+ * UpdateBrandByAffiliate
+ */
+ export const useUpdateBrandByAffiliateMutation = () => {
+  return useMutation<UpdateBrandByAffiliateMutationVariables, UpdateBrandByAffiliateMutationResult>(
+    '/api/v1/dashboard/affiliate/brands/:id',
+    'put',
+    ['id'],
+    [
+      'name',
+      'description',
+      'slug',
+      'disclaimer',
+      'backgroundUrl',
+      'thumbnailUrl',
+      'status',
+      'terms',
+      'categories',
+      'countries',
+      'locale'
+    ],
+  );
+};
+export type UpdateBrandByAffiliateMutationVariables = {
+  id: string;
+  name: string;
+  description: string;
+  slug: string;
+  disclaimer: string;
+  backgroundUrl: string;
+  thumbnailUrl: string;
+  status: string;
+  terms: string;
+  categories: string[];
+  countries: string[];
+  locale: string;
+};
+export type UpdateBrandByAffiliateMutationResult = Brand;
 
 /**
  * GetAffiliateItemsForAdminDashboard
@@ -1172,7 +1279,7 @@ export const useCouponRequestMutation = () => {
     CouponRequestMutationVariables,
     CouponRequestMutationResult
   >(
-    '/api/v1/dashboard/affiliate/couponRequest',
+    '/api/v1/dashboard/affiliate/coupons/couponRequest',
     'post',
     [], //req.query
     [

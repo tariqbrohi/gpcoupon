@@ -103,15 +103,15 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
-                    // active={pathname === ROUTES.affiliateDashboard.brandsList}
-                    // onClick={handleClickItem(ROUTES.affiliateDashboard.brandsList)}
+                    active={pathname === ROUTES.affiliateBrands}
+                    onClick={handleClickItem(ROUTES.affiliateBrands)}
                     style={styles.collapseItem}
                   >
                     <List.Content>My Brand</List.Content>
                   </List.Item>
                   <List.Item
-                    // active={pathname === ROUTES.affiliateDashboard.createBrands}
-                    // onClick={handleClickItem(ROUTES.affiliateDashboard.createBrands)}
+                    active={pathname === ROUTES.affiliateCreateBrands}
+                    onClick={handleClickItem(ROUTES.affiliateCreateBrands)}
                     style={styles.collapseItem}
                   >
                     <List.Content>Create Brand</List.Content>
