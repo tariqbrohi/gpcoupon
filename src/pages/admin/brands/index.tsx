@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import stringSimilarity from 'string-similarity';
 import { Button, Chip, DateInput, Heading, Image, Input, Pagination, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
@@ -12,6 +12,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Provider from '@/components/admin/brands/Provider';
 import { useRouter } from 'next/router';
+import Router from 'next/router';
+import AppContext from '@/modules/components/AppContext';
 
 const LabelContainer = styled.div`
   display: flex;
@@ -86,8 +88,9 @@ const ChipCategories = styled(Chip)`
 const TAKE = 20;
 
 export default withPageAuthRequired(function Brands() {
-  const [sortBy, setSortBy] = useState('createdAt, desc');
-  const [activePage, setActivePage] = useState(1);
+  const { user } = useContext(AppContext);
+  // const [sortBy, setSortBy] = useState('createdAt, desc');
+  // const [activePage, setActivePage] = useState(1);
   const [searchBrand, setSearchBrand] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
   const router = useRouter();
@@ -267,7 +270,7 @@ export default withPageAuthRequired(function Brands() {
                     <TableHeadCell>Countries</TableHeadCell>
                     <TableHeadCell>Categories</TableHeadCell>
                     <TableHeadCell>Status</TableHeadCell>
-                    {/* <TableHeadCell>Create Date</TableHeadCell> */}
+                    <TableHeadCell>Create Date</TableHeadCell>
                   </Table.Row>
                 </Table.Head>
 
@@ -291,12 +294,13 @@ export default withPageAuthRequired(function Brands() {
                           <Image size='small' src={brand.thumbnailUrl} />
                         </TableCell>
                         <TableCellLink 
-                          onClick={() => window.open(`${ROUTES.admin.brands}/${brand.id}`)}
+                          onClick={() => Router.push(`${ROUTES.admin.brands}/${brand.id}`)}
                         >
                           {brand.name}                       
                         </TableCellLink>
                         <TableCell>
                           Merchant Name
+                          {/* {user?.userName} */}
                         </TableCell>
                         <TableCell>
                           GP Wallet Business Username
@@ -312,9 +316,9 @@ export default withPageAuthRequired(function Brands() {
                         <TableCell>
                           <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
                         </TableCell>
-                        {/* <TableCell>
+                        <TableCell>
                           {new Date(Number(brand.createdAt)).toLocaleDateString()}
-                        </TableCell> */}
+                        </TableCell>
                       </Table.Row>
                     ))
                   }
