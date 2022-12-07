@@ -293,7 +293,7 @@ export type GetBrandsByAffiliateQueryResult = {
   baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
 ) => {
   return useQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
-    '/api/v1/dashboard/admin/brandList',
+    '/api/admin/brands/brandList',
     baseOptions,
   );
 };
@@ -301,7 +301,7 @@ export const useGetBrandsByAffiliateForAdminDashboardLazyQuery = (
   baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
 ) => {
   return useLazyQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
-    '/api/v1/dashboard/admin/brandList',
+    '/api/admin/brands/brandList',
     baseOptions,
   );
 };
@@ -314,7 +314,8 @@ export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
   affiliate?: boolean;
   // status?: 'ALL';
   
-  sub?: string;
+  // sub?: string;
+  getSub?: string;
   status?: string;
 };
 // export type GetBrandsByAffiliateForAdminDashboardQueryResult = {

@@ -93,6 +93,7 @@ export default withPageAuthRequired(function Brands() {
   // const [activePage, setActivePage] = useState(1);
   const [searchBrand, setSearchBrand] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
+  const [showSub,setShowSub] = useState('');
   const router = useRouter();
   const [ status, setStatus ] = useState('ALL');
   const {startDate, endDate } = router.query;
@@ -131,7 +132,8 @@ export default withPageAuthRequired(function Brands() {
   useEffect(() => {
     query({
       data: {
-        sub: user?.id,
+        // sub: user?.id,
+        getSub: showSub as string,
         startDate: startDate as string,
         endDate: endDate as string,
         affiliate: true,
@@ -301,6 +303,8 @@ export default withPageAuthRequired(function Brands() {
                         </TableCellLink>
                         <TableCell>
                           Merchant Name
+                          {/* {brand?.showSub} */}
+                          {/* {console.log('hey: ', brand?.showSub)} */}
                           {/* {user?.userName} */}
                           {/* {brand?.sub} */}
                         </TableCell>
