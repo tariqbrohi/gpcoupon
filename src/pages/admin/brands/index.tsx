@@ -131,6 +131,7 @@ export default withPageAuthRequired(function Brands() {
   useEffect(() => {
     query({
       data: {
+        sub: user?.id,
         startDate: startDate as string,
         endDate: endDate as string,
         affiliate: true,
@@ -301,6 +302,7 @@ export default withPageAuthRequired(function Brands() {
                         <TableCell>
                           Merchant Name
                           {/* {user?.userName} */}
+                          {/* {brand?.sub} */}
                         </TableCell>
                         <TableCell>
                           GP Wallet Business Username

@@ -313,7 +313,8 @@ export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
   country?: string;
   affiliate?: boolean;
   // status?: 'ALL';
-
+  
+  sub?: string;
   status?: string;
 };
 // export type GetBrandsByAffiliateForAdminDashboardQueryResult = {

@@ -11,6 +11,7 @@ export default errorHandler(async function handler(req, res) {
     }
 
     const {
+        sub,
         startDate = '',
         endDate = '',
         country,
@@ -57,6 +58,7 @@ export default errorHandler(async function handler(req, res) {
         select: {
             id: true,
             name: true,
+            sub: true,
             backgroundUrl: true,
             thumbnailUrl: true,
             status: true,
