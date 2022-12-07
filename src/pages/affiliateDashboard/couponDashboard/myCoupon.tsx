@@ -31,23 +31,23 @@ export default function MyCoupon() {
   const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForDashboardLazyQuery({});
   const [ couponName, setCouponName ] = useState('');
 
-  const statusOption = [
-    {
-      key: "All",
-      value: "ALL",
-      text: "All",
-    },
-    {
-      key: "Available",
-      value: "AVAILABLE",
-      text: "Available",
-    },
-    {
-      key: "Unavailable",
-      value: "UNAVAILABLE",
-      text: "Unavailable",
-    },
-  ];
+  // const statusOption = [
+  //   {
+  //     key: "All",
+  //     value: "ALL",
+  //     text: "All",
+  //   },
+  //   {
+  //     key: "Available",
+  //     value: "AVAILABLE",
+  //     text: "Available",
+  //   },
+  //   {
+  //     key: "Unavailable",
+  //     value: "UNAVAILABLE",
+  //     text: "Unavailable",
+  //   },
+  // ];
 
   useEffect(() => {
     if (user !== null) {
@@ -109,7 +109,7 @@ export default function MyCoupon() {
           onChange={(e) => setCouponName(e.target.value)}
           style={{width: "50%"}} 
         />
-        <Spacer size={20} />
+        {/* <Spacer size={20} />
         <LabelContainer>
         <Select 
           label='Status'
@@ -117,7 +117,7 @@ export default function MyCoupon() {
           options={statusOption}
           onChange={(_, data)=>setStatus(data.newValues)}
         />
-        </LabelContainer>
+        </LabelContainer> */}
         <Spacer size={20} />
 
         <InputContainer>
