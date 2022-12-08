@@ -315,7 +315,7 @@ export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
   // status?: 'ALL';
   
   // sub?: string;
-  getSub?: string;
+  walletBusinessUserInfo?: string;
   status?: string;
 };
 // export type GetBrandsByAffiliateForAdminDashboardQueryResult = {

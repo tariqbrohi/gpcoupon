@@ -12,7 +12,7 @@ export default errorHandler(async function handler(req, res) {
     }
 
     const {
-        // sub,
+        sub,
         startDate = '',
         endDate = '',
         country,
@@ -31,9 +31,6 @@ export default errorHandler(async function handler(req, res) {
 
     if (typeof take !== 'number') take = Number(take);
     if (typeof skip !== 'number') skip = Number(skip);
-
-    
-    
 
     let where: Record<string, any> = {
         ...(affiliate === 'true' ? { affiliate: true } : { affiliate: false }),
@@ -74,21 +71,24 @@ export default errorHandler(async function handler(req, res) {
 
     if (!brand) throw new BadRequestError('No affiliate exists!');
 
-    const getSub = brand.map((get : any) => (
-        get.sub
-    ));
-
-    // const getSub = brand.map(({ sub } : any) => ({
+    // const getInfo = brand.map(({ sub } : any) => ({
     //     sub
     // }));
-    
-    // const test = await gpointwallet.getUsersInfo({
-    //     accountIds: getSub
-    // });
-    // console.log('test: ', test);
 
-    // res.send(brand);
-    res.send(brand || getSub);
-    // console.log('brand: ', brand);
-    console.log('getSub: ', getSub);
+    const getInfo = brand.map((get : any) => (
+        get.sub
+    ));
+        
+    const info = await gpointwallet.getInfoByAccId({
+        accountIds: getInfo
+    });
+    console.log('wow: ', info);
+
+    const walletBusinessUserInfo = info?.accounts;
+    console.log('hey: ', walletBusinessUserInfo);
+
+    res.send(brand);
+    // res.send(brand || walletBusinessUserInfo);
+    // console.log('yoo: ', brand);
+    // res.send({brand, walletBusinessUserInfo});
 });
