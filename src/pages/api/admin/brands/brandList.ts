@@ -91,4 +91,8 @@ export default errorHandler(async function handler(req, res) {
     // res.send(brand || walletBusinessUserInfo);
     // console.log('yoo: ', brand);
     // res.send({brand, walletBusinessUserInfo});
+    
+    // res.send() 내에는 내가 보내고 싶은 방식으로 보낼 수 있으니 brand 와 walletBusinessUserInfo 에서 필요한 값들을 원하는 형태로 보관하여 보내면 된다.
+    // GetBrandsByAffiliateForAdminDashboardQueryVariables 은 인풋에 채워주어야 할 타입이며 GetBrandsByAffiliateForAdminDashboardQueryResult 은 아웃풋 타입을 정해주어야 한다.
+    // 만약 newObj 에 필요한 값들을 data 오브젝트 내에 새로 보관한다 정의한다면 res.send(newObj) 를 보내고 아웃풋 타입에 {newObj: data: {id: string; username: string; ... etc}} 로 정해주면 된다. 카톡 참고!
 });
