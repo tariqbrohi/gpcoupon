@@ -75,8 +75,8 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
-                    // active={pathname === ROUTES.affiliateDashboard.couponRequestList}
-                    // onClick={handleClickItem(ROUTES.affiliateDashboard.couponRequestList)}
+                    active={pathname === ROUTES.affiliateCouponRequestList}
+                    onClick={handleClickItem(ROUTES.affiliateCouponRequestList)}
                     style={styles.collapseItem}
                   >
                     <List.Content>My Coupon Requests</List.Content>
