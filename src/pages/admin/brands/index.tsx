@@ -13,18 +13,17 @@ import Link from 'next/link';
 import Provider from '@/components/admin/brands/Provider';
 import { useRouter } from 'next/router';
 import Router from 'next/router';
-import AppContext from '@/modules/components/AppContext';
 
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const DateContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 50%:
-`;
+// const DateContainer = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   width: 50%:
+// `;
 
 const BtnCreate = styled(Button)`
   min-width: 172px;
@@ -88,12 +87,10 @@ const ChipCategories = styled(Chip)`
 const TAKE = 20;
 
 export default withPageAuthRequired(function Brands() {
-  const { user } = useContext(AppContext);
   // const [sortBy, setSortBy] = useState('createdAt, desc');
-  // const [activePage, setActivePage] = useState(1);
+  const [activePage, setActivePage] = useState(1);
   const [searchBrand, setSearchBrand] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
-  const [showWalletInfo,setShowWalletInfo] = useState('');
   const router = useRouter();
   const [ status, setStatus ] = useState('ALL');
   const {startDate, endDate } = router.query;
@@ -118,22 +115,17 @@ export default withPageAuthRequired(function Brands() {
     },
   ];
 
-  // const { data: brands } = useGetBrandsByAffiliateForAdminDashboardQuery({
-  //   data: {
-  //     startDate: startDate as string,
-  //     endDate: endDate as string,
-  //     affiliate: true,
-  //     status,
-  //   }
-  // });
+  const { data: walletData } = useGetBrandsByAffiliateForAdminDashboardQuery({});
+  // console.log('walletData: ', walletData);
+  // console.log('walletData?.walletInfo: ', walletData?.walletInfo);
 
   const [query, { data, loading }] = useGetBrandsByAffiliateForAdminDashboardLazyQuery({});
 
   useEffect(() => {
     query({
       data: {
-        // sub: user?.id,
-        // walletBusinessUserInfo: showWalletInfo as string,
+        take: TAKE,
+        skip: (activePage - 1) * TAKE,
         startDate: startDate as string,
         endDate: endDate as string,
         affiliate: true,
@@ -141,7 +133,14 @@ export default withPageAuthRequired(function Brands() {
       }
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[status]);
+  },[status, activePage]);
+
+  // console.log('searchBrand: ', searchBrand);
+  // console.log('searchMerchant: ', searchMerchant);
+
+  const handlePageChange = (_: any, { activePage }: any) => {
+    setActivePage(activePage);
+  };
 
   // const handleSearchButton = () => {
   //   if ((startDate !== '' && endDate) === '' || (startDate === '' && endDate !== '')) {
@@ -158,11 +157,7 @@ export default withPageAuthRequired(function Brands() {
   //       status,
   //     }
   //   });
-  // }
-
-  // const handlePageChange = (_: any, { activePage }: any) => {
-  //   setActivePage(activePage);
-  // };
+  // // }
 
   return (
     <>
@@ -278,40 +273,74 @@ export default withPageAuthRequired(function Brands() {
                 </Table.Head>
 
                 <Table.Body>
-                  {data
-                    ?.filter(({ name }:any) => {
+                  {data?.brands
+                    ?.filter(({ name }: any) => {
                       if (!searchBrand) return true;
                     
-                      const similarity = stringSimilarity.compareTwoStrings(
+                      const similarityBrand = stringSimilarity.compareTwoStrings(
                         name,
                         searchBrand,
                       );
                       
-                      if (similarity > 0.25) return true;
+                      if (similarityBrand > 0.25) return true;
                       
                       return false;
                     })
-                    .map((brand: any) => (
+                    ?.map((brand: any) => (
                       <Table.Row key={brand.id}>
                         <TableCell>
-                          <Image size='small' src={brand.thumbnailUrl} />
-                          {/* <Image src={brand.thumbnailUrl} style={{minWidth: "40px"}} /> */}
+                          {/* <Image size='small' src={brand.thumbnailUrl} /> */}
+                          <Image src={brand.thumbnailUrl} style={{minWidth: "40px"}} />
                         </TableCell>
                         <TableCellLink 
                           onClick={() => Router.push(`${ROUTES.admin.brands}/${brand.id}`)}
                         >
                           {brand.name}                       
                         </TableCellLink>
-                        <TableCell>
-                          Merchant Name
-                          {/* {brand?.showWalletInfo} */}
-                          {/* {console.log('walletBusinessUserInfo: ', brand?.showWalletInfo)} */}
-                          {/* {user?.userName} */}
-                          {/* {brand?.sub} */}
-                        </TableCell>
-                        <TableCell>
-                          GP Wallet Business Username
-                        </TableCell>
+
+                        {walletData?.walletInfo
+                          ?.filter(({ username }: any) => {
+                            if (!searchMerchant) return true;
+
+                            const similarityMerchant = stringSimilarity.compareTwoStrings(
+                              // merchant || undefined || '',
+                              username,
+                              searchMerchant,
+                            );
+
+                            if (similarityMerchant > 0.25) return true;
+
+                            return false;
+                          })
+                          ?.map((wallet: any) => {
+                            if (brand.sub === wallet.id) {
+                              return (
+                                <>
+                                  <TableCell>
+                                    {wallet.username}
+                                  </TableCell>
+                                  <TableCell>
+                                    {`${wallet.profile.firstName} ${wallet.profile.lastName}`}
+                                  </TableCell>
+                                </>
+                              );
+                            }
+                          })}
+
+                        {/* {walletData?.walletInfo.map((item: any) => {
+                          if (brand.sub === item.id) {
+                            return (
+                              <>
+                                <TableCell key={item.id}>
+                                  {item.username ? item.username : ''}
+                                </TableCell>
+                                <TableCell>
+                                  {`${item.profile.firstName} ${item.profile.lastName}`}
+                                </TableCell>
+                              </>
+                            );
+                          }
+                        })} */}
                         <TableCell>
                           <ChipCustom text={brand.countries.join(', ')} />
                         </TableCell>
@@ -335,7 +364,7 @@ export default withPageAuthRequired(function Brands() {
             <Spacer size={20} />
             
             {/* <Pagination
-              totalPages={Math.ceil((brands?.brands || 1) / TAKE) }
+              totalPages={Math.ceil((data?.brands || 1) / TAKE) }
               onPageChange={handlePageChange}
               activePage={activePage}
             /> */}

@@ -310,19 +310,28 @@ export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
   skip?: number;
   startDate?: string;
   endDate?: string;
-  country?: string;
-  affiliate?: boolean;
+  affiliate: boolean;
   // status?: 'ALL';
   
-  // sub?: string;
-  walletBusinessUserInfo?: string;
   status?: string;
 };
 // export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
 //   brands: Brand[]
 // };
-export type GetBrandsByAffiliateForAdminDashboardQueryResult = Brand[];
- 
+
+// export type GetBrandsByAffiliateForAdminDashboardQueryResult = Brand[];
+export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
+  brands: Brand[];
+  walletInfo: [{
+    id: string;
+    username: string;
+    profile: {
+      firstName: string;
+      lastName: string;
+    }
+  }];
+};
+
 /** 
  * GetBrandByAffiliate
  */
