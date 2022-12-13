@@ -178,7 +178,7 @@ export default withApiAuthRequired(
       }
 
       let orderId = '';
-
+      console.log(xoxoItem, ' xoxoItem FOUND');
       if (xoxoItem) {
         const order = await xoxoday.orders.place({
           productId: +xoxoItem.id,
@@ -188,7 +188,7 @@ export default withApiAuthRequired(
           notifyReceiverEmail: 1,
           email: recipient.email,
         });
-
+        console.log(order, ' order FOUND');
         if (!order) {
           console.log('SHIT');
           // todo
@@ -264,7 +264,7 @@ export default withApiAuthRequired(
       const { id } = await prisma.order.create({
         data,
       });
-
+      console.log(id, ' adjklsdj kaj k');
       orderId = `${id}-${orderId}`;
 
       if (dbItem?.affiliate) {
