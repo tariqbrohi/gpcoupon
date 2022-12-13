@@ -199,6 +199,10 @@ export default withApiAuthRequired(
         orderId = `${order.orderId}`;
       }
 
+      if (xoxoItem && !orderId) {
+        throw new InternalServerError();
+      }
+
       const data: Prisma.OrderCreateInput = {
         // status: order.orderStatus as any,
         status: 'approved',

@@ -1026,6 +1026,13 @@
   resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.5.1.tgz#b29aa1f91a59f35e29ff8f7cb24faf1a3a750554"
   integrity sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==
 
+"@types/cuid@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/cuid/-/cuid-2.0.1.tgz#b6b33bba955f012f53a45006f7286c4c4456f0f1"
+  integrity sha512-xKfGHwpYmA49CTknWV5TMovp4oe+BUN/cb2VgVulgJEPnYXsF3fUAwmFiCHuPZAKDU+yXMBJhkW3E79xGhRGMg==
+  dependencies:
+    cuid "*"
+
 "@types/express-validator@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/express-validator/-/express-validator-3.0.0.tgz#e6f3cab842e5ae376a1cfa11295202ec380b68d1"
@@ -2277,6 +2284,11 @@ csstype@^3.0.2, csstype@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.0.tgz#4ddcac3718d787cf9df0d1b7d15033925c8f29f2"
   integrity sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==
+
+cuid@*, cuid@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/cuid/-/cuid-2.1.8.tgz#cbb88f954171e0d5747606c0139fb65c5101eac0"
+  integrity sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==
 
 cz-conventional-changelog@3.2.0:
   version "3.2.0"
