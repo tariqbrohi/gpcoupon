@@ -3,6 +3,8 @@ import prisma from '@/prisma';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
 import convertDateToUnix from '@/lib/convertDateToUnix';
 
+// api/admin/dashboard/index.ts 와 동일하기에 추후 삭제 가능
+
 export default errorHandler(async function handler(req, res) {
     const method = req.method;
 

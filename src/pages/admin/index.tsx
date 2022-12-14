@@ -21,23 +21,23 @@ const DateContainer = styled.div`
   width: 50%:
 `;
 
-const statusOption = [
-  {
-    key: "All",
-    value: "ALL",
-    text: "All",
-  },
-  {
-    key: "Available",
-    value: "AVAILABLE",
-    text: "Available",
-  },
-  {
-    key: "Unavailable",
-    value: "UNAVAILABLE",
-    text: "Unavailable",
-  },
-];
+// const statusOption = [
+//   {
+//     key: "All",
+//     value: "ALL",
+//     text: "All",
+//   },
+//   {
+//     key: "Available",
+//     value: "AVAILABLE",
+//     text: "Available",
+//   },
+//   {
+//     key: "Unavailable",
+//     value: "UNAVAILABLE",
+//     text: "Unavailable",
+//   },
+// ];
 
 const TAKE = 20;
 
@@ -47,8 +47,8 @@ export default withPageAuthRequired(function AdminDashboard() {
   const [ endDate, setEndDate ] = useState('');
   const [ couponName, setCouponName ] = useState('');
   const [ status, setStatus ] = useState('ALL');
-  // const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
-  const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery({});
+  const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+  // const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery({}); 삭제시 api 도 같이 지워주기
 
   useEffect(() => {
     query({

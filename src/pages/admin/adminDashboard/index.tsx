@@ -42,11 +42,13 @@ export default withPageAuthRequired(function index() {
     const [ activePage, setActivePage ] = useState(1)
     const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
     
+    // 사용하지 않아 추후 삭제해도 되는 페이지 pages/admin/index.tsx 로 대체
+
     useEffect(() => {
         query({
             data: {
                 take: TAKE,
-                sortBy,
+                // sortBy,
                 skip: (activePage - 1) * TAKE,
             }
         });

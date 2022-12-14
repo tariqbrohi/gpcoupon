@@ -447,11 +447,17 @@ export const useGetAffiliateItemsForAdminDashboardLazyQuery = (
   >('/api/admin/dashboard', baseOptions);
 };
 export type GetAffiliateItemsForAdminDashboardQueryVariables = {
-  country?: string;
+  // country?: string;
+  // take?: number;
+  // skip?: number;
+  // affiliate?: boolean;
+  // sortBy?: string;
+
   take?: number;
   skip?: number;
-  affiliate?: boolean;
-  sortBy?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
 };
 export type GetAffiliateItemsForAdminDashboardQueryResult = Brand & {
   total: {
