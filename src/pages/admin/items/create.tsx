@@ -17,7 +17,7 @@ export default withPageAuthRequired(function CreateItem() {
           <Provider>
             <CreateItemForm />
             <Spacer size={20} />
-            <ExcelToJson />
+            {/* <ExcelToJson /> */}
           </Provider>
         </AdminLayout>
       </AppMain>
