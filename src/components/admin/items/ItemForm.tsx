@@ -207,6 +207,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             name="originalPrice"
             value={item.originalPrice === 0 ? '' : item.originalPrice}
             onChange={handleChangePrice}
+            disabled={mode === 'update'}
+            filled
           />
           <Form.Input
             adornment="$"
@@ -214,6 +216,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             name="price"
             value={item.price === 0 ? '' : item.price}
             onChange={handleChangePrice}
+            disabled={mode === 'update'}
+            filled
           />
           {/* <Form.Input
             label="Currency"
