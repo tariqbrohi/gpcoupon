@@ -839,6 +839,7 @@ export const useUpdateItemMutation = () => {
     'put',
     ['id'],
     [
+      'name',
       'extendedName',
       'currency',
       'expiresIn',
@@ -851,6 +852,7 @@ export const useUpdateItemMutation = () => {
       'amount',
       'price',
       'imageUrl',
+      'couponImageUrl',
       'country',
       'type',
       'redemptionInstructions',
@@ -865,6 +867,7 @@ export const useUpdateItemMutation = () => {
   );
 };
 export type UpdateItemMutationVariables = {
+  name: string;
   extendedName: string;
   id: string;
   currency: string;
@@ -883,6 +886,7 @@ export type UpdateItemMutationVariables = {
   influencerId?: string;
   categoryIDs: string[];
   imageUrl: string;
+  couponImageUrl: string;
   slug: string;
   metadata?: Record<string, any>;
 };
