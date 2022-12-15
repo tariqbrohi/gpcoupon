@@ -3,7 +3,7 @@ import AdminLayout from '@/layouts/AdminLayout';
 import React, { useContext, useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Dropdown, DropdownItemProps, DropdownProps, Heading, Icon, Input, Modal, Select, Spacer, Table, TextArea } from '@growth-ui/react';
+import { Button, Chip, DateInput, Dropdown, DropdownItemProps, DropdownProps, Heading, Icon, Input, Modal, Select, Spacer, Table, TextArea } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetItemsQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
@@ -101,6 +101,7 @@ const TableCellLink = styled(Table.Cell)`
 
 const ChipCustom = styled(Chip)`
   margin: 0 auto;
+  cursor: pointer;
 `;
 
 const DropdownCustom = styled(Dropdown)`
@@ -133,33 +134,10 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
   const { data: items } = useGetItemsQuery();
   const [searchCoupon, setSearchCoupon] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
+  const [ startDate, setStartDate ] = useState('');
+  const [ endDate, setEndDate ] = useState('');
+  const [rqModalOpen, setRqModalOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
-  // const showModal = () => {
-  //   setModalOpen(!modalOpen);
-
-  //   return(
-  //     <Modal>
-  //       <ModalHeader subheader="Please write the reason for rejection in the comment column">
-  //         Reject
-  //       </ModalHeader>
-  //       <Modal.Content>
-  //         <ModalTextArea
-  //           rows={10} 
-  //           label="Comment"
-  //           placeholder="Please leave a comment..."
-  //           id="comment" 
-  //           name="comment"
-  //         />
-  //       </Modal.Content>
-  //       <ModalBtnContainer>
-  //         <Button rounded primary>Reject</Button>
-  //         <Button rounded onClick={() => setModalOpen(false)}>Close</Button>
-  //       </ModalBtnContainer>
-  //       <Spacer size={20} />
-  //     </Modal>
-  //   );
-  // }
 
   const addDays = (date: any, days: any) => {
     const d = new Date(date);
@@ -215,11 +193,26 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
     },
   ];
 
+  const handleSearchButton = () => {
+    if ((startDate !== '' && endDate) === '' || (startDate === '' && endDate !== '')) {
+      alert('Please submit From date and To date');
+      return;
+    }
+    // query({
+    //   data: {
+    //     take: TAKE,
+    //     skip: (activePage - 1) * TAKE,
+    //     startDate,
+    //     endDate,
+    //     status,
+    //   }
+    // });
+  }
+
   const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
     if (data.text === 'Approve') {
       return (
         confirm('The coupon request status will change to Approved if you click the OK button.')
-        // confirm('Click OK to change this coupon's request status to Approved.')
       );
     }
 
@@ -310,13 +303,13 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
             </LabelContainer>
             <Spacer size={20} />
 
-            <LabelContainer>
+            {/* <LabelContainer>
               <GroupInputContainer>
                 <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
                 <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
               </GroupInputContainer>
             </LabelContainer>
-            <Spacer size={20} />
+            <Spacer size={20} /> */}
 
             <LabelContainer>
               <GroupInputContainer>
@@ -335,6 +328,40 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
               </GroupInputContainer>
             </LabelContainer>
           </section>
+          <Spacer size={20} />
+
+          <GroupInputContainer>
+            <LabelContainer style={{justifyContent: "space-between"}}>
+              <DateInput
+                mask="yyyy-mm-dd"
+                renderInput={(params) =>
+                  <Input
+                    {...params}
+                    placeholder="yyyy-mm-dd"
+                    label='From'
+                    style={{width: "30%"}}
+                  />
+                }
+                onChange={(_, date) => setStartDate(date)}
+              />
+              
+              <DateInput
+                mask="yyyy-mm-dd"
+                renderInput={(params) =>
+                  <Input
+                    {...params}
+                    placeholder="yyyy-mm-dd"
+                    label='To'
+                    style={{width: "30%"}}
+                  />
+                }
+                onChange={(_, date) => setEndDate(date)}
+              />
+              <Button rounded onClick={() => handleSearchButton()}>
+                Search
+              </Button>
+            </LabelContainer>
+          </GroupInputContainer>
           <Spacer size={30} />
 
           <div style={{border: "2px solid #D9D9D9"}}></div>
@@ -404,7 +431,33 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                       </TableCell>
                       <TableCell>
                         {/* Request Status */}
-                        <ChipCustom text="REQUESTED" color={rqStatusOption[0].value === 'APPROVED' ? 'primary' : rqStatusOption[0].value === 'REJECTED' ? 'red-400' : 'green-400'} />
+                        <Modal
+                          trigger={
+                            <ChipCustom text="REQUESTED" color={rqStatusOption[0].value === 'APPROVED' ? 'primary' : rqStatusOption[0].value === 'REJECTED' ? 'red-400' : 'green-400'} 
+                              onClick={() => setRqModalOpen(true)}
+                            />
+                          }
+                          open={rqModalOpen}
+                        >
+                          <ModalHeader subheader="Your coupon request has been rejected for the following reasons.">
+                            Reject
+                          </ModalHeader>
+                          <Modal.Content>
+                            <ModalTextArea 
+                              rows={10} 
+                              label="Comment"
+                              placeholder="This should be filled in rejected comment data value..."
+                              id="comment" 
+                              name="comment"
+                            />
+                          </Modal.Content>
+                          <ModalBtnContainer>
+                            <Button rounded onClick={() => setRqModalOpen(false)}>Close</Button>
+                          </ModalBtnContainer>
+                          <Spacer size={20} />
+                        </Modal>
+
+                        {/* <ChipCustom text="REQUESTED" color={rqStatusOption[0].value === 'APPROVED' ? 'primary' : rqStatusOption[0].value === 'REJECTED' ? 'red-400' : 'green-400'} /> */}
                       </TableCell>
                       <TableCell>
                         <ChipCustom text={item.status} outlined color={item.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
@@ -413,7 +466,6 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                         Approver
                       </TableCell>
                       <TableCell>
-                        {/* <Icon name='edit' /> */}
                         <DropdownCustom space direction='right' icon={null}
                           trigger={
                             <ChipCustom icon={{name: 'edit'}} size="big" outlined />
@@ -463,15 +515,3 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
     </>
   );
 });
-
-
-export function RejectModal() {
-  return (
-    <Modal>
-      <Modal.Header subheader="I know that you clicked Reject button">Clicked Reject</Modal.Header>
-      <Modal.Content>
-        You clicked Reject!
-      </Modal.Content>
-    </Modal>
-  );
-}
