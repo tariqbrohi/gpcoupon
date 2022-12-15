@@ -374,7 +374,7 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                   <TableHeadCell>Coupon Name</TableHeadCell>
                   <TableHeadCell>Merchant Name</TableHeadCell>
                   <TableHeadCell>Create Date</TableHeadCell>
-                  <TableHeadCell>Expire Date</TableHeadCell>
+                  <TableHeadCell>Expiry</TableHeadCell>
                   <TableHeadCell>Original Price</TableHeadCell>
                   <TableHeadCell>Retail Price</TableHeadCell>
                   <TableHeadCell>Merchant Profit</TableHeadCell>
@@ -413,7 +413,8 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                         {new Date(Number(item.createdAt)).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        {addDays(item.createdAt, item.expiresIn)}
+                        {/* {addDays(item.createdAt, item.expiresIn)} */}
+                        {item.expiresIn}
                       </TableCell>
                       {/* {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)} */}
                       
