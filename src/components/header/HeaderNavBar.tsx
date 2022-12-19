@@ -13,7 +13,7 @@ const NavListAnchor = styled.a`
   transition: all 0.7s ease-in-out;
 
   &:hover {
-    color: #F6A2b1;
+    color: #f6a2b1;
     text-decoration: underline;
   }
 `;
@@ -30,7 +30,7 @@ export default function HeaderNavBar() {
           </Link>
         </List.Item> */}
 
-        <List.Item>
+        {/* <List.Item>
           <Link href={ROUTES.gpcoupons}>
             <NavListAnchor>Categories</NavListAnchor>
           </Link>
@@ -40,27 +40,32 @@ export default function HeaderNavBar() {
           <Link href={ROUTES.howItWorks}>
             <NavListAnchor>How it works</NavListAnchor>
           </Link>
-        </List.Item>
+        </List.Item> */}
 
-        {/* <List.Item>
+        <List.Item>
           <Link href={ROUTES.categories}>
             <a>Categories</a>
           </Link>
         </List.Item>
         <List.Item>
           {country === 'US' && (
-            <Link href={ROUTES.brands}>
+            <Link href={ROUTES.gpcoupons}>
               <a>Brands</a>
             </Link>
           )}
         </List.Item>
-        <List.Item>
+        {/* <List.Item>
           {country === 'US' && (
             <Link href={ROUTES.affiliates}>
               <a>Affiliates</a>
             </Link>
           )}
         </List.Item> */}
+        <List.Item>
+          <Link href={ROUTES.howItWorks}>
+            <a>How It Works</a>
+          </Link>
+        </List.Item>
       </List>
     </Nav>
   );
