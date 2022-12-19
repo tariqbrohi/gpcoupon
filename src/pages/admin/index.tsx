@@ -9,6 +9,7 @@ import AdminDashboards from './adminDashboard/dashboards';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
 import stringSimilarity from 'string-similarity';
+import { useRouter } from 'next/router';
 
 const LabelContainer = styled.div`
   display: flex;
@@ -21,27 +22,28 @@ const DateContainer = styled.div`
   width: 50%:
 `;
 
-// const statusOption = [
-//   {
-//     key: "All",
-//     value: "ALL",
-//     text: "All",
-//   },
-//   {
-//     key: "Available",
-//     value: "AVAILABLE",
-//     text: "Available",
-//   },
-//   {
-//     key: "Unavailable",
-//     value: "UNAVAILABLE",
-//     text: "Unavailable",
-//   },
-// ];
+const statusOption = [
+  {
+    key: "All",
+    value: "ALL",
+    text: "All",
+  },
+  {
+    key: "Available",
+    value: "AVAILABLE",
+    text: "Available",
+  },
+  {
+    key: "Unavailable",
+    value: "UNAVAILABLE",
+    text: "Unavailable",
+  },
+];
 
 const TAKE = 20;
 
 export default withPageAuthRequired(function AdminDashboard() {
+  const router = useRouter();
   const [ activePage, setActivePage ] = useState(1);
   const [ startDate, setStartDate ] = useState('');
   const [ endDate, setEndDate ] = useState('');
@@ -64,7 +66,7 @@ export default withPageAuthRequired(function AdminDashboard() {
   }, [activePage, status]);
 
   const handleSearchButton = () => {
-    if ((startDate !== '' && endDate) === '' || (startDate === '' && endDate !== '')) {
+    if ((startDate !== '' && endDate === '') || (startDate === '' && endDate !== '')) {
       alert('Please submit From date and To date');
 
       return;
@@ -80,6 +82,18 @@ export default withPageAuthRequired(function AdminDashboard() {
       }
     });
   }
+
+  // const handleReset = () => {
+  //   setCouponName('');
+  //   setStartDate('');
+  //   setEndDate('');
+
+  //   console.log('name: ', couponName);
+  //   console.log('start: ', startDate);
+  //   console.log('end: ', endDate);
+
+  //   router.reload();
+  // }
 
   const handlePageChange = (_: any, { activePage }: any) => {
     setActivePage(activePage);
@@ -109,7 +123,7 @@ export default withPageAuthRequired(function AdminDashboard() {
               </LabelContainer>
               <Spacer size={20} />
 
-              {/* <LabelContainer>
+              <LabelContainer>
                 <Select 
                   label='Status'
                   value={statusOption[0].value}
@@ -118,7 +132,7 @@ export default withPageAuthRequired(function AdminDashboard() {
                   style={{width: "50%"}}
                 />
               </LabelContainer>
-              <Spacer size={20} /> */}
+              <Spacer size={20} />
 
               <DateContainer>
                 <LabelContainer style={{justifyContent: "space-between"}}>
@@ -154,6 +168,9 @@ export default withPageAuthRequired(function AdminDashboard() {
                   <Button rounded onClick={() => handleSearchButton()}>
                     Search
                   </Button>
+                  {/* <Button rounded onClick={() => handleReset()}>
+                    Reset
+                  </Button> */}
                 </LabelContainer>
               </DateContainer>
             </section>
