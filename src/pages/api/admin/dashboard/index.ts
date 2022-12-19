@@ -3,6 +3,7 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
 import prisma from '@/prisma';
 import convertDateToUnix from '@/lib/convertDateToUnix';
+import gpointwallet from '../../_lib/gpointwallet';
 
 export default withApiAuthRequired(
     errorHandler(async function handler(req, res) {
@@ -46,11 +47,12 @@ export default withApiAuthRequired(
                 brand: {
                     id: {
                         in: brandId.map(({id}) => id)
-                    }
+                    },
                 }
             },
             select: {
                 id: true,
+                // brand: true,
             },
         });
       
@@ -152,6 +154,20 @@ export default withApiAuthRequired(
                 ]
             })
         ]);
+
+        // const getInfo = items.map((get: any) => {
+        //     // get.username
+        //     get.brand.sub
+        //     // get.senderId
+        // });
+
+        // const info = await gpointwallet.getInfoByUsername('getInfo');
+        // // const info = await gpointwallet.getInfoByAccId({
+        // //     accountIds: getInfo
+        // // });
+
+        // const walletBusinessUserInfo = info.account;
+        // console.log('walletBusinessUserInfo: ', walletBusinessUserInfo);
         
         res.send(
             {
