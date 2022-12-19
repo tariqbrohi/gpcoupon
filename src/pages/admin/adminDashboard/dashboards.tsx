@@ -92,7 +92,8 @@ export default function AdminDashboards(props: any) {
                                 return (
                                     <Table.Row key={idx}>
                                         <TableCell>
-                                            <Image size='small' src={order?._id.couponImageUrl} />
+                                            {/* <Image size='small' src={order?._id.couponImageUrl} /> */}
+                                            <Image src={order?._id.couponImageUrl} style={{maxWidth: "100px"}} />
                                         </TableCell>
                                         <TableCellLink onClick={() => Router.push(`${ROUTES.admin.items}/${order?._id.id}`)}>
                                             {order?._id.name}                       
