@@ -123,6 +123,7 @@ export default function Brands() {
         }
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
   return (
@@ -252,7 +253,7 @@ export default function Brands() {
                           }
                         </TableCell>
                         <TableCell>
-                          <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
+                          <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
                         </TableCell>
                         <TableCell>
                           {new Date(Number(brand.createdAt)).toLocaleDateString()}

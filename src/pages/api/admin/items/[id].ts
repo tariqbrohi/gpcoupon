@@ -11,6 +11,7 @@ export default withApiAuthRequired(
 
     if (req.method === 'put') {
       const {
+        name,
         extendedName,
         currency,
         expiresIn,
@@ -25,6 +26,7 @@ export default withApiAuthRequired(
         notes,
         brandId,
         imageUrl,
+        couponImageUrl,
         available,
         country,
         type,
@@ -52,6 +54,7 @@ export default withApiAuthRequired(
           id,
         },
         data: {
+          name,
           extendedName,
           expiresIn: +expiresIn,
           sortOrder: +sortOrder,
@@ -66,6 +69,7 @@ export default withApiAuthRequired(
             medium: imageUrl,
             large: imageUrl,
           },
+          couponImageUrl,
           price: {
             set: {
               amount: +price,

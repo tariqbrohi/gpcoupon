@@ -1,21 +1,29 @@
 /* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Heading, Image, Input, Select, Spacer, Table } from '@growth-ui/react';
+import { Button, Chip, DateInput, Heading, Image, Input, Pagination, Select, Spacer, Table } from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsQuery } from '@/services';
+import { useGetBrandsByAffiliateForAdminDashboardLazyQuery, useGetBrandsByAffiliateForAdminDashboardQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Provider from '@/components/admin/brands/Provider';
+import { useRouter } from 'next/router';
+import Router from 'next/router';
 
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
 `;
+
+// const DateContainer = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   width: 50%:
+// `;
 
 const BtnCreate = styled(Button)`
   min-width: 172px;
@@ -63,34 +71,93 @@ const TableCellLink = styled(Table.Cell)`
   }
 `;
 
-export default withPageAuthRequired(function Brands() {
-  const { data: brands } = useGetBrandsQuery({
-    data: {
-      affiliate: true,
-      status: 'ALL',
-    },
-  });
+const ChipCustom = styled(Chip)`
+  text-align: center;
+  margin: 0 auto;
+`;
 
+const ChipCategories = styled(Chip)`
+  text-align: center;
+
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
+`;
+
+const TAKE = 20;
+
+export default withPageAuthRequired(function Brands() {
+  // const [sortBy, setSortBy] = useState('createdAt, desc');
+  const [activePage, setActivePage] = useState(1);
   const [searchBrand, setSearchBrand] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
+  const router = useRouter();
+  const [ status, setStatus ] = useState('ALL');
+  const {startDate, endDate } = router.query;
+  // const [ startDate, setStartDate ] = useState('');
+  // const [ endDate, setEndDate ] = useState('');
 
   const statusOption = [
     {
-      key: "ALL",
+      key: "All",
       value: "ALL",
-      text: "ALL",
+      text: "All",
     },
     {
-      key: "AVAILABLE",
+      key: "Available",
       value: "AVAILABLE",
-      text: "AVAILABLE",
+      text: "Available",
     },
     {
-      key: "UNAVAILABLE",
+      key: "Unavailable",
       value: "UNAVAILABLE",
-      text: "UNAVAILABLE",
+      text: "Unavailable",
     },
   ];
+
+  const { data: walletData } = useGetBrandsByAffiliateForAdminDashboardQuery({});
+  // console.log('walletData: ', walletData);
+  // console.log('walletData?.walletInfo: ', walletData?.walletInfo);
+
+  const [query, { data, loading }] = useGetBrandsByAffiliateForAdminDashboardLazyQuery({});
+
+  useEffect(() => {
+    query({
+      data: {
+        take: TAKE,
+        skip: (activePage - 1) * TAKE,
+        startDate: startDate as string,
+        endDate: endDate as string,
+        affiliate: true,
+        status,
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[status, activePage]);
+
+  // console.log('searchBrand: ', searchBrand);
+  // console.log('searchMerchant: ', searchMerchant);
+
+  const handlePageChange = (_: any, { activePage }: any) => {
+    setActivePage(activePage);
+  };
+
+  // const handleSearchButton = () => {
+  //   if ((startDate !== '' && endDate) === '' || (startDate === '' && endDate !== '')) {
+  //     alert('Please submit From date and To date');
+
+  //     return;
+  //   }
+
+  //   query({
+  //     data: {
+  //       startDate: startDate as string,
+  //       endDate: endDate as string,
+  //       affiliate: true,
+  //       status,
+  //     }
+  //   });
+  // // }
 
   return (
     <>
@@ -130,21 +197,60 @@ export default withPageAuthRequired(function Brands() {
               <Spacer size={20} />
 
               <LabelContainer>
-                <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
-                  <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
-                  <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
-                </div>
-              </LabelContainer>
-              <Spacer size={20} />
-
-              <LabelContainer>
                 <Select 
                   label='Status'
                   value={statusOption[0].value}
                   options={statusOption}
-                  style={{minWidth: "13em"}}
+                  onChange={(_, data) => setStatus(data.newValues)}
+                  // style={{minWidth: "13em"}}
+                  style={{width: "50%"}}
                 />
               </LabelContainer>
+              <Spacer size={20} />
+
+              {/* <LabelContainer>
+                <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
+                  <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
+                  <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
+                </div>
+              </LabelContainer> */}
+
+              {/* <DateContainer>
+                <LabelContainer style={{justifyContent: "space-between"}}>
+                  <DateInput
+                    mask="yyyy-mm-dd"
+                    renderInput={(params) => 
+                      <Input 
+                        {...params} 
+                        placeholder="yyyy-mm-dd" 
+                        label='From'
+                        // icon="calendar" 
+                        // iconPosition='right' 
+                        style={{width: "30%"}}
+                      />
+                    }
+                    onChange={(_, date) => setStartDate(date)}
+                  />
+
+                  <DateInput
+                    mask="yyyy-mm-dd"
+                    renderInput={(params) => 
+                      <Input 
+                        {...params} 
+                        placeholder="yyyy-mm-dd" 
+                        label='To'
+                        // icon="calendar" 
+                        // iconPosition='right' 
+                        style={{width: "30%"}}
+                      />
+                    }
+                    onChange={(_, date) => setEndDate(date)}
+                  />
+                  <Button rounded onClick={() => handleSearchButton()}>
+                    Search
+                  </Button>
+                </LabelContainer>
+              </DateContainer> */}
             </section>
             <Spacer size={30} />
 
@@ -167,44 +273,84 @@ export default withPageAuthRequired(function Brands() {
                 </Table.Head>
 
                 <Table.Body>
-                  {brands
-                    ?.filter(({ name }) => {
+                  {data?.brands
+                    ?.filter(({ name }: any) => {
                       if (!searchBrand) return true;
                     
-                      const similarity = stringSimilarity.compareTwoStrings(
+                      const similarityBrand = stringSimilarity.compareTwoStrings(
                         name,
                         searchBrand,
                       );
                       
-                      if (similarity > 0.25) return true;
+                      if (similarityBrand > 0.25) return true;
                       
                       return false;
                     })
-                    .map((brand) => (
+                    ?.map((brand: any) => (
                       <Table.Row key={brand.id}>
                         <TableCell>
-                          <Image size='mini' src={brand.thumbnailUrl} />
+                          {/* <Image size='small' src={brand.thumbnailUrl} /> */}
+                          <Image src={brand.thumbnailUrl} style={{maxWidth: "100px"}} />
                         </TableCell>
                         <TableCellLink 
-                          onClick={() => window.open(`${ROUTES.admin.brands}/${brand.id}`)}
+                          onClick={() => Router.push(`${ROUTES.admin.brands}/${brand.id}`)}
                         >
                           {brand.name}                       
                         </TableCellLink>
+
+                        {walletData?.walletInfo
+                          ?.filter(({ username }: any) => {
+                            if (!searchMerchant) return true;
+
+                            const similarityMerchant = stringSimilarity.compareTwoStrings(
+                              // merchant || undefined || '',
+                              username,
+                              searchMerchant,
+                            );
+
+                            if (similarityMerchant > 0.25) return true;
+
+                            return false;
+                          })
+                          ?.map((wallet: any) => {
+                            if (brand.sub === wallet.id) {
+                              return (
+                                <>
+                                  <TableCell>
+                                    {wallet.username}
+                                  </TableCell>
+                                  <TableCell>
+                                    {`${wallet.profile.firstName} ${wallet.profile.lastName}`}
+                                  </TableCell>
+                                </>
+                              );
+                            }
+                          })}
+
+                        {/* {walletData?.walletInfo.map((item: any) => {
+                          if (brand.sub === item.id) {
+                            return (
+                              <>
+                                <TableCell key={item.id}>
+                                  {item.username ? item.username : ''}
+                                </TableCell>
+                                <TableCell>
+                                  {`${item.profile.firstName} ${item.profile.lastName}`}
+                                </TableCell>
+                              </>
+                            );
+                          }
+                        })} */}
                         <TableCell>
-                          Merchant Name
+                          <ChipCustom text={brand.countries.join(', ')} />
                         </TableCell>
                         <TableCell>
-                          GP Wallet Business Username
+                          {brand.categories.map((c: any, index:number) => (
+                            <ChipCategories key={index} text={c.name} />
+                          ))}
                         </TableCell>
                         <TableCell>
-                          {brand.countries}
-                        </TableCell>
-                        <TableCell>
-                          <Chip text='Categories' />
-                          {/* {brand.categories} */}
-                        </TableCell>
-                        <TableCell>
-                          <Chip text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
+                          <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
                         </TableCell>
                         <TableCell>
                           {new Date(Number(brand.createdAt)).toLocaleDateString()}
@@ -215,6 +361,13 @@ export default withPageAuthRequired(function Brands() {
                 </Table.Body>
               </Table>
             </Provider>
+            <Spacer size={20} />
+            
+            {/* <Pagination
+              totalPages={Math.ceil((data?.brands || 1) / TAKE) }
+              onPageChange={handlePageChange}
+              activePage={activePage}
+            /> */}
           </AdminLayout>
         </AppMain>
     </>

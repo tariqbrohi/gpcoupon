@@ -59,8 +59,10 @@ export default function AdminSidebar(props: SidebarProps) {
               <Collapse expanded>
                 <List padded selection verticalAlign="middle">
                   <List.Item
-                    active={pathname === ROUTES.admin.adminDashboard || pathname === '/admin'}
-                    onClick={handleClickItem(ROUTES.admin.adminDashboard)}
+                    // active={pathname === ROUTES.admin.adminDashboard || pathname === '/admin'}
+                    // onClick={handleClickItem(ROUTES.admin.adminDashboard)}
+                    active={pathname === '/admin' || pathname === ROUTES.admin.adminDashboardDetails}
+                    onClick={handleClickItem('/admin')}
                     style={styles.collapseItem}
                   >
                     <List.Content>Admin Dashboard</List.Content>

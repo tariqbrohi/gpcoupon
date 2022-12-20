@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import Context from './Context';
+import Context, { Item } from './Context';
 import stringSimilarity from 'string-similarity';
 import { FileUploader } from 'react-drag-drop-files';
 import {
@@ -52,7 +52,7 @@ const FormBtn = styled(Form.Button)`
   }
 `;
 
-export default function ItemForm({ mode, onSubmit }: Props) {
+export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
   const { item, setItem } = useContext(Context);
   const { data: categories } = useGetCategoriesQuery();
   const { data: brands } = useGetBrandsQuery({
@@ -60,6 +60,7 @@ export default function ItemForm({ mode, onSubmit }: Props) {
       affiliate: true,
     },
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const currencyList = [
     {
@@ -109,14 +110,27 @@ export default function ItemForm({ mode, onSubmit }: Props) {
     },
 
   ];
-  
-  const [submitting, setSubmitting] = useState(false);
+
+  const getSlug = () => {
+    const time = new Date().toISOString();
+    const ms = Date.parse(time);
+
+    const slug = `${item.name.toLowerCase().replace(' ', '_')}_${ms}`;
+    
+    return slug;
+  };
 
   const handleSubmit = async (e: SyntheticEvent) => {
+    if (mode === 'create') {
+      item.slug = getSlug();
+    }
+
+    onUpdate(item);
+
     e.preventDefault();
 
     setSubmitting(true);
-    await onSubmit();
+    await onSubmit(item);
     setSubmitting(false);
   };
 
@@ -207,6 +221,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             name="originalPrice"
             value={item.originalPrice === 0 ? '' : item.originalPrice}
             onChange={handleChangePrice}
+            disabled={mode === 'update'}
+            filled={mode === 'update'}
           />
           <Form.Input
             adornment="$"
@@ -214,6 +230,8 @@ export default function ItemForm({ mode, onSubmit }: Props) {
             name="price"
             value={item.price === 0 ? '' : item.price}
             onChange={handleChangePrice}
+            disabled={mode === 'update'}
+            filled={mode === 'update'}
           />
           {/* <Form.Input
             label="Currency"
@@ -298,12 +316,24 @@ export default function ItemForm({ mode, onSubmit }: Props) {
         </Form.Group>
 
         <Form.Group>
-          <Form.Input
+          {/* <Form.Input
             label="Slug"
             name="slug"
             value={item.slug}
             onChange={handleChange}
-          />
+          /> */}
+
+          {
+            mode === 'update' && (
+              <Form.Input
+                label="Slug"
+                name="slug"
+                placeholder={item.slug}
+                disabled
+              />
+            )
+          }
+
           <Form.Input
             label="Sort Order (0 to 10)"
             name="sortOrder"
@@ -463,5 +493,6 @@ export default function ItemForm({ mode, onSubmit }: Props) {
 
 type Props = {
   mode: 'create' | 'update';
-  onSubmit: () => Promise<void>;
+  onSubmit: (data: Item) => Promise<void>;
+  onUpdate: (data: any) => void;
 };
