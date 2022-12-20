@@ -219,6 +219,40 @@ export type GetItemsByAffiliateForDashboardQueryResult = Brand & {
 };
 
 /**
+ * GetItemsByAffiliateForAdminDashboard
+ */
+ export const useGetAffiliateItemsByAffiliateForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<
+    GetItemsByAffiliateForAdminDashboardQueryVariables,
+    GetItemsByAffiliateForAdminDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+};
+export const useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetItemsByAffiliateForAdminDashboardQueryVariables,
+    GetItemsByAffiliateForAdminDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+};
+export type GetItemsByAffiliateForAdminDashboardQueryVariables = {
+  take?: number;
+  skip?: number;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+};
+export type GetItemsByAffiliateForAdminDashboardQueryResult = Brand & {
+  total: {
+    count: number;
+    profitSum: number;
+  };
+  orders: Order[];
+};
+
+/**
  * GetItemForCouponDetailDashboard
  */
  export const useGetItemForCouponDetailDashboardQuery = (
@@ -413,11 +447,17 @@ export const useGetAffiliateItemsForAdminDashboardLazyQuery = (
   >('/api/admin/dashboard', baseOptions);
 };
 export type GetAffiliateItemsForAdminDashboardQueryVariables = {
-  country?: string;
+  // country?: string;
+  // take?: number;
+  // skip?: number;
+  // affiliate?: boolean;
+  // sortBy?: string;
+
   take?: number;
   skip?: number;
-  affiliate?: boolean;
-  sortBy?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
 };
 export type GetAffiliateItemsForAdminDashboardQueryResult = Brand & {
   total: {
