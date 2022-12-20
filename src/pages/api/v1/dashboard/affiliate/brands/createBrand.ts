@@ -26,6 +26,7 @@ export default errorHandler(async function handler(req, res) {
     } = req.body as any;
 
     const session = gpointwallet.getSession(req);
+    if(!session) throw(new BadRequestError('No User'));
 
     const createdBy = {
       given_name: session?.user.profile.firstName,
