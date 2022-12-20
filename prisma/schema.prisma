@@ -10,10 +10,10 @@ generator client {
 model ApprovalStatus {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   status                  ApproveStatus
-  itemId                  String            @db.ObjectId
+  itemId                  String            @db.ObjectId @unique
   item                    Item              @relation(fields: [itemId], references: [id])
   message                 String?
-  approver                Json
+  approver                Json?
   createdAt               Int
   updatedAt               Int 
   deletedAt               Int?
@@ -133,7 +133,7 @@ model Item {
   categories                      Category[]        @relation(fields: [categoryIDs], references: [id])
   metadata                        Json?
   sortOrder                       Int               @default(0)
-  approvalStatusIds               ApprovalStatus[]           
+  approvalStatus                  ApprovalStatus?   
 
   @@index([name])
   @@index([amount])
@@ -218,6 +218,7 @@ enum ApproveStatus{
   approved
   rejected
   requested
+  modifyRequested
 }
 
 enum PaymentVendor {
