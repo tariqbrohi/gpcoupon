@@ -108,7 +108,7 @@ export default function Brands() {
 
   useEffect(() => {
     if (user !== null) {
-      if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== ''))
+      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
       {
         alert('Please submit From date and To date');
         return;
