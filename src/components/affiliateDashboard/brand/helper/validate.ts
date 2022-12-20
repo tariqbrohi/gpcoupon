@@ -13,6 +13,7 @@ const validate = (data: any) => {
     sub,
     thumbnailUrl,
     status,
+    locale,
   } = data;
 
   if (!status) {
@@ -57,6 +58,10 @@ const validate = (data: any) => {
 
   if (!slug) {
     return 'Slug is required';
+  }
+
+  if (!locale) {
+    return 'locale is required';
   }
 
   return null;

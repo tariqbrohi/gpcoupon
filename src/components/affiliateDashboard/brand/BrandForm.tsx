@@ -93,7 +93,7 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Pro
     const time = new Date().toISOString();
     const ms = Date.parse(time);
 
-    const slug = `${myBrand.name.toLowerCase().replace(' ', '_')}_${ms}`;
+    const slug = `${myBrand.name.toLowerCase().replaceAll(' ', '_')}_${ms}`;
     return slug;
   };
 

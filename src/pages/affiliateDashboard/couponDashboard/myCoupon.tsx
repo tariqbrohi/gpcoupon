@@ -1,6 +1,6 @@
 import AppContext from '@/modules/components/AppContext';
 import React, { useContext, useEffect, useState } from 'react';
-import { Paragraph, Spacer, Pagination, Button, Container, Dropdown, Heading, Input, Select, DateInput } from '@growth-ui/react';
+import { Spacer, Pagination, Button, Container, Dropdown, Heading, Input, Select, DateInput } from '@growth-ui/react';
 import { useGetAffiliateItemsByAffiliateForDashboardLazyQuery} from '@/services';
 import styled from 'styled-components';
 import MyCouponList from '@/components/affiliateDashboard/coupon/MyCouponsList';
@@ -31,27 +31,9 @@ export default function MyCoupon() {
   const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForDashboardLazyQuery({});
   const [ couponName, setCouponName ] = useState('');
 
-  // const statusOption = [
-  //   {
-  //     key: "All",
-  //     value: "ALL",
-  //     text: "All",
-  //   },
-  //   {
-  //     key: "Available",
-  //     value: "AVAILABLE",
-  //     text: "Available",
-  //   },
-  //   {
-  //     key: "Unavailable",
-  //     value: "UNAVAILABLE",
-  //     text: "Unavailable",
-  //   },
-  // ];
-
   useEffect(() => {
     if (user !== null) {
-      if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== ''))
+      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
       {
         alert('Please submit From date and To date');
         return;
@@ -73,7 +55,7 @@ export default function MyCoupon() {
 
   const handleSearchButton = () => {
     if (user !== null) {
-      if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== ''))
+      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
       {
         alert('Please submit From date and To date');
         return;
@@ -104,21 +86,12 @@ export default function MyCoupon() {
       <Spacer size={20} />
       <section>
         <Input 
-          label='Coupon Name' 
+          label='Coupon Name'
           icon="search outline"
           value={couponName}
           onChange={(e) => setCouponName(e.target.value)}
           style={{width: "50%"}} 
         />
-        {/* <Spacer size={20} />
-        <LabelContainer>
-        <Select 
-          label='Status'
-          value={statusOption[0].value}
-          options={statusOption}
-          onChange={(_, data)=>setStatus(data.newValues)}
-        />
-        </LabelContainer> */}
         <Spacer size={20} />
 
         <InputContainer>

@@ -7,6 +7,18 @@ generator client {
   provider        = "prisma-client-js"
 }
 
+model ApprovalStatus {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  status                  ApproveStatus
+  itemId                  String            @db.ObjectId @unique
+  item                    Item              @relation(fields: [itemId], references: [id])
+  message                 String?
+  approver                Json?
+  createdAt               Int
+  updatedAt               Int 
+  deletedAt               Int?
+}
+
 model Category {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   name                    String            @unique
@@ -50,43 +62,43 @@ model Brand {
 }
 
 model GPoint {
-  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
-  name                            String
-  slug                            String            @unique  
-  imageUrl                    String
-  amount        Float
-  createdAt                       Int
-  updatedAt                       Int
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String
+  slug                    String            @unique  
+  imageUrl                String
+  amount                  Float
+  createdAt               Int
+  updatedAt               Int
 }
 
 model GPointGift {
-  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
-  code  String
-  pin   String
-  amount  Float
-  status String
-  orderId String @db.ObjectId
-  order GPointOrder     @relation(references: [id], fields: [orderId])
-  createdAt                       Int
-  updatedAt                       Int
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  code                    String
+  pin                     String
+  amount                  Float
+  status                  String
+  orderId                 String            @db.ObjectId
+  order                   GPointOrder       @relation(references: [id], fields: [orderId])
+  createdAt               Int
+  updatedAt               Int
 
   @@unique([code, pin])
 }
 
 model GPointOrder {
-  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
-  gpointId  String
-  gpoint  Json
-  sender  Json
-  exchangeRate  Float
-  totalPrice  Float
-  status String
-  code  Int
-  qty Int
-  recipient Recipient
-  createdAt                       Int
-  updatedAt                       Int
-  gifts GPointGift[]
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  gpointId                String
+  gpoint                  Json
+  sender                  Json
+  exchangeRate            Float
+  totalPrice              Float
+  status                  String
+  code                    Int
+  qty                     Int
+  recipient               Recipient
+  createdAt               Int
+  updatedAt               Int
+  gifts                   GPointGift[]
 
   @@index([status])
 }
@@ -121,6 +133,7 @@ model Item {
   categories                      Category[]        @relation(fields: [categoryIDs], references: [id])
   metadata                        Json?
   sortOrder                       Int               @default(0)
+  approvalStatus                  ApprovalStatus?   
 
   @@index([name])
   @@index([amount])
@@ -199,6 +212,13 @@ type Exchange {
   exchangeRate            Float
   source                  String
   target                  String
+}
+
+enum ApproveStatus{
+  approved
+  rejected
+  requested
+  modifyRequested
 }
 
 enum PaymentVendor {

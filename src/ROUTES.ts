@@ -17,8 +17,8 @@ export const ROUTES = {
   paymentCards: '/account/payment-cards',
   affiliateDashboard: '/affiliateDashboard',
   affiliateCouponDetails: '/affiliateDashboard/couponDashboard/details',
-  affiliateCouponRequestList: '/affiliateDashboard/coupon/requestList',
-  affiliateCouponRequest: '/affiliateDashboard/coupon/request',
+  affiliateCouponRequestList: '/affiliateDashboard/coupons',
+  affiliateCouponRequest: '/affiliateDashboard/coupons/createRequest',
   affiliateBrands: '/affiliateDashboard/brands',
   affiliateCreateBrands: '/affiliateDashboard/brands/create',
   admin: {

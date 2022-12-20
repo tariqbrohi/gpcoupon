@@ -108,7 +108,7 @@ export default function Brands() {
 
   useEffect(() => {
     if (user !== null) {
-      if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== ''))
+      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
       {
         alert('Please submit From date and To date');
         return;
@@ -131,7 +131,7 @@ export default function Brands() {
       <Head title='GPcoupon | List Brand' />
       <AppHeader bgTransition={false} />
       <AppMain>
-          <AppContainer>
+        <AppContainer>
           <AffiliateDashboardLayout>
           <section>
             <Heading style={{color: "#2D126D"}}>My Brands</Heading>
@@ -202,70 +202,70 @@ export default function Brands() {
             <div style={{border: "2px solid #D9D9D9"}}></div>
             <Spacer size={30} />
 
-              <Table celled>
-                <Table.Head>
-                  <Table.Row>
-                    <TableHeadCell>Logo</TableHeadCell>
-                    <TableHeadCell>Brand Name</TableHeadCell>
-                    <TableHeadCell>GPoint Wallet Username</TableHeadCell>
-                    <TableHeadCell>Countries</TableHeadCell>
-                    <TableHeadCell>Categories</TableHeadCell>
-                    <TableHeadCell>Status</TableHeadCell>
-                    <TableHeadCell>Create Date</TableHeadCell>
-                  </Table.Row>
-                </Table.Head>
+            <Table celled>
+              <Table.Head>
+                <Table.Row>
+                  <TableHeadCell>Logo</TableHeadCell>
+                  <TableHeadCell>Brand Name</TableHeadCell>
+                  <TableHeadCell>GPoint Wallet Username</TableHeadCell>
+                  <TableHeadCell>Countries</TableHeadCell>
+                  <TableHeadCell>Categories</TableHeadCell>
+                  <TableHeadCell>Status</TableHeadCell>
+                  <TableHeadCell>Create Date</TableHeadCell>
+                </Table.Row>
+              </Table.Head>
 
-                <Table.Body>
-                  {data?.brands
-                    ?.filter((brand: any) => {
-                      if (!brandName) return true;
+              <Table.Body>
+                {data?.brands
+                  ?.filter((brand: any) => {
+                    if (!brandName) return true;
+                  
+                    const similarity = stringSimilarity.compareTwoStrings(
+                      brand.name,
+                      brandName,
+                    );
                     
-                      const similarity = stringSimilarity.compareTwoStrings(
-                        brand.name,
-                        brandName,
-                      );
-                      
-                      if (similarity > 0.25) return true;
-                      
-                      return false;
-                    })
-                    .map((brand: any) => (
-                      <Table.Row key={brand.id}>
-                        <TableCell>
-                          <Image size='mini' src={brand.thumbnailUrl} />
-                        </TableCell>
-                        <TableCellLink 
-                          onClick={() => Router.push(`${ROUTES.affiliateBrands}/${brand.id}`)}
-                        >
-                          {brand.name}                       
-                        </TableCellLink>
-                        <TableCell>
-                          {user?.username}
-                        </TableCell>
-                        <TableCell>
-                          <ChipCustom text={brand.countries.join(', ')} />
-                        </TableCell>
-                        <TableCell>
-                          {
-                            brand.categories.map((c: any, index: number) => (
-                              <ChipCategories key={index} text={c.name} />
-                            ))
-                          }
-                        </TableCell>
-                        <TableCell>
-                          <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
-                        </TableCell>
-                        <TableCell>
-                          {new Date(Number(brand.createdAt)).toLocaleDateString()}
-                        </TableCell>
-                      </Table.Row>
-                    ))
-                  }
-                </Table.Body>
-              </Table>
-            </AffiliateDashboardLayout>
-          </AppContainer>
-        </AppMain>
+                    if (similarity > 0.25) return true;
+                    
+                    return false;
+                  })
+                  .map((brand: any) => (
+                    <Table.Row key={brand.id}>
+                      <TableCell>
+                        <Image size='mini' src={brand.thumbnailUrl} />
+                      </TableCell>
+                      <TableCellLink 
+                        onClick={() => Router.push(`${ROUTES.affiliateBrands}/${brand.id}`)}
+                      >
+                        {brand.name}                       
+                      </TableCellLink>
+                      <TableCell>
+                        {user?.username}
+                      </TableCell>
+                      <TableCell>
+                        <ChipCustom text={brand.countries.join(', ')} />
+                      </TableCell>
+                      <TableCell>
+                        {
+                          brand.categories.map((c: any, index: number) => (
+                            <ChipCategories key={index} text={c.name} />
+                          ))
+                        }
+                      </TableCell>
+                      <TableCell>
+                        <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
+                      </TableCell>
+                      <TableCell>
+                        {new Date(Number(brand.createdAt)).toLocaleDateString()}
+                      </TableCell>
+                    </Table.Row>
+                  ))
+                }
+              </Table.Body>
+            </Table>
+          </AffiliateDashboardLayout>
+        </AppContainer>
+      </AppMain>
     </>
   );
 }
