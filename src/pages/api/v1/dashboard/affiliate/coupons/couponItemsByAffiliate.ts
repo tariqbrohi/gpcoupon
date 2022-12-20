@@ -32,16 +32,6 @@ export default errorHandler(async function handler(req, res) {
 
   if (!sub ) throw new BadRequestError('No BusinessAccount Exists');
 
-  // when an affiliate(merchant) can create only one brand
-  // const brandId = await prisma.brand.findFirst({
-  //   where: {
-  //     sub,
-  //   },           
-  //   select: {
-  //     id: true,
-  //   },
-  // });
-
   // when an affiliate(merchant) can create multiple brand
   // To do: create multiple brand and items and test 
   const brandId = await prisma.brand.findMany({
@@ -54,18 +44,6 @@ export default errorHandler(async function handler(req, res) {
   });
 
   if (!brandId) throw new BadRequestError('No affiliate exists!');
-
-  // when an affiliate(merchant) can create only one brand
-  // const items = await prisma.item.findMany({
-  //   where: {
-  //     brand: {
-  //       id: brandId.id,
-  //     },
-  //   },
-  //   select: {
-  //     id: true,
-  //   },
-  // });
 
   // when an affiliate(merchant) can create multiple brand
   // To do: create multiple brand and items and test 
