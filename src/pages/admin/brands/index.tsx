@@ -290,7 +290,7 @@ export default withPageAuthRequired(function Brands() {
                       <Table.Row key={brand.id}>
                         <TableCell>
                           {/* <Image size='small' src={brand.thumbnailUrl} /> */}
-                          <Image src={brand.thumbnailUrl} style={{minWidth: "40px"}} />
+                          <Image src={brand.thumbnailUrl} style={{maxWidth: "100px"}} />
                         </TableCell>
                         <TableCellLink 
                           onClick={() => Router.push(`${ROUTES.admin.brands}/${brand.id}`)}
