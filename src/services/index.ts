@@ -184,6 +184,40 @@ export type GetItemsByAffiliateForDashboardQueryResult = Brand & {
 };
 
 /**
+ * GetItemsByAffiliateForAdminDashboard
+ */
+ export const useGetAffiliateItemsByAffiliateForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<
+    GetItemsByAffiliateForAdminDashboardQueryVariables,
+    GetItemsByAffiliateForAdminDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+};
+export const useGetAffiliateItemsByAffiliateForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetItemsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<
+    GetItemsByAffiliateForAdminDashboardQueryVariables,
+    GetItemsByAffiliateForAdminDashboardQueryResult
+  >('/api/v1/dashboard/affiliate/admin/couponAdminDashboard', baseOptions);
+};
+export type GetItemsByAffiliateForAdminDashboardQueryVariables = {
+  take?: number;
+  skip?: number;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+};
+export type GetItemsByAffiliateForAdminDashboardQueryResult = Brand & {
+  total: {
+    count: number;
+    profitSum: number;
+  };
+  orders: Order[];
+};
+
+/**
  * GetItemForCouponDetailDashboard
  */
  export const useGetItemForCouponDetailDashboardQuery = (
@@ -252,6 +286,52 @@ export type GetBrandsByAffiliateQueryResult = {
 };
 
 /**
+ * GetBrandsByAffiliateForAdminDashboard
+ */
+ export const useGetBrandsByAffiliateForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
+    '/api/admin/brands/brandList',
+    baseOptions,
+  );
+};
+export const useGetBrandsByAffiliateForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
+    '/api/admin/brands/brandList',
+    baseOptions,
+  );
+};
+export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
+  take?: number;
+  skip?: number;
+  startDate?: string;
+  endDate?: string;
+  affiliate: boolean;
+  // status?: 'ALL';
+  
+  status?: string;
+};
+// export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
+//   brands: Brand[]
+// };
+
+// export type GetBrandsByAffiliateForAdminDashboardQueryResult = Brand[];
+export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
+  brands: Brand[];
+  walletInfo: [{
+    id: string;
+    username: string;
+    profile: {
+      firstName: string;
+      lastName: string;
+    }
+  }];
+};
+
+/** 
  * GetBrandByAffiliate
  */
 export const useGetBrandByAffiliateQuery = (
@@ -580,11 +660,17 @@ export const useGetAffiliateItemsForAdminDashboardLazyQuery = (
   >('/api/admin/dashboard', baseOptions);
 };
 export type GetAffiliateItemsForAdminDashboardQueryVariables = {
-  country?: string;
+  // country?: string;
+  // take?: number;
+  // skip?: number;
+  // affiliate?: boolean;
+  // sortBy?: string;
+
   take?: number;
   skip?: number;
-  affiliate?: boolean;
-  sortBy?: string;
+  startDate?: string;
+  endDate?: string;
+  status?: string;
 };
 export type GetAffiliateItemsForAdminDashboardQueryResult = Brand & {
   total: {
@@ -966,6 +1052,7 @@ export const useUpdateItemMutation = () => {
     'put',
     ['id'],
     [
+      'name',
       'extendedName',
       'currency',
       'expiresIn',
@@ -978,6 +1065,7 @@ export const useUpdateItemMutation = () => {
       'amount',
       'price',
       'imageUrl',
+      'couponImageUrl',
       'country',
       'type',
       'redemptionInstructions',
@@ -992,6 +1080,7 @@ export const useUpdateItemMutation = () => {
   );
 };
 export type UpdateItemMutationVariables = {
+  name: string;
   extendedName: string;
   id: string;
   currency: string;
@@ -1010,6 +1099,7 @@ export type UpdateItemMutationVariables = {
   influencerId?: string;
   categoryIDs: string[];
   imageUrl: string;
+  couponImageUrl: string;
   slug: string;
   metadata?: Record<string, any>;
 };

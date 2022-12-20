@@ -108,7 +108,7 @@ export default errorHandler(async function handler(req, res) {
         },
         {
           $sort: {
-            "_id.name": 1, // sort by item.name
+            "_id.name": 1, // sort by item.name ascending
           },
         },
         {

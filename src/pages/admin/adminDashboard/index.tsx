@@ -1,75 +1,112 @@
-import Head from '@/modules/components/Head';
+/* eslint-disable react-hooks/rules-of-hooks */
 import AdminLayout from '@/layouts/AdminLayout';
-import Provider from '@/components/admin/items/Provider';
 import React, { useEffect, useState } from 'react';
-import { Button, Heading, Pagination, Spacer } from '@growth-ui/react';
-import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
-import AdminDashboards from './dashboards';
 import AppMain from '@/layouts/AppMain';
-import Link from 'next/link';
-import { ROUTES } from '@/ROUTES';
+import Head from '@/modules/components/Head';
+import Provider from '@/components/admin/items/Provider';
+import { Heading, Pagination, Select, Spacer } from '@growth-ui/react';
+import { useGetAffiliateItemsForAdminDashboardLazyQuery } from '@/services';
+import Input from '@growth-ui/react/elements/Input/Input';
 import styled from 'styled-components';
+import DashboardGroupBy from './dashboardGroupBy';
 
 const LabelContainer = styled.div`
     display: flex;
     align-items: center;
 `;
 
-const DetailBtn = styled(Button)`
-  min-width: 172px;
-  max-width: 205px;
-  margin-bottom: 10px;
-  box-shadow: rgb(203 203 203) 4px 4px 8px;
-`;
+const statusOption = [
+    {
+        key: "All",
+        value: "ALL",
+        text: "All",
+    },  
+    {   
+        key: "Available",
+        value: "AVAILABLE",
+        text: "Available",
+    },  
+    {   
+        key: "Unavailable",
+        value: "UNAVAILABLE",
+        text: "Unavailable",
+    },
+];
 
 const TAKE = 20;
 
-export default withPageAuthRequired(function AdminDashboard() {
+export default withPageAuthRequired(function index() {
+    const [search, setSearch] = useState('');
     const [ sortBy, setSortBy ] = useState('createdAt, desc');
-    const [ activePage, setActivePage ] = useState(1);
+    const [ activePage, setActivePage ] = useState(1)
     const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+    
+    // 사용하지 않아 추후 삭제해도 되는 페이지 pages/admin/index.tsx 로 대체
 
     useEffect(() => {
         query({
             data: {
                 take: TAKE,
-                sortBy,
+                // sortBy,
                 skip: (activePage - 1) * TAKE,
             }
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activePage, sortBy]);
-
+    
     const handlePageChange = (_: any, { activePage }: any) => {
         setActivePage(activePage);
     };
-    
+
     return (
         <>
-            <Head title='GPcoupon | Admin Dashboard' />
+            <Head title='GPcoupon | Admin' />
             <AppMain>
                 <AdminLayout>
+
                     <Provider>
-                        <LabelContainer style={{justifyContent: "space-between"}}>
-                            <Heading as="h2" style={{color: "#2D126D"}}>
-                                Coupon Dashboard
-                            </Heading>
-                            <Link href={ROUTES.admin.adminDashboardDetails}>
-                                <a>
-                                    <DetailBtn rounded>To Detail</DetailBtn>
-                                </a>
-                            </Link>
-                        </LabelContainer>
-                        <Spacer size={30} />
-                        
-                        {/* <Heading as="h2">
+                        <Heading as="h2" style={{color: "#2D126D"}}>
                             Coupon Dashboard
                         </Heading>
-                        <Spacer size={30} /> */}
-                        
-                        <div style={{padding: "50px 0"}}>
-                            <AdminDashboards orders={data} />
+                        <Spacer size={20} />
+
+                        <section>
+                            <LabelContainer>
+                              <Input 
+                                label='Business Name' 
+                                icon="search outline"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                style={{width: "50%"}} 
+                              />
+                            </LabelContainer>
+                            <Spacer size={20} />
+
+                            <LabelContainer>
+                              <div style={{display: "flex", justifyContent: "space-between", width: "50%"}}>
+                                <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
+                                <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
+                              </div>
+                            </LabelContainer>
+                            <Spacer size={20} />
+
+                            <LabelContainer>
+                              <Select 
+                                label='Status'
+                                value={statusOption[0].value}
+                                options={statusOption}
+                                style={{minWidth: "13em"}}
+                              />
+                            </LabelContainer>
+                        </section>
+                        <Spacer size={30} />
+
+                        <div style={{border: "2px solid #D9D9D9"}}></div>
+
+                        <div style={{padding: "30px 0"}}>
+                            <DashboardGroupBy orders={data} />
+                            {/* <AdminDashboards orders={data} /> */}
                         </div>
                         <Spacer size={20} />
 
