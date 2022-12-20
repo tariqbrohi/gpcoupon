@@ -26,7 +26,7 @@ export const useGetCategoriesQuery = (
   return useQuery<GetCategoriesQueryVariables, GetCategoriesQueryResult>(
     '/api/v1/categories',
     baseOptions,
-  );
+  ); 
 };
 export const useGetCategoriesLazyQuery = (
   baseOptions?: QueryBaseOptions<GetCategoriesQueryVariables>,
@@ -149,41 +149,6 @@ export type GetAffiliateItemsQueryResult = Brand & {
 // Affiliate Dashboard
 
 /**
- * GetAffiliateItemsForDashboard(accountId)
- */
-// export const useGetAffiliateItemsForDashboardQuery = (
-//   baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
-// ) => {
-//   return useQuery<
-//     GetAffiliateItemsForDashboardQueryVariables,
-//     GetAffiliateItemsForDashboardQueryResult
-//   >('/api/v1/dashboard/affiliate/items', baseOptions);
-// };
-// export const useGetAffiliateItemsForDashboardLazyQuery = (
-//   baseOptions?: QueryBaseOptions<GetAffiliateItemsForDashboardQueryVariables>,
-// ) => {
-//   return useLazyQuery<
-//     GetAffiliateItemsForDashboardQueryVariables,
-//     GetAffiliateItemsForDashboardQueryResult
-//   >('/api/v1/dashboard/affiliate/items', baseOptions);
-// };
-// export type GetAffiliateItemsForDashboardQueryVariables = {
-//   country?: string;
-//   take?: number;
-//   skip?: number;
-//   sub: string;
-//   affiliate?: boolean;
-//   sortBy?: string;
-// };
-// export type GetAffiliateItemsForDashboardQueryResult = Brand & {
-//   total: {
-//     count: number;
-//     profitSum: number;
-//   };
-//   orders: Order[];
-// };
-
-/**
  * GetItemsByAffiliateForDashboard
  */
 export const useGetAffiliateItemsByAffiliateForDashboardQuery = (
@@ -279,7 +244,7 @@ export type GetBrandsByAffiliateQueryVariables = {
   skip?: number;
   startDate?: string;
   endDate?: string;
-  status: string;
+  status?: string;
   sub: string;
 };
 export type GetBrandsByAffiliateQueryResult = {
@@ -289,8 +254,8 @@ export type GetBrandsByAffiliateQueryResult = {
 /**
  * GetBrandByAffiliate
  */
- export const useGetBrandByAffiliateQuery = (
-  baseOptions?: QueryBaseOptions<GetBrandQueryVariables>,
+export const useGetBrandByAffiliateQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandByAffiliateQueryVariables>,
 ) => {
   return useQuery<GetBrandByAffiliateQueryVariables, GetBrandByAffiliateQueryResult>(
     '/api/v1/dashboard/affiliate/brands/:id',
@@ -392,6 +357,208 @@ export type UpdateBrandByAffiliateMutationVariables = {
   locale: string;
 };
 export type UpdateBrandByAffiliateMutationResult = Brand;
+
+/**
+ * Get Coupon Request
+ */
+export const useGetCouponRequestQuery = (
+  baseOptions?: QueryBaseOptions<GetCouponRequestQueryVariables>,
+) => {
+  return useQuery<GetCouponRequestQueryVariables, GetCouponRequestQueryResult>(
+    '/api/v1/dashboard/affiliate/couponRequests/couponRequest',
+    baseOptions,
+    [],
+  );
+};
+export const useGetCouponRequestLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetCouponRequestQueryVariables>,
+) => {
+  return useLazyQuery<GetCouponRequestQueryVariables, GetCouponRequestQueryResult>(
+    '/api/v1/dashboard/affiliate/couponRequests/couponRequest',
+    baseOptions,
+    [],
+  );
+};
+export type GetCouponRequestQueryVariables = {
+  startDate?: string;
+  endDate?: string;
+  status?: string;
+  requestStatus?: string;
+  skip?: number;
+  take?: number;
+};
+export type GetCouponRequestQueryResult = {
+  items: Item[],
+  totalCount: number;
+};
+
+/**
+ * Change Coupon Status
+ */
+export const useChangeCouponStatusMutation = () => {
+  return useMutation<
+    ChangeCouponStatusMutationVariables,
+    ChangeCouponStatusMutationResult
+  >(
+    '/api/v1/dashboard/affiliate/couponRequests/changeCouponStatus',
+    'put',
+    [], //req.query
+    [
+      'id',
+      'status',
+    ],
+  );
+};
+export type ChangeCouponStatusMutationVariables = {
+  id: string;
+  status: string;
+};
+export type ChangeCouponStatusMutationResult = Item;
+
+/**
+ * Delete Coupon Request
+ */
+export const useDeleteCouponRequestMutation = () => {
+  return useMutation<
+    DeleteCouponRequestMutationVariables,
+    DeleteCouponRequestMutationResult
+  >(
+    '/api/v1/dashboard/affiliate/couponRequests/deleteCouponRequest',
+    'put',
+    [], //req.query
+    [
+      'id',
+    ],
+  );
+};
+export type DeleteCouponRequestMutationVariables = {
+  id: string;
+};
+export type DeleteCouponRequestMutationResult = Item;
+
+/**
+ * Create Coupon Request
+ */
+export const useCouponRequestMutation = () => {
+  return useMutation<
+    CouponRequestMutationVariables,
+    CouponRequestMutationResult
+  >(
+    '/api/v1/dashboard/affiliate/couponRequests/couponRequest',
+    'post',
+    [], //req.query
+    [
+      'name',
+      'extendedName',
+      'currency',
+      'expiresIn',
+      'sortOrder',
+      'amount',
+      'discountRate',
+      'originalPrice',
+      'couponImageUrl',
+      'available',
+      'notes',
+      'brandId',
+      'imageUrl',
+      'country',
+      'price',
+      'type',
+      'redemptionInstructions',
+      'categoryIDs',
+      'influencerDiscountRate',
+      'customerDiscountRate',
+      'influencerId',
+      'slug',
+      'metadata',
+      'locale'
+    ],
+  );
+};
+export type CouponRequestMutationVariables = {
+  name: string;
+  extendedName: string;
+  currency: string;
+  expiresIn: number;
+  amount: number;
+  originalPrice: number;
+  disCountRate?: number;
+  couponImageUrl: string;
+  notes?: string[];
+  brandId: string;
+  price: number;
+  sortOrder: number;
+  country: Country;
+  type: ItemType;
+  categoryIDs: string[];
+  imageUrl: string;
+  slug: string;
+  metadata?: Record<string, any>;
+  locale: string;
+};
+export type CouponRequestMutationResult = Item;
+
+/** 
+ * Modify Coupon Request
+ */
+export const useModifyCouponRequestMutation = () => {
+  return useMutation<ModifyCouponRequestMutationVariables, ModifyCouponRequestMutationResult>(
+    '/api/v1/dashboard/affiliate/couponRequests/:id',
+    'put',
+    ['id'],
+    [
+      'name',
+      'extendedName',
+      'currency',
+      'expiresIn',
+      'sortOrder',
+      'amount',
+      'discountRate',
+      'originalPrice',
+      'couponImageUrl',
+      'available',
+      'notes',
+      'brandId',
+      'imageUrl',
+      'country',
+      'price',
+      'type',
+      'redemptionInstructions',
+      'categoryIDs',
+      'influencerDiscountRate',
+      'customerDiscountRate',
+      'influencerId',
+      'slug',
+      'metadata',
+      'locale'
+    ],
+  );
+};
+export type ModifyCouponRequestMutationVariables = {
+  name: string;
+  extendedName: string;
+  currency: string;
+  expiresIn: number;
+  amount: number;
+  originalPrice: number;
+  disCountRate?: number;
+  couponImageUrl: string;
+  notes?: string[];
+  brandId: string;
+  price: number;
+  sortOrder: number;
+  country: Country;
+  type: ItemType;
+  categoryIDs: string[];
+  imageUrl: string;
+  slug: string;
+  metadata?: Record<string, any>;
+  locale: string;
+};
+export type ModifyCouponRequestMutationResult = Item;
+
+
+/** admin dashboard **/
 
 /**
  * GetAffiliateItemsForAdminDashboard
@@ -1270,38 +1437,3 @@ export type DeletePaymentCardMutationVariables = {
   id: string;
 };
 export type DeletePaymentCardMutationResult = boolean;
-
-/**
- * Create Coupon Request
- */
-export const useCouponRequestMutation = () => {
-  return useMutation<
-    CouponRequestMutationVariables,
-    CouponRequestMutationResult
-  >(
-    '/api/v1/dashboard/affiliate/coupons/couponRequest',
-    'post',
-    [], //req.query
-    [
-      'businessName',
-      'phoneNumber',
-      'gwalletBusinessUsername',
-      'brandName',
-      'email',
-      'couponInfo',
-      'logoImgUrl',
-      'itemImgUrl'
-    ], //req.body
-  );
-};
-export type CouponRequestMutationVariables = {
-  businessName: string;
-  phoneNumber: string;
-  gwalletBusinessUsername: string;
-  brandName: string;
-  email: string;
-  couponInfo: string;
-  logoImgUrl: string;
-  itemImgUrl: string;
-};
-export type CouponRequestMutationResult = boolean;

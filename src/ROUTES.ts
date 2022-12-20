@@ -18,7 +18,7 @@ export const ROUTES = {
   affiliateDashboard: '/affiliateDashboard',
   affiliateCouponDetails: '/affiliateDashboard/couponDashboard/details',
   affiliateCouponRequestList: '/affiliateDashboard/coupons',
-  affiliateCouponRequest: '/affiliateDashboard/coupons/request',
+  affiliateCouponRequest: '/affiliateDashboard/coupons/createRequest',
   affiliateBrands: '/affiliateDashboard/brands',
   affiliateCreateBrands: '/affiliateDashboard/brands/create',
   admin: {
