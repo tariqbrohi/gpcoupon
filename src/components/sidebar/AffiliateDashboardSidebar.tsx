@@ -25,7 +25,6 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
   const { pathname, push } = useRouter();
 
   const handleClickItem = (route: string) => () => {
-    console.log('click', route); //remove later
     push(route);
   };
 
@@ -82,8 +81,8 @@ export default function AffiliateDashboardSidebar(props: SidebarProps) {
                     <List.Content>My Coupon Requests</List.Content>
                   </List.Item>
                   <List.Item
-                    // active={pathname === ROUTES.affiliateDashboard.couponRequest}
-                    // onClick={handleClickItem(ROUTES.affiliateDashboard.couponRequest)}
+                    active={pathname === ROUTES.affiliateCouponRequest}
+                    onClick={handleClickItem(ROUTES.affiliateCouponRequest)}
                     style={styles.collapseItem}
                   >
                     <List.Content>Request Coupon</List.Content>
