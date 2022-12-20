@@ -321,6 +321,52 @@ export type GetBrandsByAffiliateQueryResult = {
 };
 
 /**
+ * GetBrandsByAffiliateForAdminDashboard
+ */
+ export const useGetBrandsByAffiliateForAdminDashboardQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
+    '/api/admin/brands/brandList',
+    baseOptions,
+  );
+};
+export const useGetBrandsByAffiliateForAdminDashboardLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetBrandsByAffiliateForAdminDashboardQueryVariables>,
+) => {
+  return useLazyQuery<GetBrandsByAffiliateForAdminDashboardQueryVariables, GetBrandsByAffiliateForAdminDashboardQueryResult>(
+    '/api/admin/brands/brandList',
+    baseOptions,
+  );
+};
+export type GetBrandsByAffiliateForAdminDashboardQueryVariables = {
+  take?: number;
+  skip?: number;
+  startDate?: string;
+  endDate?: string;
+  affiliate: boolean;
+  // status?: 'ALL';
+  
+  status?: string;
+};
+// export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
+//   brands: Brand[]
+// };
+
+// export type GetBrandsByAffiliateForAdminDashboardQueryResult = Brand[];
+export type GetBrandsByAffiliateForAdminDashboardQueryResult = {
+  brands: Brand[];
+  walletInfo: [{
+    id: string;
+    username: string;
+    profile: {
+      firstName: string;
+      lastName: string;
+    }
+  }];
+};
+
+/** 
  * GetBrandByAffiliate
  */
  export const useGetBrandByAffiliateQuery = (
