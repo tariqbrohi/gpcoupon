@@ -15,6 +15,14 @@ import { useContext } from 'react';
 import GPoints from '@/components/gpoints';
 import styled from 'styled-components';
 
+const AppContainerCustom = styled(AppContainer)`
+  padding-bottom: 0px;
+`;
+
+const SectionCustom = styled(Section)`
+  padding-bottom: 0px;
+`;
+
 const MobileNoSpacer = styled(Spacer)`
   ${({ theme }) => theme.gui.media.mobile} {
     display: none;
@@ -30,8 +38,8 @@ export default function Home() {
       <AppHeader bgTransition hideOnMobile={false} />
       <AppMain>
         <Hero />
-        <AppContainer>
-          <Section>
+        <AppContainerCustom>
+          <SectionCustom>
             <HomeContent />
             {country === 'KR' && <GPoints />}
             <MobileNoSpacer size={50} />
@@ -49,8 +57,8 @@ export default function Home() {
 
             <HowToUse />
             <MobileNoSpacer size={50} />
-          </Section>
-        </AppContainer>
+          </SectionCustom>
+        </AppContainerCustom>
       </AppMain>
       <AppNav />
     </>

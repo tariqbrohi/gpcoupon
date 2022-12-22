@@ -19,9 +19,24 @@ const Form = styled.form`
   align-items: stretch;
 `;
 
+const InputSearch = styled(Input)`
+  & > div > svg {
+    padding-top: 0;
+  }
+
+  & > div > input {
+    padding-top: 0;
+  }
+`;
+
 const ButtonCustom = styled(Button)`
   padding: 10px 30px;
   right: 8%;
+
+  & > svg {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 
   ${({ theme }) => theme.gui.media.mobile} {
     padding: 10px;
@@ -75,7 +90,7 @@ export default function SearchForm({ search }: Props) {
 
       <Grid.Col flex="1">
         <Form onSubmit={handleSubmit}>
-          <Input
+          <InputSearch
             fluid
             filled
             placeholder="Search for coupons"

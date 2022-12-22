@@ -56,6 +56,10 @@ const ButtonSearch = styled(Button)`
     left: 4.2%;
     border-radius: 30px;
 
+    & > svg {
+        margin-right: 0;
+    }
+
     ${({ theme }) => theme.gui.media.custom(1024)} {
         left: 4.6%
     }
