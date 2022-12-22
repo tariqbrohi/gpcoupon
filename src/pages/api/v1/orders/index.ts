@@ -178,25 +178,29 @@ export default withApiAuthRequired(
       }
 
       let orderId = '';
-
+      console.log(xoxoItem, ' xoxoItem FOUND');
       if (xoxoItem) {
         const order = await xoxoday.orders.place({
           productId: +xoxoItem.id,
           quantity,
           denomination: +price,
-          // todo
-          // remove this and implement custom email
+          poNumber: charge.id,
           notifyReceiverEmail: 1,
           email: recipient.email,
         });
-
+        console.log(order, ' order FOUND');
         if (!order) {
+          console.log('SHIT');
           // todo
           // slack notify with gpointwallet transaction id and etc...
           throw new InternalServerError();
         }
 
         orderId = `${order.orderId}`;
+      }
+
+      if (xoxoItem && !orderId) {
+        throw new InternalServerError();
       }
 
       const data: Prisma.OrderCreateInput = {
@@ -264,7 +268,7 @@ export default withApiAuthRequired(
       const { id } = await prisma.order.create({
         data,
       });
-
+      console.log(id, ' adjklsdj kaj k');
       orderId = `${id}-${orderId}`;
 
       if (dbItem?.affiliate) {

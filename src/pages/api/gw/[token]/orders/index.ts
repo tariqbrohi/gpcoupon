@@ -158,6 +158,7 @@ export default isAuth(
           // remove this and implement custom email
           notifyReceiverEmail: 1,
           email: recipient.email,
+          poNumber: transactionId,
         });
 
         if (!order) {
@@ -238,41 +239,65 @@ export default isAuth(
       orderId = `${id}-${orderId}`;
 
       if (dbItem?.affiliate) {
-        const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
-          QRCode.toDataURL(
-            btoa(
-              JSON.stringify({
-                code: codes[i],
-                pin: pins[i],
-                orderId,
-                sub: dbItem.brand?.sub,
-                isGP: true,
-                originalPrice: dbItem.originalPrice,
-                name: dbItem.name,
-                extednedName: dbItem.extendedName,
-                brandName: dbItem?.brand?.name!,
-                amount: dbItem.amount,
-              }),
-            ),
-          ),
+        console.log(
+          JSON.stringify({
+            code: codes[0],
+            pin: pins[0],
+            orderId,
+            sub: dbItem.brand?.sub,
+            isGP: true,
+            originalPrice: dbItem.originalPrice,
+            name: dbItem.name,
+            extednedName: dbItem.extendedName,
+            brandName: dbItem?.brand?.name!,
+            amount: dbItem.amount,
+          }),
         );
+        try {
+          const qrcodesPromises = new Array(quantity).fill(0).map((_, i) =>
+            QRCode.toDataURL(
+              Buffer.from(
+                JSON.stringify({
+                  code: codes[i],
+                  pin: pins[i],
+                  orderId,
+                  sub: dbItem.brand?.sub,
+                  isGP: true,
+                  originalPrice: dbItem.originalPrice,
+                  name: dbItem.name,
+                  extednedName: dbItem.extendedName,
+                  brandName: dbItem?.brand?.name!,
+                  amount: dbItem.amount,
+                }),
+              ).toString('base64'),
+            ),
+          );
 
-        const qrcodes = await Promise.all(qrcodesPromises);
-
-        sendOrder({
-          quantity,
-          qrcodes,
-          recipientEmail: recipient.email,
-          name: dbItem.name,
-          brandLogoUrl: dbItem.brand?.thumbnailUrl!,
-          couponImageUrl: dbItem.couponImageUrl!,
-          expiresIn: dbItem.expiresIn!,
-          redemptionInstructions: dbItem.redemptionInstructions,
-          termsAndConditionsInstructions: dbItem.termsAndConditionsInstructions,
-          brandName: dbItem.brand?.name!,
-          itemImage: dbItem.imageUrls.medium,
-          message,
-        });
+          const qrcodes = await Promise.all(qrcodesPromises);
+          console.log(qrcodes, ' man qrcodes ');
+          await sendOrder({
+            quantity,
+            qrcodes,
+            recipientEmail: recipient.email,
+            name: dbItem.name,
+            brandLogoUrl: dbItem.brand?.thumbnailUrl!,
+            couponImageUrl: dbItem.couponImageUrl!,
+            expiresIn: dbItem.expiresIn!,
+            redemptionInstructions: dbItem.redemptionInstructions,
+            termsAndConditionsInstructions:
+              dbItem.termsAndConditionsInstructions,
+            brandName: dbItem.brand?.name!,
+            itemImage: dbItem.imageUrls.medium,
+            message,
+          }).catch((err) => {
+            console.log('sendgrid error');
+            console.log(JSON.stringify(err, null, 2));
+          });
+        } catch (err) {
+          console.log(err);
+          console.log('SHIT BRO');
+          console.log(JSON.stringify(err, null, 2));
+        }
       }
 
       res.send(orderId);

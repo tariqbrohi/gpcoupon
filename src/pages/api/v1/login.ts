@@ -2,10 +2,8 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import gpointwallet from '../_lib/gpointwallet';
 import { NotFoundError, UnauthenticatedError } from '@/lib/errors';
 import { setCookie } from '@/lib/parse-cookies';
-import grapherjs from '../_lib/grapherjs';
 
-export default errorHandler(
-  grapherjs.withTracingHandler(async function handler(req, res) {
+export default errorHandler(async function handler(req, res) {
     const method = req.method;
 
     if (method !== 'post') {
@@ -28,5 +26,4 @@ export default errorHandler(
     ]);
 
     res.send(data.user);
-  }),
-);
+  });

@@ -7,6 +7,7 @@ const withApiAuthRequired = (
   apiHandler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>,
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
+    console.log('not even here');
     try {
       const { jid } = parseCookies(req);
 
@@ -15,9 +16,11 @@ const withApiAuthRequired = (
       if (new Date().valueOf() >= exp * 1000) {
         throw new UnauthenticatedError();
       }
-
+      console.log('called');
       await apiHandler(req, res);
     } catch (err: any) {
+      console.log('called dsd ad a');
+      console.log(err);
       throw new UnauthenticatedError();
     }
   };
