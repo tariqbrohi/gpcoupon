@@ -16,23 +16,18 @@ async function validate() {
   if (!accessToken) return false;
 
   try {
-    if (!expiresIn || expiresIn < 30) {
-      const { data } = await axios.get(`${baseURL}/token`, {
-        headers: {
-          'Content-Type': `application/json`,
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+    const { tokenContent } = JSON.parse(
+      Buffer.from(accessToken, 'base64').toString('utf8'),
+    );
 
-      expiresIn = data?.expires_in;
-
-      return true;
+    if (new Date(tokenContent.expiresAt).getTime() <= new Date().getTime()) {
+      return false;
     }
+
+    return true;
   } catch {
     return false;
   }
-
-  return true;
 }
 
 async function refreshTokens() {
