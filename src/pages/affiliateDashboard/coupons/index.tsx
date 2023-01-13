@@ -4,9 +4,29 @@ import AffiliateDashboardLayout from '@/layouts/AffiliateDashgoardLayout';
 import React, { useEffect, useState, useContext } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, DateInput, Dropdown, DropdownItemProps, DropdownProps, Heading, Icon, Input, Modal, Select, Spacer, Table, TextArea, Pagination } from '@growth-ui/react';
+import {
+  Button,
+  Chip,
+  DateInput,
+  Dropdown,
+  DropdownItemProps,
+  DropdownProps,
+  Heading,
+  Icon,
+  Input,
+  Modal,
+  Select,
+  Spacer,
+  Table,
+  TextArea,
+  Pagination,
+} from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetCouponRequestLazyQuery, useChangeCouponStatusMutation, useDeleteCouponRequestMutation } from '@/services';
+import {
+  useGetCouponRequestLazyQuery,
+  useChangeCouponStatusMutation,
+  useDeleteCouponRequestMutation,
+} from '@/services';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
 import styled from 'styled-components';
@@ -52,13 +72,13 @@ const BtnCreateBrd = styled(Button)`
   font-size: 18px;
   padding: 10px 35px;
   border-radius: 30px;
-  border: 1px solid #BF7582;
+  border: 1px solid #bf7582;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   background-color: #fff;
-  color: #BF7582;
+  color: #bf7582;
   transition: all 0.4s ease-in-out;
   &:hover {
-    background-color: #F6A5A5;
+    background-color: #f6a5a5;
     color: #fff;
   }
   ${({ theme }) => theme.gui.media.custom(1920)} {
@@ -89,8 +109,8 @@ const TableCellLink = styled(Table.Cell)`
   text-align: center;
   transition: all 0.4s ease-in-out;
   &:hover {
-      color: #2D126D;
-      text-decoration: underline;
+    color: #2d126d;
+    text-decoration: underline;
   }
 `;
 
@@ -125,138 +145,147 @@ const ModalBtnContainer = styled.div`
 
 export default function MyCouponRequests(props: DropdownProps) {
   const { user } = useContext(AppContext);
-  const [ startDate, setStartDate ] = useState('');
-  const [ endDate, setEndDate ] = useState('');
-  const [ status, setStatus ] = useState('ALL');
-  const [ requestStatus, setRequestStatus ] = useState('ALL');
-  const [ activePage, setActivePage ] = useState(1);
-  const [ query, { data: items, loading} ] = useGetCouponRequestLazyQuery();
-  const [ changeUpdate, { loading: changeLoading}] = useChangeCouponStatusMutation();
-  const [ deleteUpdate, { loading: deleteLoading}] = useDeleteCouponRequestMutation();
-  const [ searchCoupon, setSearchCoupon ] = useState('');
-  const [ rqModalOpen, setRqModalOpen ] = useState(false);
-  const [ render, setRender ] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [status, setStatus] = useState('ALL');
+  const [requestStatus, setRequestStatus] = useState('ALL');
+  const [activePage, setActivePage] = useState(1);
+  const [query, { data: items, loading }] = useGetCouponRequestLazyQuery();
+  const [changeUpdate, { loading: changeLoading }] =
+    useChangeCouponStatusMutation();
+  const [deleteUpdate, { loading: deleteLoading }] =
+    useDeleteCouponRequestMutation();
+  const [searchCoupon, setSearchCoupon] = useState('');
+  const [rqModalOpen, setRqModalOpen] = useState(false);
+  const [render, setRender] = useState(false);
   const statusOption = [
     {
-      key: "All",
-      value: "ALL",
-      text: "All",
+      key: 'All',
+      value: 'ALL',
+      text: 'All',
     },
     {
-      key: "Available",
-      value: "AVAILABLE",
-      text: "Available",
+      key: 'Available',
+      value: 'AVAILABLE',
+      text: 'Available',
     },
     {
-      key: "Unavailable",
-      value: "UNAVAILABLE",
-      text: "Unavailable",
+      key: 'Unavailable',
+      value: 'UNAVAILABLE',
+      text: 'Unavailable',
     },
   ];
 
   const rqStatusOption = [
     {
-      key: "All",
-      value: "ALL",
-      text: "All",
+      key: 'All',
+      value: 'ALL',
+      text: 'All',
     },
     {
-      key: "Approved",
-      value: "approved",
-      text: "Approved",
+      key: 'Approved',
+      value: 'approved',
+      text: 'Approved',
     },
     {
-      key: "Rejected",
-      value: "rejected",
-      text: "Rejected",
+      key: 'Rejected',
+      value: 'rejected',
+      text: 'Rejected',
     },
     {
-      key: "Requested",
-      value: "requested",
-      text: "Requested",
+      key: 'Requested',
+      value: 'requested',
+      text: 'Requested',
     },
     {
-      key: "Modify Requested",
-      value: "modifyRequested",
-      text: "Modify Requested",
+      key: 'Modify Requested',
+      value: 'modifyRequested',
+      text: 'Modify Requested',
     },
   ];
 
-  const fetchData = () => {
-    query(
-      {
-        data: {
-          take: TAKE,
-          skip: (activePage - 1) * TAKE,
-          startDate,
-          endDate,
-          status,
-          requestStatus,
-        }
-      }
-    )
-  }
+  const fetchData = async () => {
+    await query({
+      data: {
+        take: TAKE,
+        skip: (activePage - 1) * TAKE,
+        startDate,
+        endDate,
+        status,
+        requestStatus,
+      },
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
 
   useEffect(() => {
-    if (user !== null) {
-      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
-      {
-        alert('Please submit From date and To date');
-        return;
-      }
-
-      fetchData();
-    }
-  },[activePage, status, requestStatus]);
+    // console.log('@pages/affiliateDashboard/coupons - useEffect - user: ', user);
+    fetchData();
+  }, [activePage, status, requestStatus, user]);
 
   const handlePageChange = (_: any, { activePage }: any) => {
     setActivePage(activePage);
   };
 
   const handleSearchButton = () => {
-    if ((startDate !== '' && endDate === '') || (startDate === '' && endDate !== '')) {
+    if (
+      (startDate !== '' && endDate === '') ||
+      (startDate === '' && endDate !== '')
+    ) {
       alert('Please submit From date and To date');
       return;
     }
     fetchData();
-  }
+  };
 
-  const handleClickDropdownItem = (e: any, data: DropdownItemProps, id: string, status: string = '') => {
+  const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
     if (data.disabled === true) return;
 
-    if (data.text === 'Change Status') { 
-      if (confirm('Click the OK button to change the current coupon status.') === true) {
-        const changedStatus = status === 'AVAILABLE'? 'UNAVAILABLE': 'AVAILABLE';
+    console.log('data.item: ', data.item);
+
+    if (data.text === 'Change Status') {
+      if (
+        confirm('Click the OK button to change the current coupon status.') ===
+        true
+      ) {
+        const changedStatus =
+          data.item.status === 'AVAILABLE' ? 'UNAVAILABLE' : 'AVAILABLE';
+        console.log('changedStatus: ', changedStatus);
         changeUpdate({
           data: {
-            id,
+            id: data.item.id,
             status: changedStatus,
-          }
-        }).then(() => {
-          alert('Successfully Updated');
-          fetchData();
+          },
         })
-        .catch((err) => {
-          alert('Something went wrong, please try again');
-        });
+          .then(() => {
+            // alert('Successfully Updated');
+            window.location.reload();
+          })
+          .catch((err) => {
+            alert('Something went wrong, please try again');
+          });
       } else {
         return;
       }
     }
 
     if (data.text === 'Delete') {
-      if (confirm('Are you sure you want to delete this coupon request?') === true) {
+      if (
+        confirm('Are you sure you want to delete this coupon request?') === true
+      ) {
         deleteUpdate({
           data: {
-            id,
-          }
-        }).then(() => {
-          alert('Successfully Deleted');
-          fetchData();
+            id: data.item.id,
+          },
         })
-        .catch((err) => {
-          alert('Something went wrong, please try again');
-        });
+          .then(() => {
+            // alert('Successfully Deleted');
+            window.location.reload();
+          })
+          .catch((err) => {
+            alert('Something went wrong, please try again');
+          });
       } else {
         return;
       }
@@ -265,96 +294,95 @@ export default function MyCouponRequests(props: DropdownProps) {
 
   return (
     <>
-      <Head title='GPcoupon | My Coupon Requests' />
+      <Head title="GPcoupon | My Coupon Requests" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
           <AffiliateDashboardLayout>
-          <section>
-            <Heading style={{color: "#2D126D"}}>List Request Coupon</Heading>
+            <section>
+              <Heading style={{ color: '#2D126D' }}>
+                List Request Coupon
+              </Heading>
+              <Spacer size={20} />
+
+              <LabelContainer style={{ justifyContent: 'space-between' }}>
+                <Input
+                  label="Coupon Name"
+                  icon="search outline"
+                  value={searchCoupon}
+                  onChange={(e) => setSearchCoupon(e.target.value)}
+                  style={{ width: '50%' }}
+                />
+
+                <Link href={ROUTES.affiliateCouponRequest}>
+                  <a>
+                    <BtnCreateCpn>Create Coupon</BtnCreateCpn>
+                  </a>
+                </Link>
+              </LabelContainer>
+              <Spacer size={20} />
+              <LabelContainer style={{ justifyContent: 'space-between' }}>
+                <GroupInputContainer>
+                  <Select
+                    label="Status"
+                    value={statusOption[0].value}
+                    options={statusOption}
+                    style={{ minWidth: '13em' }}
+                    onChange={(_, data) => setStatus(data.newValues)}
+                  />
+                  <Select
+                    label="Request Status"
+                    value={rqStatusOption[0].value}
+                    options={rqStatusOption}
+                    style={{ minWidth: '13em' }}
+                    onChange={(_, data) => setRequestStatus(data.newValues)}
+                  />
+                </GroupInputContainer>
+                <Link href={ROUTES.affiliateCreateBrands}>
+                  <a>
+                    <BtnCreateBrd>Create Brand</BtnCreateBrd>
+                  </a>
+                </Link>
+              </LabelContainer>
+            </section>
             <Spacer size={20} />
 
-            <LabelContainer style={{justifyContent: "space-between"}}>
-              <Input
-                label="Coupon Name"
-                icon="search outline"
-                value={searchCoupon}
-                onChange={(e) => setSearchCoupon(e.target.value)}
-                style={{width: "50%"}}
-              />
-
-              <Link href={ROUTES.affiliateCouponRequest}>
-                <a>
-                  <BtnCreateCpn>Create Coupon</BtnCreateCpn>
-                </a>
-              </Link>   
-            </LabelContainer>
-            <Spacer size={20} />
-            <LabelContainer style={{justifyContent: "space-between"}}>
-              <GroupInputContainer>
-                <Select 
-                  label='Status'
-                  value={statusOption[0].value}
-                  options={statusOption}
-                  style={{minWidth: "13em"}}
-                  onChange={(_, data) => setStatus(data.newValues)}
+            <GroupInputContainer>
+              <LabelContainer style={{ justifyContent: 'space-between' }}>
+                <DateInput
+                  mask="yyyy-mm-dd"
+                  renderInput={(params) => (
+                    <Input
+                      {...params}
+                      placeholder="yyyy-mm-dd"
+                      label="From"
+                      style={{ width: '30%' }}
+                    />
+                  )}
+                  onChange={(_, date) => setStartDate(date)}
                 />
-                <Select 
-                  label='Request Status'
-                  value={rqStatusOption[0].value}
-                  options={rqStatusOption}
-                  style={{minWidth: "13em"}}
-                  onChange={(_, data) => setRequestStatus(data.newValues)}
+
+                <DateInput
+                  mask="yyyy-mm-dd"
+                  renderInput={(params) => (
+                    <Input
+                      {...params}
+                      placeholder="yyyy-mm-dd"
+                      label="To"
+                      style={{ width: '30%' }}
+                    />
+                  )}
+                  onChange={(_, date) => setEndDate(date)}
                 />
-              </GroupInputContainer>
-              <Link href={ROUTES.affiliateCreateBrands}>
-                <a>
-                  <BtnCreateBrd>Create Brand</BtnCreateBrd>
-                </a>
-              </Link>
-            </LabelContainer>
-          </section>
-          <Spacer size={20} />
+                <Button rounded onClick={() => handleSearchButton()}>
+                  Search
+                </Button>
+              </LabelContainer>
+            </GroupInputContainer>
+            <Spacer size={30} />
 
-          <GroupInputContainer>
-            <LabelContainer style={{justifyContent: "space-between"}}>
-              <DateInput
-                mask="yyyy-mm-dd"
-                renderInput={(params) =>
-                  <Input
-                    {...params}
-                    placeholder="yyyy-mm-dd"
-                    label='From'
-                    style={{width: "30%"}}
-                  />
-                }
-                onChange={(_, date) => setStartDate(date)}
-              />
-              
-              <DateInput
-                mask="yyyy-mm-dd"
-                renderInput={(params) =>
-                  <Input
-                    {...params}
-                    placeholder="yyyy-mm-dd"
-                    label='To'
-                    style={{width: "30%"}}
-                  />
-                }
-                onChange={(_, date) => setEndDate(date)}
-              />
-              <Button 
-                rounded 
-                onClick={() => handleSearchButton()}
-              >
-                Search
-              </Button>
-            </LabelContainer>
-          </GroupInputContainer>
-          <Spacer size={30} />
-
-          <div style={{border: "2px solid #D9D9D9"}}></div>
-          <Spacer size={30} />
+            <div style={{ border: '2px solid #D9D9D9' }}></div>
+            <Spacer size={30} />
             <Table celled>
               <Table.Head>
                 <Table.Row>
@@ -366,7 +394,7 @@ export default function MyCouponRequests(props: DropdownProps) {
                   <TableHeadCell>My Profit</TableHeadCell>
                   <TableHeadCell>Request Status</TableHeadCell>
                   <TableHeadCell>Status</TableHeadCell>
-                  <TableHeadCell>Approver</TableHeadCell>
+                  {/* <TableHeadCell>Admin Approver</TableHeadCell> */}
                   <TableHeadCell>Action</TableHeadCell>
                 </Table.Row>
               </Table.Head>
@@ -386,98 +414,137 @@ export default function MyCouponRequests(props: DropdownProps) {
                   })
                   .map((item: any) => (
                     <Table.Row key={item.id}>
-                      <TableCellLink 
-                        onClick={() => Router.push(`${ROUTES.affiliateCouponRequestList}/${item.id}`)}
+                      <TableCellLink
+                        onClick={() =>
+                          Router.push(
+                            `${ROUTES.affiliateCouponRequestList}/${item.id}`,
+                          )
+                        }
                       >
-                        {item.name}                      
+                        {item.name}
                       </TableCellLink>
                       <TableCell>
                         {new Date(Number(item.createdAt)).toLocaleDateString()}
                       </TableCell>
+                      <TableCell>{item.expiresIn} days</TableCell>
+                      <TableCell>${item.originalPrice}</TableCell>
+                      <TableCell>${item?.price?.amount}</TableCell>
+                      <TableCell>${item.amount}</TableCell>
                       <TableCell>
-                        {item.expiresIn} days
-                      </TableCell>
-                      <TableCell>
-                        ${item.originalPrice}
-                      </TableCell>
-                      <TableCell>
-                        ${item?.price?.amount}
-                        {/* $Retail Price */}
-                      </TableCell>
-                      <TableCell>
-                        ${item.amount} 
-                        {/* $Merchant Profit */}
-                      </TableCell>
-                      <TableCell>
-                      <ChipCustom 
-                        text={item.approvalStatus.status} 
-                        color={item.approvalStatus.status === 'approved' ? 'green-400' : item.approvalStatus.status === 'rejected' ? 'red-400' : 'primary'} 
-                        onClick={() => {
-                          if (item.approvalStatus.status === 'rejected') {
-                            setRqModalOpen(true);
-                          } else  {
-                            setRqModalOpen(false);
+                        <ChipCustom
+                          text={item.approvalStatus[
+                            item.approvalStatus.length - 1
+                          ].status.toUpperCase()}
+                          color={
+                            item.approvalStatus[
+                              item.approvalStatus.length - 1
+                            ].status.toUpperCase() === 'APPROVED'
+                              ? 'primary'
+                              : item.approvalStatus[
+                                  item.approvalStatus.length - 1
+                                ].status.toUpperCase() === 'REJECTED'
+                              ? 'red-400'
+                              : item.approvalStatus[
+                                  item.approvalStatus.length - 1
+                                ].status.toUpperCase() === 'REQUESTED'
+                              ? 'green-400'
+                              : 'yellow-400'
                           }
-                        }}
-                      />
-                      <Modal
-                        open={rqModalOpen}
-                        onClose={() =>setRqModalOpen(false)}
-                      >
-                        <ModalHeader 
-                          subheader="Your coupon request has been rejected for the following reasons."
+                          onClick={() => {
+                            if (item.approvalStatus.status === 'rejected') {
+                              setRqModalOpen(true);
+                            } else {
+                              setRqModalOpen(false);
+                            }
+                          }}
+                        />
+                        <Modal
+                          open={rqModalOpen}
+                          onClose={() => setRqModalOpen(false)}
                         >
-                          Rejected
-                        </ModalHeader>
-                        <Modal.Content>
-                          {item.approvalStatus.message || ""}
-                        </Modal.Content>
-                        <ModalBtnContainer>
-                          <Button rounded onClick={() => setRqModalOpen(false)}>Close</Button>
-                        </ModalBtnContainer>
-                        <Spacer size={20} />
-                      </Modal>
+                          <ModalHeader subheader="Your coupon request has been rejected for the following reasons.">
+                            Rejected
+                          </ModalHeader>
+                          <Modal.Content>
+                            {item.approvalStatus.message || ''}
+                          </Modal.Content>
+                          <ModalBtnContainer>
+                            <Button
+                              rounded
+                              onClick={() => setRqModalOpen(false)}
+                            >
+                              Close
+                            </Button>
+                          </ModalBtnContainer>
+                          <Spacer size={20} />
+                        </Modal>
                       </TableCell>
                       <TableCell>
-                        <ChipCustom text={item.status} outlined color={item.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
+                        <ChipCustom
+                          text={item.status}
+                          outlined
+                          color={
+                            item.status === 'AVAILABLE' ? 'primary' : 'red-400'
+                          }
+                        />
                       </TableCell>
                       <TableCell>
-                        {item.approvalStatus.status === 'approved'? item.approvalStatus.approver.name: '-'}
+                        {item.approvalStatus[item.approvalStatus.length - 1]
+                          .approver !== null
+                          ? item.approvalStatus[item.approvalStatus.length - 1]
+                              .approver?.adminInfo?.nickname
+                          : '-'}
                       </TableCell>
                       <TableCell>
-                        <DropdownCustom space direction='right' icon={null}
+                        <DropdownCustom
+                          space
+                          direction="right"
+                          icon={null}
                           trigger={
-                            <ChipCustom icon={{name: 'edit'}} size="big" outlined />
+                            <ChipCustom
+                              icon={{ name: 'dots horizontal rounded' }}
+                              size="big"
+                              outlined
+                            />
                           }
                           {...props}
                         >
                           <Dropdown.Menu>
-                            <Dropdown.Item 
-                              text="Change Status" 
-                              disabled={item.approvalStatus.status !== 'approved'}
-                              onClick={(e, data) => handleClickDropdownItem(e, data, item.id, item.status)}  
-                              />
-                            <Dropdown.Item 
-                              text="Delete" 
-                              disabled={item.approvalStatus.status !== 'requested'}
-                              onClick={(e, data) => handleClickDropdownItem(e, data, item.approvalStatus.id)} 
+                            <Dropdown.Item
+                              text="Change Status"
+                              item={item}
+                              onClick={handleClickDropdownItem}
+                              disabled={
+                                item.approvalStatus[
+                                  item.approvalStatus.length - 1
+                                ].status !== 'approved'
+                              }
                             />
+                            {/* <Dropdown.Item
+                              text="Delete"
+                              item={item}
+                              onClick={handleClickDropdownItem}
+                              disabled={
+                                item.approvalStatus[
+                                  item.approvalStatus.length - 1
+                                ].status !== 'requested'
+                              }
+                            /> */}
                           </Dropdown.Menu>
                         </DropdownCustom>
                       </TableCell>
                     </Table.Row>
-                  ))
-                }
+                  ))}
               </Table.Body>
             </Table>
             <Spacer size={20} />
             <Pagination
-              totalPages={Math.ceil((items?.totalCount || 1) / TAKE) }
+              totalPages={Math.ceil((items?.totalCount || 1) / TAKE)}
               onPageChange={handlePageChange}
               activePage={activePage}
             />
           </AffiliateDashboardLayout>
-        </ AppContainer>
+        </AppContainer>
       </AppMain>
     </>
   );
