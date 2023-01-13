@@ -3,7 +3,7 @@ import Context, { Brand } from './Context';
 import stringSimilarity from 'string-similarity';
 import { countryOptions, Form, Image, Spacer } from '@growth-ui/react';
 import { FileUploader } from 'react-drag-drop-files';
-import { useGetCategoriesQuery } from '@/services';
+import { useGetCategoriesQuery, useWalletAccountMutation } from '@/services';
 import React, {
   ChangeEvent,
   SyntheticEvent,
@@ -34,14 +34,14 @@ const ImgAndLogoContainer = styled.div`
 `;
 
 const FormBtn = styled(Form.Button)`
-  background-color: #622AF3;
+  background-color: #622af3;
   color: #fff;
   border-radius: 25px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #2D126D;
+    background-color: #2d126d;
   }
 `;
 
@@ -50,8 +50,48 @@ export default function BrandForm({ mode, onSubmit }: Props) {
   const { data: categories } = useGetCategoriesQuery();
   const [submitting, setSubmitting] = useState(false);
 
+  const [walletAcct, { loading }] = useWalletAccountMutation();
+  const [businessName, setBusinessName] = useState('');
+
+  const handleSearch = async () => {
+    // console.log('Search Clicked!!!', brand.sub);
+    if (brand.sub && brand.sub.length > 0) {
+      await walletAcct({
+        data: {
+          username: brand.sub,
+        },
+      })
+        .then(({ data }) => {
+          // console.log('data: ', data.account);
+          if (!data.account) {
+            alert('No account found!');
+          } else {
+            // console.log('acct found!');
+            setBusinessName(
+              `${data.account.profile.firstName} ${data.account.profile.lastName}`,
+            );
+            setBrand({
+              ...brand,
+              metadata: {
+                owner: data.account,
+                businessName: `${data.account.profile.firstName} ${data.account.profile.lastName}`,
+              },
+            });
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    }
+  };
+
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
+    // console.log('submitting! - brand: ', brand);
+
+    if (mode === 'create') {
+      brand.slug = getSlug();
+    }
 
     setSubmitting(true);
     await onSubmit(brand);
@@ -68,7 +108,19 @@ export default function BrandForm({ mode, onSubmit }: Props) {
     return false;
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const getSlug = () => {
+    const time = new Date().toISOString();
+    const ms = Date.parse(time);
+
+    const slug = `${brand.name.toLowerCase().replaceAll(' ', '_')}_${ms}`;
+    // console.log('slug: ', slug);
+    return slug;
+  };
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setBusinessName('');
     setBrand({
       ...brand,
       [e.target.name]: e.target.value,
@@ -95,19 +147,25 @@ export default function BrandForm({ mode, onSubmit }: Props) {
 
         <Form.Group>
           <Form.Input
-            label="Business User Name"
+            label="Business Username"
+            placeholder="Search business username"
             name="sub"
             value={brand.sub}
             onChange={handleChange}
             disabled={mode === 'update'}
+            icon="search"
+            iconPosition="right"
+            onClickIcon={handleSearch}
           />
-          
           <Form.Input
-            label="Business Name"
-            name="sub"
-            value={brand.sub}
-            onChange={handleChange}
-            disabled={mode === 'create'}
+            label={
+              businessName === ''
+                ? 'Click on search to get business name'
+                : `Business Name: ${businessName}`
+            }
+            name="businessName"
+            value={businessName}
+            disabled
           />
         </Form.Group>
 
@@ -118,44 +176,18 @@ export default function BrandForm({ mode, onSubmit }: Props) {
             value={brand.name}
             onChange={handleChange}
           />
-          
-          <Form.Input
-            label="Slug"
-            name="slug"
-            value={brand.slug}
-            disabled={mode === 'update'}
-            onChange={handleChange}
-          />
+          {mode === 'update' && (
+            <Form.Input label="Slug" name="slug" value={brand.slug} />
+          )}
         </Form.Group>
 
-        {/* <FormInputText
+        <Form.TextArea
           label="Description"
           name="description"
           value={brand.description}
           onChange={handleChange}
         />
 
-        <FormInputText
-          label="Disclaimer"
-          name="disclaimer"
-          value={brand.disclaimer}
-          onChange={handleChange}
-        />
-
-        <FormInputText
-          label="Terms"
-          name="terms"
-          value={brand.terms}
-          onChange={handleChange}
-        /> */}
-        
-        <Form.TextArea 
-          label="Description"
-          name="description"
-          value={brand.description}
-          onChange={handleChange}
-        />
-        
         <Form.TextArea
           label="Disclaimer"
           name="disclaimer"
@@ -213,7 +245,7 @@ export default function BrandForm({ mode, onSubmit }: Props) {
         <Spacer size={50} />
       </div>
 
-      <FormSection style={{display: "flex", justifyContent: "space-evenly"}}>
+      <FormSection style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <ImgAndLogoContainer>
           <span>Brand background image</span>
           <Spacer size={10} />
