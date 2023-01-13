@@ -1,30 +1,32 @@
-import { Country, ItemType } from '@prisma/client';
+import { ApprovalStatus, Country, ItemType } from '@prisma/client';
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 export type Item = {
+  id?: string;
   name: string;
-  slug: string;
   extendedName: string;
+  slug: string;
   available: boolean;
+  imageUrl: string | File;
   currency: string;
   expiresIn: number;
-  customerDiscountRate?: number;
-  influencerDiscountRate?: number;
-  influencerId?: string;
   discountRate: number;
-  totDiscountRate: number;
-  amount: number;
   price: number;
-  country: Country;
+  amount: number;
+  influencerDiscountRate?: number;
+  customerDiscountRate?: number;
+  totDiscountRate: number;
   originalPrice: number;
-  type: ItemType;
-  brand: string;
-  categories: string[];
   couponImageUrl: string | File;
-  sortOrder: number;
+  influencerId?: string;
+  categories: string[];
+  brand: string;
   redemptionInstructions: string;
   termsAndConditionsInstructions: string;
-  imageUrl: string | File;
+  type: ItemType;
+  sortOrder: number;
+  country: Country;
+  approvalStatus?: ApprovalStatus;
 };
 
 export default createContext<{
