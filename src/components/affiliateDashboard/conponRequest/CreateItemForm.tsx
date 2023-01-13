@@ -3,19 +3,18 @@ import ItemForm from './ItemForm';
 import parseErrorMessage from '@/lib/parse-error-message';
 import React, { useContext, useState } from 'react';
 import Router from 'next/router';
-import validate from './helpers/validate';
 import { Heading, Snackbar, Spacer } from '@growth-ui/react';
 import { useCouponRequestMutation, useSignS3Mutation } from '@/services';
-import userLocale from '../brand/helper/getLocale';
+import validate from './helpers/validate';
 
 export default function CreateItemForm() {
-  const [ myItem, setMyItem ] = useState<any>({
+  const [myItem, setMyItem] = useState<any>({
     name: '',
     extendedName: '',
     originalPrice: 0,
-    price: 0,//retailPrice
+    price: 0, //retailPrice
     currency: 'GPT',
-    amount: 0,//profit
+    amount: 0, //profit
     expiresIn: 90,
     slug: '',
     sortOrder: 0,
@@ -23,9 +22,8 @@ export default function CreateItemForm() {
     brandId: '',
     type: 'GIFT_ICON',
     categoryIDs: [],
-    imageUrl : '',
+    imageUrl: '',
     couponImageURl: '',
-    locale: userLocale({languageCodeOnly: true})[0],
   });
   const [create, { loading }] = useCouponRequestMutation();
   const [sign] = useSignS3Mutation();
@@ -34,10 +32,11 @@ export default function CreateItemForm() {
 
   const handleUpdate = (item: any) => {
     setMyItem(item);
-  }
+  };
 
   const handleSubmit = async (data: any) => {
-    const errMessage = validate(myItem);
+    // console.log('@CreateItemForm - data: ', data);
+    const errMessage = validate(data);
 
     if (errMessage || loading) {
       alert(errMessage);
@@ -71,7 +70,6 @@ export default function CreateItemForm() {
         ...data,
         imageUrl: imageUrl.url,
         couponImageUrl: couponImageUrl.url,
-        locale: userLocale({languageCodeOnly: true})[0]
       },
     })
       .then(() => {
@@ -85,12 +83,11 @@ export default function CreateItemForm() {
 
   return (
     <>
-      <Heading style={{color: "#2D126D"}}>New Coupon Request</Heading>
+      <Heading style={{ color: '#2D126D' }}>New Coupon Request</Heading>
       <Spacer size={20} />
-
-      <ItemForm 
-        mode="create" 
-        onSubmit={handleSubmit} 
+      <ItemForm
+        mode="create"
+        onSubmit={handleSubmit}
         onUpdate={handleUpdate}
         item={myItem}
       />
