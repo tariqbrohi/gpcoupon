@@ -4,10 +4,12 @@ import parseErrorMessage from '@/lib/parse-error-message';
 import React, { useState, useContext } from 'react';
 import Router from 'next/router';
 import { Heading, Snackbar, Spacer } from '@growth-ui/react';
-import { useCreateBrandByAffiliateMutation, useSignS3Mutation } from '@/services';
+import {
+  useCreateBrandByAffiliateMutation,
+  useSignS3Mutation,
+} from '@/services';
 import AppContext from '@/modules/components/AppContext';
 import validate from './helper/validate';
-import userLocale from './helper/getLocale';
 
 export default function CreateBrandForm() {
   const { user } = useContext(AppContext);
@@ -16,7 +18,7 @@ export default function CreateBrandForm() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>('');
   const [myBrand, setMyBrand] = useState<any>({
-    sub: user?.id,
+    sub: '',
     name: '',
     description: '',
     slug: '',
@@ -26,15 +28,17 @@ export default function CreateBrandForm() {
     status: 'AVAILABLE',
     terms: '',
     categories: [],
-    countries: [],
+    countries: ['US'],
     locale: '',
+    metadata: {},
   });
 
   const handleUpdate = (brand: any) => {
     setMyBrand(brand);
-  }
+  };
 
   const handleSubmit = async (data: any) => {
+    // console.log('@Affiliate - CreateBrand_handleSubmit - Brand data: ', data);
     const errMessage = validate(data);
 
     if (errMessage || loading) {
@@ -64,13 +68,13 @@ export default function CreateBrandForm() {
         headers: { 'Content-Type': (data.thumbnailUrl as File).type },
       }),
     ]);
-    
+
+    // console.log('CreateBrand data: ', data);
     await create({
       data: {
         ...data,
         backgroundUrl: backgroundUrl.url,
         thumbnailUrl: thumbnailUrl.url,
-        locale: userLocale({languageCodeOnly: true})[0]
       },
     })
       .then(() => {
@@ -84,14 +88,14 @@ export default function CreateBrandForm() {
 
   return (
     <>
-      <Heading style={{color: "#2D126D"}}>Create Brand</Heading>
+      <Heading style={{ color: '#2D126D' }}>Create Brand</Heading>
       <Spacer size={20} />
 
-      <BrandForm 
-        mode="create" 
-        brand={myBrand} 
-        onSubmit={handleSubmit} 
-        onUpdate={handleUpdate} 
+      <BrandForm
+        mode="create"
+        brand={myBrand}
+        onSubmit={handleSubmit}
+        onUpdate={handleUpdate}
         user={user}
       />
       {error && (
