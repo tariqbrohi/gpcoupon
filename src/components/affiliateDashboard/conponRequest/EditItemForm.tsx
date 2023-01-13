@@ -10,7 +10,6 @@ import {
   useSignS3Mutation,
   useGetItemQuery,
 } from '@/services';
-import userLocale from '../brand/helper/getLocale';
 
 export default function EditItemForm() {
   const {
@@ -22,7 +21,7 @@ export default function EditItemForm() {
       id: id as string,
     },
   });
-  const [ myItem, setMyItem ] = useState<any>({});
+  const [myItem, setMyItem] = useState<any>({});
   const [update, { loading }] = useModifyCouponRequestMutation();
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
@@ -37,15 +36,14 @@ export default function EditItemForm() {
         categoryIDs: data.categoryIDs,
         imageUrl: data.imageUrls.medium,
         brandId: data.brandId!,
-        locale: userLocale({languageCodeOnly: true})[0],
       } as any);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleUpdate = (item: any) => {
     setMyItem(item);
-  }
+  };
 
   const handleSubmit = async (item: any) => {
     const errMessage = validate(item);
@@ -93,7 +91,6 @@ export default function EditItemForm() {
         ...item,
         imageUrl,
         couponImageUrl,
-        locale: userLocale({languageCodeOnly: true})[0],
         id: data?.id!,
       },
     })
@@ -110,9 +107,9 @@ export default function EditItemForm() {
   return (
     <>
       <Heading>Modify Coupon</Heading>
-      <ItemForm 
-        mode="update" 
-        onSubmit={handleSubmit} 
+      <ItemForm
+        mode="update"
+        onSubmit={handleSubmit}
         onUpdate={handleUpdate}
         item={myItem}
       />
