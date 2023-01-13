@@ -40,14 +40,14 @@ export default withApiAuthRequired(
 
       const { id } = req.query as any;
       const session = getSession(req, res);
-      console.log('-----------------------------------------------');
-      console.log('@api/admin/items/:id - req.method: ', req.method);
-      console.log('@api/admin/items/id - req.body: ', req.body);
-      console.log('@api/admin/items/id - available: ', available);
-      console.log('@api/admin/items/id - approvalStatus: ', approvalStatus);
-      console.log('@api/admin/items/id - currency: ', currency);
-      console.log('@api/admin/items/:id - session---: ', session);
-      console.log('@api/admin/items/:id - req.query id: ', id);
+      // console.log('-----------------------------------------------');
+      // console.log('@api/admin/items/:id - req.method: ', req.method);
+      // console.log('@api/admin/items/id - req.body: ', req.body);
+      // console.log('@api/admin/items/id - available: ', available);
+      // console.log('@api/admin/items/id - approvalStatus: ', approvalStatus);
+      // console.log('@api/admin/items/id - currency: ', currency);
+      // console.log('@api/admin/items/:id - session---: ', session);
+      // console.log('@api/admin/items/:id - req.query id: ', id);
 
       const existingItem = await prisma.item.findUnique({
         where: {
