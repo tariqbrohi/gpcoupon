@@ -1,14 +1,15 @@
 /* eslint-disable jsx-a11y/alt-text */
 import stringSimilarity from 'string-similarity';
-import { countryOptions, Form, Image, Spacer, StyledContainer } from '@growth-ui/react';
+import {
+  countryOptions,
+  Form,
+  Image,
+  Spacer,
+  StyledContainer,
+} from '@growth-ui/react';
 import { FileUploader } from 'react-drag-drop-files';
-import { useGetCategoriesQuery } from '@/services';
-import React, {
-  ChangeEvent,
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from 'react';
+import { useGetCategoriesQuery, useWalletAccountMutation } from '@/services';
+import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const FormSection = styled.section`
@@ -33,14 +34,14 @@ const ImgAndLogoContainer = styled.div`
 `;
 
 const FormBtn = styled(Form.Button)`
-  background-color: #622AF3;
+  background-color: #622af3;
   color: #fff;
   border-radius: 25px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #2D126D;
+    background-color: #2d126d;
   }
 `;
 
@@ -56,23 +57,63 @@ const FormTextArea = styled(Form.TextArea)`
   }
 `;
 
-export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Props) {
-  const [ myBrand, setMyBrand ] = useState<any>(brand);
+export default function BrandForm({
+  mode,
+  brand,
+  onSubmit,
+  onUpdate,
+  user,
+}: Props) {
+  const [myBrand, setMyBrand] = useState<any>(brand);
   const { data: categories } = useGetCategoriesQuery();
-  const [ submitting, setSubmitting ] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const [walletAcct, { loading }] = useWalletAccountMutation();
+
+  const fetchWalletAccountInfo = async () => {
+    // console.log('@fetchWalletAccountInfo', user?.username);
+
+    await walletAcct({
+      data: {
+        username: user?.username,
+      },
+    })
+      .then(({ data }) => {
+        // console.log('data', data);
+        if (data.account !== null) {
+          setMyBrand({
+            ...myBrand,
+            sub: data.account.username,
+            metadata: {
+              owner: data.account,
+              businessName: `${data.account.profile.firstName} ${data.account.profile.lastName}`,
+            },
+          });
+        } else {
+          alert(
+            'Your business account is not logged in. Please login to your business account and try again.',
+          );
+        }
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
+  };
 
   useEffect(() => {
-    setMyBrand(brand);
-  }, [brand]);
+    if (user !== null) {
+      fetchWalletAccountInfo();
+    }
+  }, [user]);
 
   const handleSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+    // console.log('@affiliateDashboard/brand/BrandForm - myBrand', myBrand);
     if (mode === 'create') {
       myBrand.slug = getSlug();
     }
 
     onUpdate(myBrand);
-    
-    e.preventDefault();
 
     setSubmitting(true);
     await onSubmit(myBrand);
@@ -97,19 +138,21 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Pro
     return slug;
   };
 
-  const removeTags= (str: any) => {
-    if ((str === null) || str === undefined){
+  const removeTags = (str: any) => {
+    if (str === null || str === undefined) {
       return false;
-    } 
-    return str.replace(/(<([^>]+)>)/ig, '');
+    }
+    return str.replace(/(<([^>]+)>)/gi, '');
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     if (e.target.name === 'terms' || e.target.name === 'disclaimer') {
       setMyBrand({
         ...myBrand,
         [e.target.name]: `<p>${e.target.value}</p>`,
-      })
+      });
     } else {
       setMyBrand({
         ...myBrand,
@@ -126,7 +169,7 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Pro
         onChange={(_, { checked }) => {
           setMyBrand({
             ...myBrand,
-            status: checked? 'AVAILABLE': 'UNAVAILABLE',
+            status: checked ? 'AVAILABLE' : 'UNAVAILABLE',
           });
         }}
       >
@@ -141,7 +184,7 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Pro
             placeholder={user?.username}
             disabled
           />
-          
+
           <Form.Input
             label="Business Name"
             name="businessName"
@@ -157,26 +200,23 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Pro
             value={myBrand.name}
             onChange={handleChange}
           />
-          {
-            mode === 'update' && (
-              <Form.Input
-                label="Slug"
-                name="slug"
-                placeholder={myBrand.slug}
-                disabled
-              />
-            )
-          }
-          
-        </Form.Group> 
-        
+          {mode === 'update' && (
+            <Form.Input
+              label="Slug"
+              name="slug"
+              placeholder={myBrand.slug}
+              disabled
+            />
+          )}
+        </Form.Group>
+
         <FormTextArea
           label="Description"
           name="description"
           value={myBrand.description}
           onChange={handleChange}
         />
-        
+
         <FormTextArea
           label="Disclaimer"
           name="disclaimer"
@@ -234,7 +274,7 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Pro
         <Spacer size={50} />
       </div>
 
-      <FormSection style={{display: "flex", justifyContent: "space-evenly"}}>
+      <FormSection style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <ImgAndLogoContainer>
           <span>Brand background image</span>
           <Spacer size={10} />
@@ -291,11 +331,10 @@ export default function BrandForm({mode , brand, onSubmit, onUpdate, user }: Pro
 
       <div>
         <Spacer size={50} />
-        <FormBtn type="submit" loading={submitting} >
+        <FormBtn type="submit" loading={submitting}>
           {mode}
         </FormBtn>
       </div>
-      
     </Form>
   );
 }
