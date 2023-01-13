@@ -36,16 +36,16 @@ export default function EditItemForm() {
         price: (data.price as any)?.amount || 0,
         categories: data.categoryIDs,
         available: data.status === 'AVAILABLE',
-        imageUrl: data.imageUrls.medium,
+        imageUrl: data.imageUrls?.medium,
         brand: data.brandId!,
       } as any);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handleUpdate = (item: any) => {
     setItem(item);
-  }
+  };
 
   const handleSubmit = async (item: Item) => {
     const errMessage = validate(item, true);
@@ -105,7 +105,7 @@ export default function EditItemForm() {
     })
       .then(() => {
         setSuccess(true);
-        alert('Successfully Updated!')
+        alert('Successfully Updated!');
       })
       .catch((err) => {
         setError(parseErrorMessage(err));
@@ -115,11 +115,7 @@ export default function EditItemForm() {
   return (
     <>
       <Heading>Modify Coupon</Heading>
-      <ItemForm 
-        mode="update" 
-        onSubmit={handleSubmit}
-        onUpdate={handleUpdate} 
-      />
+      <ItemForm mode="update" onSubmit={handleSubmit} onUpdate={handleUpdate} />
 
       {error && (
         <Snackbar
