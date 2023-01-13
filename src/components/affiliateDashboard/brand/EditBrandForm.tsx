@@ -1,7 +1,7 @@
 import axios from 'axios';
 import BrandForm from './BrandForm';
 import parseErrorMessage from '@/lib/parse-error-message';
-import React, { useContext, useEffect, useState, ChangeEvent, } from 'react';
+import React, { useContext, useEffect, useState, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { Heading, Snackbar } from '@growth-ui/react';
 import { isEmpty } from 'lodash';
@@ -12,7 +12,6 @@ import {
 } from '@/services';
 import AppContext from '@/modules/components/AppContext';
 import validate from './helper/validate';
-import userLocale from './helper/getLocale';
 
 export default function UpdateBrandForm() {
   const {
@@ -26,14 +25,14 @@ export default function UpdateBrandForm() {
   });
 
   const { user } = useContext(AppContext);
-  const [ myBrand, setMyBrand ] = useState<any>({});
+  const [myBrand, setMyBrand] = useState<any>({});
   const [update, { loading }] = useUpdateBrandByAffiliateMutation();
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>('');
 
   useEffect(() => {
-    const fetchData = async() => {
+    const fetchData = async () => {
       setMyBrand({
         ...data,
         categories: data?.categoryIDs,
@@ -41,12 +40,11 @@ export default function UpdateBrandForm() {
     };
 
     fetchData();
-
-  },[data]); 
+  }, [data]);
 
   const handleUpdate = (brand: any) => {
     setMyBrand(brand);
-  }
+  };
 
   const handleSubmit = async (brand: any) => {
     const errMessage = validate(brand);
@@ -105,7 +103,6 @@ export default function UpdateBrandForm() {
         id: data!.id,
         backgroundUrl: backgroundUrl as string,
         thumbnailUrl: thumbnailUrl as string,
-        locale: userLocale({languageCodeOnly: true})[0]
       },
     })
       .then(() => {
@@ -120,10 +117,10 @@ export default function UpdateBrandForm() {
   return (
     <>
       <Heading>Edit Brand</Heading>
-      <BrandForm 
-        mode="update" 
+      <BrandForm
+        mode="update"
         brand={myBrand}
-        onSubmit={handleSubmit} 
+        onSubmit={handleSubmit}
         onUpdate={handleUpdate}
         user={user}
       />
