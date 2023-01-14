@@ -11,7 +11,7 @@ export default errorHandler(async function handler(req, res) {
 
   const items = await prisma.item.findMany({
     where: {
-      approvalStatus: null,
+      approvalStatus: {},
       affiliate: true,
     },
     select: {
@@ -19,25 +19,23 @@ export default errorHandler(async function handler(req, res) {
       createdAt: true,
       updatedAt: true,
       metadata: true,
-    }
+    },
   });
 
   const approveData = items.map((item: any) => {
-    return (
-      prisma.approvalStatus.create({
-        data: {
-          status: 'approved',
-          item: {
-            connect: {
-              id: item.id,
-            },
+    return prisma.approvalStatus.create({
+      data: {
+        status: 'approved',
+        item: {
+          connect: {
+            id: item.id,
           },
-          approver: item.metadata.createdBy,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt
-        }
-      })
-    )
+        },
+        approver: item.metadata.createdBy,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt,
+      },
+    });
   }); // createMany doesn't work for connect(item)
 
   const addApprovalStatus = await Promise.all(approveData);

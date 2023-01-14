@@ -66,7 +66,7 @@ export default errorHandler(async function handler(req, res) {
     take,
   });
 
-  console.log('@api/admin/brands/brandList.ts: ', brands);
+  // console.log('@api/admin/brands/brandList.ts: ', brands);
 
   if (!brands) throw new BadRequestError('No affiliate exists!');
 

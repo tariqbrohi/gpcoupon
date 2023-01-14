@@ -18,7 +18,7 @@ import React, {
   useContext,
   useEffect,
   useState,
-  useRef
+  useRef,
 } from 'react';
 import styled from 'styled-components';
 import AppContext from '@/modules/components/AppContext';
@@ -41,37 +41,39 @@ const ImgAndLogoContainer = styled.div`
 `;
 
 const FormBtn = styled(Form.Button)`
-  background-color: #622AF3;
+  background-color: #622af3;
   color: #fff;
   border-radius: 25px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #2D126D;
+    background-color: #2d126d;
   }
 `;
 
 export default function ItemForm({ mode, onSubmit, item, onUpdate }: Props) {
   const { user } = useContext(AppContext);
-  const [ myItem, setMyItem ] = useState(item);
+  const [myItem, setMyItem] = useState(item);
   const [submitting, setSubmitting] = useState(false);
   const { data: categories } = useGetCategoriesQuery();
   const { data: brands } = useGetBrandsByAffiliateQuery({
     data: {
-      sub: user?.id,
+      affiliate: true,
+      sub: user?.username,
     },
   });
 
   useEffect(() => {
+    console.log('item ==========', item);
     setMyItem(item);
-  }, [item]);
+  }, []);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     if (mode === 'create' || myItem.name !== item.name) {
       myItem.slug = getSlug();
     }
-    
+
     onUpdate(myItem);
 
     e.preventDefault();
@@ -84,15 +86,20 @@ export default function ItemForm({ mode, onSubmit, item, onUpdate }: Props) {
   const getDiscountRate = () => {
     let discountRate = 0;
     if (myItem.originalPrice > 0 && myItem.price > 0) {
-      discountRate = parseFloat(((myItem.originalPrice - myItem.price) / myItem.originalPrice * 100).toFixed(2));
+      discountRate = parseFloat(
+        (
+          ((myItem.originalPrice - myItem.price) / myItem.originalPrice) *
+          100
+        ).toFixed(2),
+      );
     }
     return discountRate;
-  }
+  };
 
   // my profit
   if (mode === 'create') {
     if (myItem.price > 0) {
-      const myProfit = myItem.price - (myItem.price * 0.2);
+      const myProfit = myItem.price - myItem.price * 0.2;
       myItem.amount = myProfit;
     }
   }
@@ -116,6 +123,7 @@ export default function ItemForm({ mode, onSubmit, item, onUpdate }: Props) {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // console.log('e.target.name ==========', e.target.value);
     setMyItem({
       ...myItem,
       [e.target.name]: e.target.value,
@@ -168,7 +176,7 @@ export default function ItemForm({ mode, onSubmit, item, onUpdate }: Props) {
             adornment="$"
             label="Retail Price"
             name="price"
-            value={myItem.price === 0? '' : myItem.price}
+            value={myItem.price === 0 ? '' : myItem.price}
             onChange={handleChangePrice}
             disabled={mode === 'update'}
             filled={mode === 'update'}
@@ -178,7 +186,7 @@ export default function ItemForm({ mode, onSubmit, item, onUpdate }: Props) {
         <Form.Group>
           <Form.Input // not related to discountRate in Item table in DB
             adornment="%"
-            adornmentPosition='right'
+            adornmentPosition="right"
             label="Discount Rate"
             name="discountRate"
             value={getDiscountRate()}
@@ -265,7 +273,7 @@ export default function ItemForm({ mode, onSubmit, item, onUpdate }: Props) {
                 key: 'GIFT_CARD',
                 value: 'GIFT_CARD',
                 text: 'GIFT_CARD',
-              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+              },
               {
                 key: 'GIFT_ICON',
                 value: 'GIFT_ICON',
@@ -300,7 +308,7 @@ export default function ItemForm({ mode, onSubmit, item, onUpdate }: Props) {
         <Spacer size={50} />
       </div>
 
-      <FormSection style={{display: "flex", justifyContent: "space-evenly"}}>
+      <FormSection style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <ImgAndLogoContainer>
           <Paragraph>Item Image</Paragraph>
           <Spacer size={10} />

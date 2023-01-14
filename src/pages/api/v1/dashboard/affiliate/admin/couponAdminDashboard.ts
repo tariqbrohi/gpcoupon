@@ -6,187 +6,177 @@ import convertDateToUnix from '@/lib/convertDateToUnix';
 // api/admin/dashboard/index.ts 와 동일하기에 추후 삭제 가능
 
 export default errorHandler(async function handler(req, res) {
-    const method = req.method;
+  const method = req.method;
 
-    if (method !== 'get') {
-      throw new NotFoundError();
-    }
+  if (method !== 'get') {
+    throw new NotFoundError();
+  }
 
-    const {
-      startDate,
-      endDate,
-      status
-    } = req.query as any;
+  const { startDate, endDate, status } = req.query as any;
 
-    if ((startDate !== '' && endDate) ==='' || (startDate === '' && endDate !== '')) {
-        throw(new BadRequestError('Missing data'));
-    }
+  if (
+    (startDate !== '' && endDate) === '' ||
+    (startDate === '' && endDate !== '')
+  ) {
+    throw new BadRequestError('Missing data');
+  }
 
-    let {
-      take = 500,
-      skip = 0,
-    } = req.query as any;
+  let { take = 500, skip = 0 } = req.query as any;
 
-    if (typeof take !== 'number') take = Number(take);
-    if (typeof skip !== 'number') skip = Number(skip);
+  if (typeof take !== 'number') take = Number(take);
+  if (typeof skip !== 'number') skip = Number(skip);
 
-    // when an affiliate(merchant) can create only one brand
-    // const brandId = await prisma.brand.findFirst({
-    //   where: {
-    //     sub,
-    //   },           
-    //   select: {
-    //     id: true,
-    //   },
-    // });
+  // when an affiliate(merchant) can create only one brand
+  // const brandId = await prisma.brand.findFirst({
+  //   where: {
+  //     sub,
+  //   },
+  //   select: {
+  //     id: true,
+  //   },
+  // });
 
-    // when an affiliate(merchant) can create multiple brand
-    // To do: create multiple brand and items and test 
-    const brandId = await prisma.brand.findMany({
-      where: {
-        // sub,
+  // when an affiliate(merchant) can create multiple brand
+  // To do: create multiple brand and items and test
+  const brandId = await prisma.brand.findMany({
+    where: {
+      // sub,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!brandId) throw new BadRequestError('No affiliate exists!');
+
+  // when an affiliate(merchant) can create only one brand
+  // const items = await prisma.item.findMany({
+  //   where: {
+  //     brand: {
+  //       id: brandId.id,
+  //     },
+  //   },
+  //   select: {
+  //     id: true,
+  //   },
+  // });
+
+  // when an affiliate(merchant) can create multiple brand
+  // To do: create multiple brand and items and test
+  const items = await prisma.item.findMany({
+    where: {
+      brand: {
+        id: {
+          in: brandId.map(({ id }) => id),
+        },
       },
-      select: {
-        id: true,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const match: any = [];
+
+  if (status !== 'ALL') {
+    match.push({ 'item.status': status });
+  }
+
+  match.push({
+    $expr: {
+      $in: ['$item.id', items.map(({ id }) => id)],
+    },
+  });
+
+  // order table createdAt : unixepoc format
+  if (startDate !== '' && endDate !== '') {
+    match.push({
+      createdAt: {
+        $gte: convertDateToUnix(startDate),
+        $lte: convertDateToUnix(endDate),
       },
     });
+  }
 
-    if (!brandId) throw new BadRequestError('No affiliate exists!');
-
-    // when an affiliate(merchant) can create only one brand
-    // const items = await prisma.item.findMany({
-    //   where: {
-    //     brand: {
-    //       id: brandId.id,
-    //     },
-    //   },
-    //   select: {
-    //     id: true,
-    //   },
-    // });
-
-    // when an affiliate(merchant) can create multiple brand
-    // To do: create multiple brand and items and test 
-    const items = await prisma.item.findMany({
-        where: {
-            brand: {
-                id: {
-                    in: brandId.map(({id}) => id)
-                }
-            }
-        },
-        select: {
-            id: true,
-        },
-    });
-
-    const match : any = [];
-
-    if (status !== 'ALL') {
-        match.push({ "item.status": status })
-    }
-
-    match.push(
+  const [orders, ordersProfit, ordersCount]: any = await Promise.all([
+    prisma.order.aggregateRaw({
+      pipeline: [
         {
-            $expr: {
-                $in: [
-                    "$item.id",
-                    items.map(({id}) => id),
-                ],
+          $match: {
+            $and: match,
+          },
+        },
+        {
+          $group: {
+            _id: '$item',
+            count: {
+              $count: {},
             },
-        }
-    );
-
-    // order table createdAt : unixepoc format
-    if (startDate !== '' && endDate !== ''){
-        match.push({
-            createdAt: {
-                "$gte": convertDateToUnix(startDate),
-                "$lte": convertDateToUnix(endDate)
-            }
-        });
-    }
-
-    const [orders, ordersProfit, ordersCount]: any = await Promise.all([
-        prisma.order.aggregateRaw({
-            pipeline: [
-                {
-                    $match:{
-                        $and: match
-                    },
-                },
-                {
-                    $group: {
-                        _id: "$item",
-                        count: {
-                            $count: {},
-                        },
-                        sum: {
-                            $sum: "$payment.totalAmount",
-                        },
-                    },
-                },
-                {
-                    $sort: {
-                        "_id.name": 1, // sort by item.name
-                    },
-                },
-                {
-                    $skip: skip,
-                },
-                {
-                    $limit: take,
-                },
-            ],
-        }),
-        // for total.profitSum
-        prisma.order.aggregateRaw({
-            pipeline: [
-                {
-                    $match: {
-                        $and: match,
-                    },
-                },
-                {
-                    $group: {
-                        _id: null,
-                        profitSum: {
-                            $sum: {
-                            $multiply: 
-                                [
-                                    { $divide: ["$payment.totalAmount", "$payment.price.amount"] }, 
-                                    "$item.amount" 
-                                ]
-                            }
-                        },
-                    },
-                },
-            ],
-        }),
-        // for total.count
-        prisma.order.aggregateRaw({
-            pipeline: [
-                    {
-                        $match: {
-                        $and: match,
-                        },
-                    },
-                    {
-                        $group: {
-                        _id: "$item",
-                        },
-                    },
-            ]
-        })
-    ]);
-
-    res.send(
+            sum: {
+              $sum: '$payment.totalAmount',
+            },
+          },
+        },
         {
-            total: {
-                count: ordersCount.length,
-                profitSum: ordersProfit[0]?.profitSum || 0,
-            }, 
-            orders: orders,
-        }
-    );
+          $sort: {
+            '_id.name': 1, // sort by item.name
+          },
+        },
+        {
+          $skip: skip,
+        },
+        {
+          $limit: take,
+        },
+      ],
+    }),
+    // for total.profitSum
+    prisma.order.aggregateRaw({
+      pipeline: [
+        {
+          $match: {
+            $and: match,
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            profitSum: {
+              $sum: {
+                $multiply: [
+                  {
+                    $divide: ['$payment.totalAmount', '$payment.price.amount'],
+                  },
+                  '$item.amount',
+                ],
+              },
+            },
+          },
+        },
+      ],
+    }),
+    // for total.count
+    prisma.order.aggregateRaw({
+      pipeline: [
+        {
+          $match: {
+            $and: match,
+          },
+        },
+        {
+          $group: {
+            _id: '$item',
+          },
+        },
+      ],
+    }),
+  ]);
+
+  res.send({
+    total: {
+      count: ordersCount.length,
+      profitSum: ordersProfit[0]?.profitSum || 0,
+    },
+    orders: orders,
+  });
 });
