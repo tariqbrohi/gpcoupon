@@ -587,7 +587,7 @@ export type CouponRequestMutationVariables = {
   metadata?: Record<string, any>;
   locale?: string;
   approvalStatus: {
-    status: string;
+    status: ApproveStatus;
   };
 };
 export type CouponRequestMutationResult = Item;

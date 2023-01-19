@@ -26,7 +26,7 @@ export type Item = {
   type: ItemType;
   sortOrder: number;
   country: Country;
-  approvalStatus?: ApprovalStatus;
+  approvalStatus?: any;
 };
 
 export default createContext<{
