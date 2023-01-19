@@ -3,10 +3,10 @@ import Context, { Brand } from './Context';
 
 export default function Provider({ children }: Props) {
   const [brand, setBrand] = useState<Brand>({
-    name: '',
-    description: '',
-    slug: '',
     sub: '',
+    name: '',
+    slug: '',
+    description: '',
     disclaimer: '',
     backgroundUrl: '',
     thumbnailUrl: '',
@@ -14,6 +14,7 @@ export default function Provider({ children }: Props) {
     terms: '',
     categories: [],
     countries: ['US'],
+    metadata: {},
   });
 
   return (

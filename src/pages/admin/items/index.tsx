@@ -1,18 +1,31 @@
-/* eslint-disable jsx-a11y/alt-text */
 import AdminLayout from '@/layouts/AdminLayout';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Router from 'next/router';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, DateInput, Dropdown, DropdownItemProps, DropdownProps, Heading, Icon, Input, Modal, Select, Spacer, Table, TextArea } from '@growth-ui/react';
+import {
+  Button,
+  Chip,
+  DateInput,
+  Dropdown,
+  DropdownItemProps,
+  DropdownProps,
+  Heading,
+  Input,
+  Modal,
+  Select,
+  Spacer,
+  Table,
+  TextArea,
+} from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetItemsQuery } from '@/services';
+import { useGetItemsQuery, useUpdateItemMutation } from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
 import Provider from '@/components/admin/items/Provider';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Context from '@/components/admin/items/Context';
+import { ApproveStatus, Prisma } from '@prisma/client';
 
 const LabelContainer = styled.div`
   display: flex;
@@ -53,14 +66,14 @@ const BtnCreateBrd = styled(Button)`
   font-size: 18px;
   padding: 10px 35px;
   border-radius: 30px;
-  border: 1px solid #BF7582;
+  border: 1px solid #bf7582;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   background-color: #fff;
-  color: #BF7582;
+  color: #bf7582;
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #F6A5A5;
+    background-color: #f6a5a5;
     color: #fff;
   }
 
@@ -94,8 +107,8 @@ const TableCellLink = styled(Table.Cell)`
   transition: all 0.4s ease-in-out;
 
   &:hover {
-      color: #2D126D;
-      text-decoration: underline;
+    color: #2d126d;
+    text-decoration: underline;
   }
 `;
 
@@ -122,184 +135,237 @@ const ModalTextArea = styled(TextArea)`
 `;
 
 const ModalBtnContainer = styled.div`
-  width: 50%;
-  margin: 0 auto;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 `;
 
 export default withPageAuthRequired(function Items(props: DropdownProps) {
-  const { item, setItem } = useContext(Context);
   const { data: items } = useGetItemsQuery();
   const [searchCoupon, setSearchCoupon] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
-  const [ startDate, setStartDate ] = useState('');
-  const [ endDate, setEndDate ] = useState('');
-  const [rqModalOpen, setRqModalOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [modalSwitch, setModalSwitch] = useState(false);
+
+  const [message, setMessage] = useState('');
+  const [rejectItem, setRejectItem] = useState<any>();
+
+  const [update, { loading: itemUpdateLoading }] = useUpdateItemMutation();
+  console.log('@pages/admin/items - items---------------------', items);
 
   const addDays = (date: any, days: any) => {
     const d = new Date(date);
     d.setDate(d.getDate() + days);
-    
+
     return d.toLocaleDateString();
-  }
-
-  if (item?.price > 0) {
-    const merchantProfitRate = item.price - (item.price * 0.2);
-
-    item.amount = merchantProfitRate;
-  }
+  };
 
   const statusOption = [
     {
-      key: "All",
-      value: "ALL",
-      text: "All",
+      key: 'All',
+      value: 'ALL',
+      text: 'All',
     },
     {
-      key: "Available",
-      value: "AVAILABLE",
-      text: "Available",
+      key: 'Available',
+      value: 'AVAILABLE',
+      text: 'Available',
     },
     {
-      key: "Unavailable",
-      value: "UNAVAILABLE",
-      text: "Unavailable",
+      key: 'Unavailable',
+      value: 'UNAVAILABLE',
+      text: 'Unavailable',
     },
   ];
 
   const rqStatusOption = [
     {
-      key: "All",
-      value: "ALL",
-      text: "All",
+      key: 'All',
+      value: 'ALL',
+      text: 'All',
     },
     {
-      key: "Approved",
-      value: "APPROVED",
-      text: "Approved",
+      key: 'Approved',
+      value: 'APPROVED',
+      text: 'Approved',
     },
     {
-      key: "Rejected",
-      value: "REJECTED",
-      text: "Rejected",
+      key: 'Rejected',
+      value: 'REJECTED',
+      text: 'Rejected',
     },
     {
-      key: "Requested",
-      value: "REQUESTED",
-      text: "Requested",
+      key: 'Requested',
+      value: 'REQUESTED',
+      text: 'Requested',
     },
   ];
 
   const handleSearchButton = () => {
-    if ((startDate !== '' && endDate) === '' || (startDate === '' && endDate !== '')) {
+    if (
+      (startDate !== '' && endDate) === '' ||
+      (startDate === '' && endDate !== '')
+    ) {
       alert('Please submit From date and To date');
       return;
     }
-    // query({
-    //   data: {
-    //     take: TAKE,
-    //     skip: (activePage - 1) * TAKE,
-    //     startDate,
-    //     endDate,
-    //     status,
-    //   }
-    // });
-  }
+  };
 
-  const handleClickDropdownItem = (_: any, data: DropdownItemProps) => {
-    if (data.text === 'Approve') {
-      return (
-        confirm('The coupon request status will change to Approved if you click the OK button.')
-      );
+  const handleRejectUpdate = async () => {
+    console.log('handleRejectUpdate: ', message);
+    if (message === '' || message.length === 0) {
+      alert('Please enter a message to reject the coupon request.');
+      setModalSwitch(true);
+      return;
     }
 
-    // if (data.text === 'Reject') {
-    //   // showModal();
-    //   setModalOpen(!modalOpen);
-      
-    //   {modalOpen === true ? (
-    //     <Modal>
-    //       <ModalHeader subheader="Please write the reason for rejection in the comment column">
-    //         Reject
-    //       </ModalHeader>
-    //       <Modal.Content>
-    //         <ModalTextArea
-    //           rows={10} 
-    //           label="Comment"
-    //           placeholder="Please leave a comment..."
-    //           id="comment" 
-    //           name="comment"
-    //         />
-    //       </Modal.Content>
-    //       <ModalBtnContainer>
-    //         <Button rounded primary>Reject</Button>
-    //         <Button rounded onClick={() => setModalOpen(false)}>Close</Button>
-    //       </ModalBtnContainer>
-    //       <Spacer size={20} />
-    //     </Modal>
-    //   ) : (null)}
+    console.log('rejecteItem: ', rejectItem);
 
-    //   // return (
-    //   //   confirm('You clicked Reject')
-    //   // );
-    // }
+    await update({
+      data: {
+        ...rejectItem,
+        id: rejectItem.id,
+        available: false,
+        approvalStatus: {
+          status: ApproveStatus.rejected,
+          message,
+        },
+      },
+    })
+      .then(() => {
+        setModalSwitch(false);
+        setMessage('');
+        alert('The coupon request status has been changed to Rejected.');
+        window.location.reload();
+      })
+      .catch((error) => {
+        alert(error.message);
+        setModalSwitch(false);
+        setMessage('');
+      });
+  };
 
-    if (data.text === 'Change Publishable') {
-      return (
-        confirm('Click the OK button to change the current coupon status.')
-      );
+  const handleReject = async (_: any, data: DropdownItemProps) => {
+    console.log('@handleReject----------', data.item);
+
+    // Set Reject Item
+    setRejectItem(data.item);
+    // Open Modal
+    setModalSwitch(true);
+    // reset message
+    setMessage('');
+  };
+
+  const handleClickDropdownItem = async (_: any, data: DropdownItemProps) => {
+    console.log('@Action handler: ', data.item);
+
+    if (data.text === 'Approve') {
+      console.log('Approve Clicked => processing update');
+      // Update status and change Request Status.
+      await update({
+        data: {
+          ...data.item,
+          id: data.item.id,
+          available: true,
+          approvalStatus: {
+            status: ApproveStatus.approved,
+          },
+        },
+      })
+        .then(() => {
+          alert('The coupon request status has been changed to Approved.');
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    if (data.text === 'Change Status') {
+      console.log('Change Status------------------');
+      console.log('Change Publishable Clicked => processing update');
+      await update({
+        data: {
+          ...data.item,
+          id: data.item.id,
+          available: data.item.status === 'AVAILABLE' ? false : true,
+          approvalStatus: {
+            status: ApproveStatus.approved,
+            message: 'Admin changed the status of the coupon.',
+          },
+        },
+      })
+        .then(() => {
+          alert('The coupon status has been changed.');
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
     }
 
     if (data.text === 'Delete') {
-      return (
-        confirm('Are you sure you want to delete this coupon request?')
-      );
+      console.log('Delete Clicked => processing update');
+      await update({
+        data: {
+          ...data.item,
+          id: data.item.id,
+          available: false,
+          approvalStatus: {
+            status: ApproveStatus.deleted,
+            message: 'Admin deleted the coupon.',
+          },
+        },
+      })
+        .then(() => {
+          alert('The coupon request status has been changed to Deleted.');
+          window.location.reload();
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
     }
   };
 
   return (
     <>
-      <Head title='GPcoupon | List Request Coupon' />
+      <Head title="GPcoupon | List Request Coupon" />
       <AppMain>
         <AdminLayout>
           <section>
-            <Heading style={{color: "#2D126D"}}>List Request Coupon</Heading>
+            <Heading style={{ color: '#2D126D' }}>List Request Coupon</Heading>
             <Spacer size={20} />
 
-            <LabelContainer style={{justifyContent: "space-between"}}>
+            <LabelContainer style={{ justifyContent: 'space-between' }}>
               <Input
                 label="Coupon Name"
                 icon="search outline"
                 value={searchCoupon}
                 onChange={(e) => setSearchCoupon(e.target.value)}
-                style={{width: "50%"}}
+                style={{ width: '50%' }}
               />
 
               <Link href={ROUTES.admin.createItem}>
                 <a>
                   <BtnCreateCpn>Create Coupon</BtnCreateCpn>
                 </a>
-              </Link>   
+              </Link>
             </LabelContainer>
             <Spacer size={20} />
 
-            <LabelContainer style={{justifyContent: "space-between"}}>
+            <LabelContainer style={{ justifyContent: 'space-between' }}>
               <Input
                 label="Merchant Name"
                 icon="people"
                 value={searchMerchant}
                 onChange={(e) => setSearchMerchant(e.target.value)}
-                style={{width: "50%"}}
+                style={{ width: '50%' }}
               />
-
               <Link href={ROUTES.admin.createBrand}>
                 <a>
                   <BtnCreateBrd>Create Brand</BtnCreateBrd>
                 </a>
-              </Link>   
+              </Link>
             </LabelContainer>
             <Spacer size={20} />
 
@@ -313,17 +379,17 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
 
             <LabelContainer>
               <GroupInputContainer>
-                <Select 
-                  label='Status'
+                <Select
+                  label="Status"
                   value={statusOption[0].value}
                   options={statusOption}
-                  style={{minWidth: "13em"}}
+                  style={{ minWidth: '13em' }}
                 />
-                <Select 
-                  label='Request Status'
+                <Select
+                  label="Request Status"
                   value={rqStatusOption[0].value}
                   options={rqStatusOption}
-                  style={{minWidth: "13em"}}
+                  style={{ minWidth: '13em' }}
                 />
               </GroupInputContainer>
             </LabelContainer>
@@ -331,30 +397,30 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
           <Spacer size={20} />
 
           <GroupInputContainer>
-            <LabelContainer style={{justifyContent: "space-between"}}>
+            <LabelContainer style={{ justifyContent: 'space-between' }}>
               <DateInput
                 mask="yyyy-mm-dd"
-                renderInput={(params) =>
+                renderInput={(params) => (
                   <Input
                     {...params}
                     placeholder="yyyy-mm-dd"
-                    label='From'
-                    style={{width: "30%"}}
+                    label="From"
+                    style={{ width: '30%' }}
                   />
-                }
+                )}
                 onChange={(_, date) => setStartDate(date)}
               />
-              
+
               <DateInput
                 mask="yyyy-mm-dd"
-                renderInput={(params) =>
+                renderInput={(params) => (
                   <Input
                     {...params}
                     placeholder="yyyy-mm-dd"
-                    label='To'
-                    style={{width: "30%"}}
+                    label="To"
+                    style={{ width: '30%' }}
                   />
-                }
+                )}
                 onChange={(_, date) => setEndDate(date)}
               />
               <Button rounded onClick={() => handleSearchButton()}>
@@ -364,15 +430,15 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
           </GroupInputContainer>
           <Spacer size={30} />
 
-          <div style={{border: "2px solid #D9D9D9"}}></div>
+          <div style={{ border: '2px solid #D9D9D9' }}></div>
           <Spacer size={30} />
-          
+
           <Provider>
             <Table celled>
               <Table.Head>
                 <Table.Row>
                   <TableHeadCell>Coupon Name</TableHeadCell>
-                  <TableHeadCell>Merchant Name</TableHeadCell>
+                  <TableHeadCell>Merchant Name (username)</TableHeadCell>
                   <TableHeadCell>Create Date</TableHeadCell>
                   <TableHeadCell>Expiry</TableHeadCell>
                   <TableHeadCell>Original Price</TableHeadCell>
@@ -380,7 +446,7 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                   <TableHeadCell>Merchant Profit</TableHeadCell>
                   <TableHeadCell>Request Status</TableHeadCell>
                   <TableHeadCell>Status</TableHeadCell>
-                  <TableHeadCell>Approver</TableHeadCell>
+                  <TableHeadCell>Admin Approver</TableHeadCell>
                   <TableHeadCell>Action</TableHeadCell>
                 </Table.Row>
               </Table.Head>
@@ -399,16 +465,25 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
 
                     return false;
                   })
-                  .map((item) => (
+                  .map((item: any) => (
                     <Table.Row key={item.id}>
-                      <TableCellLink 
-                        onClick={() => Router.push(`${ROUTES.admin.items}/${item.id}`)}
+                      <TableCellLink
+                        onClick={() =>
+                          Router.push(`${ROUTES.admin.items}/${item.id}`)
+                        }
                       >
-                        {item.name}                      
+                        {item.name}
                       </TableCellLink>
-                      <TableCell>
-                        Merchant Name
-                      </TableCell>
+
+                      {item.brand.metadata.businessName !== undefined ? (
+                        <TableCell>
+                          {item.brand.metadata.businessName}
+                          {` `}({item.brand.metadata.owner?.username})
+                        </TableCell>
+                      ) : (
+                        <TableCell>-</TableCell>
+                      )}
+
                       <TableCell>
                         {new Date(Number(item.createdAt)).toLocaleDateString()}
                       </TableCell>
@@ -417,99 +492,131 @@ export default withPageAuthRequired(function Items(props: DropdownProps) {
                         {item.expiresIn}
                       </TableCell>
                       {/* {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)} */}
-                      
-                      <TableCell>
-                        ${item.originalPrice}
-                      </TableCell>
-                      <TableCell>
-                        ${item?.price?.amount}
-                        {/* ${item.price} */}
-                        {/* $Retail Price */}
-                      </TableCell>
-                      <TableCell>
-                        ${item.amount}
-                        {/* $Merchant Profit */}
-                      </TableCell>
-                      <TableCell>
-                        {/* Request Status */}
-                        <Modal
-                          trigger={
-                            <ChipCustom text="REQUESTED" color={rqStatusOption[0].value === 'APPROVED' ? 'primary' : rqStatusOption[0].value === 'REJECTED' ? 'red-400' : 'green-400'} 
-                              onClick={() => setRqModalOpen(true)}
-                            />
-                          }
-                          open={rqModalOpen}
-                        >
-                          <ModalHeader subheader="Your coupon request has been rejected for the following reasons.">
-                            Reject
-                          </ModalHeader>
-                          <Modal.Content>
-                            <ModalTextArea 
-                              rows={10} 
-                              label="Comment"
-                              placeholder="This should be filled in rejected comment data value..."
-                              id="comment" 
-                              name="comment"
-                            />
-                          </Modal.Content>
-                          <ModalBtnContainer>
-                            <Button rounded onClick={() => setRqModalOpen(false)}>Close</Button>
-                          </ModalBtnContainer>
-                          <Spacer size={20} />
-                        </Modal>
 
-                        {/* <ChipCustom text="REQUESTED" color={rqStatusOption[0].value === 'APPROVED' ? 'primary' : rqStatusOption[0].value === 'REJECTED' ? 'red-400' : 'green-400'} /> */}
+                      <TableCell>${item.originalPrice}</TableCell>
+                      <TableCell>${item?.price?.amount}</TableCell>
+                      <TableCell>${item.amount}</TableCell>
+                      <TableCell>
+                        <ChipCustom
+                          text={item.approvalStatus[
+                            item.approvalStatus.length - 1
+                          ].status.toUpperCase()}
+                          color={
+                            item.approvalStatus[
+                              item.approvalStatus.length - 1
+                            ].status.toUpperCase() === 'APPROVED'
+                              ? 'primary'
+                              : item.approvalStatus[
+                                  item.approvalStatus.length - 1
+                                ].status.toUpperCase() === 'REJECTED'
+                              ? 'red-400'
+                              : item.approvalStatus[
+                                  item.approvalStatus.length - 1
+                                ].status.toUpperCase() === 'REQUESTED'
+                              ? 'green-400'
+                              : 'yellow-400'
+                          }
+                        />
                       </TableCell>
                       <TableCell>
-                        <ChipCustom text={item.status} outlined color={item.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
+                        <ChipCustom
+                          text={item.status}
+                          outlined
+                          color={
+                            item.status === 'AVAILABLE' ? 'primary' : 'red-400'
+                          }
+                        />
                       </TableCell>
                       <TableCell>
-                        Approver
+                        {item.approvalStatus[item.approvalStatus.length - 1]
+                          .approver !== null
+                          ? item.approvalStatus[item.approvalStatus.length - 1]
+                              .approver?.adminInfo?.nickname
+                          : '-'}
                       </TableCell>
                       <TableCell>
-                        <DropdownCustom space direction='right' icon={null}
+                        <DropdownCustom
+                          space
+                          direction="right"
+                          icon={null}
                           trigger={
-                            <ChipCustom icon={{name: 'edit'}} size="big" outlined />
+                            <ChipCustom
+                              icon={{ name: 'dots horizontal rounded' }}
+                              size="big"
+                              outlined
+                              onClick={() => setModalSwitch(false)}
+                            />
                           }
                           {...props}
                         >
                           <Dropdown.Menu>
-                            <Dropdown.Item text="Approve" onClick={handleClickDropdownItem} />
-                            {/* <Dropdown.Item text="Reject" onClick={handleClickDropdownItem} /> */}
-                            <Modal
-                              trigger={
-                                <Dropdown.Item text="Reject" onClick={() => setModalOpen(true)} />
-                              }
-                              open={modalOpen}
-                            >
-                              <ModalHeader subheader="Please write the reason for rejection in the comment column">
-                                Reject
-                              </ModalHeader>
-                              <Modal.Content>
-                                <ModalTextArea 
-                                  rows={10} 
-                                  label="Comment"
-                                  placeholder="Please leave a comment..."
-                                  id="comment" 
-                                  name="comment"
-                                />
-                              </Modal.Content>
-                              <ModalBtnContainer>
-                                <Button rounded primary>Reject</Button>
-                                <Button rounded onClick={() => setModalOpen(false)}>Close</Button>
-                              </ModalBtnContainer>
-                              <Spacer size={20} />
-                            </Modal>
-                            <Dropdown.Item text="Change Publishable" onClick={handleClickDropdownItem} />
-                            <Dropdown.Item text="Delete" onClick={handleClickDropdownItem} />
+                            <Dropdown.Item
+                              text="Approve"
+                              item={item}
+                              onClick={handleClickDropdownItem}
+                            />
+                            <Dropdown.Item
+                              text="Reject"
+                              item={item}
+                              onClick={handleReject}
+                            />
+                            <Dropdown.Item
+                              text="Change Status"
+                              item={item}
+                              onClick={handleClickDropdownItem}
+                            />
+                            <Dropdown.Item
+                              text="Delete"
+                              item={item}
+                              onClick={handleClickDropdownItem}
+                            />
                           </Dropdown.Menu>
                         </DropdownCustom>
                       </TableCell>
                     </Table.Row>
-                  ))
-                }
+                  ))}
               </Table.Body>
             </Table>
+            <Modal open={modalSwitch}>
+              <ModalHeader subheader="Please write the reason for rejection in the comment column">
+                Reject
+              </ModalHeader>
+              <Modal.Content>
+                <ModalTextArea
+                  rows={10}
+                  label="Request Denied Message"
+                  id="message"
+                  name="message"
+                  onChange={(e: {
+                    target: { value: React.SetStateAction<string> };
+                  }) => setMessage(e.target.value)}
+                />
+              </Modal.Content>
+              <ModalBtnContainer>
+                <Modal.Actions>
+                  <Button
+                    rounded
+                    primary
+                    onClick={() => {
+                      setModalSwitch(false);
+                      handleRejectUpdate();
+                    }}
+                  >
+                    Reject
+                  </Button>
+                  <Button
+                    rounded
+                    onClick={() => {
+                      setMessage('');
+                      setModalSwitch(false);
+                    }}
+                  >
+                    Close
+                  </Button>
+                </Modal.Actions>
+                <Spacer size={20} />
+              </ModalBtnContainer>
+            </Modal>
           </Provider>
         </AdminLayout>
       </AppMain>

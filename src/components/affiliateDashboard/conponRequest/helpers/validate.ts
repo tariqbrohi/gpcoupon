@@ -16,8 +16,10 @@ const validate = (data: any) => {
     categoryIDs,
     imageUrl,
     couponImageUrl,
-    locale
+    locale,
   } = data;
+
+  console.log('@couponRequest data!!!!!: ', data);
 
   if (!name) {
     return 'Name is required';
@@ -75,9 +77,9 @@ const validate = (data: any) => {
     return 'type is required';
   }
 
-  if (!locale) {
-    return 'locale is required';
-  }
+  // if (!locale) {
+  //   return 'locale is required';
+  // }
 
   return null;
 };

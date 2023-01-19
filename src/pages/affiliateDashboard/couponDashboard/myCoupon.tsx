@@ -1,7 +1,17 @@
 import AppContext from '@/modules/components/AppContext';
 import React, { useContext, useEffect, useState } from 'react';
-import { Spacer, Pagination, Button, Container, Dropdown, Heading, Input, Select, DateInput } from '@growth-ui/react';
-import { useGetAffiliateItemsByAffiliateForDashboardLazyQuery} from '@/services';
+import {
+  Spacer,
+  Pagination,
+  Button,
+  Container,
+  Dropdown,
+  Heading,
+  Input,
+  Select,
+  DateInput,
+} from '@growth-ui/react';
+import { useGetAffiliateItemsByAffiliateForDashboardLazyQuery } from '@/services';
 import styled from 'styled-components';
 import MyCouponList from '@/components/affiliateDashboard/coupon/MyCouponsList';
 import stringSimilarity from 'string-similarity';
@@ -20,21 +30,24 @@ const Label = styled.label`
 const InputContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export default function MyCoupon() {
   const { user } = useContext(AppContext);
-  const [ activePage, setActivePage ] = useState(1);
-  const [ startDate, setStartDate ] = useState('');
-  const [ endDate, setEndDate ] = useState('');
-  const [ status, setStatus ] = useState('ALL');
-  const [ query, { data, loading }] = useGetAffiliateItemsByAffiliateForDashboardLazyQuery({});
-  const [ couponName, setCouponName ] = useState('');
+  const [activePage, setActivePage] = useState(1);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [status, setStatus] = useState('ALL');
+  const [query, { data, loading }] =
+    useGetAffiliateItemsByAffiliateForDashboardLazyQuery({});
+  const [couponName, setCouponName] = useState('');
 
   useEffect(() => {
     if (user !== null) {
-      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
-      {
+      if (
+        (startDate !== '' && endDate === '') ||
+        (startDate === '' && endDate !== '')
+      ) {
         alert('Please submit From date and To date');
         return;
       }
@@ -42,21 +55,23 @@ export default function MyCoupon() {
       query({
         data: {
           take: TAKE,
-          sub: user?.id,
+          sub: user?.username,
           skip: (activePage - 1) * TAKE,
           startDate,
           endDate,
-          status
-        }
+          status,
+        },
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePage, status]);
 
   const handleSearchButton = () => {
     if (user !== null) {
-      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
-      {
+      if (
+        (startDate !== '' && endDate === '') ||
+        (startDate === '' && endDate !== '')
+      ) {
         alert('Please submit From date and To date');
         return;
       }
@@ -68,11 +83,11 @@ export default function MyCoupon() {
           skip: (activePage - 1) * TAKE,
           startDate,
           endDate,
-          status
-        }
+          status,
+        },
       });
     }
-  }
+  };
 
   const handlePageChange = (_: any, { activePage }: any) => {
     setActivePage(activePage);
@@ -80,82 +95,81 @@ export default function MyCoupon() {
 
   return (
     <>
-      <Heading as="h2" style={{color: "#2D126D"}}>
+      <Heading as="h2" style={{ color: '#2D126D' }}>
         My Coupons
       </Heading>
       <Spacer size={20} />
       <section>
-        <Input 
-          label='Coupon Name'
+        <Input
+          label="Coupon Name"
           icon="search outline"
           value={couponName}
           onChange={(e) => setCouponName(e.target.value)}
-          style={{width: "50%"}} 
+          style={{ width: '50%' }}
         />
         <Spacer size={20} />
 
         <InputContainer>
-        <div style={{display: "flex", }}>
-          <DateInput
-            mask="yyyy-mm-dd"
-            renderInput={(params) => 
-              <Input 
-                {...params} 
-                placeholder="yyyy-mm-dd" 
-                label='From'
-                // icon="calendar" 
-                iconPosition='right' 
-                style={{width: "50%"}}
-              />
-            }
-            onChange={(_,date) => setStartDate(date)}
-          />
-          <Spacer size={46} />
-          <DateInput
-            mask="yyyy-mm-dd"
-            renderInput={(params) => 
-              <Input 
-                {...params} 
-                placeholder="yyyy-mm-dd" 
-                label='To'
-                // icon="calendar" 
-                iconPosition='right' 
-                style={{width: "50%"}}
-              />
-            }
-            onChange={(_,date) => setEndDate(date)}
-          />
-        </div>
+          <div style={{ display: 'flex' }}>
+            <DateInput
+              mask="yyyy-mm-dd"
+              renderInput={(params) => (
+                <Input
+                  {...params}
+                  placeholder="yyyy-mm-dd"
+                  label="From"
+                  // icon="calendar"
+                  iconPosition="right"
+                  style={{ width: '50%' }}
+                />
+              )}
+              onChange={(_, date) => setStartDate(date)}
+            />
+            <Spacer size={46} />
+            <DateInput
+              mask="yyyy-mm-dd"
+              renderInput={(params) => (
+                <Input
+                  {...params}
+                  placeholder="yyyy-mm-dd"
+                  label="To"
+                  // icon="calendar"
+                  iconPosition="right"
+                  style={{ width: '50%' }}
+                />
+              )}
+              onChange={(_, date) => setEndDate(date)}
+            />
+          </div>
           <Button onClick={() => handleSearchButton()}>Search</Button>
         </InputContainer>
       </section>
       <Spacer size={30} />
 
-      <div style={{border: "2px solid #D9D9D9"}}></div>
+      <div style={{ border: '2px solid #D9D9D9' }}></div>
 
-      <div style={{padding: "30px 0"}}>
-          <MyCouponList 
-            startDate = {startDate}
-            endDate = {endDate}
-            total = {data?.total}
-            orders = {data?.orders
-              ?.filter((o:any) => {
-                if (!couponName) return true;
-              
-                const similarity = stringSimilarity.compareTwoStrings(
-                  o._id.name,
-                  couponName,
-                );
-                
-                if (similarity > 0.25) return true;
-                
-                return false;
-              })}
-          />
+      <div style={{ padding: '30px 0' }}>
+        <MyCouponList
+          startDate={startDate}
+          endDate={endDate}
+          total={data?.total}
+          orders={data?.orders?.filter((o: any) => {
+            if (!couponName) return true;
+
+            const similarity = stringSimilarity.compareTwoStrings(
+              o._id.name,
+              couponName,
+            );
+
+            if (similarity > 0.25) return true;
+
+            return false;
+          })}
+        />
       </div>
       <Spacer size={20} />
       <Pagination
-        totalPages={Math.ceil((data?.total?.count || 1) / TAKE) }
+        totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
         onPageChange={handlePageChange}
         activePage={activePage}
       />

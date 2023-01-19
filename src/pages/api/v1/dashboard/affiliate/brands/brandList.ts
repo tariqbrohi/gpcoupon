@@ -12,29 +12,33 @@ export default errorHandler(async function handler(req, res) {
 
   const {
     sub,
-    startDate='',
-    endDate='',
+    startDate = '',
+    endDate = '',
     status = 'ALL',
   } = req.query as any;
 
-  if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
-  {
-    throw(new BadRequestError('Missing data'));
+  // console.log(
+  //   '@/api/v1/dashboard/affiliate/brands/brandList - req.query: ',
+  //   req.query,
+  // );
+
+  if (
+    (startDate !== '' && endDate === '') ||
+    (startDate === '' && endDate !== '')
+  ) {
+    throw new BadRequestError('Missing data');
   }
 
-  let {
-    take = 500,
-    skip = 0,
-  } = req.query as any;
+  let { take = 500, skip = 0 } = req.query as any;
 
   if (typeof take !== 'number') take = Number(take);
   if (typeof skip !== 'number') skip = Number(skip);
 
-  if (!sub ) throw new BadRequestError('No BusinessAccount Exists');
+  if (!sub) throw new BadRequestError('No BusinessAccount Exists');
 
   const where: Record<string, any> = {
     sub,
-  }
+  };
 
   if (status !== 'ALL') {
     where.status = status;
@@ -43,27 +47,35 @@ export default errorHandler(async function handler(req, res) {
   if (startDate !== '' && endDate !== '') {
     where.createdAt = {
       gte: convertDateToMs(startDate),
-      lte: convertDateToMs(endDate)
+      lte: convertDateToMs(endDate),
     };
   }
 
-  const brand = await prisma.brand.findMany({
+  const brands = await prisma.brand.findMany({
     where,
-    select: {
-      id: true,
-      name: true,
-      backgroundUrl: true,
-      thumbnailUrl: true,
-      countries: true,
-      status: true,
+    // select: {
+    //   id: true,
+    //   name: true,
+    //   backgroundUrl: true,
+    //   thumbnailUrl: true,
+    //   countries: true,
+    //   status: true,
+    //   categories: true,
+    //   createdAt: true,
+    // },
+    include: {
       categories: true,
-      createdAt: true,
     },
   });
 
-  if (!brand) throw new BadRequestError('No affiliate exists!');
+  // console.log(
+  //   '@api/v1/dashboard/affiliate/brands/brandsList.ts - brand: ',
+  //   brands,
+  // );
+
+  if (!brands) throw new BadRequestError('No affiliate exists!');
 
   res.send({
-    brands: brand
+    brands,
   });
 });

@@ -56,6 +56,7 @@ export default errorHandler(async function handler(req, res) {
       type: true,
       influencerDiscountRate: true,
       influencerId: true,
+      approvalStatus: true,
     },
   });
 

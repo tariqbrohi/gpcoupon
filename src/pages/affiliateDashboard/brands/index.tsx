@@ -1,7 +1,18 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useContext, useEffect } from 'react';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, Heading, Image, Input, Select, Spacer, Table, Pagination, DateInput } from '@growth-ui/react';
+import {
+  Button,
+  Chip,
+  Heading,
+  Image,
+  Input,
+  Select,
+  Spacer,
+  Table,
+  Pagination,
+  DateInput,
+} from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
 import { useGetBrandsByAffiliateLazyQuery } from '@/services';
 import Head from '@/modules/components/Head';
@@ -61,8 +72,8 @@ const TableCellLink = styled(Table.Cell)`
   transition: all 0.4s ease-in-out;
 
   &:hover {
-      color: #2D126D;
-      text-decoration: underline;
+    color: #2d126d;
+    text-decoration: underline;
   }
 `;
 
@@ -79,7 +90,6 @@ const ChipCategories = styled(Chip)`
   }
 `;
 
-
 export default function Brands() {
   const { user } = useContext(AppContext);
   const [startDate, setStartDate] = useState('');
@@ -90,67 +100,69 @@ export default function Brands() {
 
   const statusOption = [
     {
-      key: "ALL",
-      value: "ALL",
-      text: "ALL",
+      key: 'ALL',
+      value: 'ALL',
+      text: 'ALL',
     },
     {
-      key: "AVAILABLE",
-      value: "AVAILABLE",
-      text: "AVAILABLE",
+      key: 'AVAILABLE',
+      value: 'AVAILABLE',
+      text: 'AVAILABLE',
     },
     {
-      key: "UNAVAILABLE",
-      value: "UNAVAILABLE",
-      text: "UNAVAILABLE",
+      key: 'UNAVAILABLE',
+      value: 'UNAVAILABLE',
+      text: 'UNAVAILABLE',
     },
   ];
 
   useEffect(() => {
     if (user !== null) {
-      if ((startDate !== '' && endDate ==='') || (startDate === '' && endDate !== ''))
-      {
+      if (
+        (startDate !== '' && endDate === '') ||
+        (startDate === '' && endDate !== '')
+      ) {
         alert('Please submit From date and To date');
         return;
       }
 
       query({
         data: {
-          sub: user?.id,
           startDate,
           endDate,
-          status
-        }
+          status,
+          sub: user?.username,
+        },
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, user]);
 
   return (
     <>
-      <Head title='GPcoupon | List Brand' />
+      <Head title="GPcoupon | List Brand" />
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
           <AffiliateDashboardLayout>
-          <section>
-            <Heading style={{color: "#2D126D"}}>My Brands</Heading>
-            <Spacer size={20} />
+            <section>
+              <Heading style={{ color: '#2D126D' }}>My Brands</Heading>
+              <Spacer size={20} />
 
-              <LabelContainer style={{justifyContent: "space-between"}}>
+              <LabelContainer style={{ justifyContent: 'space-between' }}>
                 <Input
                   label="Brand Name"
                   icon="search outline"
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
-                  style={{width: "50%"}}
+                  style={{ width: '50%' }}
                 />
 
                 <Link href={ROUTES.affiliateCreateBrands}>
                   <a>
                     <BtnCreate>Create Brand</BtnCreate>
                   </a>
-                </Link>   
+                </Link>
               </LabelContainer>
               <Spacer size={20} />
               <LabelContainer>
@@ -188,18 +200,18 @@ export default function Brands() {
               <Spacer size={20} />
 
               <LabelContainer>
-                <Select 
-                  label='Status'
+                <Select
+                  label="Status"
                   value={statusOption[0].value}
                   options={statusOption}
-                  style={{minWidth: "13em"}}
+                  style={{ minWidth: '13em' }}
                   onChange={(_, data) => setStatus(data.newValues)}
                 />
               </LabelContainer>
             </section>
             <Spacer size={30} />
 
-            <div style={{border: "2px solid #D9D9D9"}}></div>
+            <div style={{ border: '2px solid #D9D9D9' }}></div>
             <Spacer size={30} />
 
             <Table celled>
@@ -207,7 +219,7 @@ export default function Brands() {
                 <Table.Row>
                   <TableHeadCell>Logo</TableHeadCell>
                   <TableHeadCell>Brand Name</TableHeadCell>
-                  <TableHeadCell>GPoint Wallet Username</TableHeadCell>
+                  <TableHeadCell>GWallet Business Username</TableHeadCell>
                   <TableHeadCell>Countries</TableHeadCell>
                   <TableHeadCell>Categories</TableHeadCell>
                   <TableHeadCell>Status</TableHeadCell>
@@ -219,48 +231,52 @@ export default function Brands() {
                 {data?.brands
                   ?.filter((brand: any) => {
                     if (!brandName) return true;
-                  
+
                     const similarity = stringSimilarity.compareTwoStrings(
                       brand.name,
                       brandName,
                     );
-                    
+
                     if (similarity > 0.25) return true;
-                    
+
                     return false;
                   })
                   .map((brand: any) => (
                     <Table.Row key={brand.id}>
                       <TableCell>
-                        <Image size='mini' src={brand.thumbnailUrl} />
+                        <Image size="mini" src={brand.thumbnailUrl} />
                       </TableCell>
-                      <TableCellLink 
-                        onClick={() => Router.push(`${ROUTES.affiliateBrands}/${brand.id}`)}
+                      <TableCellLink
+                        onClick={() =>
+                          Router.push(`${ROUTES.affiliateBrands}/${brand.id}`)
+                        }
                       >
-                        {brand.name}                       
+                        {brand.name}
                       </TableCellLink>
-                      <TableCell>
-                        {user?.username}
-                      </TableCell>
+                      <TableCell>{brand.sub}</TableCell>
                       <TableCell>
                         <ChipCustom text={brand.countries.join(', ')} />
                       </TableCell>
                       <TableCell>
-                        {
-                          brand.categories.map((c: any, index: number) => (
-                            <ChipCategories key={index} text={c.name} />
-                          ))
-                        }
+                        {brand.categories.map((c: any, index: number) => (
+                          <ChipCategories key={index} text={c.name} />
+                        ))}
                       </TableCell>
                       <TableCell>
-                        <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} style={{margin: "0 auto"}} />
+                        <ChipCustom
+                          text={brand.status}
+                          outlined
+                          color={
+                            brand.status === 'AVAILABLE' ? 'primary' : 'red-400'
+                          }
+                          style={{ margin: '0 auto' }}
+                        />
                       </TableCell>
                       <TableCell>
                         {new Date(Number(brand.createdAt)).toLocaleDateString()}
                       </TableCell>
                     </Table.Row>
-                  ))
-                }
+                  ))}
               </Table.Body>
             </Table>
           </AffiliateDashboardLayout>

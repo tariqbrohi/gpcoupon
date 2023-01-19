@@ -3,6 +3,7 @@ import prisma from '@/prisma';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
 import gpointwallet from '@/pages/api/_lib/gpointwallet';
 import convertDateToMs from '@/lib/convertDateToMs';
+import { ApproveStatus } from '@prisma/client';
 
 export default errorHandler(async function handler(req, res) {
   if (req.method !== 'post' && req.method !== 'get') {
@@ -10,27 +11,28 @@ export default errorHandler(async function handler(req, res) {
   }
 
   const session = gpointwallet.getSession(req);
-    if(!session) throw(new BadRequestError('No User'));
+  if (!session) throw new BadRequestError('No User');
 
   if (req.method === 'get') {
-
     const {
       startDate = '',
       endDate = '',
       status = 'ALL',
       requestStatus = 'ALL',
       skip = 0,
-      take = 500
+      take = 500,
     } = req.query as any;
 
-    if ((startDate !== '' && endDate === '') || (startDate === '' && endDate !== ''))
-    {
-      throw(new BadRequestError('Missing data'));
+    if (
+      (startDate !== '' && endDate === '') ||
+      (startDate === '' && endDate !== '')
+    ) {
+      throw new BadRequestError('Missing data');
     }
 
     const where: Record<string, any> = {
       brand: {
-        sub: session?.user.id
+        sub: session?.user.username,
       },
       affiliate: true,
     };
@@ -38,17 +40,23 @@ export default errorHandler(async function handler(req, res) {
     if (startDate !== '' && endDate !== '') {
       where.createdAt = {
         gte: convertDateToMs(startDate),
-        lte: convertDateToMs(endDate)
+        lte: convertDateToMs(endDate),
       };
     }
 
     if (status !== 'ALL') {
+      // UNAVAILABLE, AVAILABLE
       where.status = status;
     }
 
     const whereApprovalStatus: Record<string, any> = {
-      deletedAt: {
-        isSet: false
+      // deletedAt: {
+      //   isSet: false,
+      // },
+      some: {
+        status: {
+          in: ['requested', 'approved', 'rejected', 'modifyRequested'],
+        },
       },
     };
 
@@ -64,27 +72,18 @@ export default errorHandler(async function handler(req, res) {
         take: +take,
         skip: +skip,
         include: {
-          approvalStatus: {
-            select: {
-              id: true,
-              status: true,
-              message: true,
-              approver: true,
-              createdAt: true,
-              updatedAt: true,
-            },
-          },
+          approvalStatus: true,
         },
       }),
       // for totalCount
       prisma.item.findMany({
         where,
-      })
+      }),
     ]);
 
     return res.send({
       items,
-      totalCount: itemsTotal.length
+      totalCount: itemsTotal.length,
     });
   }
 
@@ -96,22 +95,22 @@ export default errorHandler(async function handler(req, res) {
       expiresIn,
       amount,
       sortOrder = 0,
-      discountRate = 0,// cashback percent
+      discountRate = 0, // cashback percent
       notes,
       brandId,
       imageUrl,
-      status='UNAVAILABLE',
+      status = 'UNAVAILABLE',
       couponImageUrl,
       price,
       country,
       type,
       originalPrice,
-      influencerDiscountRate = 0,// cashback for influencer
-      customerDiscountRate = 0,// cashback for customer
-      influencerId=null,
+      influencerDiscountRate = 0, // cashback for influencer
+      customerDiscountRate = 0, // cashback for customer
+      influencerId = null,
       categoryIDs,
       slug,
-      locale
+      locale,
     } = req.body;
 
     const createdBy = {
@@ -123,10 +122,10 @@ export default errorHandler(async function handler(req, res) {
       locale,
       created_at: new Date().toISOString(),
       email: session?.user.profile.contact.email,
-      email_verified: session?.user.confirmed === 0? false: true,
+      email_verified: session?.user.confirmed === 0 ? false : true,
       sub: session?.user.id,
       sid: null,
-    }
+    };
 
     const existingItem = await prisma.item.findUnique({
       where: {
@@ -141,7 +140,7 @@ export default errorHandler(async function handler(req, res) {
     const item = await prisma.item.create({
       data: {
         name,
-        extendedName,                                    
+        extendedName,
         originalPrice: +originalPrice,
         affiliate: true,
         influencerDiscountRate: +influencerDiscountRate,
@@ -181,19 +180,19 @@ export default errorHandler(async function handler(req, res) {
         updatedAt: timestamp,
         metadata: {
           affiliate: true,
-          createdBy
+          createdBy,
         },
         approvalStatus: {
           create: {
-            status: 'requested',
+            status: ApproveStatus.requested,
             createdAt: timestamp,
-            updatedAt: timestamp
+            updatedAt: timestamp,
           },
         },
       },
       include: {
         approvalStatus: true,
-      }
+      },
     });
 
     res.send(item);

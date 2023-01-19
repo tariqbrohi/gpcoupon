@@ -5,82 +5,86 @@ import convertDateToMs from '@/lib/convertDateToMs';
 import gpointwallet from '@/pages/api/_lib/gpointwallet';
 
 export default errorHandler(async function handler(req, res) {
-    const method = req.method;
+  const method = req.method;
 
-    if (method !== 'get') {
-        throw new NotFoundError();
-    }
+  if (method !== 'get') {
+    throw new NotFoundError();
+  }
 
-    const {
-        startDate = '',
-        endDate = '',
-        affiliate = 'true',
-        status = 'ALL',
-    } = req.query as any;
+  const {
+    startDate = '',
+    endDate = '',
+    affiliate = 'true',
+    status = 'ALL',
+  } = req.query as any;
 
-    if ((startDate !== '' && endDate === '') || (startDate === '' && endDate !== '')) {
-        throw(new BadRequestError('Missing data'));
-    }
+  if (
+    (startDate !== '' && endDate === '') ||
+    (startDate === '' && endDate !== '')
+  ) {
+    throw new BadRequestError('Missing data');
+  }
 
-    let {
-        take = 500,
-        skip = 0,
-    } = req.query as any;
+  let { take = 500, skip = 0 } = req.query as any;
 
-    if (typeof take !== 'number') take = Number(take);
-    if (typeof skip !== 'number') skip = Number(skip);
+  if (typeof take !== 'number') take = Number(take);
+  if (typeof skip !== 'number') skip = Number(skip);
 
-    let where: Record<string, any> = {
-        ...(affiliate === 'true' ? { affiliate: true } : { affiliate: false }),
-    }
+  let where: Record<string, any> = {
+    ...(affiliate === 'true' ? { affiliate: true } : { affiliate: false }),
+  };
 
-    if (status !== 'ALL') {
-        where.status = status;
-    }
+  if (status !== 'ALL') {
+    where.status = status;
+  }
 
-    if (startDate !== '' && endDate !== '') {
-        where.createdAt = {
-            gte: convertDateToMs(startDate),
-            lte: convertDateToMs(endDate)
-        };
-    }
+  if (startDate !== '' && endDate !== '') {
+    where.createdAt = {
+      gte: convertDateToMs(startDate),
+      lte: convertDateToMs(endDate),
+    };
+  }
 
-    const brand = await prisma.brand.findMany({
-        where,
-        select: {
-            id: true,
-            name: true,
-            sub: true,
-            backgroundUrl: true,
-            thumbnailUrl: true,
-            status: true,
-            categories: true,
-            createdAt: true,
-            countries: true,
-        },
-        skip,
-        take
-    });
+  const brands = await prisma.brand.findMany({
+    where,
+    // select: {
+    //   id: true,
+    //   name: true,
+    //   sub: true,
+    //   backgroundUrl: true,
+    //   thumbnailUrl: true,
+    //   status: true,
+    //   categories: true,
+    //   createdAt: true,
+    //   countries: true,
+    //   metadata: true,
+    // },
+    include: {
+      categories: true,
+    },
+    skip,
+    take,
+  });
 
-    if (!brand) throw new BadRequestError('No affiliate exists!');
+  // console.log('@api/admin/brands/brandList.ts: ', brands);
 
-    const getInfo = brand.map((get: any) => (
-        get.sub
-    ));
-        
-    const info = await gpointwallet.getInfoByAccId({
-        accountIds: getInfo
-    });
+  if (!brands) throw new BadRequestError('No affiliate exists!');
 
-    const walletBusinessUserInfo = info?.accounts;
+  const getInfo = brands.map((get: any) => get.sub);
 
-    res.send({
-        brands: brand, 
-        walletInfo: walletBusinessUserInfo
-    });
+  const info = await gpointwallet.getInfoByAccId({
+    accountIds: getInfo,
+  });
 
-    // console.log({
-    //     brands: brand, 
-    //     walletInfo: walletBusinessUserInfo
-    // });
+  const walletBusinessUserInfo = info?.accounts;
+
+  res.send({
+    brands,
+    walletInfo: walletBusinessUserInfo,
+  });
+
+  //   console.log({
+  //     brands: brand,
+  //     walletInfo: walletBusinessUserInfo,
+  //   });
 });

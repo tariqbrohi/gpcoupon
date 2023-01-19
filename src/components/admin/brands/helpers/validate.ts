@@ -13,30 +13,35 @@ const validate = (data: Brand) => {
     disclaimer,
     sub,
     thumbnailUrl,
+    metadata,
   } = data;
 
-  // if (!sub) {
-  //   return 'Business account id is required';
-  // }
-
-  if (!backgroundUrl) {
-    return 'backgroundUrl is required';
+  if (!sub) {
+    return 'Business username is required';
   }
 
-  if (!thumbnailUrl) {
-    return 'thumbnailUrl is required';
+  if (!metadata.businessName) {
+    return 'Click on search button to set business name';
   }
 
   if (!name) {
-    return 'Name is required';
+    return 'Brand name is required';
   }
 
-  if (!slug) {
-    return 'Slug is required';
-  }
+  // if (!slug) {
+  //   return 'Slug is required';
+  // }
 
   if (!description) {
     return 'description is required';
+  }
+
+  if (!disclaimer) {
+    return 'disclaimer is required';
+  }
+
+  if (!terms) {
+    return 'categories is required';
   }
 
   if (!countries) {
@@ -47,12 +52,12 @@ const validate = (data: Brand) => {
     return 'categories is required';
   }
 
-  if (!terms) {
-    return 'categories is required';
+  if (!backgroundUrl) {
+    return 'backgroundUrl is required';
   }
 
-  if (!disclaimer) {
-    return 'disclaimer is required';
+  if (!thumbnailUrl) {
+    return 'thumbnailUrl is required';
   }
 
   return null;

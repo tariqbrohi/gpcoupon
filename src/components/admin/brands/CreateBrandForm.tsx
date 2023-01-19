@@ -16,8 +16,14 @@ export default function CreateBrandForm() {
 
   const handleSubmit = async (data: Brand) => {
     const errMessage = validate(data);
-    // console.log(data);
+    // console.log('@Admin - CreateBrandForm_handleSubmit - Brand data: ', data);
+    // console.log(
+    //   '@Admin - CreateBrandForm_handleSubmit - errMessage: ',
+    //   errMessage,
+    // );
+
     if (errMessage || loading) {
+      alert(errMessage);
       return setError(errMessage);
     }
 
@@ -49,7 +55,6 @@ export default function CreateBrandForm() {
         ...data,
         backgroundUrl: backgroundUrl.url,
         thumbnailUrl: thumbnailUrl.url,
-        sub: data.sub!,
       },
     })
       .then(() => {
@@ -62,7 +67,7 @@ export default function CreateBrandForm() {
 
   return (
     <>
-      <Heading style={{color: "#2D126D"}}>Create Brand</Heading>
+      <Heading style={{ color: '#2D126D' }}>Create Brand</Heading>
       <Spacer size={20} />
 
       <BrandForm mode="create" onSubmit={handleSubmit} />

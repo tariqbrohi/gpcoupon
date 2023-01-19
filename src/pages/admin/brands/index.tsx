@@ -2,9 +2,23 @@
 import AdminLayout from '@/layouts/AdminLayout';
 import React, { useContext, useEffect, useState } from 'react';
 import stringSimilarity from 'string-similarity';
-import { Button, Chip, DateInput, Heading, Image, Input, Pagination, Select, Spacer, Table } from '@growth-ui/react';
+import {
+  Button,
+  Chip,
+  DateInput,
+  Heading,
+  Image,
+  Input,
+  Pagination,
+  Select,
+  Spacer,
+  Table,
+} from '@growth-ui/react';
 import { ROUTES } from '@/ROUTES';
-import { useGetBrandsByAffiliateForAdminDashboardLazyQuery, useGetBrandsByAffiliateForAdminDashboardQuery } from '@/services';
+import {
+  useGetBrandsByAffiliateForAdminDashboardLazyQuery,
+  useGetBrandsByAffiliateForAdminDashboardQuery,
+} from '@/services';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import Head from '@/modules/components/Head';
 import AppMain from '@/layouts/AppMain';
@@ -66,8 +80,8 @@ const TableCellLink = styled(Table.Cell)`
   transition: all 0.4s ease-in-out;
 
   &:hover {
-      color: #2D126D;
-      text-decoration: underline;
+    color: #2d126d;
+    text-decoration: underline;
   }
 `;
 
@@ -92,34 +106,37 @@ export default withPageAuthRequired(function Brands() {
   const [searchBrand, setSearchBrand] = useState('');
   const [searchMerchant, setSearchMerchant] = useState('');
   const router = useRouter();
-  const [ status, setStatus ] = useState('ALL');
-  const {startDate, endDate } = router.query;
+  const [status, setStatus] = useState('ALL');
+  const { startDate, endDate } = router.query;
   // const [ startDate, setStartDate ] = useState('');
   // const [ endDate, setEndDate ] = useState('');
 
   const statusOption = [
     {
-      key: "All",
-      value: "ALL",
-      text: "All",
+      key: 'All',
+      value: 'ALL',
+      text: 'All',
     },
     {
-      key: "Available",
-      value: "AVAILABLE",
-      text: "Available",
+      key: 'Available',
+      value: 'AVAILABLE',
+      text: 'Available',
     },
     {
-      key: "Unavailable",
-      value: "UNAVAILABLE",
-      text: "Unavailable",
+      key: 'Unavailable',
+      value: 'UNAVAILABLE',
+      text: 'Unavailable',
     },
   ];
 
-  const { data: walletData } = useGetBrandsByAffiliateForAdminDashboardQuery({});
-  // console.log('walletData: ', walletData);
-  // console.log('walletData?.walletInfo: ', walletData?.walletInfo);
+  const { data: walletData } = useGetBrandsByAffiliateForAdminDashboardQuery(
+    {},
+  );
+  console.log('walletData: ', walletData);
+  console.log('walletData?.walletInfo: ', walletData?.walletInfo);
 
-  const [query, { data, loading }] = useGetBrandsByAffiliateForAdminDashboardLazyQuery({});
+  const [query, { data, loading }] =
+    useGetBrandsByAffiliateForAdminDashboardLazyQuery({});
 
   useEffect(() => {
     query({
@@ -130,10 +147,10 @@ export default withPageAuthRequired(function Brands() {
         endDate: endDate as string,
         affiliate: true,
         status,
-      }
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[status, activePage]);
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, activePage]);
 
   // console.log('searchBrand: ', searchBrand);
   // console.log('searchMerchant: ', searchMerchant);
@@ -161,61 +178,61 @@ export default withPageAuthRequired(function Brands() {
 
   return (
     <>
-      <Head title='GPcoupon | List Brand' />
+      <Head title="GPcoupon | List Brand" />
       <AppMain>
         <AdminLayout>
           <section>
-            <Heading style={{color: "#2D126D"}}>List Brand</Heading>
+            <Heading style={{ color: '#2D126D' }}>List Brand</Heading>
             <Spacer size={20} />
 
-              <LabelContainer style={{justifyContent: "space-between"}}>
-                <Input
-                  label="Brand Name"
-                  icon="search outline"
-                  value={searchBrand}
-                  onChange={(e) => setSearchBrand(e.target.value)}
-                  style={{width: "50%"}}
-                />
+            <LabelContainer style={{ justifyContent: 'space-between' }}>
+              <Input
+                label="Brand Name"
+                icon="search outline"
+                value={searchBrand}
+                onChange={(e) => setSearchBrand(e.target.value)}
+                style={{ width: '50%' }}
+              />
 
-                <Link href={ROUTES.admin.createBrand}>
-                  <a>
-                    <BtnCreate>Create Brand</BtnCreate>
-                  </a>
-                </Link>   
-              </LabelContainer>
-              <Spacer size={20} />
+              <Link href={ROUTES.admin.createBrand}>
+                <a>
+                  <BtnCreate>Create Brand</BtnCreate>
+                </a>
+              </Link>
+            </LabelContainer>
+            <Spacer size={20} />
 
-              <LabelContainer>
-                <Input
-                  label="Merchant Name"
-                  icon="people"
-                  value={searchMerchant}
-                  onChange={(e) => setSearchMerchant(e.target.value)}
-                  style={{width: "50%"}}
-                />
-              </LabelContainer>
-              <Spacer size={20} />
+            <LabelContainer>
+              <Input
+                label="Merchant Name"
+                icon="people"
+                value={searchMerchant}
+                onChange={(e) => setSearchMerchant(e.target.value)}
+                style={{ width: '50%' }}
+              />
+            </LabelContainer>
+            <Spacer size={20} />
 
-              <LabelContainer>
-                <Select 
-                  label='Status'
-                  value={statusOption[0].value}
-                  options={statusOption}
-                  onChange={(_, data) => setStatus(data.newValues)}
-                  // style={{minWidth: "13em"}}
-                  style={{width: "50%"}}
-                />
-              </LabelContainer>
-              <Spacer size={20} />
+            <LabelContainer>
+              <Select
+                label="Status"
+                value={statusOption[0].value}
+                options={statusOption}
+                onChange={(_, data) => setStatus(data.newValues)}
+                // style={{minWidth: "13em"}}
+                style={{ width: '50%' }}
+              />
+            </LabelContainer>
+            <Spacer size={20} />
 
-              {/* <LabelContainer>
+            {/* <LabelContainer>
                 <div style={{display: "flex", width: "50%", justifyContent: "space-between"}}>
                   <Input label='Create Date' placeholder='From' icon="calendar" iconPosition='right' />
                   <Input label='Create Date' placeholder='To' icon="calendar" iconPosition='right' />
                 </div>
               </LabelContainer> */}
 
-              {/* <DateContainer>
+            {/* <DateContainer>
                 <LabelContainer style={{justifyContent: "space-between"}}>
                   <DateInput
                     mask="yyyy-mm-dd"
@@ -251,125 +268,92 @@ export default withPageAuthRequired(function Brands() {
                   </Button>
                 </LabelContainer>
               </DateContainer> */}
-            </section>
-            <Spacer size={30} />
+          </section>
+          <Spacer size={30} />
 
-            <div style={{border: "2px solid #D9D9D9"}}></div>
-            <Spacer size={30} />
+          <div style={{ border: '2px solid #D9D9D9' }}></div>
+          <Spacer size={30} />
 
-            <Provider>
-              <Table celled>
-                <Table.Head>
-                  <Table.Row>
-                    <TableHeadCell>Logo</TableHeadCell>
-                    <TableHeadCell>Brand Name</TableHeadCell>
-                    <TableHeadCell>Merchant Name</TableHeadCell>
-                    <TableHeadCell>GP Wallet Business Username</TableHeadCell>
-                    <TableHeadCell>Countries</TableHeadCell>
-                    <TableHeadCell>Categories</TableHeadCell>
-                    <TableHeadCell>Status</TableHeadCell>
-                    <TableHeadCell>Create Date</TableHeadCell>
-                  </Table.Row>
-                </Table.Head>
+          <Provider>
+            <Table celled>
+              <Table.Head>
+                <Table.Row>
+                  <TableHeadCell>Logo</TableHeadCell>
+                  <TableHeadCell>Brand Name</TableHeadCell>
+                  <TableHeadCell>Merchant Name</TableHeadCell>
+                  <TableHeadCell>GWallet Business Username</TableHeadCell>
+                  <TableHeadCell>Countries</TableHeadCell>
+                  <TableHeadCell>Categories</TableHeadCell>
+                  <TableHeadCell>Status</TableHeadCell>
+                  <TableHeadCell>Create Date</TableHeadCell>
+                </Table.Row>
+              </Table.Head>
 
-                <Table.Body>
-                  {data?.brands
-                    ?.filter(({ name }: any) => {
-                      if (!searchBrand) return true;
-                    
-                      const similarityBrand = stringSimilarity.compareTwoStrings(
-                        name,
-                        searchBrand,
-                      );
-                      
-                      if (similarityBrand > 0.25) return true;
-                      
-                      return false;
-                    })
-                    ?.map((brand: any) => (
-                      <Table.Row key={brand.id}>
-                        <TableCell>
-                          {/* <Image size='small' src={brand.thumbnailUrl} /> */}
-                          <Image src={brand.thumbnailUrl} style={{maxWidth: "100px"}} />
-                        </TableCell>
-                        <TableCellLink 
-                          onClick={() => Router.push(`${ROUTES.admin.brands}/${brand.id}`)}
-                        >
-                          {brand.name}                       
-                        </TableCellLink>
+              <Table.Body>
+                {data?.brands
+                  ?.filter(({ name }: any) => {
+                    if (!searchBrand) return true;
 
-                        {walletData?.walletInfo
-                          ?.filter(({ username }: any) => {
-                            if (!searchMerchant) return true;
+                    const similarityBrand = stringSimilarity.compareTwoStrings(
+                      name,
+                      searchBrand,
+                    );
 
-                            const similarityMerchant = stringSimilarity.compareTwoStrings(
-                              // merchant || undefined || '',
-                              username,
-                              searchMerchant,
-                            );
+                    if (similarityBrand > 0.25) return true;
 
-                            if (similarityMerchant > 0.25) return true;
-
-                            return false;
-                          })
-                          ?.map((wallet: any) => {
-                            if (brand.sub === wallet.id) {
-                              return (
-                                <>
-                                  <TableCell>
-                                    {wallet.username}
-                                  </TableCell>
-                                  <TableCell>
-                                    {`${wallet.profile.firstName} ${wallet.profile.lastName}`}
-                                  </TableCell>
-                                </>
-                              );
-                            }
-                          })}
-
-                        {/* {walletData?.walletInfo.map((item: any) => {
-                          if (brand.sub === item.id) {
-                            return (
-                              <>
-                                <TableCell key={item.id}>
-                                  {item.username ? item.username : ''}
-                                </TableCell>
-                                <TableCell>
-                                  {`${item.profile.firstName} ${item.profile.lastName}`}
-                                </TableCell>
-                              </>
-                            );
+                    return false;
+                  })
+                  ?.map((brand: any) => (
+                    <Table.Row key={brand.id}>
+                      <TableCell>
+                        <Image
+                          src={brand.thumbnailUrl}
+                          style={{ maxWidth: '100px' }}
+                        />
+                      </TableCell>
+                      <TableCellLink
+                        onClick={() =>
+                          Router.push(`${ROUTES.admin.brands}/${brand.id}`)
+                        }
+                      >
+                        {brand.name}
+                      </TableCellLink>
+                      <TableCell>{brand.metadata.businessName}</TableCell>
+                      <TableCell>{brand.sub}</TableCell>
+                      <TableCell>
+                        <ChipCustom text={brand.countries.join(', ')} />
+                      </TableCell>
+                      <TableCell>
+                        {brand.categories.map((c: any, index: number) => (
+                          <ChipCategories key={index} text={c.name} />
+                        ))}
+                      </TableCell>
+                      <TableCell>
+                        <ChipCustom
+                          text={brand.status}
+                          outlined
+                          color={
+                            brand.status === 'AVAILABLE' ? 'primary' : 'red-400'
                           }
-                        })} */}
-                        <TableCell>
-                          <ChipCustom text={brand.countries.join(', ')} />
-                        </TableCell>
-                        <TableCell>
-                          {brand.categories.map((c: any, index:number) => (
-                            <ChipCategories key={index} text={c.name} />
-                          ))}
-                        </TableCell>
-                        <TableCell>
-                          <ChipCustom text={brand.status} outlined color={brand.status === 'AVAILABLE' ? 'primary' : 'red-400'} />
-                        </TableCell>
-                        <TableCell>
-                          {new Date(Number(brand.createdAt)).toLocaleDateString()}
-                        </TableCell>
-                      </Table.Row>
-                    ))
-                  }
-                </Table.Body>
-              </Table>
-            </Provider>
-            <Spacer size={20} />
-            
-            {/* <Pagination
+                        />
+                      </TableCell>
+                      <TableCell>
+                        {new Date(Number(brand.createdAt)).toLocaleDateString()}
+                      </TableCell>
+                    </Table.Row>
+                  ))}
+              </Table.Body>
+            </Table>
+          </Provider>
+          <Spacer size={20} />
+
+          {/* <Pagination
               totalPages={Math.ceil((data?.brands || 1) / TAKE) }
               onPageChange={handlePageChange}
               activePage={activePage}
             /> */}
-          </AdminLayout>
-        </AppMain>
+        </AdminLayout>
+      </AppMain>
     </>
   );
 });

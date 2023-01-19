@@ -53,16 +53,16 @@ const validate = (data: any) => {
   }
 
   if (!sub) {
-    return 'Business account id is required';
+    return 'Business username is required';
   }
 
-  if (!slug) {
-    return 'Slug is required';
-  }
+  // if (!slug) {
+  //   return 'Slug is required';
+  // }
 
-  if (!locale) {
-    return 'locale is required';
-  }
+  // if (!locale) {
+  //   return 'locale is required';
+  // }
 
   return null;
 };

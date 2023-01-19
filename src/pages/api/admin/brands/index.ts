@@ -2,6 +2,7 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import prisma from '@/prisma';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
+import gpointwallet from '../../_lib/gpointwallet';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -10,19 +11,22 @@ export default withApiAuthRequired(
     }
 
     if (req.method === 'post') {
+      console.log('req.body: ', req.body);
       const {
         name,
-        slug,
+        sub,
         description,
         thumbnailUrl,
-        sub,
+        slug,
+        disclaimer,
         backgroundUrl,
         available,
         terms,
         categories,
-        disclaimer,
         countries,
+        metadata,
       } = req.body;
+
       const session = getSession(req, res);
 
       const existingBrand = await prisma.brand.findUnique({
@@ -34,6 +38,10 @@ export default withApiAuthRequired(
       if (existingBrand) throw new BadRequestError('Slug exits');
 
       const timestamp = new Date().valueOf();
+
+      // console.log('sub: ', sub);
+      // const walletAcct = await gpointwallet.getInfoByUsername(sub);
+      // console.log('walletAcct: ', walletAcct);
 
       const brand = await prisma.brand.create({
         data: {
@@ -54,6 +62,7 @@ export default withApiAuthRequired(
           updatedAt: timestamp,
           affiliate: true,
           metadata: {
+            ...metadata,
             createdBy: session?.user,
           },
         },

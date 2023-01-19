@@ -30,11 +30,21 @@ export default function UpdateBrandFrom() {
   const [error, setError] = useState<string | null>('');
 
   useEffect(() => {
+    console.log('@components/admin/brands/EditBrandForm - data: ', data);
     if (data) {
       setBrand({
-        ...data,
-        categories: data.categoryIDs,
+        sub: data.sub || '',
+        name: data.name || '',
+        slug: data.slug || '',
+        description: data.description,
+        disclaimer: data.disclaimer,
+        backgroundUrl: data.backgroundUrl,
+        thumbnailUrl: data.thumbnailUrl,
         available: data.status === 'AVAILABLE',
+        terms: data.terms,
+        categories: data.categoryIDs,
+        countries: data.countries,
+        metadata: data.metadata?.toString() || '{}',
       });
     }
   }, [data]);

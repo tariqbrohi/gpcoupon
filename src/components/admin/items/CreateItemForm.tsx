@@ -7,6 +7,7 @@ import Router from 'next/router';
 import validate from './helpers/validate';
 import { Heading, Snackbar, Spacer } from '@growth-ui/react';
 import { useCreateItemMutation, useSignS3Mutation } from '@/services';
+import { ApproveStatus } from '@prisma/client';
 
 export default function CreateBrandFrom() {
   const { setItem } = useContext(Context);
@@ -17,7 +18,7 @@ export default function CreateBrandFrom() {
 
   const handleUpdate = (i: any) => {
     setItem(i);
-  }
+  };
 
   const handleSubmit = async (data: Item) => {
     const errMessage = validate(data);
@@ -60,6 +61,9 @@ export default function CreateBrandFrom() {
         couponImageUrl: couponImageUrl.url,
         categoryIDs: data.categories,
         brandId: data.brand,
+        approvalStatus: {
+          status: ApproveStatus.approved,
+        },
       },
     })
       .then(() => {
@@ -73,14 +77,10 @@ export default function CreateBrandFrom() {
 
   return (
     <>
-      <Heading style={{color: "#2D126D"}}>Create Coupon</Heading>
+      <Heading style={{ color: '#2D126D' }}>Create Coupon</Heading>
       <Spacer size={20} />
 
-      <ItemForm 
-        mode="create" 
-        onSubmit={handleSubmit}
-        onUpdate={handleUpdate} 
-      />
+      <ItemForm mode="create" onSubmit={handleSubmit} onUpdate={handleUpdate} />
 
       {error && (
         <Snackbar

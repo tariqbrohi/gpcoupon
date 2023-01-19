@@ -1,6 +1,7 @@
 import errorHandler from '@/pages/api/_middlewares/error-handler';
 import prisma from '@/prisma';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
+import { ApproveStatus } from '@prisma/client';
 
 export default errorHandler(async function handler(req, res) {
   if (req.method !== 'put') {
@@ -15,7 +16,7 @@ export default errorHandler(async function handler(req, res) {
       expiresIn,
       amount,
       sortOrder = 0,
-      discountRate = 0,// cashback percent
+      discountRate = 0, // cashback percent
       notes,
       brandId,
       imageUrl,
@@ -24,16 +25,16 @@ export default errorHandler(async function handler(req, res) {
       country,
       type,
       originalPrice,
-      influencerDiscountRate = 0,// cashback for influencer
-      customerDiscountRate = 0,// cashback for customer
-      influencerId=null,
+      influencerDiscountRate = 0, // cashback for influencer
+      customerDiscountRate = 0, // cashback for customer
+      influencerId = null,
       categoryIDs,
       slug,
       locale,
-      status = 'UNAVAILABLE'
+      status = 'UNAVAILABLE',
     } = req.body;
     const { id } = req.query as any;
-   
+
     const existingItem = await prisma.item.findUnique({
       where: {
         slug,
@@ -88,18 +89,18 @@ export default errorHandler(async function handler(req, res) {
         status,
         updatedAt: timestamp,
         approvalStatus: {
-          create: [
-            {
-              status: 'modifyRequested',
-              createdAt: timestamp,
-              updatedAt: timestamp
-            }
-          ]
-        }
+          create: {
+            status: ApproveStatus.modifyRequested,
+            createdAt: timestamp,
+            updatedAt: timestamp,
+          },
+        },
+      },
+      include: {
+        approvalStatus: true,
       },
     });
 
     res.send(item);
   }
 });
-

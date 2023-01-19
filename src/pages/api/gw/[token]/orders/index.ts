@@ -88,6 +88,11 @@ export default isAuth(
 
       if (!dbItem && !xoxoItem) throw new NotFoundError('Item not found');
 
+      if ((dbItem?.metadata as any)?.vendor === 'xoxoday' && !xoxoItem) {
+        console.log('dasdadasda');
+        throw new InternalServerError();
+      }
+
       const currency = (
         dbItem?.price.currency || xoxoItem?.price.currency === 'USD'
           ? 'GPT'

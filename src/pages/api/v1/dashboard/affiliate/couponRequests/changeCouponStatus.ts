@@ -9,12 +9,9 @@ export default errorHandler(async function handler(req, res) {
   }
 
   const session = gpointwallet.getSession(req);
-    if(!session) throw(new BadRequestError('No User'));
+  if (!session) throw new BadRequestError('No User');
 
-  const {
-    id,
-    status
-  } = req.body;
+  const { id, status } = req.body;
 
   const timestamp = new Date().valueOf();
 
@@ -25,7 +22,7 @@ export default errorHandler(async function handler(req, res) {
     data: {
       status,
       updatedAt: timestamp,
-    }
+    },
   });
 
   res.send(updateItemStatus);

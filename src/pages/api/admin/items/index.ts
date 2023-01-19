@@ -2,6 +2,7 @@ import errorHandler from '@/pages/api/_middlewares/error-handler';
 import prisma from '@/prisma';
 import { getSession, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { BadRequestError, NotFoundError } from '@/lib/errors';
+import { ApproveStatus } from '@prisma/client';
 
 export default withApiAuthRequired(
   errorHandler(async function handler(req, res) {
@@ -12,19 +13,48 @@ export default withApiAuthRequired(
     if (req.method === 'get') {
       const {} = req.query as any;
 
-      const items = (await prisma.item.findRaw({
-        filter: { 'metadata.affiliate': { $eq: true } },
+      const items = (await prisma.item.findMany({
+        where: {
+          affiliate: true,
+          approvalStatus: {
+            some: {
+              status: {
+                // equals: 'requested',
+                in: ['requested', 'approved', 'rejected', 'modifyRequested'],
+              },
+            },
+          },
+        },
+        include: {
+          approvalStatus: true,
+          brand: true,
+        },
       })) as unknown as any;
 
-      return res.send(
-        items.map(({ _id, categoryIDs, brandId, ...rest }: any) => ({
-          ...rest,
-          id: _id['$oid'],
-          brandId: brandId?.['$oid'],
-          categoryIDs: categoryIDs.map(({ $oid }: any) => $oid),
-        })),
-      );
+      // console.log('@ api/admin/items - getgetgetgetget items: ', items);
+
+      return res.send(items);
+
+      // const temp = items.map(({ _id, categoryIDs, brandId, ...rest }: any) => ({
+      //   ...rest,
+      //   id: _id['$oid'],
+      //   brandId: brandId?.['$oid'],
+      //   categoryIDs: categoryIDs.map(({ $oid }: any) => $oid),
+      // }));
+
+      // console.log('@ api/admin/items - temp: ', temp);
+
+      // return res.send(
+      //   items.map(({ _id, categoryIDs, brandId, ...rest }: any) => ({
+      //     ...rest,
+      //     id: _id['$oid'],
+      //     brandId: brandId?.['$oid'],
+      //     categoryIDs: categoryIDs.map(({ $oid }: any) => $oid),
+      //   })),
+      // );
     }
+
+    // console.log('req.body: ', req.body);
 
     if (req.method === 'post') {
       const {
@@ -51,8 +81,15 @@ export default withApiAuthRequired(
         redemptionInstructions,
         categoryIDs,
         slug,
+        approvalStatus,
       } = req.body;
+
+      // console.log('approvalStatus: ', approvalStatus);
       const session = getSession(req, res);
+
+      // console.log('@page/api/admin/items - session:===============> ', session);
+      // console.log('session?.user.sub: ', session?.user.sub);
+      // console.log('currency: ', currency);
 
       const existingItem = await prisma.item.findUnique({
         where: {
@@ -109,8 +146,21 @@ export default withApiAuthRequired(
             affiliate: true,
             createdBy: session?.user,
           },
+          approvalStatus: {
+            create: {
+              status: ApproveStatus.approved,
+              approver: { adminInfo: session?.user },
+              createdAt: timestamp,
+              updatedAt: timestamp,
+            },
+          },
+        },
+        include: {
+          approvalStatus: true,
         },
       });
+
+      // console.log('@api/admin/items/index - created item: =====', item);
 
       res.send(item);
     }
