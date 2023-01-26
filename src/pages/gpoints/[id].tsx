@@ -66,10 +66,11 @@ export default function GPoints() {
     order({
       data: {
         id: id as string,
-        code,
+        // code: String(code),
         qty,
         recipientEmail,
         recipientName,
+        exchangeRate: 0,
       },
     })
       .then(({ data }) => {
