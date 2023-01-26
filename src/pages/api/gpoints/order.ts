@@ -1,15 +1,12 @@
-import errorHandler from '@/pages/api/_middlewares/error-handler';
-import prisma from '@/prisma';
-import { restClient } from '@polygon.io/client-js';
-import {
-  BadRequestError,
-  NotFoundError,
-  UnauthenticatedError,
-} from '@/lib/errors';
-import moment from 'moment';
-import gpointwallet from '../_lib/gpointwallet';
-import { gpointOrderProcessing } from '../_lib/send-email';
 import currencyFormat from '@/lib/currency-format';
+import errorHandler from '@/pages/api/_middlewares/error-handler';
+import gpointwallet from '../_lib/gpointwallet';
+import moment from 'moment';
+import prisma from '@/prisma';
+import { generate } from 'short-uuid';
+import { gpointOrderProcessing } from '../_lib/send-email';
+import { NotFoundError, UnauthenticatedError } from '@/lib/errors';
+import { restClient } from '@polygon.io/client-js';
 
 const rest = restClient(process.env.POLYGON_SECRET!);
 
@@ -18,9 +15,9 @@ export default errorHandler(async function handler(req, res) {
     throw new NotFoundError();
   }
 
-  const { id, qty, recipientName, recipientEmail, code } = req.body;
+  const { id, qty, recipientName, recipientEmail, exchangeRate } = req.body;
 
-  const gpoint = await prisma.gPoint.findUnique({
+  const gpoint = await prisma.item.findUniqueOrThrow({
     where: {
       id,
     },
@@ -38,11 +35,15 @@ export default errorHandler(async function handler(req, res) {
 
   const { user, token } = session;
 
+  const totalPrice = qty * exchangeRate * gpoint.price.amount;
+  console.log(gpoint);
+  console.log(`totalPrice: ${totalPrice}`);
   const order = await prisma.gPointOrder.create({
     data: {
       gpoint,
       gpointId: id,
-      qty,
+      qty: +qty,
+      uniqueId: generate(),
       exchangeRate: previousClosed.results?.[0].h!,
       recipient: {
         name: recipientName,
@@ -54,10 +55,9 @@ export default errorHandler(async function handler(req, res) {
         email: user.profile.contact.email,
         name: user.username,
       },
-      code,
       createdAt: timestamp,
       updatedAt: timestamp,
-      totalPrice: qty * previousClosed.results?.[0].h! * gpoint.amount,
+      totalPrice,
     },
   });
 

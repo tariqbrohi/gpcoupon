@@ -32,15 +32,15 @@ export default function Avatar(props: DropdownProps) {
         .catch(() => {});
     }
 
-    if (data.text === 'My gifts') {
+    if (data.text === 'My Gifts') {
       Router.push(ROUTES.orders);
     }
 
-    if (data.text === 'Payment methods') {
+    if (data.text === 'Payment Methods') {
       Router.push(ROUTES.paymentCards);
     }
 
-    if (data.text === 'My dashboard') {
+    if (data.text === 'My Dashboard') {
       Router.push(ROUTES.affiliateDashboard);
     }
   };
@@ -64,18 +64,17 @@ export default function Avatar(props: DropdownProps) {
       {...props}
     >
       <Dropdown.Menu>
-        <Dropdown.Item text="My gifts" onClick={handleClickDropdownItem} />
+        <Dropdown.Item text="My Gifts" onClick={handleClickDropdownItem} />
         <Dropdown.Item
-          text="Payment methods"
+          text="Payment Methods"
           onClick={handleClickDropdownItem}
         />
-        {
-          user?.type === 'BUSINESS' &&
-            <Dropdown.Item
-              text="My dashboard"
-              onClick={handleClickDropdownItem}
-            />
-        }
+        {user?.type === 'BUSINESS' && (
+          <Dropdown.Item
+            text="My Dashboard"
+            onClick={handleClickDropdownItem}
+          />
+        )}
         <Dropdown.Item text="Logout" onClick={handleClickDropdownItem} />
       </Dropdown.Menu>
     </Dropdown>

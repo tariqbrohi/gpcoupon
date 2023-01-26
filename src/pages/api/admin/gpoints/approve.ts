@@ -5,6 +5,11 @@ import { BadRequestError, NotFoundError } from '@/lib/errors';
 import moment from 'moment';
 import { gpointOrderApproved } from '../../_lib/send-email';
 import { times } from 'lodash';
+import CryptoJS from 'crypto-js';
+
+function encryptObject(object: any): string {
+  return CryptoJS.AES.encrypt(JSON.stringify(object), 'secret').toString();
+}
 
 const randomString = (length: number) => {
   let text = '';
@@ -37,7 +42,11 @@ export default withApiAuthRequired(
     const timestamp = moment().unix();
 
     const credentials = times(order.qty).map(() => ({
-      code: randomString(12),
+      // code: randomString(12),
+      code: String(
+        Math.floor(Math.random() * (999999999999 - 100000000000 + 1)) +
+          100000000000,
+      ),
       pin: Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000,
     }));
 
@@ -53,7 +62,7 @@ export default withApiAuthRequired(
             data: credentials.map((cred) => ({
               code: cred.code,
               pin: cred.pin.toString(),
-              amount: (order.gpoint as any).amount,
+              amount: (order.gpoint as any).price.amount,
               status: 'available',
               createdAt: timestamp,
               updatedAt: timestamp,
@@ -61,7 +70,7 @@ export default withApiAuthRequired(
           },
         },
       },
-      select: {
+      include: {
         gifts: true,
       },
     });
@@ -74,9 +83,9 @@ export default withApiAuthRequired(
       gpoint: order.gpoint,
     }));
 
-    const link = `${process.env.AUTH0_BASE_URL}/g/${btoa(
-      JSON.stringify(data),
-    )}`;
+    const key = Buffer.from(encryptObject(data)).toString('base64');
+
+    const link = `${process.env.AUTH0_BASE_URL}/g/${orderWithGifts.uniqueId}`;
 
     gpointOrderApproved({
       recipientEmail: order.recipient.email,

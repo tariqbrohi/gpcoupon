@@ -1,36 +1,48 @@
-import AppContext from '@/modules/components/AppContext';
-import React, { useContext, useEffect, useState } from 'react';
-import AppContainer from '@/layouts/AppContainer';
-import AppHeader from '@/layouts/AppHeader';
+/* eslint-disable react-hooks/rules-of-hooks */
+import AffiliateDashboardLayout from '@/layouts/AffiliateDashgoardLayout';
+import React, { useEffect, useState } from 'react';
 import AppMain from '@/layouts/AppMain';
 import Head from '@/modules/components/Head';
-import { Paragraph, Spacer, Pagination, Button, Container } from '@growth-ui/react';
-import CouponList from '@/components/affiliateDashboard/CouponList';
-import { useGetAffiliateItemsForDashboardQuery, useGetAffiliateItemsForDashboardLazyQuery} from '@/services';
-import CreateCouponRequest from '@/components/affiliateDashboard/CreateCouponModal';
-import AppNav from '@/layouts/AppNav';
+import { Dropdown, Heading, Pagination, Spacer, Input } from '@growth-ui/react';
+import CouponDashboard from './couponDashboard';
+import MyCoupon from './couponDashboard/myCoupon';
+import styled from 'styled-components';
+import AppHeader from '@/layouts/AppHeader';
+import AppContainer from '@/layouts/AppContainer';
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Label = styled.label`
+  width: 100px;
+`;
+
+const status = [
+  {value: "All"},
+  {value: "Active"},
+  {value: "Inactive"},
+];
 
 const TAKE = 20;
 
-export default function AffiliateDashboard() {
-  const { user } = useContext(AppContext);
-  const [ sortBy, setSortBy ] = useState('createdAt,desc');
+export default function myDashboard() {
+  const [search, setSearch] = useState('');
+  const [ sortBy, setSortBy ] = useState('createdAt, desc');
   const [ activePage, setActivePage ] = useState(1)
-  const [ query, { data, loading }] = useGetAffiliateItemsForDashboardLazyQuery({});
-
-  useEffect(() => {
-    if (user !== null) {
-      query({
-        data: {
-          take: TAKE,
-          sub: user?.id,
-          sortBy,
-          skip: (activePage - 1) * TAKE,
-        }
-      });
-    }
-  }, [activePage, sortBy]);
-
+  // const [ query, { data, loading }] = useGetAffiliateItemsForAdminDashboardLazyQuery({});
+  
+  // useEffect(() => {
+  //   query({
+  //     data: {
+  //       take: TAKE,
+  //       sortBy,
+  //       skip: (activePage - 1) * TAKE,
+  //     }
+  //   });
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [activePage, sortBy]);
 
   const handlePageChange = (_: any, { activePage }: any) => {
     setActivePage(activePage);
@@ -38,34 +50,15 @@ export default function AffiliateDashboard() {
 
   return (
     <>
-      <Head title="GPcoupon | Affiliate Dashboard" />
+      <Head title='GPcoupon | AffiliateDashboard' />
       <AppHeader bgTransition={false} />
       <AppMain>
         <AppContainer>
-          <Paragraph fontWeight={700} fontSize={26}>
-            My Coupon
-          </Paragraph>
-          {
-            user &&
-              <div
-                style={{
-                  display: "flex"
-                }}
-              >       
-                <CreateCouponRequest/>
-              </div>
-          }
-          <CouponList 
-            orders={data}
-          />
-          <Pagination
-            totalPages={Math.ceil((data?.total?.count || 1) / TAKE)}
-            onPageChange={handlePageChange}
-            activePage={activePage}
-          />
+          <AffiliateDashboardLayout>
+            <CouponDashboard />
+          </AffiliateDashboardLayout>
         </AppContainer>
       </AppMain>
-      <AppNav />
     </>
   );
 }

@@ -4,11 +4,11 @@ import parseErrorMessage from '@/lib/parse-error-message';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import { Brand } from './Context';
-import { Heading, Snackbar } from '@growth-ui/react';
+import { Heading, Snackbar, Spacer } from '@growth-ui/react';
 import { useCreateBrandMutation, useSignS3Mutation } from '@/services';
 import validate from './helpers/validate';
 
-export default function CreateBrandFrom() {
+export default function CreateBrandForm() {
   const [create, { loading }] = useCreateBrandMutation();
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
@@ -16,8 +16,14 @@ export default function CreateBrandFrom() {
 
   const handleSubmit = async (data: Brand) => {
     const errMessage = validate(data);
-    // console.log(data);
+    // console.log('@Admin - CreateBrandForm_handleSubmit - Brand data: ', data);
+    // console.log(
+    //   '@Admin - CreateBrandForm_handleSubmit - errMessage: ',
+    //   errMessage,
+    // );
+
     if (errMessage || loading) {
+      alert(errMessage);
       return setError(errMessage);
     }
 
@@ -49,7 +55,6 @@ export default function CreateBrandFrom() {
         ...data,
         backgroundUrl: backgroundUrl.url,
         thumbnailUrl: thumbnailUrl.url,
-        sub: data.sub!,
       },
     })
       .then(() => {
@@ -62,7 +67,9 @@ export default function CreateBrandFrom() {
 
   return (
     <>
-      <Heading>Create Brand</Heading>
+      <Heading style={{ color: '#2D126D' }}>Create Brand</Heading>
+      <Spacer size={20} />
+
       <BrandForm mode="create" onSubmit={handleSubmit} />
       {error && (
         <Snackbar

@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { decode } from 'js-base64';
+import CryptoJS from 'crypto-js';
 import { Paragraph, Spacer, Grid } from '@growth-ui/react';
 import styled from 'styled-components';
 import Divider from '@/modules/components/Divider';
 import currencyFormat from '@/lib/currency-format';
+import { useGetGiftsLazyQuery } from '@/services';
 
 const Wrapper = styled('div')`
   border: 3px solid;
@@ -22,19 +24,31 @@ const Brand = styled('div')`
   letter-spacing: 3px;
 `;
 
+function decryptObject(text: string): any {
+  return JSON.parse(
+    CryptoJS.AES.decrypt(text, 'secret').toString(CryptoJS.enc.Utf8),
+  );
+}
+
 export default function RedeemGPoint() {
   const {
     query: { key },
   } = useRouter();
 
   const [data, setData] = useState<any[]>([]);
+  const [getGifts] = useGetGiftsLazyQuery();
 
   useEffect(() => {
     try {
-      const decoded = decode(key as string);
-      const keys = JSON.parse(decoded);
-      console.log(keys);
-      setData(keys);
+      getGifts({
+        data: {
+          key: key as string,
+        },
+      })
+        .then(({ data }) => {
+          setData(data);
+        })
+        .catch(() => {});
     } catch {}
   }, []);
 
@@ -51,7 +65,7 @@ export default function RedeemGPoint() {
           <Brand>GPOINT</Brand>
           <Spacer size={40} />
           <Paragraph fontSize={24} textAlign="center">
-            <b>{currencyFormat((item.gpoint as any).amount, 'GPT')}</b>
+            <b>{currencyFormat((item.gpoint as any).price.amount, 'GPT')}</b>
             &nbsp;&nbsp; eGift
           </Paragraph>
           <Spacer size={10} />
@@ -60,7 +74,7 @@ export default function RedeemGPoint() {
           <Grid.Row>
             <Grid.Col padded>
               <img
-                src={(item.gpoint as any).imageUrl}
+                src={(item.gpoint as any).imageUrls?.large}
                 style={{
                   width: '200px',
                   height: '126px',

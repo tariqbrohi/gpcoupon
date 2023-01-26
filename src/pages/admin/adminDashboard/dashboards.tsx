@@ -1,12 +1,23 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import Provider from '@/components/admin/items/Provider';
-import { Table, Spacer } from "@growth-ui/react";
+import { Table, Spacer, Image } from "@growth-ui/react";
 import { ROUTES } from '@/ROUTES';
 import styled from "styled-components";
+import Router, { useRouter } from 'next/router';
+
+const TableHeadCell = styled(Table.HeadCell)`
+  text-align: center;
+`;
+
+const TableCell = styled(Table.Cell)`
+  text-align: center;
+`;
 
 const TableCellLink = styled(Table.Cell)`
     cursor: pointer;
     color: #4183c4;
+    text-align: center;
     transition: all 0.4s ease-in-out;
 
     &:hover {
@@ -16,31 +27,33 @@ const TableCellLink = styled(Table.Cell)`
 `;
 
 export default function AdminDashboards(props: any) {
-    const { orders } = props;
+    const { total, orders } = props;
+    const router = useRouter();
 
-    const addDays = (date: any, days: any) => {
-        const d = new Date(date);
-        d.setDate(d.getDate() + days);
-        
-        return d.toLocaleDateString();
-    }
-
-    const calculateAmount = (totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
+    const calculateAmount = (slug: string, totalAmount: number, oneAmount: number, originalPrice: number, amount: number) => {
         const qty = Math.round(totalAmount / oneAmount);
+
         return (
             <>
-                <Table.Cell>
+                <TableCellLink 
+                    onClick={() => {
+                        router.push({
+                            pathname: ROUTES.admin.adminDashboardDetails,
+                            query: {
+                                startDate: props.startDate,
+                                endDate: props.endDate,
+                                slug
+                            },
+                        })
+                    }}
+                    // onClick={() => Router.push(`${ROUTES.admin.items}/${orders?._id.id}`)}
+                >
                     {qty}
-                </Table.Cell> 
-                <Table.Cell>
-                    ${originalPrice * qty}
-                </Table.Cell>
-                <Table.Cell>
-                    ${oneAmount * qty}
-                </Table.Cell>
-                <Table.Cell>
-                    ${amount * qty}
-                </Table.Cell>
+                </TableCellLink>
+                <TableCell>${originalPrice}</TableCell>
+                <TableCell>${oneAmount}</TableCell>
+                <TableCell>${amount}</TableCell>
+                <TableCell>${amount * qty}</TableCell>
             </>
         );
     }
@@ -51,59 +64,53 @@ export default function AdminDashboards(props: any) {
                 <Table celled>
                     <Table.Head>
                         <Table.Row>
-                            <Table.HeadCell>Merchant Name</Table.HeadCell>
-                            <Table.HeadCell>Coupon Name</Table.HeadCell>
-                            <Table.HeadCell>Extended Name</Table.HeadCell>
-                            <Table.HeadCell>Creation Date</Table.HeadCell>
-                            <Table.HeadCell>Expire Date</Table.HeadCell>
-                            <Table.HeadCell>Qty</Table.HeadCell>
-                            <Table.HeadCell>Original Price</Table.HeadCell>
-                            <Table.HeadCell>Retail Price</Table.HeadCell>
-                            <Table.HeadCell>Merchant Profit</Table.HeadCell>
+                            <TableHeadCell>Logo</TableHeadCell>
+                            <TableHeadCell>Coupon Name</TableHeadCell>
+                            <TableHeadCell>Merchant Name</TableHeadCell>
+                            <TableHeadCell>Qty</TableHeadCell>
+                            <TableHeadCell>Original Price</TableHeadCell>
+                            <TableHeadCell>Retail Price</TableHeadCell>
+                            <TableHeadCell>Merchant Profit</TableHeadCell>
+                            <TableHeadCell>Merchant Total Profit</TableHeadCell>
                         </Table.Row>
                     </Table.Head>
-                    
-                    {orders ? (
+
+                    {total ? (
                         <Table.Body>
                             <Table.Row>
-                                <Table.Cell positive>Total</Table.Cell>
-                                <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>{orders?.total.count || 0}</Table.Cell>
-                                <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>-</Table.Cell>
-                                <Table.Cell positive>${orders?.total.profitSum || 0}</Table.Cell>
+                                <TableCell positive>Total</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>-</TableCell>
+                                <TableCell positive>${total?.profitSum || 0}</TableCell>
                             </Table.Row>
-                            
-                            {orders?.orders?.map((order: any, idx: number) => {
+
+                            {orders?.map((order: any, idx: number) => {
                                 return (
                                     <Table.Row key={idx}>
-                                        <Table.Cell>
-                                            {order?.item?.brand?.name}
-                                        </Table.Cell>
-                                        <TableCellLink onClick={() => window.open(`${ROUTES.buy}/${order?.item.slug}/${order?.item.id}`)}>
-                                            {order?.item.name}                       
+                                        <TableCell>
+                                            {/* <Image size='small' src={order?._id.couponImageUrl} /> */}
+                                            <Image src={order?._id.couponImageUrl} style={{maxWidth: "100px"}} />
+                                        </TableCell>
+                                        <TableCellLink onClick={() => Router.push(`${ROUTES.admin.items}/${order?._id.id}`)}>
+                                            {order?._id.name}                       
                                         </TableCellLink>
-                                        <Table.Cell>
-                                            {order?.item.extendedName}                     
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {new Date(Number(order?.createdAt) * 1000).toLocaleDateString()}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {addDays(order?.createdAt * 1000, order?.item?.expiresIn)}
-                                        </Table.Cell>
-                                        {calculateAmount(order?.payment?.totalAmount, order?.payment?.price.amount, order?.item?.originalPrice, order?.item?.amount)}
+                                        <TableCell>
+                                            Merchant Name
+                                            {/* {order?.item?.brand?.name} */}
+                                        </TableCell>
+                                        {calculateAmount(order?._id.slug, order?.sum, order?._id?.price.amount, order?._id?.originalPrice, order?._id?.amount)}
+                                        {/* {calculateAmount(order?.sum, order?._id?.price.amount, order?._id?.originalPrice, (order?._id?.price.amount - (order?._id?.price.amount * 0.2)))} */}
                                     </Table.Row>
                                 )
                             })}
                         </Table.Body>
                     ) : (
-                            <></>
-                        )
-                    }
+                        <></>
+                    )}
                 </Table>
                 <Spacer size={20} />
                 

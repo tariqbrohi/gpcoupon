@@ -6,7 +6,9 @@ const convert = (currency: string, onSuccess: (rate: number) => void) => {
       currency: `USD${currency}`,
     })
     .then(({ data }) => onSuccess(data))
-    .catch(() => {});
+    .catch((err) => {
+      console.log(err);
+    });
 };
 //
 export default convert;

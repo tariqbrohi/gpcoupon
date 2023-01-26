@@ -7,7 +7,6 @@ export default errorHandler(async function handler(req, res) {
   if (req.method !== 'post') {
     throw new NotFoundError();
   }
-
   const { id, code, pin, t } = req.body;
 
   if (t !== 'thisisfortemporaryshit') {
@@ -25,7 +24,8 @@ export default errorHandler(async function handler(req, res) {
   }
 
   if (gpoint.status.toLowerCase() !== 'available') {
-    throw new BadRequestError('This coupon is not available');
+    console.log('for sure');
+    throw new BadRequestError('This coupon is already used');
   }
 
   const gift = await prisma.gPointGift.update({

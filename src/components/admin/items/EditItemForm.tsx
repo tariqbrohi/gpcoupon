@@ -1,9 +1,9 @@
 import axios from 'axios';
-import Context from './Context';
+import Context, { Item } from './Context';
 import ItemForm from './ItemForm';
 import parseErrorMessage from '@/lib/parse-error-message';
 import React, { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import validate from './helpers/validate';
 import { Heading, Snackbar } from '@growth-ui/react';
 import {
@@ -21,12 +21,13 @@ export default function EditItemForm() {
       id: id as string,
     },
   });
-  const { item, setItem } = useContext(Context);
+  const { setItem } = useContext(Context);
   const [update, { loading }] = useUpdateItemMutation();
   const [sign] = useSignS3Mutation();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>('');
   // console.log(item);
+
   useEffect(() => {
     if (data) {
       setItem({
@@ -35,23 +36,32 @@ export default function EditItemForm() {
         price: (data.price as any)?.amount || 0,
         categories: data.categoryIDs,
         available: data.status === 'AVAILABLE',
-        imageUrl: data.imageUrls.medium,
+        imageUrl: data.imageUrls?.medium,
         brand: data.brandId!,
       } as any);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  const handleSubmit = async () => {
+  const handleUpdate = (item: any) => {
+    setItem(item);
+  };
+
+  const handleSubmit = async (item: Item) => {
     const errMessage = validate(item, true);
 
     if (errMessage || loading) {
+      alert(errMessage);
+
       return setError(errMessage);
     }
+
+    // const promises: any = [];
 
     let imageUrl = item.imageUrl;
     let couponImageUrl = item.couponImageUrl;
 
-    if (!imageUrl || typeof imageUrl !== 'string') {
+    if (!item.imageUrl || typeof item.imageUrl !== 'string') {
       const { data } = await sign({
         data: {
           filename: (item.imageUrl as File).name,
@@ -66,7 +76,7 @@ export default function EditItemForm() {
       });
     }
 
-    if (!couponImageUrl || typeof couponImageUrl !== 'string') {
+    if (!item.couponImageUrl || typeof item.couponImageUrl !== 'string') {
       const { data } = await sign({
         data: {
           filename: (item.couponImageUrl as File).name,
@@ -81,18 +91,21 @@ export default function EditItemForm() {
       });
     }
 
-    const { categories, brand, ...rest } = item;
+    // const { categories, brand, ...rest } = item;
 
     await update({
       data: {
-        ...rest,
-        imageUrl,
-        categoryIDs: categories,
+        // ...rest,
+        ...item,
+        imageUrl: imageUrl as string,
+        couponImageUrl: couponImageUrl as string,
+        categoryIDs: item.categories,
         id: data?.id!,
       },
     })
       .then(() => {
         setSuccess(true);
+        alert('Successfully Updated!');
       })
       .catch((err) => {
         setError(parseErrorMessage(err));
@@ -101,8 +114,9 @@ export default function EditItemForm() {
 
   return (
     <>
-      <Heading>Update Item</Heading>
-      <ItemForm mode="update" onSubmit={handleSubmit} />
+      <Heading>Modify Coupon</Heading>
+      <ItemForm mode="update" onSubmit={handleSubmit} onUpdate={handleUpdate} />
+
       {error && (
         <Snackbar
           autoHideDuration={3000}
@@ -118,7 +132,7 @@ export default function EditItemForm() {
           success
           position="top right"
           message="Success"
-          onClose={() => setSuccess(false)}
+          onClose={() => Router.reload()}
         />
       )}
     </>

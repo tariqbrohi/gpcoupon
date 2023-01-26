@@ -7,6 +7,18 @@ generator client {
   provider        = "prisma-client-js"
 }
 
+model ApprovalStatus {
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  status                  ApproveStatus
+  itemId                  String            @db.ObjectId
+  item                    Item              @relation(fields: [itemId], references: [id])
+  message                 String?
+  approver                Json?
+  createdAt               Int
+  updatedAt               Int 
+  deletedAt               Int?
+}
+
 model Category {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
   name                    String            @unique
@@ -42,7 +54,7 @@ model Brand {
   sortOrder               Int               @default(0)         
   countries               Country[]
   metadata                Json?
-  affiliate               Boolean?
+  affiliate                Boolean?
 
   @@index([name])
   @@index([status])
@@ -50,50 +62,51 @@ model Brand {
 }
 
 model GPoint {
-  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
-  name                            String
-  slug                            String            @unique  
-  imageUrl                    String
-  amount        Float
-  createdAt                       Int
-  updatedAt                       Int
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String
+  slug                    String            @unique  
+  imageUrl                String
+  amount                  Float
+  createdAt               Int
+  updatedAt               Int
 }
 
 model GPointGift {
-  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
-  code  String
-  pin   String
-  amount  Float
-  status String
-  orderId String @db.ObjectId
-  order GPointOrder     @relation(references: [id], fields: [orderId])
-  createdAt                       Int
-  updatedAt                       Int
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  code                    String
+  pin                     String
+  amount                  Float
+  status                  String
+  orderId                 String            @db.ObjectId
+  order                   GPointOrder       @relation(references: [id], fields: [orderId])
+  createdAt               Int
+  updatedAt               Int
 
   @@unique([code, pin])
 }
 
 model GPointOrder {
-  id                              String            @id @default(auto()) @map("_id") @db.ObjectId
-  gpointId  String
-  gpoint  Json
-  sender  Json
-  exchangeRate  Float
-  totalPrice  Float
-  status String
-  code  Int
-  qty Int
-  recipient Recipient
-  createdAt                       Int
-  updatedAt                       Int
-  gifts GPointGift[]
+  id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  uniqueId                String            
+  gpointId                String
+  gpoint                  Json
+  sender                  Json
+  exchangeRate            Float
+  totalPrice              Float
+  status                  String
+  qty                     Int
+  recipient               Recipient
+  createdAt               Int
+  updatedAt               Int
+  gifts                   GPointGift[]
 
   @@index([status])
+  @@index([uniqueId])
 }
 
 model Item {
   id                              String            @id @default(auto()) @map("_id") @db.ObjectId
-  affiliate                       Boolean?
+  affiliate                        Boolean?
   name                            String
   slug                            String            @unique  
   extendedName                    String?
@@ -103,8 +116,8 @@ model Item {
   expiresIn                       Int?
   discountRate                    Float?
   customerDiscountRate            Float?
-  influencerDiscountRate          Float?
-  influencerId                    String?
+  influencerDiscountRate           Float?
+  influencerId                     String?
   originalPrice                   Float
   amount                          Float
   price                           Price
@@ -121,6 +134,7 @@ model Item {
   categories                      Category[]        @relation(fields: [categoryIDs], references: [id])
   metadata                        Json?
   sortOrder                       Int               @default(0)
+  approvalStatus                  ApprovalStatus[]
 
   @@index([name])
   @@index([amount])
@@ -199,6 +213,14 @@ type Exchange {
   exchangeRate            Float
   source                  String
   target                  String
+}
+
+enum ApproveStatus {
+  approved
+  rejected
+  requested
+  modifyRequested
+  deleted
 }
 
 enum PaymentVendor {
