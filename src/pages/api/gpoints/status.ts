@@ -17,7 +17,7 @@ export default errorHandler(async function handler(req, res) {
       },
     },
   });
-
+  console.log(gpoint, ' /?? ?? ??  ');
   if (!gpoint) {
     throw new BadRequestError('Invalid code or pin');
   }
