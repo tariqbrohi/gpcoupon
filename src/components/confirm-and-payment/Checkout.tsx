@@ -97,7 +97,7 @@ export default function Checkout(props: ModalProps) {
   };
   // generate random number between 100000 and 999999
 
-  if (state.item?.brandId === '63cb3127b477401585ef3451') {
+  if (state.item?.name.toLowerCase() === 'gpoint') {
     return (
       <Modal {...props}>
         <Modal.Content>
