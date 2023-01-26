@@ -87,13 +87,13 @@ model GPointGift {
 
 model GPointOrder {
   id                      String            @id @default(auto()) @map("_id") @db.ObjectId
+  uniqueId                String            
   gpointId                String
   gpoint                  Json
   sender                  Json
   exchangeRate            Float
   totalPrice              Float
   status                  String
-  code                    Int
   qty                     Int
   recipient               Recipient
   createdAt               Int
@@ -101,6 +101,7 @@ model GPointOrder {
   gifts                   GPointGift[]
 
   @@index([status])
+  @@index([uniqueId])
 }
 
 model Item {

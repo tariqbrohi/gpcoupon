@@ -1,20 +1,27 @@
 import React from 'react';
 import { ROUTES } from '@/ROUTES';
 import { useRouter } from 'next/router';
-import { Collapse, Icon, List, Sidebar, SidebarProps, Spacer } from '@growth-ui/react';
+import {
+  Collapse,
+  Icon,
+  List,
+  Sidebar,
+  SidebarProps,
+  Spacer,
+} from '@growth-ui/react';
 import styled from 'styled-components';
 
 const WrapperContainer = styled.div`
   padding: 30px 20px;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   height: 100%;
 `;
 
 const Wrapper = styled.div`
   min-width: 221.98px;
   min-height: 100vh;
-  background-color: #FFF;
-  box-shadow: 2px 5px 10px #C0C0C0;
+  background-color: #fff;
+  box-shadow: 2px 5px 10px #c0c0c0;
 `;
 
 const ListTitleContainer = styled.div`
@@ -40,17 +47,26 @@ export default function AdminSidebar(props: SidebarProps) {
     <>
       <WrapperContainer>
         <Wrapper>
-          <Sidebar visible animation="push" {...props} style={{boxShadow: "0 0 0", width: "240px"}}>
-            <List padded verticalAlign="middle" style={{ margin: '0 15px', width: "200px" }}>
+          <Sidebar
+            visible
+            animation="push"
+            {...props}
+            style={{ boxShadow: '0 0 0', width: '240px' }}
+          >
+            <List
+              padded
+              verticalAlign="middle"
+              style={{ margin: '0 15px', width: '200px' }}
+            >
               <Spacer size={30} />
 
               {/* Admin Dashboard */}
-              <List.Item 
-                active={activeItem === 'admin'} 
-                style={styles.listItem && {margin: "0"}}
+              <List.Item
+                active={activeItem === 'admin'}
+                style={styles.listItem && { margin: '0' }}
               >
                 <ListTitleContainer>
-                  <Icon name='newspaper' color='black' />
+                  <Icon name="newspaper" color="black" />
                   <Spacer size={10} />
                   <ListContent>Dashboard</ListContent>
                 </ListTitleContainer>
@@ -61,7 +77,10 @@ export default function AdminSidebar(props: SidebarProps) {
                   <List.Item
                     // active={pathname === ROUTES.admin.adminDashboard || pathname === '/admin'}
                     // onClick={handleClickItem(ROUTES.admin.adminDashboard)}
-                    active={pathname === '/admin' || pathname === ROUTES.admin.adminDashboardDetails}
+                    active={
+                      pathname === '/admin' ||
+                      pathname === ROUTES.admin.adminDashboardDetails
+                    }
                     onClick={handleClickItem('/admin')}
                     style={styles.collapseItem}
                   >
@@ -72,9 +91,12 @@ export default function AdminSidebar(props: SidebarProps) {
               <Spacer size={30} />
 
               {/* Coupon */}
-              <List.Item active={activeItem === 'items'} style={styles.listItem}>
+              <List.Item
+                active={activeItem === 'items'}
+                style={styles.listItem}
+              >
                 <ListTitleContainer>
-                  <Icon name='confirmation number' color='black' />
+                  <Icon name="confirmation number" color="black" />
                   <Spacer size={10} />
                   <ListContent>Coupon</ListContent>
                 </ListTitleContainer>
@@ -99,11 +121,14 @@ export default function AdminSidebar(props: SidebarProps) {
                 </List>
               </Collapse>
               <Spacer size={30} />
-            
+
               {/* Brand */}
-              <List.Item active={activeItem === 'brands'} style={styles.listItem}>
+              <List.Item
+                active={activeItem === 'brands'}
+                style={styles.listItem}
+              >
                 <ListTitleContainer>
-                  <Icon name='price tag' color='black' />
+                  <Icon name="price tag" color="black" />
                   <Spacer size={10} />
                   <ListContent>Brand</ListContent>
                 </ListTitleContainer>
@@ -128,11 +153,14 @@ export default function AdminSidebar(props: SidebarProps) {
                 </List>
               </Collapse>
               <Spacer size={30} />
-            
+
               {/* GPOINTS */}
-              {/* <List.Item active={activeItem === 'gpoints'} style={styles.listItem}>
+              <List.Item
+                active={activeItem === 'gpoints'}
+                style={styles.listItem}
+              >
                 <ListTitleContainer>
-                  <Icon name='global' color='black' />
+                  <Icon name="global" color="black" />
                   <Spacer size={10} />
                   <ListContent>GPoints</ListContent>
                 </ListTitleContainer>
@@ -163,7 +191,7 @@ export default function AdminSidebar(props: SidebarProps) {
                   </List.Item>
                 </List>
               </Collapse>
-              <Spacer size={30} /> */}
+              <Spacer size={30} />
             </List>
           </Sidebar>
         </Wrapper>

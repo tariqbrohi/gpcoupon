@@ -41,20 +41,21 @@ const ImgAndLogoContainer = styled.div`
 `;
 
 const FormBtn = styled(Form.Button)`
-  background-color: #622AF3;
+  background-color: #622af3;
   color: #fff;
   border-radius: 25px;
   box-shadow: rgb(203 203 203) 4px 4px 8px;
   transition: all 0.4s ease-in-out;
 
   &:hover {
-    background-color: #2D126D;
+    background-color: #2d126d;
   }
 `;
 
 export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
   const { item, setItem } = useContext(Context);
   const { data: categories } = useGetCategoriesQuery();
+  const [merchantProfitRate, setMerchantProfitRate] = useState(20);
   const { data: brands } = useGetBrandsQuery({
     data: {
       affiliate: true,
@@ -108,7 +109,6 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
       value: 'AMD',
       text: 'AMD',
     },
-
   ];
 
   const getSlug = () => {
@@ -116,7 +116,7 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
     const ms = Date.parse(time);
 
     const slug = `${item.name.toLowerCase().replace(' ', '_')}_${ms}`;
-    
+
     return slug;
   };
 
@@ -133,18 +133,6 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
     await onSubmit(item);
     setSubmitting(false);
   };
-
-  if (item.originalPrice > 0 && item.price > 0) {
-    const totDiscountRate = parseFloat(((item.originalPrice - item.price) / item.originalPrice * 100).toFixed(2));
-
-    item.totDiscountRate = totDiscountRate;
-  }
-
-  if (item.price > 0) {
-    const merchantProfitRate = item.price - (item.price * 0.2);
-
-    item.amount = merchantProfitRate;
-  }
 
   const customSearchFunction = (searchQuery: any, item: any) => {
     const string = item.text;
@@ -169,6 +157,7 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
     if (e.target.value === '' || regex.test(e.target.value)) {
       setItem({
         ...item,
+        amount: (item.price || 0) * (merchantProfitRate / 100),
         [e.target.name]: e.target.value,
       });
     }
@@ -249,11 +238,6 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
             label="Currency"
             value={item?.currency || 'GPT'}
             options={currencyList}
-            // options={currencyOption.map(({ code }: any) => ({
-            //   key: code,
-            //   value: code,
-            //   text: code,
-            // }))}
             onChange={(_, data) => {
               setItem({ ...item, currency: data.newValues });
             }}
@@ -268,42 +252,55 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
         </Form.Group>
 
         <Form.Group>
-          {/* <Form.Input
-            adornment="%"
-            adornmentPosition='right'
-            // label="Total Discount Rate" 이름변경 기록용.. 추후 지워둘 예정
-            label="Total Cashback Rate"
-            name="discountRate"
-            value={item.discountRate}
-            onChange={handleChange}
-            disabled={mode === 'create' || mode === 'update'}
-          /> */}
-          {/* <Form.Input
-            adornment="%"
-            adornmentPosition='right'
-            // label="Customer Discount Rate" 이름변경 기록용.. 추후 지워둘 예정
-            label="Reward Cashback Rate"
-            name="customerDiscountRate"
-            value={item.customerDiscountRate}
-            onChange={handleChange}
-          /> */}
           <Form.Input
             adornment="%"
-            adornmentPosition='right'
+            adornmentPosition="right"
             label="Discount Rate"
             name="totDiscountRate"
             value={item.totDiscountRate === 0 ? '' : item.totDiscountRate}
-            onChange={handleChangePrice}
+            onChange={(e) => {
+              const regex = /^[0-9\b]+$/;
+
+              if (e.target.value === '' || regex.test(e.target.value)) {
+                const totDiscountRate = parseFloat(
+                  (
+                    ((item.originalPrice - item.price) / item.originalPrice) *
+                    100
+                  ).toFixed(2),
+                );
+
+                setItem({
+                  ...item,
+                  totDiscountRate,
+                });
+              }
+            }}
             disabled={mode === 'create' || mode === 'update'}
             filled
+          />
+          <Form.Input
+            adornment="%"
+            // label="Discount Price" 이름변경 기록용.. 추후 지워둘 예정
+            label="Merchant Profit"
+            // name="amount"
+            // value={item.amount === 0 ? '' : item.amount}
+            value={merchantProfitRate}
+            onChange={(e) => {
+              const rate = parseFloat(e.target.value || '0');
+              setMerchantProfitRate(rate);
+
+              setItem({
+                ...item,
+                amount: (item.price || 0) * (rate / 100),
+              });
+            }}
           />
           <Form.Input
             adornment="$"
             // label="Discount Price" 이름변경 기록용.. 추후 지워둘 예정
             label="Merchant Profit"
             name="amount"
-            value={item.amount === 0 ? '' : item.amount}
-            onChange={handleChangePrice}
+            value={item.amount}
             disabled={mode === 'create' || mode === 'update'}
             filled
           />
@@ -323,16 +320,14 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
             onChange={handleChange}
           /> */}
 
-          {
-            mode === 'update' && (
-              <Form.Input
-                label="Slug"
-                name="slug"
-                placeholder={item.slug}
-                disabled
-              />
-            )
-          }
+          {mode === 'update' && (
+            <Form.Input
+              label="Slug"
+              name="slug"
+              placeholder={item.slug}
+              disabled
+            />
+          )}
 
           <Form.Input
             label="Sort Order (0 to 10)"
@@ -422,7 +417,7 @@ export default function ItemForm({ mode, onSubmit, onUpdate }: Props) {
         <Spacer size={50} />
       </div>
 
-      <FormSection style={{display: "flex", justifyContent: "space-evenly"}}>
+      <FormSection style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <ImgAndLogoContainer>
           <Paragraph>Item Image</Paragraph>
           <Spacer size={10} />

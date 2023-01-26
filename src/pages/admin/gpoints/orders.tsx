@@ -69,7 +69,7 @@ export default withPageAuthRequired(function List() {
 
   return (
     <>
-      <Head title='GPcoupon | Orders' />
+      <Head title="GPcoupon | Orders" />
       <AppMain>
         <AdminLayout>
           {(loadingApprove || loadingDeny) && <Loader />}
@@ -94,12 +94,12 @@ export default withPageAuthRequired(function List() {
                 <Table.HeadCell>id</Table.HeadCell>
                 <Table.HeadCell>Total</Table.HeadCell>
                 <Table.HeadCell>Qty</Table.HeadCell>
-                <Table.HeadCell>Code</Table.HeadCell>
+                <Table.HeadCell>Sender</Table.HeadCell>
                 <Table.HeadCell>Name</Table.HeadCell>
                 <Table.HeadCell>Recipient Name</Table.HeadCell>
                 <Table.HeadCell>Recipient Email</Table.HeadCell>
                 <Table.HeadCell>Ordered At</Table.HeadCell>
-                <Table.HeadCell></Table.HeadCell>
+                {/* <Table.HeadCell></Table.HeadCell> */}
               </Table.Row>
             </Table.Head>
             <Table.Body>
@@ -109,7 +109,9 @@ export default withPageAuthRequired(function List() {
                     <Checkbox
                       onChange={() => {
                         if (checked.includes(d.id)) {
-                          setChecked(checked.filter((id: string) => id !== d.id));
+                          setChecked(
+                            checked.filter((id: string) => id !== d.id),
+                          );
                         } else {
                           setChecked([...checked, d.id]);
                         }
@@ -117,17 +119,17 @@ export default withPageAuthRequired(function List() {
                     />
                   </Table.Cell>
                   <Table.Cell>{d.status}</Table.Cell>
-                  <Table.Cell>{d.id}</Table.Cell>
+                  <Table.Cell>{d.id.substr(-6)}</Table.Cell>
                   <Table.Cell>{currencyFormat(d.totalPrice, 'KRW')}</Table.Cell>
                   <Table.Cell>{d.qty}</Table.Cell>
-                  <Table.Cell>{d.code}</Table.Cell>
+                  <Table.Cell>{(d.sender as any)?.name}</Table.Cell>
                   <Table.Cell>{(d.gpoint as any).name}</Table.Cell>
                   <Table.Cell>{d.recipient.name}</Table.Cell>
                   <Table.Cell>{d.recipient.email}</Table.Cell>
                   <Table.Cell>
                     {moment(d.createdAt * 1000).format('MM/DD/YYYY HH:MM')}
                   </Table.Cell>
-                  <Table.Cell>
+                  {/* <Table.Cell>
                     <Button.Group size="small">
                       <Button
                         primary
@@ -165,7 +167,7 @@ export default withPageAuthRequired(function List() {
                         </Button>
                       </Modal>
                     </Button.Group>
-                  </Table.Cell>
+                  </Table.Cell> */}
                 </Table.Row>
               ))}
             </Table.Body>

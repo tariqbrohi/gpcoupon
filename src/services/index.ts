@@ -1446,7 +1446,7 @@ export const useGPointOrderMutation = () => {
     '/api/gpoints/order',
     'post',
     [],
-    ['id', 'qty', 'recipientName', 'recipientEmail', 'code'],
+    ['id', 'qty', 'recipientName', 'recipientEmail', 'exchangeRate'],
   );
 };
 export type GPointOrderMutationVariables = {
@@ -1454,7 +1454,8 @@ export type GPointOrderMutationVariables = {
   qty: number;
   recipientName: string;
   recipientEmail: string;
-  code: number;
+  exchangeRate: number;
+  // code: number;
 };
 export type GPointOrderMutationResult = GPointOrder;
 
@@ -1571,3 +1572,33 @@ export type DeletePaymentCardMutationVariables = {
   id: string;
 };
 export type DeletePaymentCardMutationResult = boolean;
+
+/**
+ * GetGifts
+ */
+export const useGetGiftsQuery = (
+  baseOptions?: QueryBaseOptions<GetGiftsQueryVariables>,
+) => {
+  return useQuery<GetGiftsQueryVariables, GetGiftsQueryResult>(
+    '/api/v1/gifts',
+    baseOptions,
+  );
+};
+export const useGetGiftsLazyQuery = (
+  baseOptions?: QueryBaseOptions<GetGiftsQueryVariables>,
+) => {
+  return useLazyQuery<GetGiftsQueryVariables, GetGiftsQueryResult>(
+    '/api/v1/gifts',
+    baseOptions,
+  );
+};
+export type GetGiftsQueryVariables = {
+  key: string;
+};
+export type GetGiftsQueryResult = {
+  id: string;
+  orderid: string;
+  code: string;
+  pin: string;
+  gpoint: any;
+}[];
