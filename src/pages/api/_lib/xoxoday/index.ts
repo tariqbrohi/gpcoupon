@@ -1,4 +1,5 @@
 import { findMany, findOne } from './voucher';
+import { balance } from './balance';
 import { place, detail } from './orders';
 
 const xoxoday = {
@@ -10,6 +11,7 @@ const xoxoday = {
     place,
     detail,
   },
+  balance,
 };
 //
 export default xoxoday;

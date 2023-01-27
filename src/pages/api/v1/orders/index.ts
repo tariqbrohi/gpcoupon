@@ -71,7 +71,7 @@ export default withApiAuthRequired(
 
       const timestamp = moment().unix();
 
-      const [dbItem, xoxoItem] = await Promise.all([
+      const [dbItem, xoxoItem, xoxoBalance] = await Promise.all([
         prisma.item.findFirst({
           where: {
             slug,
@@ -81,7 +81,14 @@ export default withApiAuthRequired(
           },
         }),
         xoxoday.vouchers.findOne({ amount: +amount, itemId }),
+        xoxoday.balance(),
       ]);
+
+      if (xoxoBalance.points < +amount) {
+        throw new BadRequestError(
+          'Something went wrong. Please try again later',
+        );
+      }
 
       let price = +amount;
 

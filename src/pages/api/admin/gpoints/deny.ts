@@ -12,7 +12,7 @@ export default withApiAuthRequired(
     }
 
     const { id, reason } = req.body;
-
+    console.log(req.body, ' body');
     const order = await prisma.gPointOrder.findUnique({
       where: {
         id,

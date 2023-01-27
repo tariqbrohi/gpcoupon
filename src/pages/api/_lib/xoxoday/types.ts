@@ -75,3 +75,9 @@ export type Item = {
   discount: number;
   exchangeRate: number | null;
 };
+
+export type Balance = {
+  points: number;
+  value: number;
+  currency: string;
+};
